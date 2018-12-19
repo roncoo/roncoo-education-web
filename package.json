@@ -1,0 +1,28 @@
+{
+  "name": "open-cloud",
+  "version": "1.0.0",
+  "description": "My impressive Nuxt.js project",
+  "author": "laiwenbiao",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "build": "nuxt build",
+    "start": "cross-env NODE_ENV=production node server/index.js",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@gauseen/nuxt-proxy": "^1.0.1",
+    "@nuxtjs/axios": "^5.0.0",
+    "cross-env": "^5.2.0",
+    "js-cookie": "^2.2.0",
+    "koa": "^2.5.2",
+    "lru-cache": "^5.1.1",
+    "md5": "^2.2.1",
+    "nuxt": "^2.0.0"
+  },
+  "devDependencies": {
+    "node-sass": "^4.11.0",
+    "nodemon": "^1.11.0",
+    "sass-loader": "^7.1.0"
+  }
+}
