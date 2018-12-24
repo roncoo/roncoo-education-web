@@ -18,7 +18,8 @@
               <div class="error_msg">{{errTip1}}</div>
               <input type="password" v-model="obj.password" placeholder="6-20位密码，可用数字/字母/符号组合">
               <div class="error_msg">{{errTip2}}</div>
-              <input type="submit" value="登录" class="btn" />
+              <input type="submit" v-if="subState" disabled="disabled" value="登录中···" class="btn" />
+              <input type="submit" v-else value="登录" class="btn" />
             </form>
             <input type="checkbox" class="check"><span class="next_auto">下次自动登录</span>
             <router-link class="is_go" to="/register?ty=2">忘记密码</router-link>
@@ -36,7 +37,8 @@
                 <input type="checkbox" id="tonyi" v-model="pobj.check">
                 <label for="tonyi">我已经阅读并同意</label><a href="jvascript:" class="c_blue" @click="xieyi = true">《用户协议》</a>
               </div>
-              <input type="submit" value="注册" class="btn">
+              <input type="submit" v-if="subState" disabled="disabled" value="提交中···" class="btn">
+              <input type="submit" v-else value="注册" class="btn">
             </form>
           </div>
         </div>
@@ -84,7 +86,6 @@
 <script>
   import YHeader from '~/components/common/Header'
   import YButton from '~/components/common/CodeButton'
-  import {serviceInfo, advList} from '~/api/main.js'
   import {userLogin, getUserInfo, register} from '~/api/user.js'
 export default {
     head () {
@@ -110,6 +111,7 @@ export default {
       tabp: this.$route.query.tab || 1,
       webInfo: this.$store.state.webInfo,
       clientData: this.$store.state.clientData,
+      subState: false, //提交状态
       xieyi: false,
       service: {},
       errTip1: '',
@@ -163,6 +165,9 @@ export default {
     },
     loginSubmit (e) {
       e.preventDefault();
+      if (this.subState) {
+        return false;
+      }
       this.errTip1 = '';
       this.errTip2 = '';
       if (!(/^1[3|4|5|8|7][0-9]\d{4,8}$/.test(this.obj.mobile.trim())) && !(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/).test(this.obj.mobile.trim())) {
@@ -173,10 +178,13 @@ export default {
         this.errTip2 = '请输入正确的账号或密码';
         return false;
       }
-      // console.log(this.obj)
+      console.log(this.obj)
       this.obj.clientId = this.clientData.id;
       this.$nuxt.$loading.start();
+      this.subState = true;
       userLogin(this.obj).then(res => {
+        console.log(res)
+        this.subState = false;
         this.$nuxt.$loading.finish();
         if (res.data.code === 200) {
           this.$store.commit('SET_TOKEN', res.data.data.token);
@@ -189,6 +197,7 @@ export default {
           this.errTip2 = res.msg;
         }
       }).catch(() => {
+        this.subState = false;
         this.$nuxt.$loading.finish();
         this.$msgBox({
           content: '登录失败,请稍后再试',
@@ -200,6 +209,9 @@ export default {
     // 注册
     regSubmit: function (e) {
       e.preventDefault();
+      if (this.subState) {
+        return false;
+      }
       if (!(/^1[3|4|5|8|7][0-9]\d{4,8}$/.test(this.pobj.mobile.trim())) || this.pobj.mobile.trim().length !== 11) {
         this.$msgBox({
           content: '请输入正确手机',
@@ -242,11 +254,11 @@ export default {
       this.pobj.ip = '12';
       // console.log(this.pobj)
       this.$nuxt.$loading.start();
-      this.disBtn = true;
+      this.subState = true;
       register(this.pobj).then(res => {
         console.log(res)
         this.$nuxt.$loading.finish();
-        this.disBtn = false;
+        this.subState = false;
         if (res.data.code === 200) {
           this.$msgBox({
             content: '注册成功！',
@@ -272,7 +284,7 @@ export default {
         }
       }).catch(() => {
         this.$nuxt.$loading.finish();
-        this.disBtn = false;
+        this.subState = false;
         this.$msgBox({
           content: '系统繁忙，请稍后重试',
           isShowCancelBtn: false

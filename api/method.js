@@ -14,8 +14,6 @@ const createHttp = (token) => {
   }
   // 需要全路径才能工作
   if (process.server) {
-    console.log(process.env._AXIOS_BASE_URL_)
-    console.log("axios.defaults==========")
     
     if (token) {
       head.token = token

@@ -3,7 +3,6 @@
 </template>
 <script>
 import {getMobileCode} from '~/api/user.js'
-import { mapState } from 'vuex'
 export default {
   props: {
     mobile: {
@@ -34,7 +33,7 @@ export default {
       this.$emit('cb', event)
       // 获取验证码
       getMobileCode({
-        orgNo: this.$store.state.clientData.no,
+        clientId: this.$store.state.clientData.id,
         mobile: this.mobile
       }).then(res => {
         console.log(res)

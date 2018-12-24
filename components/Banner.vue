@@ -5,13 +5,10 @@
         <a :href="item.advUrl" :title="item.advTitle"></a>
       </li>
     </ul>
-    <ul class="page_dots" v-if="webInfo.indexTemplate !== 1">
+    <ul class="page_dots">
       <span class="dots" v-for="(item, index) in data" :class="{on:index === num}" @mouseenter="num = index" :key="index"></span>
     </ul>
-    <ul class="page_dots old" v-else>
-      <span class="dots old_dot" v-for="(item, index) in data" :class="{on:index === num}" @mouseenter="num = index" :key="index" :style="'width:' + (1200/data.length - 2) + 'px;'">{{item.advTitle}}</span>
-    </ul>
-    <y-class-block v-if="webInfo.indexTemplate !== 1" :height="height" :classList="classList" />
+    <y-class-block :height="height" :classList="classList" />
   </div>
 </template>
 <script>

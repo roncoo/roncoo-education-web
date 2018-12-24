@@ -83,7 +83,7 @@ import YHeader from '~/components/common/Header'
 import YBanner from '~/components/Banner'
 import YFooter from '~/components/common/Footer'
 import RightTap from '~/components/common/RightTap'
-import {zoneCourse, advList} from '~/api/main.js'
+import {zoneCourse, advList, indexClass} from '~/api/main.js'
 export default {
   components: {
     YHeader,
@@ -119,16 +119,41 @@ export default {
   async asyncData(context) {
     let clientNo = context.store.state.clientData.no;
     console.log(clientNo)
-    return {
-      classList: [],
-      zoneData: null
+    
+    try {
+      let dataObj = {}
+      // 轮播图
+      let { data } = await advList({platShow: 0})
+      // 轮播图上的分类
+      let blockData = await indexClass()
+      // 推荐课程
+      let zonedata = await zoneCourse()
+      console.log(zonedata.data)
+      console.log("zonedata.data=======")
+      // 活动标
+      let zoneList = zonedata.data.data.list || []
+      let courseNoList = []
+      zoneList.forEach(item => {
+        for (let that in item) {
+          if (item[that] && typeof item[that] == 'object' && item[that].length && that != 'zoneCourseLibList' && that != 'zoneResourceInfoList') {
+            item[that].forEach(course => {
+              // console.log(course)
+              courseNoList.push(course.courseNo)
+            })
+          }
+        }
+      })
+      dataObj.advData = data.data.advList || []  //轮播图
+      dataObj.zoneData = zonedata.data.data.list || []  //课程专区
+      dataObj.classList = blockData.data.data.courseCategoryList || [] //轮播分类
+      return dataObj
+    } catch (e) {
+      context.error({ message: 'User not found', statusCode: 404 })
     }
   },
   methods: {
   },
   mounted () {
-    console.log(this.$store.state.webInfo)
-    console.log("this.webInfo")
     if (this.webInfo && this.webInfo.isEnableVip) {
       this.openVip = true
     }

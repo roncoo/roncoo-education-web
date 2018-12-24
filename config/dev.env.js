@@ -1,6 +1,6 @@
 
 module.exports = {
-    baseUrl: 'http://roncoo.iok.la/api',
+    baseUrl: 'http://192.168.1.185:5840/api',
     CLIENT: {
         no: 'lingke',
         id: 'lkb65617f842ad4c37895a733b8de43cbb',
