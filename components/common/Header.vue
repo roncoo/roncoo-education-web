@@ -80,6 +80,8 @@ export default {
     }
   },
   mounted () {
+    console.log(this.$store.state.tokenInfo)
+    console.log('token=====')
     this.isNow = this.$route.path;
     this.userInfo = this.$store.state.userInfo;
     if (this.webInfo && this.webInfo.isEnableVip) {

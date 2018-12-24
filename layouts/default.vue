@@ -12,6 +12,14 @@ export default {
         { rel: 'icon', type: 'image/x-icon', href: this.$store.state.webInfo.logoIco }
       ]
     }
+  },
+  created () {
+    if (process.client) {
+      this.$store.commit('INIT_WEB');
+      if (!this.$store.state.userInfo || this.$store.state.tokenInfo != this.$store.state.userInfo.token) {
+        this.$store.dispatch('GET_USERINFO');
+      }
+    }
   }
 }
   

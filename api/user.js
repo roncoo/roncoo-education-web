@@ -9,9 +9,9 @@ export const register = (params={}) => {
 }
 // 用户登录
 export const userLogin = (params={}) => {
-  return http().post('/web/user/api/user/login', params)
+  return http().post('/user/api/user/login/password', params)
 }
-// 用户登录
+// 用户信息
 export const getUserInfo = (params={}) => {
-  return http().post('/user/api/user/education/info/view', params)
+  return http().post('/auth/user/api/user/ext/view', params)
 }

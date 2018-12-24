@@ -22,25 +22,17 @@
             <li v-for="(that, int) in item.zoneCourseList" :key="int">
               <nuxt-link target="_blank" :to="{name: 'view-id', params: {id: that.id}}">
                 <div class="img_box">
-                  <div class="qizi" v-if="activityObj && activityObj['a' + that.courseNo]">
-                    <span v-if="activityObj['a' + that.courseNo].discountType == 1">折扣<br>{{activityObj['a' + that.courseNo].discountPrice * 10}}折</span>
-                    <span v-if="activityObj['a' + that.courseNo].discountType == 2">立减<br>{{activityObj['a' + that.courseNo].discountPrice}}</span>
-                  </div>
-                  <img :src="that.courseImg" alt="">
+                  <img :src="that.courseLogo" alt="">
                 </div>
               <p>{{ that.courseName }}</p>
               <span v-if="that.isFree" class="price_box">免费</span>
-              <span class="price_box" v-else>￥{{that.orgPrice.toFixed(2)}}<span class="font_12 padl_10" v-if="openVip && that.fabPrice != that.orgPrice">SVIP:{{that.fabPrice ? '￥' + that.fabPrice.toFixed(2) : '免费'}}</span></span>
+              <span class="price_box" v-else>￥{{that.courseOriginal.toFixed(2)}}<span class="font_12 padl_10" v-if="openVip && that.courseDiscount != that.courseOriginal">SVIP:{{that.courseDiscount ? '￥' + that.courseDiscount.toFixed(2) : '免费'}}</span></span>
               </nuxt-link>
             </li>
             <li v-for="thatLive in item.liveCourseList" :key="thatLive.id">
               <nuxt-link target="_blank" :to="{name: 'live-id', params: {id: thatLive.id}}">
                 <div class="img_box">
-                  <div class="qizi" v-if="activityObj && activityObj['a' + thatLive.courseNo]">
-                    <span v-if="activityObj['a' + thatLive.courseNo].discountType == 1">折扣<br>{{activityObj['a' + thatLive.courseNo].discountPrice * 10}}折</span>
-                    <span v-if="activityObj['a' + thatLive.courseNo].discountType == 2">立减<br>{{activityObj['a' + thatLive.courseNo].discountPrice}}</span>
-                  </div>
-                  <img :src="thatLive.courseImg" alt="">
+                  <img :src="thatLive.courseLogo" alt="">
                   <div class="live_time">
                     <p style="font-size: 12px;" v-if="thatLive.liveTime">开播时间：{{thatLive.liveTime}}</p>
                     <p style="font-size: 12px;" v-if="thatLive.endTime">有效期至：{{thatLive.endTime}}</p>
@@ -48,21 +40,17 @@
                 </div>
               <p>{{ thatLive.courseName }}（直播）</p>
               <span class="price_box" v-if="thatLive.isFree">免费</span>
-              <span class="price_box" v-else>￥{{thatLive.orgPrice.toFixed(2)}}<span class="font_12 padl_10" v-if="openVip && thatLive.fabPrice != thatLive.orgPrice">SVIP:{{thatLive.fabPrice ? '￥' + thatLive.fabPrice.toFixed(2) : '免费'}}</span></span>
+              <span class="price_box" v-else>￥{{thatLive.courseOriginal.toFixed(2)}}<span class="font_12 padl_10" v-if="openVip && thatLive.courseDiscount != thatLive.courseOriginal">SVIP:{{thatLive.courseDiscount ? '￥' + thatLive.courseDiscount.toFixed(2) : '免费'}}</span></span>
               </nuxt-link>
             </li>
             <li v-for="thatGroup in item.zoneCourseCombinaRefList" :key="thatGroup.id">
               <nuxt-link target="_blank" :to="{name: 'liveAndBunch', params: {id: thatGroup.id}}">
                 <div class="img_box">
-                  <div class="qizi" v-if="activityObj && activityObj['a' + thatGroup.courseNo]">
-                    <span v-if="activityObj['a' + thatGroup.courseNo].discountType == 1">折扣<br>{{activityObj['a' + thatGroup.courseNo].discountPrice * 10}}折</span>
-                    <span v-if="activityObj['a' + thatGroup.courseNo].discountType == 2">立减<br>{{activityObj['a' + thatGroup.courseNo].discountPrice}}</span>
-                  </div>
-                  <img :src="thatGroup.courseImg" alt="">
+                  <img :src="thatGroup.courseLogo" alt="">
                 </div>
               <p>{{ thatGroup.courseName }} (录播+直播)</p>
               <span class="price_box" v-if="thatGroup.isFree">免费</span>
-              <span class="price_box" v-else>￥{{thatGroup.orgPrice.toFixed(2)}}<span class="font_12 padl_10" v-if="openVip && thatGroup.fabPrice != thatGroup.orgPrice">SVIP:{{thatGroup.fabPrice ? '￥' + thatGroup.fabPrice.toFixed(2) : '免费'}}</span></span>
+              <span class="price_box" v-else>￥{{thatGroup.courseOriginal.toFixed(2)}}<span class="font_12 padl_10" v-if="openVip && thatGroup.courseDiscount != thatGroup.courseOriginal">SVIP:{{thatGroup.courseDiscount ? '￥' + thatGroup.courseDiscount.toFixed(2) : '免费'}}</span></span>
               </nuxt-link>
             </li>
           </ul>
@@ -127,7 +115,7 @@ export default {
       // 轮播图上的分类
       let blockData = await indexClass()
       // 推荐课程
-      let zonedata = await zoneCourse()
+      let zonedata = await zoneCourse({zoneLocation: 0})
       console.log(zonedata.data)
       console.log("zonedata.data=======")
       // 活动标
@@ -146,6 +134,8 @@ export default {
       dataObj.advData = data.data.advList || []  //轮播图
       dataObj.zoneData = zonedata.data.data.list || []  //课程专区
       dataObj.classList = blockData.data.data.courseCategoryList || [] //轮播分类
+      console.log(dataObj.classList)
+      console.log('bbbbbbbb')
       return dataObj
     } catch (e) {
       context.error({ message: 'User not found', statusCode: 404 })

@@ -7,12 +7,12 @@ export default {
   INIT_WEB: (state) => {
     let token = cookie.getInClient(state.clientData.tokenName);
     if (token) {
-      let userInfo = JSON.parse(getStore('RcUserInfo'));
+      let userInfo = JSON.parse(getStore('OcUserInfo'));
       state.tokenInfo = token;
       state.userInfo = userInfo;
     }else {
       state.userInfo = '';
-      removeStore('RcUserInfo')
+      removeStore('OcUserInfo')
     }
   },
   SET_ITEMS: (state,  {key, value}) => {
@@ -37,14 +37,14 @@ export default {
   SIGN_OUT: (state) => {
     state.tokenInfo = ''
     cookie.delInClient(state.clientData.tokenName)
-    removeStore('RcUserInfo')
+    removeStore('OcUserInfo')
     // setStore('tokenInfo', info.info)
   },
   // 记录用户信息
   SET_USER: (state, data) => {
     data.token = state.tokenInfo
     state.userInfo = data;
-    setStore('RcUserInfo', data)
+    setStore('OcUserInfo', data)
     // Vue.set(state.users, id, user || false) /* false means user not found */
   },
   // 记录当前url

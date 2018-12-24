@@ -2,7 +2,7 @@
 <template>
   <div class="class_block" @mouseleave="hideWidth" v-if="classList.length">
     <ul :class="{left_block: true, show_scroll: classList.length > 10}">
-      <li @mouseenter="changeWidth(item)" :class="{active: item.categoryNo == categoryno1}" :style="classList.length > 5 && classList.length <= 10 &&'line-height:' + (height/classList.length) + 'px;'" v-for="(item, index) in classList" :key="index">
+      <li @mouseenter="changeWidth(item)" :class="{active: item.id == categoryno1}" :style="classList.length > 5 && classList.length <= 10 &&'line-height:' + (height/classList.length) + 'px;'" v-for="(item, index) in classList" :key="index">
         <router-link :to="{name: 'courselist', query: {categoryno1: item.categoryNo}}">{{item.categoryName}}</router-link>
         <span class="arrow"></span>
       </li>
@@ -71,7 +71,7 @@ export default {
     changeWidth (item) {
       console.log(item)
       this.width = 750
-      this.categoryno1 = item.categoryNo
+      this.categoryno1 = item.id
       this.twoList = item.twoList
       this.courseList = item.courseList
     },

@@ -191,6 +191,8 @@ export default {
           this.$store.commit('GET_TEMPORARYURL');
           this.$store.dispatch('GET_USERINFO',store=>{
             this.userInfo = this.$store.state.userInfo;
+            console.log(this.userInfo)
+            console.log('llllllll')
             window.location.href = this.$store.state.temporaryUrl;
           });
         } else {

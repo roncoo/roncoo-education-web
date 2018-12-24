@@ -5,7 +5,7 @@ module.exports = {
   mode: 'universal',
 
   router: {
-    middleware: ['states'],
+    middleware: ['states', 'checkuser'],
     extendRoutes (routes, resolve) {
       routes.push({
         name: 'custom',
@@ -69,7 +69,8 @@ module.exports = {
       '/system': {target: config.baseUrl, ws: false },
       '/activity': {target: config.baseUrl, ws: false },
       '/user': {target: config.baseUrl, ws: false },
-      '/agent': {target: config.baseUrl, ws: false }
+      '/agent': {target: config.baseUrl, ws: false },
+      '/auth': {target: config.baseUrl, ws: false }
   },
 
   cache: true,
