@@ -24,7 +24,7 @@
     <div class="h_nav">
       <div class="h_logo">
         <a :href="mainUrl">
-          <img :src="webInfo.orgInfo.logoImg" alt="" v-if="webInfo">
+          <img :src="webInfo.logoImg" alt="" v-if="webInfo">
         </a>
       </div>
       <ul class="h_nav_ul clearfix" v-if="!hideTop && navList">

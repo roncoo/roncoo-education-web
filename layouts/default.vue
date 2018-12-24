@@ -4,6 +4,18 @@
   </div>
 </template>
 
+<script>
+export default {
+  head () {
+    return {
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: this.$store.state.webInfo.logoIco }
+      ]
+    }
+  }
+}
+  
+</script>
 <style>
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
