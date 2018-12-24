@@ -1,10 +1,11 @@
+import devEnv from './dev.env';
+import prodEnv from './prod.env';
+let result = {};
 
 if (process.env.NODE_ENV == 'development') {
-  const devEnv = require('./dev.env')
-  result = devEnv
+  result = devEnv;
 }else {
-  const prodEnv = require('./prod.env')
-  result = prodEnv
+  result = prodEnv;
 }
 
-module.exports = result
+export default result

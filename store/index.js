@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import actions from './actions'
 import mutations from './mutations'
 import getters from './getters'
-const config = require('../config')
+import config from '../config'
 
 const createStore = () => {
   return new Vuex.Store({

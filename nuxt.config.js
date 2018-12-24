@@ -1,5 +1,5 @@
 const pkg = require('./package')
-const config = require('./config')
+const config = require('./config/conf')
 
 module.exports = {
   mode: 'universal',
@@ -18,7 +18,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: config.CLIENT.name,
+    title: config.title,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
