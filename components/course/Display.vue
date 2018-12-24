@@ -65,7 +65,6 @@
 </template>
 <script>
 import {addCollection, attentionSave} from '~/api/user.js'
-import {avtivityTitle} from '~/api/activity.js'
 import YHeader from '../common/Header'
 export default {
   components: {
@@ -141,44 +140,13 @@ export default {
           }
         }
       })
-    },
-    // 获取活动详情
-    getActivityInfo () {
-      let noList = [this.courseInfo.courseNo]
-      avtivityTitle({
-        courseNoList: noList
-      }).then(res => {
-        res = res.data;
-        // console.log(res)
-        if (res.code === 200) {
-          if (res.data.list && res.data.list.length) {
-            let actList = res.data.list[0].actList
-            actList.forEach(item => {
-              if (item.act.actType === 1) {
-                if (item.actDiscountShow) {
-                  this.activityData.actId = item.act.id;
-                  this.activityData.minus = item.actDiscountShow.discountPrice
-                  this.activityData.discountType = item.actDiscountShow.discountType
-                  if (item.actDiscountShow.discountType === 1) {
-                    this.activityData.activityText = '打折'
-                  } else if (item.actDiscountShow.discountType === 2) {
-                    this.activityData.activityText = '立减'
-                  }
-                  context.store.commit('SET_ITEMS', {key: 'activityData', value: this.activityData});
-                }
-              }
-            })
-          }
-        }
-      })
-    },
+    }
   },
   mounted () {
     this.openVip = this.$store.state.webInfo.isEnableVip;
     if (this.$store.state.userInfo.isVip && this.$store.state.userInfo.expireTime && new Date(this.$store.state.userInfo.expireTime).getTime() > new Date().getTime()) {
         this.isVip = true
       }
-    this.getActivityInfo();
   }
 }
   

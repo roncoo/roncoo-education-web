@@ -51,7 +51,6 @@
     <y-footer></y-footer>
     <d-pay :isCourse="true" @hidefun="showPay = false" :data="payData" v-if="showPay"></d-pay>
     <right-tap></right-tap>
-    <activity-pay-modal @hidefun="showActivityPay = false" :info="activityPay" v-if="showActivityPay" />
     <div class="float_top" v-show="showTop">
       <div class="container">
         <ul class="left_header clearfix">
@@ -74,10 +73,8 @@ import YSyllabus from '~/components/course/Syllabus'
 import YDisplay from '~/components/course/Display'
 import YWatchVideo from '~/components/course/WatchVideo'
 import RecommendBlock from '~/components/course/RecommendBlock'
-import ActivityPayModal from '~/components/ActivityPayModal'
-import {visitorList, courseDetail, chapterSign, chapterDetail, changeUrl} from '~/api/course.js'
+import {courseDetail, chapterSign, chapterDetail, changeUrl} from '~/api/course.js'
 import {userCourseDetail, addCollection, attentionSave, downAcc, getUserInfo} from '~/api/user.js'
-import {avtivityTitle} from '~/api/activity.js'
 export default {
   components: {
     YHeader,
@@ -87,8 +84,7 @@ export default {
     YWatchVideo,
     DPay,
     RightTap,
-    RecommendBlock,
-    // ActivityPayModal
+    RecommendBlock
   },
   head () {
     return {
@@ -164,7 +160,7 @@ export default {
         }
       }else {
         console.log(context.route)
-        let {data} = await courseDetail({id: context.params.id})
+        let {data} = await courseDetail({courseId: context.params.id})
         // console.log(data)
         if (data.code == 200) {
           result.courseInfo = data.data.courseInfoDTO;

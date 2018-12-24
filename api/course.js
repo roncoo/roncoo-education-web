@@ -8,3 +8,7 @@ export const courseList = (params={}) => {
 export const courseClass = (params={}) => {
   return http().post('/course/api/course/category/list', params)
 }
+// 课程详情
+export const courseDetail = (params={}) => {
+  return http().post('/course/api/course/view', params)
+}
