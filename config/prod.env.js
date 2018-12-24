@@ -1,6 +1,5 @@
 
-module.exports = {
-    baseUrl: 'http://roncoo.iok.la/api',
+export default {
     CLIENT: {
         no: 'lingke',
         id: 'lkb65617f842ad4c37895a733b8de43cbb',

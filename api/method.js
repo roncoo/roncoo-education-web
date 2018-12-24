@@ -1,7 +1,7 @@
 import * as axios from 'axios'
 import cookie from '../utils/cookies'
 import LRU from 'lru-cache'
-const config = require('../config')
+import config from '../config'
 // console.log(axios.defaults)
 const createHttp = (token) => {
 

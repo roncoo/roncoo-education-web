@@ -7,7 +7,7 @@ import axios from 'axios'
 import {getUserInfo} from '../api/user'
 import {serviceInfo, aboutList, getNav} from '~/api/main'
 import LRU from 'lru-cache'
-const config = require('../config')
+import config from '../config'
 const CACHED = new LRU();
 const ttl = 10 * 60 * 1000 //缓存时间
 
@@ -100,7 +100,7 @@ export default {
     })
   },
   GET_USERINFO (store,cb) {
-    getUserInfo({orgNo: config.CLIENT.no})
+    getUserInfo({orgNo: 'lingke'})
     .then(res => {
       // console.log(res)
       if (res.data.code == 200) {
