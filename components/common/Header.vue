@@ -6,7 +6,6 @@
           <li><a :href="mainUrl+'/recruit'">讲师招募</a></li>
           <li v-if="isTeacher"><a :href="accountUrl+'/teacher/course'">讲师中心</a></li>
           <li class="s_left"><a :href="accountUrl+'/order'">我的订单</a></li>
-          <li><a :href="accountUrl+'/lesson'">我的课程</a></li>
           <li class="s_left">
             <nuxt-link :class="{c_gold: isVip}" :to="{name: 'account'}">{{userInfo.mobile}}</nuxt-link>
             <img v-if="isVip" src="~/assets/image/vip_icon.png" @click="goVip" alt="" class="vip_icon">

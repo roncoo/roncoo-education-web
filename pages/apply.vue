@@ -18,7 +18,7 @@
           </div>
           <div v-if="tab === 1">
             <div class="step_info">
-              <div class="clearfix" v-html="recruitMsg.entryAgreement"></div>
+              <div class="clearfix">这里是协议内容</div>
             </div>
             <footer class="info_footer">
               <input type="checkbox" id="isRead" v-model="isRead">
@@ -40,6 +40,13 @@
               </div>
             </div>
             <div class="form_group">
+              <div class="label">邮箱:</div>
+              <div class="form_ctl">
+                <input type="text" name="email" @change="enter" placeholder="请输入邮箱" v-model="obj.email">
+                <p class="err" v-show="errTip4">{{errTip4}}</p>
+              </div>
+            </div>
+            <div class="form_group">
               <div class="label">简介:</div>
               <div class="form_ctl">
                 <div id="lecturerInfo"></div>
@@ -49,7 +56,7 @@
             <div class="form_group">
               <div class="label">手机号:</div>
               <div class="form_ctl">
-                <input type="text" maxlength="11" placeholder="请输入注册手机号" v-model="obj.mobile" @input="changeMobile">
+                <input type="text" maxlength="11" placeholder="请输入注册手机号" v-model="obj.mobile">
                 <p class="err" v-show="errTip0">{{errTip0}}</p>
               </div>
             </div>
@@ -86,60 +93,6 @@
               <a href="javascript:" @click="isSubmit" class="next_btn">提交审核</a>
             </div>
           </div>
-          <div v-show="tab === 2 && applyType === '2'">
-            <div class="form_group">
-              <div class="label">代理名称:</div>
-              <div class="form_ctl">
-                <input type="text" placeholder="请输入昵称" v-model="obj.lecturerName">
-                <p class="err" v-show="errTip2">{{errTip2}}</p>
-              </div>
-            </div>
-            <div class="form_group">
-              <div class="label">账号:</div>
-              <div class="form_ctl">
-                <input type="text" name="uno" placeholder="请输入账号" v-model="obj.uno">
-              </div>
-            </div>
-            <div class="form_group">
-              <div class="label">密码:</div>
-              <div class="form_ctl">
-                <input type="password" name="pwd" @change="enter" placeholder="请输入密码" v-model="obj.passwd">
-                <p class="err" v-show="errTip6">{{errTip6}}</p>
-              </div>
-            </div>
-            <div class="form_group">
-              <div class="label">确认密码:</div>
-              <div class="form_ctl">
-                <input type="password" name="repwd" @change="enter" placeholder="请确认密码" v-model="obj.rePasswd">
-                <p class="err" v-show="errTip5">{{errTip5}}</p>
-              </div>
-            </div>
-            <div class="form_group">
-              <div class="label">地址:</div>
-              <div class="form_ctl">
-                <textarea name="" v-model="obj.addr" class="text_box" id="" cols="50" rows="10"></textarea>
-              </div>
-            </div>
-            <div class="form_group">
-              <div class="label">手机号:</div>
-              <div class="form_ctl">
-                <input type="text" maxlength="11" placeholder="请输入注册手机号" v-model="obj.mobile">
-                <p class="err" v-show="errTip0">{{errTip0}}</p>
-              </div>
-            </div>
-            <div class="form_group">
-              <div class="label">验证码:</div>
-              <div class="form_ctl">
-                <input type="text" maxlength="6" name="code" @change="enter" placeholder="请输入手机验证码" v-model="obj.code">
-                <y-button :mobile="obj.mobile" @cb="submitBtn = true"></y-button>
-                <p class="err" v-show="errTip1">{{errTip1}}</p>
-              </div>
-            </div>
-            <div>
-              <a href="javascript:" @click="isSubmit" class="next_btn" v-if="submitBtn">提交审核</a>
-              <a href="javascript:" class="next_btn b_dis" v-else>提交审核</a>
-            </div>
-          </div>
           <div v-if="tab === 3">
             <div class="success_msg">
               <i class="iconfont">&#xe69f;</i>
@@ -165,9 +118,8 @@
 </template>
 <script>
 import YButton from '~/components/common/CodeButton'
-import {teacherEnter, hasReferralCode} from '~/api/user.js'
+import {teacherEnter} from '~/api/user.js'
 import {uploadPic} from '~/api/course.js'
-import {agentSave, recruitInfo, checkUser} from '~/api/main.js'
 export default {
   head () {
       return {
@@ -237,30 +189,15 @@ export default {
     let applyType = context.query.apply
     let recruitType = ''
     let applyTitle = ''
-    let isReferralCode = false
     try {
       if (applyType === '1') {
         recruitType = 1
         applyTitle = '申请成为讲师'
-        let codeData = await hasReferralCode({orgNo: clientNo})
-        let result = codeData.data
-        if (result.code === 200 && result.data.isEnableAgent) {
-          isReferralCode = true
-        } else {
-          isReferralCode = false
-        }
-      } else if (applyType === '2') {
-        recruitType = 2
-        applyTitle = '申请成为代理'
       }
-      let infoData = await recruitInfo({orgNo: clientNo, recruitType})
-      let recruitMsg = infoData.data.data || {}
       dataObj.clientNo = clientNo
       dataObj.applyType = applyType
       dataObj.recruitType = recruitType
       dataObj.applyTitle = applyTitle
-      dataObj.isReferralCode = isReferralCode
-      dataObj.recruitMsg = recruitMsg
       return dataObj
     } catch (e) {
       context.error({message: 'User not found', statusCode: 404})
@@ -269,30 +206,6 @@ export default {
   methods: {
     setUrl (res) {
       this.obj.headImgUrl = res.url;
-    },
-    changeMobile () {
-      console.log(this.obj.mobile)
-      if (/^1[3|4|5|8|7][0-9]\d{4,8}$/.test(this.obj.mobile.trim()) && this.obj.mobile.trim().length === 11) {
-        console.log(this.obj.mobile.trim())
-        checkUser({
-          mobile: this.obj.mobile.trim(),
-          orgNo: this.clientNo
-        }).then(res => {
-          console.log(res)
-          let result = res.data
-          if (result.code === 200) {
-            if (result.data.isUserAgent === 1) {
-              this.errTip0 = '您还没注册，请确认密码'
-              setTimeout(() => {
-                this.errTip0 = ''
-              }, 2000)
-              this.sendCode = true
-            } else {
-              this.sendCode = false
-            }
-          }
-        })
-      }
     },
     enter (e) {
       let name = e.target.name;
@@ -359,25 +272,15 @@ export default {
       } else {
         this.errTip2 = ''
       }
+      if (!(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/).test(this.obj.email)) {
+        this.errTip4 = '请输入正确的邮箱';
+        return false;
+      }
       if (!this.obj.referralCode && this.isReferralCode) {
         this.errTip7 = '请输入推荐码'
         return
       } else {
         this.errTip7 = ''
-      }
-      if (this.applyType === '2' && !this.obj.uno) {
-        this.$msgBox({
-          content: '请输入账号',
-          isShowCancelBtn: false
-        })
-        return
-      }
-      if (this.applyType === '2' && (/[\u4e00-\u9fa5]+/).test(this.obj.uno)) {
-        this.$msgBox({
-          content: '请输入正确的账号',
-          isShowCancelBtn: false
-        })
-        return
       }
       if (!this.obj.passwd) {
         this.$msgBox({
@@ -426,31 +329,30 @@ export default {
       }
       let ht = this.editor2.txt.html();
       this.obj.introduce = ht
-      let imgLogo = this.obj.headImgUrl
+      let headImgUrl = this.obj.headImgUrl
       let introduce = ht
       let lecturerName = this.obj.lecturerName
-      let mobile = this.obj.mobile
-      let orgNo = this.clientData.no
-      let email = this.obj.email
-      let password = this.obj.passwd
+      let lecturerMobile = this.obj.mobile
+      let lecturerEmail = this.obj.email
+      let mobilePsw = this.obj.passwd
       let repassword = this.obj.rePasswd
       let referralCode = this.obj.referralCode
       let code = this.obj.code
       let grade = this.gradeNoList.join(',')
       let subject = this.subjectNoList.join(',')
       let newObj = {
-        imgLogo,
+        headImgUrl,
         introduce,
         lecturerName,
-        mobile,
-        email,
-        orgNo,
+        lecturerMobile,
+        lecturerEmail,
         grade,
         subject,
-        password,
+        mobilePsw,
         repassword,
         referralCode,
-        code
+        code,
+        clientId: this.$store.state.clientData.id
       }
       console.log(newObj)
       if (this.applyType === '1') {
@@ -548,6 +450,8 @@ export default {
     }
   },
   mounted () {
+    console.log(this.webInfo)
+    console.log('webInfo=============')
     let E = require('wangeditor')
     this.editor2 = new E('#lecturerInfo')
     this.editor2.customConfig.uploadImgMaxLength = 1

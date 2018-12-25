@@ -32,6 +32,10 @@ export default {
       }
       this.$emit('cb', event)
       // 获取验证码
+      console.log({
+        clientId: this.$store.state.clientData.id,
+        mobile: this.mobile
+      })
       getMobileCode({
         clientId: this.$store.state.clientData.id,
         mobile: this.mobile

@@ -19,3 +19,7 @@ export const getUserInfo = (params={}) => {
 export const userCourseDetail = (params={}) => {
   return http().post('/auth/course/api/course/audit/view', params)
 }
+// 申请讲师
+export const teacherEnter = (params={}) => {
+  return http().post('/auth/user/api/lecturer/audit/save', params)
+}
