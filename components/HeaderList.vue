@@ -154,7 +154,7 @@ export default {
     getNextClass () {
       if (this.$route.query.categoryno1) {
         for (let i = 0; i < this.classList.length; i++) {
-          if (this.classList[i].categoryNo === this.$route.query.categoryno1) {
+          if (this.classList[i].id === this.$route.query.categoryno1) {
             this.oneNow = this.$route.query.categoryno1
             if (this.classList[i].twoList) {
               this.twoList = this.classList[i].twoList
@@ -167,7 +167,7 @@ export default {
     getThreeClass () {
       if (this.$route.query.categoryno2) {
         for (let i = 0; i < this.twoList.length; i++) {
-          if (this.twoList[i].categoryNo === this.$route.query.categoryno2) {
+          if (this.twoList[i].id === this.$route.query.categoryno2) {
             this.twoNow = this.$route.query.categoryno2
             if (this.twoList[i].threeList) {
               this.threeList = this.twoList[i].threeList

@@ -4,7 +4,7 @@
       <h3 class="title"><i class="iconfont">&#xe640;</i>讲师中心</h3>
       <ul class="menus">
         <li :class="{on: type == 'jsxx'}"><router-link :to="{name: 'teacherInfo'}">讲师信息</router-link></li>
-        <li :class="{on: type == 'kcgl'}"><router-link :to="{name: 'teacherCourse'}">录播管理</router-link></li>
+        <li :class="{on: type == 'kcgl'}"><router-link :to="{name: 'account-course'}">录播管理</router-link></li>
         <li :class="{on: type == 'zbgl'}" v-if="isLive"><router-link :to="{name: 'liveCourse'}">直播管理</router-link></li>
         <li :class="{on: type == 'zhtc'}" v-if="isLive"><router-link :to="{name: 'courseGroup'}">组合套餐</router-link></li>
         <li :class="{on: type == 'zygl'}" v-if="isResource"><router-link :to="{name: 'resource'}">资源管理</router-link></li>
@@ -19,7 +19,7 @@
         <li :class="{on: type == 'dlgl'}"><router-link :to="{name: 'agencyManage'}">代理管理</router-link></li>
       </ul>
     </div> -->
-    <div class="menu_panel" v-if="userInfo && userInfo.roleType != 1">
+    <div class="menu_panel" v-if="userInfo && userInfo.userType != 1">
       <h3 class="title"><i class="iconfont">&#xe614;</i>收益中心</h3>
       <ul class="menus">
         <li :class="{on: type == 'syqk'}"><router-link :to="{name: 'earnings'}">收益情况</router-link></li>
@@ -61,8 +61,7 @@
   </header>
 </template>
 <script>
-import {getUserInfo} from '@/api/user.js'
-import { mapState } from 'vuex'
+import {getUserInfo} from '~/api/user.js'
 export default {
   props: {
     type: {
@@ -76,54 +75,35 @@ export default {
       isLive: false,
       isLibrary: false,
       isCourse: false,
-      isResource: false
+      isResource: false,
+      webInfo: this.$store.state.webInfo,
+      tokenInfo: this.$store.state.tokenInfo,
+      userInfo: this.$store.state.userInfo
     }
-  },
-  computed: {
-    ...mapState(['userInfo', 'tokenInfo', 'clientData', 'webInfo'])
   },
   methods: {
     close () {
       this.$emit('close')
-    },
-    setSide () {
-      // 是否有直播
-      if (this.webInfo.orgInfo.isEnableLive === 1) {
-        this.isLive = true;
+    }
+  },
+  mounted () {
+    if (this.tokenInfo && this.userInfo && this.userInfo.token == this.tokenInfo) {
+      if (this.userInfo.userType === 2 || this.userInfo.userType === 4) {
+        this.teacher = true;
+        console.log('teacher+++++' + this.teacher)
       }
-      // 是否有题库
-      if (this.webInfo.orgInfo.isEnableLibrary === 1) {
-        this.isLibrary = true;
-      }
-      // 是否有录播
-      if (this.webInfo.orgInfo.isEnableCourse === 1) {
-        this.isCourse = true;
-      }
-      // 是否有资源区
-      if (this.webInfo.orgInfo.isEnableResource === 1) {
-        this.isResource = true;
-      }
+    } else {
+      getUserInfo().then(res => {
+        // console.log(res)
+        let result = res.data
+        if (result.code === 200) {
+          if (result.data.userType === 2 || result.data.userType === 4) {
+            this.teacher = true;
+          }
+        }
+      })
     }
   }
-  // mounted () {
-  //   if (this.webInfo) {
-  //     this.setSide();
-  //   }
-  //   if (this.tokenInfo && this.userInfo && this.userInfo.token == this.tokenInfo) {
-  //     if (this.userInfo.roleType === 2 || this.userInfo.roleType === 4) {
-  //       this.teacher = true;
-  //     }
-  //   } else {
-  //     getUserInfo({orgNo: this.clientData.no}).then(res => {
-  //       // console.log(res)
-  //       if (res.code === 200) {
-  //         if (res.data.roleType === 2 || res.data.roleType === 4) {
-  //           this.teacher = true;
-  //         }
-  //       }
-  //     })
-  //   }
-  // }
 }
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>

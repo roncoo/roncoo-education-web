@@ -3,16 +3,16 @@
   <div class="class_block" @mouseleave="hideWidth" v-if="classList.length">
     <ul :class="{left_block: true, show_scroll: classList.length > 10}">
       <li @mouseenter="changeWidth(item)" :class="{active: item.id == categoryno1}" :style="classList.length > 5 && classList.length <= 10 &&'line-height:' + (height/classList.length) + 'px;'" v-for="(item, index) in classList" :key="index">
-        <router-link :to="{name: 'courselist', query: {categoryno1: item.categoryNo}}">{{item.categoryName}}</router-link>
+        <nuxt-link :to="{name: 'list', query: {categoryno1: item.id}}">{{item.categoryName}}</nuxt-link>
         <span class="arrow"></span>
       </li>
     </ul>
     <div class="big_block clearfix" :style="'width:' + width + 'px;'">
       <div class="list_items fl clearfix">
         <div class="list_item clearfix" v-for="(item, index) in twoList" :key="index">
-          <router-link :to="{name: 'courselist', query: {categoryno1, categoryno2: item.categoryNo}}" :class="{class_header: true, has_three: item.threeList.length, fl: true}">{{item.categoryName}}</router-link>
+          <nuxt-link :to="{name: 'list', query: {categoryno1, categoryno2: item.id}}" :class="{class_header: true, has_three: item.threeList.length, fl: true}">{{item.categoryName}}</nuxt-link>
           <div class="fl three_box">
-            <router-link :to="{name: 'courselist', query: {categoryno1, categoryno2: item.categoryNo, categoryno3: that.categoryNo}}" class="three_link" v-for="(that, num) in item.threeList" :key="num">{{that.categoryName}}</router-link>
+            <nuxt-link :to="{name: 'list', query: {categoryno1, categoryno2: item.id, categoryno3: that.id}}" class="three_link" v-for="(that, num) in item.threeList" :key="num">{{that.categoryName}}</nuxt-link>
           </div>
         </div>
       </div>
@@ -20,20 +20,20 @@
         <div class="courses_top">课程推荐</div>
         <div class="foot_course fl" v-for="(item, index) in courseList" :key="index">
           <div class="img_box inline_box">
-            <router-link :to="{name: 'courselDetail', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 1">
+            <nuxt-link :to="{name: 'view-id', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 1">
               <img class="course_img" :src="item.courseImg" alt="">
-            </router-link>
-            <router-link :to="{name: 'liveDetail', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 2">
+            </nuxt-link>
+            <nuxt-link :to="{name: 'liveDetail', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 2">
               <img class="course_img" :src="item.courseImg" alt="">
-            </router-link>
-            <router-link :to="{name: 'liveAndBunch', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 3">
+            </nuxt-link>
+            <nuxt-link :to="{name: 'liveAndBunch', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 3">
               <img class="course_img" :src="item.courseImg" alt="">
-            </router-link>
+            </nuxt-link>
           </div>
           <div class="course_info inline_box">
-            <router-link :to="{name: 'courselDetail', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 1" class="course_name">{{item.courseName}}</router-link>
-            <router-link :to="{name: 'liveDetail', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 2" class="course_name">{{item.courseName}}</router-link>
-            <router-link :to="{name: 'liveAndBunch', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 3" class="course_name">{{item.courseName}}</router-link>
+            <nuxt-link :to="{name: 'courselDetail', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 1" class="course_name">{{item.courseName}}</nuxt-link>
+            <nuxt-link :to="{name: 'liveDetail', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 2" class="course_name">{{item.courseName}}</nuxt-link>
+            <nuxt-link :to="{name: 'liveAndBunch', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 3" class="course_name">{{item.courseName}}</nuxt-link>
             <p class="course_price" v-if="item.isFree">免费</p>
             <div class="course_price" v-else>
               ￥{{item.orgPrice}}
