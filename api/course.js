@@ -14,13 +14,13 @@ export const courseDetail = (params={}) => {
 }
 // 上传图片
 export const uploadPic = (params={}) => {
-  return http(null, 'isUpload').post('/course/api/upload/pic', params)
+  return http(null, 'isUpload').post('/zuul/course/api/upload/pic', params)
 }
 // 上传文档
 export const uploadDoc = (params={}) => {
-  return http(null, 'isUpload').post('/course/api/upload/doc/' + params.periodId, params)
+  return http(null, 'isUpload').post('/zuul/course/api/upload/doc/' + params.periodId, params)
 }
 // 上传视频
 export const uploadResVideo = (params={}) => {
-  return http(null, 'isUpload').post('/course/api/upload/video', params)
+  return http(null, 'isUpload').post('/zuul/course/api/upload/video', params)
 }

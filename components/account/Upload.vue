@@ -101,7 +101,7 @@ export default {
         // console.log(int)
       }).then(res => {
         // e.target.value = '';
-        console.log(res)
+        console.log(res.data)
         console.log('upload--------')
         // that.ov = 2;
         // if (res.code === 200) {
