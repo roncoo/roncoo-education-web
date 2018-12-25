@@ -114,7 +114,8 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DUpload from '~/components/account/Upload'
-import {getUserInfo, updateUserEducationInf} from '~/api/user.js'
+import {getUserInfo} from '~/api/user.js'
+import {updateUserEducationInf} from '~/api/account/user.js'
 export default {
   data () {
     return {

@@ -147,10 +147,6 @@ export default {
     if (this.webInfo && this.webInfo.isEnableVip) {
       this.openVip = true
     }
-    // console.log(this.clientData.no)
-    // this.getAdv();
-    // this.getZone();
-    // this.checkToken();
   }
 }
 </script>
