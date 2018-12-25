@@ -3,7 +3,7 @@
     <div class="menu_panel" v-if="teacher">
       <h3 class="title"><i class="iconfont">&#xe640;</i>讲师中心</h3>
       <ul class="menus">
-        <li :class="{on: type == 'jsxx'}"><router-link :to="{name: 'teacherInfo'}">讲师信息</router-link></li>
+        <li :class="{on: type == 'jsxx'}"><router-link :to="{name: 'account-teacher'}">讲师信息</router-link></li>
         <li :class="{on: type == 'kcgl'}"><router-link :to="{name: 'account-course'}">录播管理</router-link></li>
         <li :class="{on: type == 'zbgl'}" v-if="isLive"><router-link :to="{name: 'liveCourse'}">直播管理</router-link></li>
         <li :class="{on: type == 'zhtc'}" v-if="isLive"><router-link :to="{name: 'courseGroup'}">组合套餐</router-link></li>

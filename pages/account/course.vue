@@ -1,7 +1,7 @@
 <template>
   <div>
     <y-header></y-header>
-    <div class="person_body clearfix">
+    <div class="person_body container account_cont clearfix">
       <y-side :type="'kcgl'"></y-side>
       <div class="person_content">
         <ul class="person_title clearfix">
@@ -74,7 +74,7 @@ export default {
       pda: {
         courseCategory: 1,
         auditStatus: '',
-        lecturerUserNo: this.$store.state.userInfo.userNo,
+        lecturerUserNo: '',
         pageCurrent: 1,
         pageSize: 20
       },
@@ -219,6 +219,7 @@ export default {
   mounted () {
     // console.log('课程列表')
     this.getCourseList();
+    this.pda.lecturerUserNo = this.$store.state.userInfo.userNo;
   },
   created () {
   },
@@ -233,7 +234,7 @@ export default {
 <style lang="scss" rel="stylesheet/scss" scoped>
   .person_body {
     width: 1200px;
-    margin: 30px auto 0;
+    margin: 20px auto 0;
     min-height: 1000px;
   }
   .person_content {
