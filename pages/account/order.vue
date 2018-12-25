@@ -85,12 +85,8 @@ export default {
   },
   methods: {
     pay (item) {
-      // console.log(item)
       this.payData = item;
       this.showPay = true;
-      // continuePay().then(res => {
-        // console.log(res)
-      // })
     },
     clicktab (int) {
       this.num = int;

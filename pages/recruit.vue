@@ -23,7 +23,7 @@
 // import {recruitInfo} from '~/api/main.js'
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
-import YSide from '~/components/Side'
+import YSide from '~/components/TerraceSide'
 export default {
   head () {
       return {

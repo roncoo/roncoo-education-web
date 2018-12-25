@@ -4,7 +4,6 @@
       <h3 class="title">招募中心</h3>
       <ul class="menus">
         <li :class="{on: type == 'jszm'}"><router-link :to="{name: 'teacherRecruit'}">讲师招募</router-link></li>
-        <!-- <li :class="{on: type == 'dlzm'}"><router-link :to="{name: 'agencyRecruit'}">代理招募</router-link></li> -->
       </ul>
     </div>
     <div class="menu_panel" v-for="(item, index) in list" :key="index" v-if="showSide === 'wm'">
@@ -40,7 +39,7 @@ export default {
     changeAbout (id) {
       this.now = id
       // this.$emit('changeInfo', id)
-      this.$router.push({name: 'terraceRecruit', params: {id}})
+      this.$router.push({name: 'terrace-id', params: {id}})
     },
   },
   mounted () {

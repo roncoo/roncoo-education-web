@@ -4,8 +4,8 @@
       <div class="h_top_body">
         <ul class="top_list clearfix" v-if="userInfo">
           <li><a :href="mainUrl+'/recruit'">讲师招募</a></li>
-          <li v-if="isTeacher"><a :href="accountUrl+'/teacher/course'">讲师中心</a></li>
-          <li class="s_left"><a :href="accountUrl+'/order'">我的订单</a></li>
+          <li v-if="isTeacher"><nuxt-link :to="{name: 'account-teacher'}">讲师中心</nuxt-link></li>
+          <li class="s_left"><nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link></li>
           <li class="s_left">
             <nuxt-link :class="{c_gold: isVip}" :to="{name: 'account'}">{{userInfo.mobile}}</nuxt-link>
             <img v-if="isVip" src="~/assets/image/vip_icon.png" @click="goVip" alt="" class="vip_icon">
@@ -88,9 +88,9 @@ export default {
     }
     console.log(this.userInfo)
     console.log("this.userInfo=============")
-    if (this.userInfo && this.tokenInfo) {
+    if (this.$store.state.tokenInfo) {
       this.name = this.userInfo.mobile
-      if (this.userInfo.roleType === 2 || this.userInfo.roleType === 4) {
+      if (this.userInfo.userType === 2 || this.userInfo.userType === 4) {
         this.isTeacher = true
       }
     }

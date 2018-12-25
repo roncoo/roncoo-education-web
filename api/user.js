@@ -5,7 +5,7 @@ export const getMobileCode = (params) => {
 }
 // 用户注册
 export const register = (params={}) => {
-  return http().post('/web/user/api/user/register', params)
+  return http().post('/user/api/user/register', params)
 }
 // 用户登录
 export const userLogin = (params={}) => {
