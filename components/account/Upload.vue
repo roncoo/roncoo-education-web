@@ -100,7 +100,7 @@ export default {
         that.tip = '上传中...';
         // console.log(int)
       }).then(res => {
-        // e.target.value = '';
+        e.target.value = '';
         console.log(res)
         console.log('upload--------')
         that.ov = 2;

@@ -161,7 +161,7 @@ export default {
       }else {
         console.log(context.route)
         let {data} = await courseDetail({courseId: context.params.id})
-        // console.log(data)
+        console.log(data)
         if (data.code == 200) {
           result.courseInfo = data.data.courseInfoDTO;
           result.teacherInfo = data.data.courseLecturerInfoDTO;
