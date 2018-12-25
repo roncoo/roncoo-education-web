@@ -3,7 +3,7 @@ import cookie from '../utils/cookies'
 import LRU from 'lru-cache'
 import config from '../config'
 // console.log(axios.defaults)
-const createHttp = (token) => {
+const createHttp = (token, isUpload) => {
 
 // console.log("api==============")
 
@@ -23,6 +23,10 @@ const createHttp = (token) => {
   if (process.client) {
     // console.log(cookie.getInClient(config.CLIENT.tokenName));
     head.token = cookie.getInClient(config.CLIENT.tokenName)
+    if (isUpload) {
+      head['Content-Type'] = 'multipart/form-data'
+    }
+    console.log(head)
   }
   
   options.headers = head;
