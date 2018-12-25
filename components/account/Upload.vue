@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import {uploadPic, uploadDoc, uploadResVideo} from '~/api/course.js'
+import {uploadPic, uploadDoc, uploadResVideo} from '~/api/upload.js'
 import {mapState} from 'vuex'
 export default {
   props: {
@@ -101,15 +101,15 @@ export default {
         // console.log(int)
       }).then(res => {
         // e.target.value = '';
-        console.log(res.data)
+        console.log(res)
         console.log('upload--------')
-        // that.ov = 2;
-        // if (res.code === 200) {
-        //   that.tip = '上传成功';
-        //   that.$emit('rtnUrl', {name: file.name, url: res.data});
-        // } else {
-        //   that.tip = res.msg;
-        // }
+        that.ov = 2;
+        if (res.code === 200) {
+          that.tip = '上传成功';
+          that.$emit('rtnUrl', {name: file.name, url: res.data});
+        } else {
+          that.tip = res.msg;
+        }
         // console.log(res)
       }).catch(() => {
         that.ov = 2;
