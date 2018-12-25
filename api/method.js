@@ -3,7 +3,7 @@ import cookie from '../utils/cookies'
 import LRU from 'lru-cache'
 import config from '../config'
 // console.log(axios.defaults)
-const createHttp = (token, isUpload) => {
+const createHttp = (token, isUpload = false) => {
 
 // console.log("api==============")
 
