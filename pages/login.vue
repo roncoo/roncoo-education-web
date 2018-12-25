@@ -137,7 +137,7 @@ export default {
   async asyncData(context) {
     let clientNo = context.store.state.clientData.no;
     let webInfo = context.store.state.webInfo;
-    // console.log(webInfo)
+    console.log(webInfo)
     try {
       // 站点信息
       if (!webInfo) {
