@@ -1,13 +1,13 @@
 <template>
   <div class="">
     <y-header></y-header>
-    <div class="person_body clearfix">
+    <div class="container account_cont clearfix">
       <y-side></y-side>
-      <div class="person_content">
-        <ul class="person_title clearfix">
-          <li>基础信息</li>
+      <div class="main_box">
+        <ul class="tabs clearfix">
+          <a class="tab on">基础信息</a>
         </ul>
-        <div class="person_info" v-if="isLogin">
+        <div class="main_cont form" v-if="isLogin">
           <form action="" @submit="userEducationInfUpdate">
             <div class="form_group">
               <div class="label">用户名:</div>
@@ -18,19 +18,18 @@
             <div class="form_group">
               <div class="label">昵称:</div>
               <div class="form_ctl">
-                <input type="text" v-model="obj.nickname" placeholder="请输入昵称">
-                <p class="err" v-show="errTip1">{{errTip1}}</p>
+                  <input type="text" v-model="obj.nickname" class="form_input" placeholder="请输入昵称">
               </div>
             </div>
             <div class="form_group">
               <div class="label">年龄:</div>
               <div class="form_ctl">
-                <input type="text" v-model="obj.age" placeholder="请输入年龄">
+                  <input type="text" v-model="obj.age" class="form_input" placeholder="请输入昵称">
               </div>
             </div>
             <div class="form_group">
               <div class="label">性别:</div>
-              <div class="form_ctl">
+              <div class="form_ctl form_ctl_radio">
                 <input type="radio" v-model="obj.sex" class="radiobox" id="sex1" value="1" name="sex">
                 <label for="sex1">男</label>
                 <input type="radio" v-model="obj.sex" class="radiobox" id="sex2" value="2" name="sex">
@@ -40,19 +39,15 @@
               </div>
             </div>
             <div class="form_group">
-              <div class="label">上传头像:</div>
-              <div class="form_ctl">
-                <div class="no_phone">
+              <div class="label">讲师头像:</div>
+              <div class="form_ctl upload_ctl">
+                <input type="hidden" v-model="obj.headImgUrl">
+                <div class="preview">
                   <img :src="obj.headImgUrl" alt="" v-if="obj.headImgUrl">
-                  <img v-else src="../../assets/image/user_phone.png" alt="">
+                  <i class="iconfont" v-else>&#xe6b2;</i>
                 </div>
-                <p class="photo_text">* 图片尺寸为800px*800px，仅支持jpg、jpeg、png 格式，图片大小不超过2MB。</p>
-              </div>
-            </div>
-            <div class="form_group">
-              <div class="label">&nbsp;</div>
-              <div class="form_ctl">
                 <d-upload @rtnUrl="setUrl"></d-upload>
+                <p class="tip">* 图片尺寸为800x800，图片大小&lt;500KB，建议使用真人照片，便于品牌宣传效果</p>
               </div>
             </div>
             <div class="form_group">
@@ -63,7 +58,7 @@
             </div>
           </form>
         </div>
-        <div class="person_info" v-else>
+        <div class="main_cont form" v-else>
           <div class="form_group">
             <div class="label">用户名:</div>
             <div class="form_ctl">
@@ -91,10 +86,13 @@
             </div>
           </div>
           <div class="form_group">
-            <div class="label">用户头像:</div>
-            <div class="form_ctl">
-              <img :src="obj.headImgUrl" alt="" v-if="obj.headImgUrl">
-              <img v-else src="../../assets/image/user_phone.png" alt="">
+            <div class="label">讲师头像:</div>
+            <div class="form_ctl upload_ctl">
+              <input type="hidden" v-model="obj.headImgUrl">
+                <div class="preview">
+                  <img :src="obj.headImgUrl" alt="" v-if="obj.headImgUrl">
+                  <i class="iconfont" v-else>&#xe6b2;</i>
+                </div>
             </div>
           </div>
           <div class="form_group">
@@ -230,130 +228,19 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
-  // @import '../assets/css/common.scss';
-  .person_body {
-    width: 1200px;
-    margin: 30px auto 0;
-    min-height: 1000px;
-  }
-  .person_content {
-    width: 1012px;
-    float: right;
-    background: #fff;
-    border-radius: 6px;
-  }
-  .person_title {
-    border-bottom: 1px solid rgb(242, 242, 242);
-    li {
-      color: #D51423;
-      float: left;
-      line-height: 60px;
-      padding: 0 30px;
-      border-bottom: 2px solid #D51423;
-      font-size: 14px;
-    }
-  }
-  .person_info {
-    padding: 50px 0;
-    min-height: 400px;
-  }
-  .form_group{
-      margin-bottom: 20px;
-      font-size: 14px;
-      .label{
-        text-align: right;
-        float: left;
-        display: block;
-        width: 110px;
-        line-height: 36px;
-        color: #333;
-      }
-      .form_ctl{
-        margin-left: 12px;
-        float: left;
-        width: 700px;
-        position: relative;
-        .photo_text {
-          width: 176px;
-          position: absolute;
-          top: 15px;
-          left: 116px;
-          font-size: 12px;
-          color: #999;
-        }
-        img {
-          width: 96px;
-          height: 96px;
-        }
-        label {
-          line-height: 36px;
-          margin-right: 20px;
-        }
-        input {
-          width: 310px;
-          height: 46px;
-          padding-left: 10px;
-          border-radius: 6px;
-          font-size: 14px;
-          margin-top: -5px;
-          &.radiobox {
-            width: 14px;
-            height: 14px;
-          }
-          &.data_input {
-            height: 24px;
-            padding: 10px;
-          }
-        }
-      }
-      .text{
-        color: #333;
-        line-height: 36px;
-      }
-      &:after{
-        content: '';
-        display: block;
-        clear: both;
-      }
-    }
-    .submit_btn{
-      height: 46px;
-      border: none;
-      background-color: rgb(213, 20, 35);
-      width: 320px;
-      color: #fff;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .form_input_min {
-      width: 150px;
-      height: 46px;
-      border-radius: 6px;
-      margin-top: -5px;
-    }
-    .no_phone {
-      width: 96px;
-      height: 96px;
-      background: rgb(242, 242, 242);
-      border-radius: 6px;
-      position: relative;
+  @import '~/assets/css/account.scss';
+  .upload_ctl{
+    .preview{
+      width: 100px;
+      height: 100px;
+      background-color: #f5f5f5;
       text-align: center;
-      line-height: 80px;
-      font-weight: 700;
-      color: #999;
-      font-size: 20px;
-      span {
-        font-size: 12px;
-        position: absolute;
-        text-align: center;
-        width: 96px;
-        top: 20px;
-        left: 0;
-        font-weight: 400;
+      margin-bottom: 10px;
+      i{
+        line-height: 120px;
+        font-size: 80px;
+        color: #ddd;
       }
     }
-    .err{
-      color: red;
-      padding-top: 5px;
-    }
+  }
 </style>

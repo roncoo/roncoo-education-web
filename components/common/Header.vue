@@ -29,13 +29,11 @@
           <nuxt-link :class="{active: isNow === item.navUrl}" :to="item.navUrl" :target="item.target">{{item.navTitle}}</nuxt-link>
         </li>
       </ul>
-      <search-box v-if="!hideSearch" />
-      <router-link v-if="hideTop" :to="{name: 'index'}" class="go_index font_14 c_blue">返回首页</router-link>
+      <nuxt-link v-if="hideTop" :to="{name: 'index'}" class="go_index font_14 c_blue">返回首页</nuxt-link>
     </div>
   </div>
 </template>
 <script>
-  import SearchBox from '~/components/common/SearchBox'
   import {serviceInfo, getNav} from '~/api/main.js'
 export default {
   props: {
@@ -94,9 +92,6 @@ export default {
         this.isTeacher = true
       }
     }
-  },
-  components: {
-    SearchBox
   }
 }
 </script>

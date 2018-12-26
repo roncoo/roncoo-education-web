@@ -1,13 +1,13 @@
 <template>
   <div>
     <y-header></y-header>
-    <div class="person_body clearfix">
+    <div class="container account_cont clearfix">
       <y-side :type="'wddd'"></y-side>
-      <div class="person_content">
-        <ul class="person_title clearfix">
-          <li :class="{now: num == 0}"><a href="javascript:" @click="clicktab(0)">所有订单</a></li>
-          <li :class="{now: num == 1}"><a href="javascript:" @click="clicktab(1)">待支付订单</a></li>
-          <li :class="{now: num == 2}"><a href="javascript:" @click="clicktab(2)">已完成订单</a></li>
+      <div class="main_box">
+        <ul class="tabs clearfix">
+          <a class="tab" :class="{on: num == 0}" @click="clicktab(0)">所有订单</a>
+          <a class="tab" :class="{on: num == 1}" @click="clicktab(1)">待支付订单</a>
+          <a class="tab" :class="{on: num == 2}" @click="clicktab(2)">已完成订单</a>
         </ul>
         <div class="notdata" v-if="notdata">
           <i class="iconfont">&#xe6be;</i>暂时没有数据
@@ -102,17 +102,16 @@ export default {
       this.obj.lecturerUserNo = this.$store.state.userInfo.userNo
       console.log(this.obj)
       orderList(this.obj).then(res => {
-        console.log(res)
         let result = res.data
+        console.log(result)
         console.log('order==========')
         if (result.code === 200) {
+          this.pageObj = result.data;
           if (result.data.list.length > 0) {
-            this.pageObj = result.data;
             this.notdata = false;
           } else {
             this.notdata = true;
           }
-          // console.log(this.pageObj)
         } else {
           this.notdata = true;
           if (result.code >= 300 && result.code < 400) {
@@ -189,35 +188,7 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
-  .person_body {
-    width: 1200px;
-    margin: 30px auto 0;
-    min-height: 1000px;
-  }
-  .person_content {
-    width: 1012px;
-    float: right;
-    background: #fff;
-    border-radius: 6px;
-  }
-  .person_title {
-    border-bottom: 1px solid rgb(242, 242, 242);
-    li {
-      float: left;
-      line-height: 60px;
-      padding: 0 30px;
-      font-size: 14px;
-      &.now {
-        border-bottom: 2px solid #D51423;
-        a {
-          color: #D51423;
-        }
-      }
-      a:hover {
-        color: #D51423;
-      }
-    }
-  }
+@import '~/assets/css/account.scss';
   .person_info {
     padding: 25px;
     min-height: 400px;
