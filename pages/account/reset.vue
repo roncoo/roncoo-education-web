@@ -116,6 +116,8 @@ export default {
         this.errTip3 = '两次输入密码不一致';
         return false;
       }
+      this.pobj.clientId = this.$store.state.clientData.id
+      console.log(this.pobj)
       updatePassword(this.pobj).then(res => {
         let result = res.data
         if (result.code === 200) {
@@ -124,10 +126,10 @@ export default {
             isShowCancelBtn: false
           }).then(async (val) => {
             this.$store.commit('SIGN_OUT')
-            window.location.reload()
+            this.$router.push({name: 'login'})
           }).catch(() => {
             this.$store.commit('SIGN_OUT')
-            window.location.reload()
+            this.$router.push({name: 'login'})
           })
         } else {
           if (result.code >= 300 && result.code < 400) {

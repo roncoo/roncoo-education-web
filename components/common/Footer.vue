@@ -1,23 +1,6 @@
 <template>
   <div class="i_footer">
     <div class="footer_content clearfix" v-if="list">
-<!--       <div class="footer_msg">
-        <ul>
-          <li class="m_header">招募中心</li>
-          <li class="m_row"></li>
-          <li><a :href="clientData.mainUrl+'/recruit'">讲师招募</a></li>
-          <li><a :href="clientData.mainUrl+'/agency'">代理招募</a></li>
-        </ul>
-      </div> -->
-      <!-- <div class="footer_msg">
-        <ul>
-          <li class="m_header">关于我们</li>
-          <li class="m_row"></li>
-          <li><a :href="clientData.mainUrl+'/terrace'">平台简介</a></li>
-          <li><a :href="clientData.mainUrl+'/terrace'">品牌简介</a></li>
-          <li><a :href="clientData.mainUrl+'/terrace'">商务合作</a></li>
-        </ul>
-      </div> -->
       <div class="footer_msg" v-for="(item, index) in list" :key="index">
         <ul>
           <li class="m_header">{{item.navName}}</li>
@@ -25,17 +8,6 @@
           <li v-for="(that, num) in item.websiteNavList" :key="num"><a :href="clientData.mainUrl+'/terrace/'+that.id">{{that.navName}}</a></li>
         </ul>
       </div>
-      <!-- <div class="footer_msg" v-if="service.isShowService == 1">
-        <ul>
-          <li class="m_header">联系方式</li>
-          <li class="m_row"></li>
-          <li>{{service.service1}}</li>
-          <li>{{service.service2}}</li>
-          <li>{{service.service3}}</li>
-          <li>{{service.service4}}</li>
-          <li>{{service.service5}}</li>
-        </ul>
-      </div> -->
       <div class="m_right" v-if="service">
          <div class="footer_msg">
             <ul>

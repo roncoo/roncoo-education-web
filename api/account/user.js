@@ -14,5 +14,5 @@ export const updataLecturerInfo = (params={}) => {
 }
 // 修改密码
 export const updatePassword = (params={}) => {
-  return http().post('/auth/user/api/user/updatePassword', params)
+  return http().post('/user/api/user/update/password', params)
 }

@@ -119,7 +119,7 @@
 <script>
 import YButton from '~/components/common/CodeButton'
 import {teacherEnter} from '~/api/user.js'
-import {uploadPic} from '~/api/course.js'
+import {uploadPic} from '~/api/upload.js'
 export default {
   head () {
       return {
@@ -427,17 +427,19 @@ export default {
       let file = files[0];
       let param = new FormData();
       param.append('picFile', file, file.name);
+      this.$nuxt.$loading.start()
       uploadPic(param, function (int) {
         console.log(int)
       }).then(res => {
+        this.$nuxt.$loading.finish()
         console.log(res)
-        let result = res.data
-        if (result.code === 200) {
-          let imgUrl = result.data
+        console.log('load=======')
+        if (res.code === 200) {
+          let imgUrl = res.data
           insert(imgUrl)
         } else {
           this.$msgBox({
-            content: result.msg,
+            content: res.msg,
             isShowCancelBtn: false
           })
         }

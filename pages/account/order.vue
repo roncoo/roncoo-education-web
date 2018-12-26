@@ -85,12 +85,8 @@ export default {
   },
   methods: {
     pay (item) {
-      // console.log(item)
       this.payData = item;
       this.showPay = true;
-      // continuePay().then(res => {
-        // console.log(res)
-      // })
     },
     clicktab (int) {
       this.num = int;
@@ -124,9 +120,7 @@ export default {
               content: '登录超时，请重新登录',
               isShowCancelBtn: false
             }).then(() => {
-              this.$store.commit('SET_TEMPORARYURL')
-              this.$store.commit('SIGN_OUT')
-              this.$router.push({name: 'login'})
+              this.$store.dispatch('REDIRECT_LOGIN')
             }).catch(() => {})
           } else {
             this.$msgBox({
@@ -160,9 +154,7 @@ export default {
               content: '登陆超时，请重新登陆',
               isShowCancelBtn: false
             }).then(() => {
-              this.$store.commit('SET_TEMPORARYURL')
-              this.$store.commit('SIGN_OUT')
-              this.$router.push({name: 'login'})
+              this.$store.dispatch('REDIRECT_LOGIN')
             }).catch(() => {})
           } else {
             this.$msgBox({

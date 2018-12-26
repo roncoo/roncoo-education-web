@@ -22,7 +22,7 @@
               <input type="submit" v-else value="登录" class="btn" />
             </form>
             <input type="checkbox" class="check"><span class="next_auto">下次自动登录</span>
-            <router-link class="is_go" to="/register?ty=2">忘记密码</router-link>
+            <nuxt-link class="is_go" :to="{name: 'reset'}">忘记密码</nuxt-link>
           </div>
           <div class="form_body r180" v-if="tabp == 2">
             <form action="" @submit="regSubmit">
@@ -454,7 +454,7 @@ export default {
     width: 100px;
     height: 46px;
     position: absolute;
-    left: 221px;
+    left: 210px;
     top: 21px;
     line-height: 48px;
     border-radius: 0 6px 6px 0;
