@@ -244,6 +244,12 @@ export default {
       }
     },
     changeCate1 () {
+      if (this.obj.categoryId2 == 0) {
+        this.obj.categoryId2 = ''
+      }
+      if (this.obj.categoryId3 == 0) {
+        this.obj.categoryId3 = ''
+      }
       if (!this.$route.query.no) {
         this.obj.categoryId2 = '';
         this.obj.categoryId3 = '';

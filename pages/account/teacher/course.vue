@@ -11,7 +11,7 @@
           <a class="tab" :class="{on: tab == 2}" @click="clicktab(2)">审核失败</a>
           <nuxt-link :to="{name:'account-teacher-add'}" class="fr solid_btn">新增课程</nuxt-link>
         </ul>
-        <div class="main_cont" v-loading="load">
+        <div class="main_cont">
           <div class="notdata" v-if="notdata">
             <i class="iconfont">&#xe6be;</i>暂时没有数据
           </div>
@@ -32,7 +32,7 @@
                   <p class="fr txt">{{item.courseName}}</p></td>
                 <td class="c_orange" v-if="item.isFree">免费</td>
                 <td class="c_orange" v-else>付费</td>
-                <td class="c_red">¥{{item.orgPrice}}</td>
+                <td class="c_red">¥{{item.courseOriginal}}</td>
                 <td class="c_green" v-if="item.auditStatus === 1">审核通过</td>
                 <td class="c_red" v-else-if="item.auditStatus === 2">审核不通过</td>
                 <td class="c_blue" v-else>待审核</td>
@@ -98,12 +98,11 @@ export default {
   },
   methods: {
     // 删除课程
-    deleteTeacherCourse (id) {
+    deleteItem (id) {
       this.$msgBox({
         content: '确认删除该课程？'
       }).then(() => {
         deleteCourse({id}).then(res => {
-          // console.log(res)
           let result = res.data
           if (result.code === 200) {
             this.$msgBox({
