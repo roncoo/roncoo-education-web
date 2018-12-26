@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="earnings">
     <y-header />
     <div class="person_body clearfix">
       <y-side :type="'syqk'" />
@@ -49,7 +49,9 @@
     width: 1200px;
     margin: 30px auto 0;
   }
-  .main_box {
-    background: rgb(245, 245, 245)
+  .earnings {
+    .main_box {
+      background: rgb(245, 245, 245);
+    }
   }
 </style>

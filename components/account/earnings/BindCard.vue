@@ -3,60 +3,60 @@
     <ul class="tabs clearfix">
       <span class="tab on">银行卡信息</span>
     </ul>
-    <div>
+    <div class="main_cont form">
       <div class="form_group">
         <div class="label">银行卡号:</div>
         <div class="form_ctl">
-          <input type="number" placeholder="请输入银行卡号" v-model="obj.bankCardNo">
+          <input class="form_input" type="number" placeholder="请输入银行卡号" v-model="obj.bankCardNo">
         </div>
       </div>
       <div class="form_group">
         <div class="label">开户人:</div>
         <div class="form_ctl">
-          <input type="text" placeholder="请输入开户人姓名" v-model="obj.bankUserName">
+          <input class="form_input" type="text" placeholder="请输入开户人姓名" v-model="obj.bankUserName">
         </div>
       </div>
       <div class="form_group">
         <div class="label">开户行:</div>
         <div class="form_ctl">
-          <input type="text" placeholder="请输入开户行" v-model="obj.bankName">
+          <input class="form_input" type="text" placeholder="请输入开户行" v-model="obj.bankName">
         </div>
       </div>
       <div class="form_group">
         <div class="label">开户支行:</div>
         <div class="form_ctl">
-          <input type="text" placeholder="请输入开户支行" v-model="obj.bankBranchName">
+          <input class="form_input" type="text" placeholder="请输入开户支行" v-model="obj.bankBranchName">
         </div>
       </div>
       <div class="form_group">
         <div class="label">身份证号:</div>
         <div class="form_ctl">
-          <input type="text" placeholder="请输入身份证号" v-model="obj.bankIdCardNo">
+          <input class="form_input" type="text" placeholder="请输入身份证号" v-model="obj.bankIdCardNo">
         </div>
       </div>
       <div class="form_group">
         <div class="label">关联手机号:</div>
         <div class="form_ctl">
-          <input type="text" placeholder="请输入关联手机号" v-model="obj.mobile">
+          <input class="form_input" type="text" placeholder="请输入关联手机号" v-model="obj.mobile">
         </div>
       </div>
       <div class="form_group">
         <div class="label">验证码:</div>
         <div class="form_ctl">
-          <input type="text" maxlength="6" placeholder="请输入验证码" v-model="obj.smsCode">
+          <input class="form_input" type="text" maxlength="6" placeholder="请输入验证码" v-model="obj.smsCode">
           <y-button :mobile="obj.mobile" />
         </div>
       </div>
       <div class="form_group">
         <div class="label">&nbsp;</div>
         <div class="form_ctl">
-          <input type="button" class="solid_btn" @click="startBind" value="确认">
+          <input type="button" class="submit_btn" @click="startBind" value="确认">
         </div>
       </div>
       <div class="form_group">
         <div class="label">&nbsp;</div>
         <div class="form_ctl">
-          <input type="button" @click="closeBind" class="solid_btn close_btn" value="取消">
+          <input type="button" @click="closeBind" class="submit_btn close_btn" value="取消">
         </div>
       </div>
     </div>
@@ -164,65 +164,10 @@
     background: #fff;
     border-radius: 8px;
     padding-bottom: 20px;
-  }
-  .form_group{
-    margin: 20px 0px;
-    font-size: 14px;
-    .label{
-      text-align: right;
-      float: left;
-      display: block;
-      width: 110px;
-      line-height: 36px;
-      color: #333;
+    .close_btn {
+      background: #fff;
+      border-color: #999;
+      color: #999;
     }
-    .form_ctl{
-      margin-left: 12px;
-      float: left;
-      width: 700px;
-      position: relative;
-      input {
-        width: 310px;
-        height: 46px;
-        padding-left: 10px;
-        border-radius: 6px;
-        font-size: 14px;
-        margin-top: -5px;
-        &.solid_btn {
-          padding: 0;
-        }
-      }
-      .yzm_btn {
-        width: 100px;
-        height: 46px;
-        position: absolute;
-        left: 210px;
-        top: -5px;
-        line-height: 48px;
-        background: rgb(213, 20, 35);
-        border-radius: 0 6px 6px 0;
-        text-align: center;
-        color: #fff;
-        cursor: pointer;
-        border: none;
-        &:disabled {
-          background: rgb(204, 204, 204);
-        }
-      }
-    }
-    .text{
-      color: #333;
-      line-height: 36px;
-    }
-    &:after{
-      content: '';
-      display: block;
-      clear: both;
-    }
-  }
-  .close_btn {
-    background: #fff;
-    border-color: #999;
-    color: #999;
   }
 </style>

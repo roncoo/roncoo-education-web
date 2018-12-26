@@ -11,15 +11,15 @@
            <form action="" @submit="userUpdate">
               <div class="form_group">
                 <div class="label">讲师头像:</div>
-                  <div class="form_ctl upload_ctl">
-                    <input type="hidden" v-model="teacherInfo.headImgUrl">
-                    <div class="preview">
-                      <img :src="teacherInfo.headImgUrl" alt="" v-if="teacherInfo.headImgUrl">
-                      <i class="iconfont" v-else>&#xe6b2;</i>
-                    </div>
-                    <d-upload @rtnUrl="setUrl"></d-upload>
-                    <p class="tip">* 图片尺寸为800x800，图片大小&lt;500KB，建议使用真人照片，便于品牌宣传效果</p>
-                    </div>
+                <div class="form_ctl upload_ctl">
+                  <input type="hidden" v-model="teacherInfo.headImgUrl">
+                  <div class="preview">
+                    <img :src="teacherInfo.headImgUrl" alt="" v-if="teacherInfo.headImgUrl">
+                    <i class="iconfont" v-else>&#xe6b2;</i>
+                  </div>
+                  <d-upload @rtnUrl="setUrl"></d-upload>
+                  <p class="tip">* 图片尺寸为800x800，图片大小&lt;500KB，建议使用真人照片，便于品牌宣传效果</p>
+                </div>
               </div>
               <div class="form_group">
                 <div class="label">讲师昵称:</div>
