@@ -44,7 +44,7 @@
                   </span>
                   <br>
                   <span>
-                    <router-link :to="'/account/teacher/period?no=' +item.courseNo" class="text_link">课时管理</router-link>
+                    <router-link :to="'/account/teacher/period?no=' +item.id" class="text_link">课时管理</router-link>
                   </span>
                   <br>
                   <span>
@@ -117,9 +117,7 @@ export default {
                 content: '登陆超时，请重新登陆',
                 isShowCancelBtn: false
               }).then(() => {
-                this.$store.commit('SET_TEMPORARYURL')
-                this.$store.commit('SIGN_OUT')
-                this.$router.push({name: 'login'})
+                this.$store.dispatch('REDIRECT_LOGIN');
               }).catch(() => {})
             } else {
               this.$msgBox({
@@ -163,9 +161,7 @@ export default {
                 content: '登陆超时，请重新登陆',
                 isShowCancelBtn: false
               }).then(() => {
-                this.$store.commit('SET_TEMPORARYURL')
-                this.$store.commit('SIGN_OUT')
-                this.$router.push({name: 'login'})
+                this.$store.dispatch('REDIRECT_LOGIN');
               }).catch(() => {})
             } else {
               this.$msgBox({
@@ -205,9 +201,7 @@ export default {
             content: '登陆超时，请重新登陆',
             isShowCancelBtn: false
           }).then(() => {
-            this.$store.commit('SET_TEMPORARYURL')
-            this.$store.commit('SIGN_OUT')
-            this.$router.push({name: 'login'})
+            this.$store.dispatch('REDIRECT_LOGIN');
           }).catch(() => {})
         } else {
           this.notdata = true;

@@ -45,7 +45,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/message.js'
+    '~/plugins/message.js',
+    '~/plugins/dragging.js'
   ],
 
   /*

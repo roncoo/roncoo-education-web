@@ -13,6 +13,7 @@
   "dependencies": {
     "@gauseen/nuxt-proxy": "^1.0.1",
     "@nuxtjs/axios": "^5.0.0",
+    "awe-dnd": "^0.3.4",
     "cross-env": "^5.2.0",
     "js-cookie": "^2.2.0",
     "koa": "^2.5.2",

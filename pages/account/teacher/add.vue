@@ -217,7 +217,7 @@ export default {
               content: '保存成功',
               isShowCancelBtn: false
             }).then(async (val) => {
-              this.$router.push({path: '/teacher/course/period', query: {no: res.data.id}})
+              this.$router.push({path: '/account/teacher/period', query: {no: res.data.id}})
             })
           } else {
             if (res.code >= 300 && res.code < 400) {
@@ -225,9 +225,7 @@ export default {
                 content: res.msg,
                 isShowCancelBtn: false
               }).then(() => {
-                this.RECORD_TEMPORARYURL()
-                this.SIGN_OUT()
-                this.$router.push({name: 'login'})
+                this.$store.dispatch('REDIRECT_LOGIN');
               }).catch(() => {})
             } else {
               this.$msgBox({
