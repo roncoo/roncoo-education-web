@@ -3,8 +3,10 @@
     <y-header />
     <div class="person_body clearfix">
       <y-side :type="'syqk'" />
-      <div class="person_content">
-        <y-card-info />
+      <div class="main_box">
+        <y-card-info @showBind="showBind" />
+        <y-earning-table v-show="hideBind" />
+        <y-bind-card @closeBind="closeBind" v-show="!hideBind" />
       </div>
     </div>
     <y-footer />
@@ -15,23 +17,39 @@
   import YFooter from '~/components/common/Footer'
   import YSide from '~/components/account/Side'
   import YCardInfo from '~/components/account/earnings/CardInfo'
+  import YEarningTable from '~/components/account/earnings/EarningTable'
+  import YBindCard from '~/components/account/earnings/BindCard'
   export default {
     components: {
       YHeader,
       YFooter,
       YSide,
-      YCardInfo
+      YCardInfo,
+      YEarningTable,
+      YBindCard
+    },
+    data () {
+      return {
+        hideBind: true
+      }
+    },
+    methods: {
+      showBind () {
+        this.hideBind = false
+      },
+      closeBind () {
+        this.hideBind = true
+      }
     }
   }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+@import '~/assets/css/account.scss';
   .person_body {
     width: 1200px;
     margin: 30px auto 0;
   }
-  .person_content {
-    width: 1012px;
-    float: right;
-    border-radius: 6px;
+  .main_box {
+    background: rgb(245, 245, 245)
   }
 </style>

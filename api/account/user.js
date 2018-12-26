@@ -16,3 +16,23 @@ export const updataLecturerInfo = (params={}) => {
 export const updatePassword = (params={}) => {
   return http().post('/user/api/user/update/password', params)
 }
+// 银行卡信息
+export const cardInfo = (params={}) => {
+  return http().post('/auth/user/api/lecturer/ext/view', params)
+}
+// 讲师订单收益
+export const teacherOrderList = (params={}) => {
+  return http().post('/auth/course/api/order/info/lecturer', params)
+}
+// 讲师提现记录
+export const teacherCashList = (params={}) => {
+  return http().post('/auth/user/api/lecturer/profit/list', params)
+}
+// 绑定银行卡
+export const bindCard = (params={}) => {
+  return http().post('/auth/user/api/lecturer/ext/update', params)
+}
+// 学习记录
+export const studyList = (params={}) => {
+  return http().post('/auth/course/api/course/user/study/log/list', params)
+}

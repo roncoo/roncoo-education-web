@@ -99,6 +99,7 @@ export default {
         console.log(res)
         if (res.data.code = 200) {
           this.teacherInfo = res.data.data;
+          this.editor2.txt.html(this.teacherInfo.introduce)
           this.edit = false;
           console.log(this.teacherInfo)
         }
@@ -109,6 +110,8 @@ export default {
     },
     userUpdate (e) {
       e.preventDefault();
+      let ht = this.editor2.txt.html()
+      this.teacherInfo.introduce = ht
       console.log(111)
       this.teacherInfo.lecturerUserNo = this.$store.state.userInfo.userNo;
       updataLecturerInfo(this.teacherInfo)
@@ -128,6 +131,9 @@ export default {
     }
   },
   mounted () {
+    let E = require('wangeditor')
+    this.editor2 = new E('#lecturerInfo')
+    this.editor2.create();
     console.log(this.$store.state.userInfo)
     this.getByTeacher()
   },
@@ -140,7 +146,7 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss">
-@import '../../assets/css/account.scss';
+@import '~/assets/css/account.scss';
 .upload_ctl{
     .preview{
       width: 100px;

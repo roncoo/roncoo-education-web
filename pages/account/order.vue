@@ -4,10 +4,10 @@
     <div class="person_body clearfix">
       <y-side :type="'wddd'"></y-side>
       <div class="person_content">
-        <ul class="person_title clearfix">
-          <li :class="{now: num == 0}"><a href="javascript:" @click="clicktab(0)">所有订单</a></li>
-          <li :class="{now: num == 1}"><a href="javascript:" @click="clicktab(1)">待支付订单</a></li>
-          <li :class="{now: num == 2}"><a href="javascript:" @click="clicktab(2)">已完成订单</a></li>
+        <ul class="tabs clearfix">
+          <a class="tab" :class="{on: num == 0}" @click="clicktab(0)">所有订单</a>
+          <a class="tab" :class="{on: num == 1}" @click="clicktab(1)">待支付订单</a>
+          <a class="tab" :class="{on: num == 2}" @click="clicktab(2)">已完成订单</a>
         </ul>
         <div class="notdata" v-if="notdata">
           <i class="iconfont">&#xe6be;</i>暂时没有数据
@@ -199,24 +199,6 @@ export default {
     float: right;
     background: #fff;
     border-radius: 6px;
-  }
-  .person_title {
-    border-bottom: 1px solid rgb(242, 242, 242);
-    li {
-      float: left;
-      line-height: 60px;
-      padding: 0 30px;
-      font-size: 14px;
-      &.now {
-        border-bottom: 2px solid #D51423;
-        a {
-          color: #D51423;
-        }
-      }
-      a:hover {
-        color: #D51423;
-      }
-    }
   }
   .person_info {
     padding: 25px;

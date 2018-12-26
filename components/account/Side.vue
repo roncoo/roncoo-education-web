@@ -4,7 +4,7 @@
       <h3 class="title"><i class="iconfont">&#xe640;</i>讲师中心</h3>
       <ul class="menus">
         <li :class="{on: type == 'jsxx'}"><router-link :to="{name: 'account-teacher'}">讲师信息</router-link></li>
-        <li :class="{on: type == 'kcgl'}"><router-link :to="{name: 'account-course'}">录播管理</router-link></li>
+        <li :class="{on: type == 'kcgl'}"><router-link :to="{name: 'account-teacher-course'}">录播管理</router-link></li>
         <li :class="{on: type == 'syqk'}" v-if="userInfo && userInfo.userType != 1"><router-link :to="{name: 'account-earnings'}">收益情况</router-link></li>
       </ul>
     </div>
@@ -14,6 +14,7 @@
         <li :class="{on: type == 'grxx'}"><router-link :to="{name: 'account'}">个人信息</router-link></li>
         <li :class="{on: type == 'xgmm'}"><router-link :to="{name: 'account-reset'}">修改密码</router-link></li>
         <li :class="{on: type == 'wddd'}"><router-link :to="{name: 'account-order'}">我的订单</router-link></li>
+        <li :class="{on: type == 'xxjl'}"><router-link :to="{name: 'account-study'}">学习记录</router-link></li>
       </ul>
     </div>
   </header>
