@@ -14,31 +14,43 @@
         </div>
         <div class="register_content">
           <div class="register_title">修改密码</div>
-          <div class="form_group">
-            <div class="label">手机号:</div>
-            <div class="form_ctl">
-              <input type="text" maxlength="11">
+          <form action="" @submit="resetPsw">
+            <div class="form_group">
+              <div class="label">手机号:</div>
+              <div class="form_ctl">
+                <input type="text" maxlength="11" @change="enterPhone" v-model="obj.mobile">
+                <p class="err" v-show="errTip0">{{errTip0}}</p>
+              </div>
             </div>
-          </div>
-          <div class="form_group">
-            <div class="label">验证码:</div>
-            <div class="form_ctl">
-              <input type="text" maxlength="6">
-              <y-button />
+            <div class="form_group">
+              <div class="label">验证码:</div>
+              <div class="form_ctl">
+                <input type="text" maxlength="6" v-model="obj.code" name="code" @change="enter">
+                <y-button :mobile="obj.mobile" />
+                <p class="err" v-show="errTip1">{{errTip1}}</p>
+              </div>
             </div>
-          </div>
-          <div class="form_group">
-            <div class="label">新密码:</div>
-            <div class="form_ctl">
-              <input type="text">
+            <div class="form_group">
+              <div class="label">新密码:</div>
+              <div class="form_ctl">
+                <input type="password" v-model="obj.newPassword" @change="enter" name="password">
+                <p class="err" v-show="errTip2">{{errTip2}}</p>
+              </div>
             </div>
-          </div>
-          <div class="form_group">
-            <div class="label">重复密码:</div>
-            <div class="form_ctl">
-              <input type="text">
+            <div class="form_group">
+              <div class="label">重复密码:</div>
+              <div class="form_ctl">
+                <input type="password" v-model="obj.confirmPassword" @change="enter" name="repassword">
+                <p class="err" v-show="errTip3">{{errTip3}}</p>
+              </div>
             </div>
-          </div>
+            <div class="form_group">
+              <div class="label">&nbsp;</div>
+              <div class="form_ctl">
+                <input type="submit" class="submit_btn" value="确定">
+              </div>
+            </div>
+          </form>
         </div>
       </div>
       <p class="footer_text">
@@ -54,6 +66,7 @@
 </template>
 <script>
 import YButton from '~/components/common/CodeButton'
+import {updatePassword} from '~/api/account/user.js'
 export default {
   metaInfo () {
       return {
@@ -62,6 +75,16 @@ export default {
   },
   data () {
     return {
+      errTip0: '',
+      errTip1: '',
+      errTip2: '',
+      errTip3: '',
+      obj: {
+        mobile: '',
+        code: '',
+        newPassword: '',
+        confirmPassword: ''
+      },
       webInfo: this.$store.state.webInfo,
       service: {}
     }
@@ -74,21 +97,21 @@ export default {
     enter (e) {
       let name = e.target.name;
       if (name === 'code') {
-        if (this.pobj.code.length !== 6) {
+        if (this.obj.code.length !== 6) {
           this.errTip1 = '请输入正确的手机验证码';
           return false;
         } else {
           this.errTip1 = false;
         }
       } else if (name === 'password') {
-        if (this.pobj.password.length < 6 || this.pobj.password.length > 16) {
+        if (this.obj.newPassword.length < 6 || this.obj.newPassword.length > 16) {
           this.errTip2 = '请输入6-16位的登录密码,区分大小写,不可有空格';
           return false;
         } else {
           this.errTip2 = false;
         }
       } else if (name === 'repassword') {
-        if (this.pobj.password !== this.pobj.repassword) {
+        if (this.obj.newPassword !== this.obj.confirmPassword) {
           this.errTip3 = '两次输入密码不一致';
           return false;
         } else {
@@ -98,8 +121,8 @@ export default {
     },
     // 输入手机
     enterPhone () {
-      if (this.pobj.mobile.length === 11) {
-        if ((/^1[3|4|5|8|7][0-9]\d{4,8}$/.test(this.pobj.mobile.trim()))) {
+      if (this.obj.mobile.length === 11) {
+        if ((/^1[3|4|5|8|7][0-9]\d{4,8}$/.test(this.obj.mobile.trim()))) {
           this.errTip0 = false;
           this.getCodeBtn = true;
         } else {
@@ -111,6 +134,55 @@ export default {
         this.getCodeBtn = false;
       }
     },
+    showMsg (msg) {
+      this.$msgBox({
+        content: msg,
+        isShowCancelBtn: false
+      }).catch(() => {})
+    },
+    resetPsw (e) {
+      e.preventDefault()
+      if (!(/^1[3|4|5|8|7][0-9]\d{4,8}$/.test(this.obj.mobile.trim()))) {
+        this.showMsg('请输入正确格式的手机号码')
+        return
+      }
+      if (this.obj.code.length !== 6) {
+        this.showMsg('请输入正确的验证码')
+        return
+      }
+      if (this.obj.newPassword.length < 6 || this.obj.newPassword.length > 16) {
+        this.showMsg('请输入6-16位的登录密码,区分大小写,不可有空格')
+        return
+      }
+      if (this.obj.newPassword !== this.obj.confirmPassword) {
+        this.showMsg('两次输入密码不一致')
+        return
+      }
+      this.obj.clientId = this.$store.state.clientData.id
+      console.log(this.obj)
+      updatePassword(this.obj).then(res => {
+        let result = res.data
+        if (result.code === 200) {
+          this.$msgBox({
+            content: '修改成功',
+            isShowCancelBtn: false
+          }).then(() => {
+            this.$store.commit('SIGN_OUT')
+            this.$router.push({name: 'login'})
+          }).catch(() => {
+            this.$store.commit('SIGN_OUT')
+            this.$router.push({name: 'login'})
+          })
+        } else {
+          this.$msgBox({
+            content: result.msg,
+            isShowCancelBtn: false
+          }).catch(() => {})
+        }
+      }).catch(() => {
+        this.showMsg('系统繁忙，请稍后重试')
+      })
+    }
   },
   mounted () {
     if (this.webInfo) {
@@ -225,6 +297,13 @@ export default {
           padding-right: 110px;
         }
       }
+      .submit_btn {
+        width: 250px;
+        background: rgb(213, 20, 35);
+        border: none;
+        color: #fff;
+        cursor: pointer;
+      }
       .yzm_btn {
         width: 100px;
         height: 46px;
@@ -241,6 +320,9 @@ export default {
         &:disabled {
           background: rgb(204, 204, 204);
         }
+      }
+      .err {
+        color: rgb(213, 20, 35);
       }
     }
     .text{
