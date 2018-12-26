@@ -140,7 +140,7 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss">
-@import '../../assets/css/account.scss';
+@import '~/assets/css/account.scss';
 .upload_ctl{
     .preview{
       width: 100px;

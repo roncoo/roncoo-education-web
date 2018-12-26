@@ -192,7 +192,7 @@ export default {
               content: '修改成功',
               isShowCancelBtn: false
             }).then(async (val) => {
-              this.$router.push({path: '/teacher/course', query: {no: res.data.id}})
+              this.$router.push({name: 'account-teacher-course', query: {no: res.data.id}})
             })
           } else {
             this.$msgBox({
