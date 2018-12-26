@@ -12,9 +12,9 @@
               <div class="form_group">
                 <div class="label">讲师头像:</div>
                   <div class="form_ctl upload_ctl">
-                    <input type="hidden" v-model="obj.imgLogo">
+                    <input type="hidden" v-model="teacherInfo.headImgUrl">
                     <div class="preview">
-                      <img :src="obj.imgLogo" alt="" v-if="obj.imgLogo">
+                      <img :src="teacherInfo.headImgUrl" alt="" v-if="teacherInfo.headImgUrl">
                       <i class="iconfont" v-else>&#xe6b2;</i>
                     </div>
                     <d-upload @rtnUrl="setUrl"></d-upload>
@@ -24,7 +24,7 @@
               <div class="form_group">
                 <div class="label">讲师昵称:</div>
                 <div class="form_ctl">
-                    <input type="text" v-model="obj.lecturerName" class="form_input" placeholder="请输入昵称">
+                    <input type="text" v-model="teacherInfo.lecturerName" class="form_input" placeholder="请输入昵称">
                 </div>
               </div>
               <div class="form_group">
@@ -42,15 +42,15 @@
            </form>
         </div>
         <div class="main_cont form" v-show="!edit">
-          <div class="c_orange" v-if="obj.auditStatus === 0">*设置修改的信息需要通过审核才能生效，若已经修改请耐心等待！</div>
-          <div class="c_orange" v-if="obj.auditStatus === 2">*审核失败，失败原因：{{obj.auditOpinion}}</div>
+          <div class="c_orange" v-if="teacherInfo.auditStatus === 0">*设置修改的信息需要通过审核才能生效，若已经修改请耐心等待！</div>
+          <div class="c_orange" v-if="teacherInfo.auditStatus === 2">*审核失败，失败原因：{{teacherInfo.auditOpinion}}</div>
           <br>
           <div class="form_group">
             <div class="label">讲师头像:</div>
             <div class="form_ctl upload_ctl">
-              <input type="hidden" v-model="obj.imgLogo">
+              <input type="hidden" v-model="teacherInfo.headImgUrl">
                 <div class="preview">
-                  <img :src="obj.imgLogo" alt="" v-if="obj.imgLogo">
+                  <img :src="teacherInfo.headImgUrl" alt="" v-if="teacherInfo.headImgUrl">
                   <i class="iconfont" v-else>&#xe6b2;</i>
                 </div>
             </div>
@@ -58,13 +58,13 @@
           <div class="form_group">
             <div class="label">讲师昵称:</div>
             <div class="form_ctl">
-              <div class="text">{{obj.lecturerName}}</div>
+              <div class="text">{{teacherInfo.lecturerName}}</div>
             </div>
           </div>
           <div class="form_group">
             <div class="label">个人简介:</div>
             <div class="form_ctl">
-              <div class="text" v-html="obj.introduce"></div>
+              <div class="text" v-html="teacherInfo.introduce"></div>
             </div>
           </div>
           <div class="form_group">
@@ -84,21 +84,24 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DUpload from '~/components/account/Upload'
-import {getLecturerInfo} from '~/api/account/user.js'
+import {getLecturerInfo, updataLecturerInfo} from '~/api/account/user.js'
 export default {
   data () {
     return {
       edit: false,
-      obj: {
-
-      }
+      teacherInfo: {}
     }
   },
   methods: {
     getByTeacher () {
-      getLecturerInfo({lecturerUserNo: 11})
+      getLecturerInfo({lecturerUserNo: this.$store.state.userInfo.userNo})
       .then(res => {
         console.log(res)
+        if (res.data.code = 200) {
+          this.teacherInfo = res.data.data;
+          this.edit = false;
+          console.log(this.teacherInfo)
+        }
       })
       .catch(()=> {
         // 获取讲师信息失败
@@ -106,9 +109,22 @@ export default {
     },
     userUpdate (e) {
       e.preventDefault();
+      console.log(111)
+      this.teacherInfo.lecturerUserNo = this.$store.state.userInfo.userNo;
+      updataLecturerInfo(this.teacherInfo)
+      .then(res => {
+        console.log(res)
+        if (res.data.code = 200) {
+          this.getByTeacher();
+        }
+      })
+      .catch(()=> {
+        // 获取讲师信息失败
+      })
     },
     setUrl (res) {
-      this.obj.headImgUrl = res.url;
+      console.log(res)
+      this.teacherInfo.headImgUrl = res.url;
     }
   },
   mounted () {

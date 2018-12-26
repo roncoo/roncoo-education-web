@@ -27,3 +27,19 @@ export const continuePay = (params={}) => {
 export const orderInfo = (params={}) => {
   return http().post('/auth/course/api/order/info/view', params)
 }
+// 课程分类
+export const infiniteCate = (params={}) => {
+  return http().post('/course/api/course/category/list', params)
+}
+// 课程添加
+export const saveCourseInfo = (params={}) => {
+  return http().post('/auth/course/api/course/audit/save', params)
+}
+// 课程详情
+export const courseDetail = (params={}) => {
+  return http().post('/auth/course/api/course/audit/view', params)
+}
+// 更新课程信息
+export const courseUpdate = (params={}) => {
+  return http().post('/auth/course/api/course/audit/update', params)
+}

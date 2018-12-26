@@ -9,7 +9,7 @@
           <li :class="{now: tab == 1}"><a href="javascript:" @click="clicktab(1)">审核通过</a></li>
           <li :class="{now: tab == 0}"><a href="javascript:" @click="clicktab(0)">审核中</a></li>
           <li :class="{now: tab == 2}"><a href="javascript:" @click="clicktab(2)">审核失败</a></li>
-          <nuxt-link :to="{name:'courseAdd'}" class="add_course">新增课程</nuxt-link>
+          <nuxt-link :to="{name:'account-course-add'}" class="add_course">新增课程</nuxt-link>
         </ul>
         <div class="notdata" v-if="notdata">
           <i class="iconfont">&#xe6be;</i>暂时没有数据
@@ -44,8 +44,8 @@
               <input type="button" @click="putaWay(item)" value="上架" v-else>
             </li>
             <li class="operate">
-              <nuxt-link :to="{name: 'courseAdd', query: {no: item.id}}">修改</nuxt-link>
-              <nuxt-link :to="{name: 'coursePeriod', query: {no: item.courseNo}}">章节管理</nuxt-link>
+              <nuxt-link :to="{name:'account-course-add', query: {no: item.id}}">修改</nuxt-link>
+              <nuxt-link :to="{name: 'account-course-period', query: {no: item.courseNo}}">章节管理</nuxt-link>
               <a href="javascript:" @click="deleteTeacherCourse(item.id)" v-if="item.isDelete">删除</a>
             </li>
           </ul>

@@ -8,6 +8,10 @@ export const updateUserEducationInf = (params={}) => {
 export const getLecturerInfo = (params={}) => {
   return http().post('/auth/user/api/lecturer/audit/view', params)
 }
+// 修改讲师信息
+export const updataLecturerInfo = (params={}) => {
+  return http().post('/auth/user/api/lecturer/audit/update', params)
+}
 // 修改密码
 export const updatePassword = (params={}) => {
   return http().post('/auth/user/api/user/updatePassword', params)
