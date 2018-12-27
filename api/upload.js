@@ -27,10 +27,10 @@ export const uploadPic = (params={},cb) => {
   return createUpload('/zuul/course/api/upload/pic', params, cb)
 }
 // 上传文档
-export const uploadDoc = (params={}) => {
+export const uploadDoc = (params={}, cb) => {
   return createUpload('/zuul/course/api/upload/doc/' + params.periodId, params, cb)
 }
 // 上传视频
-export const uploadResVideo = (params={}) => {
+export const uploadResVideo = (params={},cb) => {
   return createUpload('/zuul/course/api/upload/video', params, cb)
 }

@@ -222,7 +222,7 @@ export default {
         res = res.data;
         // console.log(res)
         if (res.code === 200) {
-          this.chapterList = res.data.userCourseChapterAuditListDTO || [];
+          this.chapterList = res.data.userChapterAuditList || [];
           this.num = this.chapterList.length + 1;
         } else {
           if (res.code >= 300 && res.code < 400) {

@@ -15,7 +15,7 @@
             <button class="solid_btn" @click="upimg">本地上传</button>
           </div>
         </div>
-        <div class="image_list" v-loading="load">
+        <div class="image_list">
           <div class="left_list">
             <div data-v-1300c342="" class="title">已选视频</div>
             <ul class="">
@@ -23,8 +23,8 @@
                 <div class="oper">
                   <i class="iconfont gb" title="从库移除" @click="delVideo(item.videoNo, 1)">&#xe68c;</i>
                 </div>
-                <div class="icon iconfont" :title="item.vname">&#xe690;</div>
-                <a href="javascript:" :title="item.vname">{{item.vname}}</a>
+                <div class="icon iconfont" :title="item.videoName">&#xe690;</div>
+                <a href="javascript:" :title="item.videoName">{{item.videoName}}</a>
               </li>
             </ul>
           </div>
@@ -35,8 +35,8 @@
                 <div class="oper">
                   <i class="iconfont gb" title="从库移除" @click.stop="delVideo(item.videoNo, 0, item.id)">&#xe68c;</i>
                 </div>
-                <div class="icon iconfont" :title="item.vname">&#xe690;</div>
-                <a href="javascript:" :title="item.vname">{{item.vname}}</a>
+                <div class="icon iconfont" :title="item.videoName">&#xe690;</div>
+                <a href="javascript:" :title="item.videoName">{{item.videoName}}</a>
               </li>
               <li class="img" v-for="(item, index) in uploadList" v-if="item.tip !== '上传成功'" :key="index + 'ls'">
                 <div class="tip">{{item.tip}}</div>
@@ -67,7 +67,8 @@
   </div>
 </template>
 <script>
-import {uploadVideo, periodVideoUpdate, chapterVideoSave, periodVideo, chapterVideo, periodVideoDel} from '~/api/course.js'
+import {uploadResVideo} from '~/api/upload.js'
+import {periodVideoUpdate, chapterVideoSave, periodVideo, chapterVideo, chapterVideodel} from '~/api/account/course.js'
 export default {
   props: {
     open: {
@@ -114,6 +115,8 @@ export default {
     // 选择视频
     selVideo (obj) {
       // console.log(obj)
+      this.videoList = [obj];
+      return false;
       if (this.videoList.length) {
         this.$msgBox({
           content: '只能选择一个视频',
@@ -169,14 +172,15 @@ export default {
         /* eslint-disable no-undef */
         let param = new FormData();
         param.append('videoFile', file, file.name);
-        uploadVideo(param, function (int) {
+        uploadResVideo(param, function (int) {
           itemfile.jd = int;
           // console.log(itemfile.jd)
           itemfile.tip = '上传中';
           that.uploadList = Object.assign([], that.uploadList);
           // console.log(that.uploadList)
         }).then(res => {
-          // console.log(res)
+          console.log(res)
+          console.log('upload')
           if (res.code === 200) {
             itemfile.tip = '上传成功';
             that.upload();
@@ -200,9 +204,11 @@ export default {
     savaVideo (vid, tit) {
       // console.log(vid)
       chapterVideoSave({
-        chapterNo: this.data.cNo,
+        chapterId: this.data.cNo,
         videoNo: vid
       }).then(res => {
+        res = res.data;
+        console.log(res)
         if (res.code === 200) {
           this.getChapterVideo();
         }
@@ -236,7 +242,8 @@ export default {
           this.$msgBox({
             content: '你确定要删除该视频吗?'
           }).then(() => {
-            periodVideoDel({id}).then(res => {
+            chapterVideodel({id}).then(res => {
+              res = res.data;
               // console.log(res)
               if (res.code === 200) {
                 // that.alertOpen = false;
@@ -269,9 +276,11 @@ export default {
     hideMaxImg () {
       this.maxImg = false;
     },
-    // 提交保存选中图片
+    // 提交保存选中视频
     submit () {
-      periodVideoUpdate({list: this.videoList, periodNo: this.data.pNo}).then(res => {
+      console.log({list: this.videoList, periodId: this.data.pNo})
+      periodVideoUpdate({list: this.videoList, periodId: this.data.pNo}).then(res => {
+        res = res.data;
         // console.log(res)
         if (res.code === 200) {
           this.$emit('hidefun', event);
@@ -321,8 +330,9 @@ export default {
       });
     },
     getChapterVideo () {
-      chapterVideo({chapterNo: this.data.cNo}).then(res => {
-        // console.log(res)
+      chapterVideo({chapterId: this.data.cNo}).then(res => {
+        res = res.data;
+        console.log(res)
         if (res.code === 200 && res.data.list !== null) {
           this.chapterVideoList = res.data.list;
         } else {
@@ -334,8 +344,6 @@ export default {
   mounted () {
     this.kg = false;
     // console.log(this.type, this.data)
-    this.savePic.lecturerUserNo = this.userInfo.userNo;
-    this.savePic.orgNo = this.userInfo.orgNo;
     this.periodVideoList();
     this.getChapterVideo();
   },
@@ -348,6 +356,7 @@ export default {
 <style lang="scss" rel="stylesheet/scss">
 #image_panel_importance {
   width: 720px;
+  margin-left: -360px;
 }
 .image_panel{
   width: 720px;

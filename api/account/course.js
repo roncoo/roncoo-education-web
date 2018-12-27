@@ -67,3 +67,39 @@ export const chapterSort = (params={}) => {
 export const chapterPraxisList = (params={}) => {
   return http().post('/auth/course/api/course/chapter/period/audit/list', params)
 }
+// 章节课时添加
+export const savePraxis = (params={}) => {
+  return http().post('/auth/course/api/course/chapter/period/audit/save', params)
+}
+// 章节课时更新
+export const updatePraxis = (params={}) => {
+  return http().post('/auth/course/api/course/chapter/period/audit/update', params)
+}
+// 章节课时删除
+export const deletePraxis = (params={}) => {
+  return http().post('/auth/course/api/course/chapter/period/audit/delete', params)
+}
+// 章节课时删除
+export const updatePraxisSort = (params={}) => {
+  return http().post('/auth/course/api/course/chapter/period/audit/sort', params)
+}
+// 章节视频库
+export const chapterVideo = (params={}) => {
+  return http().post('/auth/course/api/course/video/list/chapter', params)
+}
+// 章节视频添加
+export const chapterVideoSave = (params={}) => {
+  return http().post('/auth/course/api/course/video/save', params)
+}
+// 章节视频删除
+export const chapterVideodel = (params={}) => {
+  return http().post('/auth/course/api/course/video/delete', params)
+}
+// 课时视频
+export const periodVideo = (params={}) => {
+  return http().post('/auth/course/api/course/video/list/period', params)
+}
+// 课时视频更新
+export const periodVideoUpdate = (params={}) => {
+  return http().post('/auth/course/api/course/video/update', params)
+}

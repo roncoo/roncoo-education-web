@@ -21,14 +21,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in list" :key="item.periodNo" v-if="item.periodDesc != 'true'"  v-dragging="{ item: item, list: list, group: 'color' }">
+              <tr v-for="(item, index) in list" :key="item.id" v-if="item.periodDesc != 'true'"  v-dragging="{ item: item, list: list, group: 'color' }">
                 <td>{{index + 1}}</td>
                 <td class="name">{{item.periodName}}</td>
                 <td>
                   <span v-if="item.isFree" class="c_green">免费</span>
                   <span v-else class="c_red">收费</span>
                 </td>
-                <td class="c_green"><button @click="openVideo(item.periodNo,2)" :class="{on: item.videoNum}" class="gray_btn">视频管理<i class="num">{{item.videoNum}}</i></button></td>
+                <td class="c_green"><button @click="openVideo(item.id,2)" :class="{on: item.videoNum}" class="gray_btn">视频管理<i class="num">{{item.videoNum}}</i></button></td>
                 <td class="c_green"><button class="gray_btn" type="button" :class="{on: item.accessoryNum}" @click="openAccessory(item)">课件管理<i class="num">{{item.accessoryNum}}</i></button>
                 </td>
                 <td class="c_green" v-if="item.auditStatus">已审核</td>
@@ -80,7 +80,7 @@ import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import YVideo from '~/components/account/VideoModal'
 import YAccessory from '~/components/account/AccessoryModal'
-import {chapterPraxisList, savePraxis, deletePraxis, updatePraxis, periodSort} from '~/api/account/course.js'
+import {chapterPraxisList, savePraxis, deletePraxis, updatePraxis, updatePraxisSort} from '~/api/account/course.js'
 export default {
   data () {
     return {
@@ -168,6 +168,7 @@ export default {
         content: '你确定要删除该课时吗?'
       }).then(async (val) => {
         deletePraxis({id: no}).then(res => {
+          res = res.data
           console.log(res)
           if (res.code === 200) {
             this.$msgBox.showMsgBox({
@@ -206,10 +207,10 @@ export default {
         console.log(res)
         if (res.code === 200) {
           this.title = res.data.chapterName;
-          if (res.data.userCourseChapterPeriodAuditListDTO === null) {
+          if (res.data.userPeriodAuditListDTO === null) {
             res.data.periodInfoAuditlist = [];
           }
-          this.list = res.data.userCourseChapterPeriodAuditListDTO;
+          this.list = res.data.userPeriodAuditListDTO;
           this.obj.courseNo = res.data.courseNo;
           this.sort = res.data.periodInfoAuditlist.length + 1;
           // this.setSort();
@@ -240,7 +241,8 @@ export default {
       if (!this.list.length) {
         return
       }
-      periodSort({list: this.list}).then(res => {
+      updatePraxisSort({list: this.list}).then(res => {
+        res = res.data
         // console.log(res)
         if (res.code === 200) {
           this.isSort = 1;
@@ -272,6 +274,7 @@ export default {
       this.obj.isFree = this.obj.isFree ? 1 : 0;
       // console.log(this.obj)
       savePraxis(this.obj).then(res => {
+        res = res.data;
         this.solidBtn = false;
         if (res.code === 200) {
           this.chapterList();
@@ -322,7 +325,7 @@ export default {
   }
 }
 </script>
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss" rel="stylesheet/scss">
 @import '~/assets/css/account.scss';
   .person_body {
     width: 1200px;

@@ -38,8 +38,8 @@
   </div>
 </template>
 <script>
-import {uploadDoc, accessoryList, accessoryChapterSave, accessoryRemove} from '~/api/course.js'
-import {mapState} from 'vuex'
+import {uploadDoc} from '~/api/upload.js'
+import {accessoryList, accessoryChapterSave, accessoryRemove} from '~/api/course.js'
 export default {
   props: {
     data: {
@@ -70,9 +70,6 @@ export default {
       },
       uploadList: []
     }
-  },
-  computed: {
-    ...mapState(['userInfo', 'clientData'])
   },
   methods: {
     // 选择上传图片
