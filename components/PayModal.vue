@@ -7,8 +7,8 @@
         <a href="javascript:" @click="close()" class="close iconfont">&#xe616;</a>
       </div>
       <div class="modal_body">
-        <div class="tip" v-if="orderInfo.payType === 2">支付宝支付 {{orderInfo.price.toFixed(2)}}元</div>
-        <div class="tip" v-else>微信支付 {{orderInfo.price.toFixed(2)}}元</div>
+        <div class="tip" v-if="orderInfo.payType === 2">支付宝支付 {{courseData.courseOriginal.toFixed(2)}}元</div>
+        <div class="tip" v-else>微信支付 {{courseData.courseOriginal.toFixed(2)}}元</div>
         <div class="code" id="qrcode">
           <canvas id="canvas"></canvas>
         </div>
@@ -27,36 +27,25 @@
         <a href="javascript:" @click="close()" class="close iconfont">&#xe616;</a>
       </div>
       <div class="modal_body" v-if="courseData">
-        <div class="tabs" v-if="!data.payType">
-          <div class="tab" @click="{order.courseType = 1}" :class="{on: order.courseType === 1}"><span>整套购买</span></div>
-          <div class="tab" @click="{order.courseType = 2}" :class="{on: order.courseType === 2}"><span>单讲购买</span></div>
-        </div>
-        <div class="" v-else><br></div>
+        
         <table class="table">
           <tr>
             <th>课程名称</th>
             <th>课程价格</th>
           </tr>
-          <tr v-if="order.courseType == 2">
-            <td width="300">
-              <div class="img"><img :src="courseData.courseImg" alt=""></div>
-              <div class="name">{{courseName}} <br>{{data.chapter.chapterName}}</div>
-            </td>
-            <td class="c_orange">¥{{data.chapter.orgPrice.toFixed(2)}}</td>
-          </tr>
-          <tr v-else>
+          <tr>
             <td width="300">
               <div class="" style="width:320px;">
-                <div class="img" v-if="courseData.courseImg"><img :src="courseData.courseImg" alt=""></div>
-                <div class="name">{{courseName}}</div>
+                <div class="img" v-if="courseData.courseLogo"><img :src="courseData.courseLogo" alt=""></div>
+                <div class="name">{{courseData.courseName}}</div>
               </div>
             </td>
-            <td class="c_orange">¥{{coursePrice.toFixed(2)}}</td>
+            <td class="c_orange">¥{{courseData.courseOriginal.toFixed(2)}}</td>
           </tr>
         </table>
         <div class="remark">
           <label>备注:</label>
-          <input type="text" v-model="order.remark" placeholder="请输入你需要的备注!">
+          <input type="text" v-model="order.remarkCus" placeholder="请输入你需要的备注!">
         </div>
         <div class="pay_type">
           <input type="radio" id="payType2" name="payType" value="2" v-model="order.payType">
@@ -107,7 +96,7 @@
   </div>
 </template>
 <script>
-  import {orderSave, orderInfo} from '~/api/course.js'
+  import {orderSave, orderInfo} from '~/api/order.js'
   import QRCode from 'qrcode'
   export default {
     props: {
@@ -130,18 +119,11 @@
         checkPay: false,
         userInfo: this.$store.state.userInfo,
         courseData: '',
-        courseName: '',
-        coursePrice: 0,
         order: {
-          courseCategory: 1,
           channelType: 1,
-          courseNo: 0,
-          courseType: 1,
-          orderIp: 'string',
+          courseId: 0,
           payType: 1,
-          refNo: 0,
-          remark: '',
-          userNo: 0
+          remarkCus: ''
         },
         orderInfo: null,
         payStep: 0,
@@ -150,37 +132,10 @@
     },
     mounted () {
       // this.qrcode('weixin://wxpay/bizpayurl?pr=GlkCzqF');
-      console.log(this.data)
-      console.log(this.userInfo)
-      if (this.webInfo && this.webInfo.isEnableVip) {
-        if (this.userInfo.isVip && this.userInfo.expireTime && new Date(this.userInfo.expireTime).getTime() > new Date().getTime()) {
-          this.isVip = true
-        }
-      }
-      this.order.userNo = this.userInfo.userNo;
-      this.order.courseNo = this.data.course.courseNo;
+      console.log(this.$router)
+      this.order.courseId = this.data.course.id;
       this.courseData = this.data.course;
-      this.courseName = this.data.course.courseName;
-      this.coursePrice = (this.isCourse && this.isVip) ? this.data.course.fabPrice : this.data.course.orgPrice;
       console.log(this.courseData)
-      if (this.data.payType === 'live') {
-        this.order.courseCategory = 2;
-      } else if (this.data.payType === 'bunch') {
-        this.order.courseCategory = 3;
-      } else if (this.data.payType === 'chapter') {
-        this.order.courseType = 2;
-      } else if (this.data.payType === 'period') {
-        this.order.courseType = 3;
-        this.courseName = this.data.period.periodName;
-        this.coursePrice = (this.isCourse && this.isVip) ? this.data.period.fabPrice : this.data.period.orgPrice;
-        this.courseData.courseImg = '';
-      } else if (this.data.payType === 'resource') {
-        this.courseName = this.data.course.acName
-        this.order.courseType = 4;
-        this.order.courseCategory = 4;
-        this.order.courseNo = this.data.course.refNo;
-        this.order.acType = this.data.course.acType;
-      }
     },
     methods: {
       reload () {
@@ -208,15 +163,6 @@
       },
       submit () {
         let that = this;
-        if (that.order.courseType === 2) {
-          that.order.refNo = that.data.chapter.chapterNo;
-        } else if (that.order.courseType === 3) {
-          that.order.refNo = that.data.period.periodNo;
-        } else if (that.order.courseType === 4) {
-          that.order.refNo = that.data.course.accessoryNo;
-        } else {
-          that.order.refNo = that.data.course.courseNo;
-        }
         that.btntext = '正在提交...';
         console.log(that.order)
         orderSave(that.order).then(res => {
@@ -257,7 +203,8 @@
           return false;
         }
         orderInfo({orderNo: no}).then(res => {
-          // console.log(res)
+          res = res.data
+          console.log(res)
           if (res.data.orderStatus === 1) {
             setTimeout(function () {
               that.getOrderInfo(no);
@@ -341,16 +288,16 @@
     font-size: 16px;
   }
   .code{
-    width: 180px;
-    height: 180px;
+    width: 182px;
+    height: 182px;
     border: 1px solid #ddd;
     margin: 20px auto;
   }
   .tip2{
     margin: 0 auto;
-    width: 130px;
+    width: 200px;
     padding: 13px 0 13px 70px;
-    height: 42px;
+    height: 66px;
     line-height: 20px;
     font-size: 14px;
     color: #fff;

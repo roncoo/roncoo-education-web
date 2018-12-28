@@ -8,19 +8,11 @@ export const courseList = (params={}) => {
 export const courseClass = (params={}) => {
   return http().post('/course/api/course/category/list', params)
 }
-// 课程详情
+// 课程详情(未登录)
 export const courseDetail = (params={}) => {
   return http().post('/course/api/course/view', params)
 }
-// 上传图片
-export const uploadPic = (params={}) => {
-  return http(null, 'isUpload').post('/zuul/course/api/upload/pic', params)
-}
-// 上传文档
-export const uploadDoc = (params={}) => {
-  return http(null, 'isUpload').post('/zuul/course/api/upload/doc/' + params.periodId, params)
-}
-// 上传视频
-export const uploadResVideo = (params={}) => {
-  return http(null, 'isUpload').post('/zuul/course/api/upload/video', params)
+// 课程详情(登录后)
+export const userCourseDetail = (params={}, token) => {
+  return http(token).post('/auth/course/api/course/view', params)
 }

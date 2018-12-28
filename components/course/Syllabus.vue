@@ -1,22 +1,22 @@
 <!-- 课程大纲列表 -->
 <template>
-  <div class="info_body">
-    <div class="info_title"><span></span>课程大纲</div>
+  <div class="sy_body">
+    <div class="title"><span></span>课程大纲</div>
     <div class="chapter_info" v-for="(one, index) in list" :key="index">
-      <div class="chapter_title">
+      <div class="chapter_name">
         <span>第{{index + 1}}章&nbsp;&nbsp;</span>{{one.chapterName}}
       </div>
-      <div class="chapter_body" v-for="(two, num) in one.periodInfoV2DTOList" :key="num">
-        <div class="chapter_top" @click="videoPlay(two)" :class="{on : nowNo == two.periodNo}">
-          <div class="chapter_video" :class="{no_v: !two.periodVideoDTOList || !two.periodVideoDTOList.length}"></div>
-          <span class="chapter_num">第{{num+1}}讲</span>
-          <span v-if="!two.periodVideoDTOList || !two.periodVideoDTOList.length" class="no_video">(未更新)</span>
+      <div class="period_info" v-for="(two, num) in one.courseChapterPeriodList" :key="num">
+        <div class="period_top" @click="videoPlay(two)" :class="{on : nowNo == two.periodNo}">
+          <div class="period_video" :class="{no_v: !two.videoVid}"></div>
+          <span class="period_num">第{{num+1}}讲</span>
+          <span v-if="!two.videoVid" class="no_video">(未更新)</span>
           <span v-if="allFree || two.isFree" class="c_blue">(免费)</span>
           {{two.periodName}}
-          <span class="video_time fr" v-if="two.periodVideoDTOList && two.periodVideoDTOList.length">{{two.periodVideoDTOList[0].vlength}}分钟</span>
+          <span class="video_time fr" v-if="two.videoVid">{{two.videoLength}}分钟</span>
         </div>
         <!-- <a :href="two.accessoryInfoDTOList[0].acUrl" v-if="two.accessoryInfoDTOList && userInfo && two.accessoryInfoDTOList.length && !minVideo">下载课件</a> -->
-        <a href="javascript:" @click="noDown(two)" v-if="two.accessoryInfoDTOList && two.accessoryInfoDTOList.length">下载课件</a>
+        <a href="javascript:" @click="noDown(two)" v-if="two.isDoc">下载课件</a>
       </div>
     </div>
   </div>
@@ -72,7 +72,16 @@ export default {
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
-
+  .sy_body{
+    .title {
+      border-left: 3px solid #000;
+      padding-left: 12px;
+      font-size: 16px;
+      color: #000;
+      font-weight: 700;
+      margin-bottom: 25px;
+    }
+  }
   .chapter_info {
     width: 839px;
     margin: 0 auto;
@@ -83,14 +92,14 @@ export default {
     &:last-child {
       border: none;
     }
-    .chapter_title {
+    .chapter_name {
       font-size: 14px;
       font-weight: 700;
       color: #333;
       padding-bottom: 10px;
     }
   }
-  .chapter_body {
+  .period_info {
     position: relative;
     a {
       display: inline-block;
@@ -113,10 +122,9 @@ export default {
       }
     }
   }
-  .chapter_top {
+  .period_top {
     width: 627px;
     padding-left: 20px;
-    // margin-top: 6px;
     height: 46px;
     line-height: 46px;
     position: relative;
@@ -128,20 +136,10 @@ export default {
       position: absolute;
       right: 0;
     }
-    .chapter_num {
+    .period_num {
       margin-right: 6px;
     }
-    .chapter_time {
-      display: inline-block;
-      height: 23px;
-      position: absolute;
-      line-height: 23px;
-      top: 13px;
-      right: 0px;
-      padding-right: 20px;
-      border-right: 2px solid rgb(245, 245, 245);
-    }
-    .chapter_video {
+    .period_video {
       display: inline-block;
       width: 21px;
       height: 21px;
@@ -158,7 +156,7 @@ export default {
       cursor: pointer;
       background: rgb(242, 242, 242);
       color: rgb(213, 20, 35);
-      .chapter_video {
+      .period_video {
         background: url(../../assets/image/video.png) center center;
         &.no_v {
           background: url(../../assets/image/no_video.svg) no-repeat center center;

@@ -11,63 +11,48 @@
         </ul>
         <div class="clearfix">
           <div class="video_box">
-            <div class="detail_view" id="player" :style="'background-image:url('+courseInfo.courseImg+')'"></div>
+            <div class="detail_view" id="player" :style="'background-image:url('+courseInfo.courseLogo+')'"></div>
             <!-- <span class="iconfont close_video" @click="stopVideo">&#xe616;</span> -->
           </div>
           <div class="view_info">
             <p>{{courseInfo.courseName}}</p>
             <div class="view_price">
               <div>
-                价格:<span v-if="!courseInfo.isFree">￥{{courseInfo.orgPrice ? courseInfo.orgPrice.toFixed(2) : '0.00'}}</span>
+                价格:<span v-if="!courseInfo.isFree">￥{{courseInfo.courseOriginal ? courseInfo.courseOriginal.toFixed(2) : '0.00'}}</span>
                 <span v-else>免费</span>
-              </div>
-              <div v-if="!courseInfo.isFree && openVip && courseInfo.fabPrice != courseInfo.orgPrice" class="mgt10">
-                SVIP:<span class="font_16">{{courseInfo.fabPrice ? '￥' + courseInfo.fabPrice.toFixed(2) : '免费'}}</span>
-                <nuxt-link :to="{name: 'vip'}" class="set_vip">{{isVip ? '续费SVIP >' : '立即开通 >'}}</nuxt-link>
-              </div>
-              <!-- <div class="mgt10">
-                优惠券:<span class="favo">￥100</span>
-                <span class="favo favo_right">满1999元用100元</span>
-                <a href="javascript:" class="set_vip">立即领取 ></a>
-              </div> -->
-              <div class="mgt10" v-if="activityText">
-                促销:<span class="small_favo">{{activityData.activityText}}</span>
-                <span class="big_favo" v-if="activityText == '打折'">优惠活动中，购买立打{{activityData.minus * 10}}折</span>
-                <span class="big_favo" v-else-if="activityText == '立减'">优惠活动中，购买立减{{activityData.minus}}元</span>
               </div>
             </div>
             <div class="view_teacher">
-              <span class="text_b">讲师:</span>{{teacherInfo.lecturerName}}
-            </div>
-            <div class="view_teacher mgt20" v-if="courseData.courseValidity">
-              <span class="text_b">有效期:</span>从购买之日起365天
+              <span class="text_b">讲师:</span>{{courseInfo.lecturer.lecturerName}}
             </div>
             <!-- <div class="view_teacher mgt20" v-else>
               <span class="text_b">有效期:</span>永久
             </div> -->
-            <div class="view_teacher mgt20" v-if="courseData.isShowBuyCount">
-              <span class="text_b">购买人数:</span>{{courseInfo.buyCount}} 人
+            <div class="view_teacher mgt20">
+              <span class="text_b">购买人数:</span>{{courseInfo.countBuy}} 人
             </div>
             <div class="foot_box">
-              <div class="study_num" v-if="courseData.isShowStudyCount">
-                <span class="iconfont mgr10">&#xe60a;</span>{{courseInfo.studyCount}} 人已学习
+              <div class="study_num">
+                <span class="iconfont mgr10">&#xe60a;</span>{{courseInfo.countStudy}} 人已学习
               </div>
-              <a :class="{collect_btn: true, c_red: isCollect}" href="javascript:" @click="setCollection"><span class="iconfont">&#xe670;</span>&nbsp;收藏</a>
               <button class="buy_btn" v-if="courseInfo.isFree && !isLogin" @click="goLogin">登录观看</button>
-              <button class="buy_btn" id="buyBtn" v-else-if="courseInfo.isPutaway === 1" @click="buyCourse">立即购买</button>
+              <button class="buy_btn" id="buyBtn" v-else @click="buyCourse">立即购买</button>
             </div>
             <!-- <a :class="{collect_btn: true, share: true, c_red: isShare}" href="javascript:"><span class="iconfont">&#xe610;</span>&nbsp;分享</a> -->
           </div>
         </div>
       </div>
     </div>
+    <d-pay :isCourse="true" @hidefun="showPay = false" :data="payData" v-if="showPay"></d-pay>
   </div>
 </template>
 <script>
 import {addCollection, attentionSave} from '~/api/user.js'
 import YHeader from '../common/Header'
+import DPay from '~/components/PayModal'
 export default {
   components: {
+    DPay,
     YHeader
   },
   props: {
@@ -75,22 +60,13 @@ export default {
       type: Object,
       default: null
     },
-    courseData: {
-      type: Object,
-      default: null
-    },
-    teacherInfo: {
-      type: Object,
-      default: null
-    },
   },
   data () {
     return {
-      isVip: false,
-      openVip: false,
+      payData: null,
+      showPay: false,
       isCollect: '',
       activityText: '',
-      activityData: {},
       isLogin: this.$store.state.tokenInfo ? true : false
     }
   },
@@ -103,50 +79,22 @@ export default {
     },
     // 购买视频
     buyCourse (event) {
-      this.$emit('buyClick', event)
-    },
-    
-    // 收藏课程
-    setCollection () {
+      console.log('buy')
       if (!this.isLogin) {
         this.$msgBox({
-          content: '登录后才可以收藏'
-        }).then(res => {
+          content: '请登录后再购买',
+          isShowCancelBtn: false
+        }).then(() => {
           this.$store.dispatch('REDIRECT_LOGIN');
-        }).catch(() => {
         })
-        return false;
+        return
       }
-      addCollection({
-        collectionType: 1,
-        courseCategory: 1,
-        refNo: this.courseInfo.id,
-        mobile: this.$store.state.userInfo.mobile
-      }).then(res => {
-        console.log(res)
-        if (res.data.code === 200) {
-          this.$msgBox({
-            content: '收藏成功',
-            isShowCancelBtn: false
-          })
-          this.isCollect = true
-        } else {
-          this.$msgBox({
-            content: res.data.msg,
-            isShowCancelBtn: false
-          })
-          if (res.code === 406) {
-            this.isCollect = true
-          }
-        }
-      })
-    }
+
+      this.showPay = true;
+      this.payData = {course: this.courseInfo, payType: 'course'};
+    },
   },
   mounted () {
-    this.openVip = this.$store.state.webInfo.isEnableVip;
-    if (this.$store.state.userInfo.isVip && this.$store.state.userInfo.expireTime && new Date(this.$store.state.userInfo.expireTime).getTime() > new Date().getTime()) {
-        this.isVip = true
-      }
   }
 }
   
@@ -290,6 +238,7 @@ export default {
     }
   }
   .detail_view {
+    float: left;
     width: 600px;
     height: 295px;
     background: rgb(102, 102, 102);
