@@ -6,7 +6,7 @@ export const updateUserEducationInf = (params={}) => {
 }
 // 获取讲师信息
 export const getLecturerInfo = (params={}) => {
-  return http().post('/auth/user/api/lecturer/audit/view', params)
+  return http().post('/auth/user/api/lecturer/view', params)
 }
 // 修改讲师信息
 export const updataLecturerInfo = (params={}) => {

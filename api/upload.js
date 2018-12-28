@@ -28,7 +28,7 @@ export const uploadPic = (params={},cb) => {
 }
 // 上传文档
 export const uploadDoc = (params={}, cb) => {
-  return createUpload('/zuul/course/api/upload/doc/' + params.periodId, params, cb)
+  return createUpload('/course/api/upload/doc', params, cb)
 }
 // 上传视频
 export const uploadResVideo = (params={},cb) => {

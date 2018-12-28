@@ -5,7 +5,7 @@
       <y-side :type="'kcgl'"></y-side>
       <div class="person_content">
         <ul class="person_title clearfix">
-          <li>第{{num}}章  {{title}}</li>
+          <li>第{{num}}章</li>
         </ul>
         <div class="person_info ">
           <table class="table ">
@@ -29,7 +29,9 @@
                   <span v-else class="c_red">收费</span>
                 </td>
                 <td class="c_green"><button @click="openVideo(item.id,2)" :class="{on: item.videoNum}" class="gray_btn">视频管理<i class="num">{{item.videoNum}}</i></button></td>
-                <td class="c_green"><button class="gray_btn" type="button" :class="{on: item.accessoryNum}" @click="openAccessory(item)">课件管理<i class="num">{{item.accessoryNum}}</i></button>
+                <td class="c_green">
+                  <a v-if="item.isDoc" :href="item.docUrl">{{item.docName}}</a>
+                  <span v-else>暂无附件</span>
                 </td>
                 <td class="c_green" v-if="item.auditStatus">已审核</td>
                 <td class="c_blue" v-else>待审核</td>
@@ -39,12 +41,12 @@
                 </td>
               </tr>
               <tr v-else>
-                <td>{{index}}
+                <td>{{index + 1}}
                 </td>
                 <td class="name"><input type="text" v-model="item.periodName" class="form_input" placeholder="请输入课时名称"></td>
                 <td><input type="checkbox" v-model="item.isFree" value="1"></td>
                 <td> - </td>
-                <td> - </td>
+                <td><y-upload :upOk="isUp" @rtnUrl="getUrl" :isresource="true" /></td>
                 <td> - </td>
                 <td class="operate">
                   <button class="solid_btn b_red" @click="updatas(item)" :disabled="solidBtn">保存</button>
@@ -57,7 +59,7 @@
                 <td class="name"><input type="text" v-model="obj.periodName" class="form_input" placeholder="请输入课时名称"></td>
                 <td><input type="checkbox" v-model="obj.isFree" value="1"></td>
                 <td> - </td>
-                <td> - </td>
+                <td><y-upload :upOk="isUp" @rtnUrl="getUrl" :isresource="true" /></td>
                 <td> - </td>
                 <td class="operate">
                   <button class="solid_btn b_red" @click="addPraxis" :disabled="solidBtn">保存</button>
@@ -71,7 +73,6 @@
     </div>
     <y-footer></y-footer>
     <y-video v-if="showVideo" :open="showVideo" :data="videoData" :type="videoType" @hidefun="hideModal()"></y-video>
-    <y-accessory v-if="showModal" :data="modalData" @hidefun="hideAccessory"></y-accessory>
   </div>
 </template>
 <script>
@@ -79,7 +80,7 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import YVideo from '~/components/account/VideoModal'
-import YAccessory from '~/components/account/AccessoryModal'
+import YUpload from '~/components/account/Upload'
 import {chapterPraxisList, savePraxis, deletePraxis, updatePraxis, updatePraxisSort} from '~/api/account/course.js'
 export default {
   data () {
@@ -87,14 +88,11 @@ export default {
       load: false,
       tab: 1,
       num: 1,
-      title: '',
       list: [],
       solidBtn: false,
       showVideo: false,
       videoType: 1,
       videoData: null,
-      showModal: false,
-      modalData: null,
       obj: {
         isFree: 0,
         chapterNo: 0,
@@ -104,14 +102,27 @@ export default {
         periodName: ''
         // sort: 0
       },
-      sort: 0
+      sort: 0,
+      docUrl: ''
+    }
+  },
+  computed: {
+    isUp () {
+      if (this.docUrl) {
+        return false
+      } else {
+        return true
+      }
     }
   },
   methods: {
-    // 隐藏课件
-    hideAccessory () {
-      this.showModal = false
-      this.chapterList();
+    // 获取上传附件
+    getUrl (file) {
+      console.log(file)
+      console.log('file======')
+      this.docUrl = file.url || ''
+      this.obj.docName = file.name || ''
+      this.obj.docUrl = file.url || ''
     },
     // 展开视频选择
     openVideo (id, ty) {
@@ -126,11 +137,6 @@ export default {
       this.showVideo = false;
       this.chapterList();
     },
-    openAccessory (data) {
-      // console.log(data)
-      this.modalData = {refNo: data.periodNo};
-      this.showModal = true;
-    },
     // 修改例题
     edit1 (no) {
       let arr = this.list
@@ -141,7 +147,7 @@ export default {
     // 更新例题
     updatas (data) {
       if (data.periodName === '') {
-        this.$msgBox.showMsgBox({
+        this.$msgBox({
           content: '请输入课时名称',
           isShowCancelBtn: false
         }).catch(() => {})
@@ -150,12 +156,33 @@ export default {
       this.solidBtn = true;
       data.periodDesc = '';
       data.isFree = data.isFree ? 1 : 0;
+      data.docName = this.obj.docName || data.docName;
+      data.docUrl = this.obj.docUrl || data.docUrl;
+      if (data.docName) {
+        data.isDoc = 1
+      }
       updatePraxis(data).then(res => {
         this.solidBtn = false;
         // console.log(res)
+        if (res.data.code === 200) {
+          this.obj.docName = ''
+          this.obj.docUrl = ''
+          this.docUrl = ''
+        } else {
+          if (res.data.code > 300 && res.data.code < 400) {
+            this.$msgBox({
+              content: '登录异常，请重新登录',
+              isShowCancelBtn: false
+            }).then(() => {
+              this.$store.dispatch('REDIRECT_LOGIN')
+            }).catch(() => {
+              this.$store.dispatch('REDIRECT_LOGIN')
+            })
+          }
+        }
       }).catch(() => {
         this.solidBtn = false;
-        this.$msgBox.showMsgBox({
+        this.$msgBox({
           content: '更新失败',
           isShowCancelBtn: false
         })
@@ -164,21 +191,21 @@ export default {
     // 删除例题
     del (no) {
       let that = this;
-      this.$msgBox.showMsgBox({
+      this.$msgBox({
         content: '你确定要删除该课时吗?'
       }).then(async (val) => {
         deletePraxis({id: no}).then(res => {
           res = res.data
           console.log(res)
           if (res.code === 200) {
-            this.$msgBox.showMsgBox({
+            this.$msgBox({
               content: '删除成功',
               isShowCancelBtn: false
             })
             that.chapterList();
           } else {
             if (res.code >= 300 && res.code < 400) {
-              this.$msgBox.showMsgBox({
+              this.$msgBox({
                 content: res.msg,
                 isShowCancelBtn: false
               }).then(() => {
@@ -187,7 +214,7 @@ export default {
                 window.location.href = this.clientData.mainUrl + '/login'
               }).catch(() => {})
             } else {
-              this.$msgBox.showMsgBox({
+              this.$msgBox({
                 content: res.msg,
                 isShowCancelBtn: false
               }).catch(() => {})
@@ -206,17 +233,13 @@ export default {
         res = res.data;
         console.log(res)
         if (res.code === 200) {
-          this.title = res.data.chapterName;
-          if (res.data.userPeriodAuditListDTO === null) {
-            res.data.periodInfoAuditlist = [];
-          }
-          this.list = res.data.userPeriodAuditListDTO;
+          this.list = res.data.userPeriodAuditList || [];
           this.obj.courseNo = res.data.courseNo;
-          this.sort = res.data.periodInfoAuditlist.length + 1;
+          this.sort = this.list.length + 1;
           // this.setSort();
         } else {
           if (res.code >= 300 && res.code < 400) {
-            this.$msgBox.showMsgBox({
+            this.$msgBox({
               content: res.msg,
               isShowCancelBtn: false
             }).then(() => {
@@ -225,7 +248,7 @@ export default {
               window.location.href = this.clientData.mainUrl + '/login'
             }).catch(() => {})
           } else {
-            this.$msgBox.showMsgBox({
+            this.$msgBox({
               content: res.msg,
               isShowCancelBtn: false
             }).catch(() => {})
@@ -247,13 +270,13 @@ export default {
         if (res.code === 200) {
           this.isSort = 1;
         } else {
-          this.$msgBox.showMsgBox({
+          this.$msgBox({
             content: res.msg,
             isShowCancelBtn: false
           })
         }
       }).catch(() => {
-        this.$msgBox.showMsgBox({
+        this.$msgBox({
           content: '排序保存失败',
           isShowCancelBtn: false
         })
@@ -262,7 +285,7 @@ export default {
     // 添加例题
     addPraxis () {
       if (!this.obj.periodName) {
-        this.$msgBox.showMsgBox({
+        this.$msgBox({
           content: '课时名称不能为空',
           isShowCancelBtn: false
         })
@@ -272,7 +295,8 @@ export default {
       // console.log(this.obj)
       this.sort = this.int;
       this.obj.isFree = this.obj.isFree ? 1 : 0;
-      // console.log(this.obj)
+      console.log(this.obj)
+      console.log('aaaaa-----')
       savePraxis(this.obj).then(res => {
         res = res.data;
         this.solidBtn = false;
@@ -280,9 +304,12 @@ export default {
           this.chapterList();
           this.obj.periodName = '';
           this.obj.isFree = '';
+          this.obj.docName = '';
+          this.obj.docUrl = '';
+          this.docUrl = ''
         } else {
           if (res.code >= 300 && res.code < 400) {
-            this.$msgBox.showMsgBox({
+            this.$msgBox({
               content: res.msg,
               isShowCancelBtn: false
             }).then(() => {
@@ -291,7 +318,7 @@ export default {
               window.location.href = this.clientData.mainUrl + '/login'
             }).catch(() => {})
           } else {
-            this.$msgBox.showMsgBox({
+            this.$msgBox({
               content: res.msg,
               isShowCancelBtn: false
             }).catch(() => {})
@@ -300,7 +327,7 @@ export default {
         // console.log(res)
       }).catch(() => {
         this.solidBtn = false;
-        this.$msgBox.showMsgBox({
+        this.$msgBox({
           content: '添加失败',
           isShowCancelBtn: false
         })
@@ -320,7 +347,7 @@ export default {
     YHeader,
     YFooter,
     YVideo,
-    YAccessory,
+    YUpload,
     YSide
   }
 }
@@ -331,6 +358,21 @@ export default {
     width: 1200px;
     margin: 30px auto 0;
     min-height: 1000px;
+    .upload_com {
+      .solid_btn {
+        display: inline-block;
+        height: 25px;
+        line-height: 22px;
+        background: #fff;
+        border-color: #ddd;
+        color: #999;
+        outline: none;
+        &:hover {
+          color: #D51423;
+          border-color: #D51423;
+        }
+      }
+    }
   }
   .person_content {
     width: 1012px;
