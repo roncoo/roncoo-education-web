@@ -53,17 +53,6 @@
         <button class="hollow_btn" @click="close()">取消</button>
       </div>
     </div>
-    <div class="max_img_panel" v-if="maxImg">
-      <div class="mask" @click="hideMaxImg"></div>
-      <div class="img_panel">
-        <div class="img_box">
-          <div class="img">
-            <i class="iconfont" @click="hideMaxImg" title="关闭">&#xe68c;</i>
-            <img :src="maxImgUrl" alt="">
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <script>
@@ -88,9 +77,6 @@ export default {
   data () {
     return {
       flag: true,
-      load: false,
-      maxImg: false,
-      maxImgUrl: '',
       kg: true,
       upbtn: true,
       chapterVideoList: [],
@@ -114,30 +100,15 @@ export default {
     },
     // 选择视频
     selVideo (obj) {
-      // console.log(obj)
-      this.videoList = [obj];
-      return false;
-      if (this.videoList.length) {
+      if (this.videoList && this.videoList.length) {
         this.$msgBox({
           content: '只能选择一个视频',
           isShowCancelBtn: false
         })
         return
       }
-      let videoData = null;
-      this.videoList.map(function (item, i) {
-        if (item.videoNo === obj.videoNo) {
-          videoData = item;
-        }
-      })
-      if (videoData === null) {
-        this.videoList.push(obj);
-      } else {
-        this.$msgBox({
-          content: '该选项已经被选中',
-          isShowCancelBtn: false
-        })
-      }
+      console.log(obj)
+      this.videoList = [obj];
     },
     // 加入上传列表
     addUpload (e) {
@@ -233,7 +204,6 @@ export default {
       } else {
         this.flag = true
         for (let i = 0; i < this.videoList.length; i++) {
-          // console.log(this.videoList[i].id, id)
           if (this.videoList[i].videoNo === vNo) {
             this.flag = false
           }
@@ -267,21 +237,14 @@ export default {
         }
       }
     },
-    // 最大化预览图片
-    maxImages (url) {
-      this.maxImgUrl = url;
-      this.maxImg = true;
-    },
-    // 隐藏图片预览
-    hideMaxImg () {
-      this.maxImg = false;
-    },
     // 提交保存选中视频
     submit () {
-      console.log({list: this.videoList, periodId: this.data.pNo})
-      periodVideoUpdate({list: this.videoList, periodId: this.data.pNo}).then(res => {
+      let videoNo = this.videoList && this.videoList.length ? this.videoList[0].videoNo : ''
+      console.log({videoNo, periodId: this.data.pNo})
+      periodVideoUpdate({videoNo, periodId: this.data.pNo}).then(res => {
         res = res.data;
-        // console.log(res)
+        console.log(res)
+        console.log('save====')
         if (res.code === 200) {
           this.$emit('hidefun', event);
         } else {
@@ -317,16 +280,25 @@ export default {
     },
       // 获取该例题已选中的图片
     periodVideoList () {
-      this.load = true;
-      periodVideo({periodNo: this.data.pNo}).then(res => {
-        // console.log(res)
-        this.load = false;
-        if (res.code === 200 && res.data.list !== null) {
-          this.videoList = res.data.list;
+      periodVideo({periodId: this.data.pNo}).then(res => {
+        console.log(res)
+        res = res.data
+        console.log('period===')
+        if (res.code === 200 && res.data.list) {
+          this.videoList = res.data.list
         } else {
+          if (res.code > 300 && res.code < 400) {
+            this.$msgBox({
+              content: '登录超时，请重新登录',
+              isShowCancelBtn: false
+            }).then(() => {
+              this.$store.dispatch('REDIRECT_LOGIN')
+            }).catch(() => {
+              this.$store.dispatch('REDIRECT_LOGIN')
+            })
+          }
           this.videoList = [];
         }
-        // console.log(res)
       });
     },
     getChapterVideo () {
@@ -336,6 +308,16 @@ export default {
         if (res.code === 200 && res.data.list !== null) {
           this.chapterVideoList = res.data.list;
         } else {
+          if (res.code > 300 && res.code < 400) {
+            this.$msgBox({
+              content: '登录超时，请重新登录',
+              isShowCancelBtn: false
+            }).then(() => {
+              this.$store.dispatch('REDIRECT_LOGIN')
+            }).catch(() => {
+              this.$store.dispatch('REDIRECT_LOGIN')
+            })
+          }
           this.chapterVideoList = [];
         }
       });
@@ -343,14 +325,9 @@ export default {
   },
   mounted () {
     this.kg = false;
-    // console.log(this.type, this.data)
     this.periodVideoList();
     this.getChapterVideo();
   },
-  created () {
-    // this.ty = this.type;
-    // console.log(this.userInfo)
-  }
 }
 </script>
 <style lang="scss" rel="stylesheet/scss">

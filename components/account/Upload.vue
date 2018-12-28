@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="upload_com">
     <div v-if="ov == 1" class="progress"><div class="entity" :style="{width: jd + '%'}">{{tip}}</div></div>
     <button v-else  class="solid_btn" @click="upimg" type="button">{{btntxt}}</button>
     <div class="tip" v-if="ov == 2 && !upOk">{{tip}}</div>
@@ -30,6 +30,13 @@ export default {
       type: Boolean
     }
   },
+  watch: {
+    upOk (newData) {
+      if (newData) {
+        this.ov = 0
+      }
+    }
+  },
   data () {
     return {
       docId: '',
@@ -49,48 +56,15 @@ export default {
     },
     update (e) {
       let file = e.target.files[0];
-      console.log(file)
       let that = this;
       let uploadType = uploadPic
       let typeFile = 'picFile'
       /* eslint-disable no-undef */
       let param = new FormData();
       if (this.isresource) {
-        // console.log(file)
-        let suffix = ''
-        if (file) {
-          suffix = /\.(\w+)$/.exec(file.name)[1]
-        }
-        // console.log(suffix)
-        if (['mp4', 'avi', 'mpg', 'mpeg', 'ram', 'flv', 'mov', 'asf', '3gp', 'f4v', 'wmv', 'FLV', 'MOV', 'ASF', '3GP', 'F4V', 'WMV'].indexOf(suffix) !== -1) {
-          uploadType = uploadResVideo
-          typeFile = 'videoFile'
-          param.append('type', 4)
-          let orgNo = this.clientData.no
-          param.append('orgNo', orgNo)
-        } else if (['docx', 'doc', 'pdf'].indexOf(suffix) !== -1) {
-          uploadType = uploadDoc
-          typeFile = 'docFile'
-        } else if (this.isTiku && ['jpg', 'jpeg', 'png'].indexOf(suffix) !== -1) {
-          uploadType = uploadPic
-          typeFile = 'picFile'
-        } else if (this.isTiku) {
-          uploadType = uploadDoc
-          typeFile = 'docFile'
-        } else {
-          if (!file) {
-            return
-          }
-          let msg = '文件只能上传视频，Word文档和PDF文档'
-          this.$msgBox.showMsgBox({
-            content: msg,
-            isShowCancelBtn: false
-          })
-          e.target.value = '';
-          return false
-        }
+        uploadType = uploadDoc
+        typeFile = 'docFile'
       }
-      // console.log(file)
       // console.log(uploadType, typeFile)
       param.append(typeFile, file, file.name);
       // console.log(param)
@@ -105,6 +79,7 @@ export default {
         console.log('upload--------')
         that.ov = 2;
         if (res.code === 200) {
+          e.target.value = '';
           that.tip = '上传成功';
           that.$emit('rtnUrl', {name: file.name, url: res.data});
         } else {
@@ -128,6 +103,7 @@ export default {
     }
   },
   mounted () {
+    this.tip = ''
   },
   created () {
     this.docId = this.randomString(6);
