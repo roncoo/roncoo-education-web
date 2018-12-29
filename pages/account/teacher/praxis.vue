@@ -174,9 +174,9 @@ export default {
               content: '登录异常，请重新登录',
               isShowCancelBtn: false
             }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN')
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
             }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN')
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
             })
           }
         }
@@ -209,10 +209,10 @@ export default {
                 content: res.msg,
                 isShowCancelBtn: false
               }).then(() => {
-                this.RECORD_TEMPORARYURL()
-                this.SIGN_OUT()
-                window.location.href = this.clientData.mainUrl + '/login'
-              }).catch(() => {})
+                this.$store.dispatch('REDIRECT_LOGIN', result.code)
+              }).catch(() => {
+                this.$store.dispatch('REDIRECT_LOGIN', result.code)
+              })
             } else {
               this.$msgBox({
                 content: res.msg,
@@ -243,10 +243,10 @@ export default {
               content: res.msg,
               isShowCancelBtn: false
             }).then(() => {
-              this.RECORD_TEMPORARYURL()
-              this.SIGN_OUT()
-              window.location.href = this.clientData.mainUrl + '/login'
-            }).catch(() => {})
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            }).catch(() => {
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            })
           } else {
             this.$msgBox({
               content: res.msg,
@@ -313,10 +313,10 @@ export default {
               content: res.msg,
               isShowCancelBtn: false
             }).then(() => {
-              this.RECORD_TEMPORARYURL()
-              this.SIGN_OUT()
-              window.location.href = this.clientData.mainUrl + '/login'
-            }).catch(() => {})
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            }).catch(() => {
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            })
           } else {
             this.$msgBox({
               content: res.msg,

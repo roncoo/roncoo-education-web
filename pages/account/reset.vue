@@ -111,8 +111,10 @@ export default {
               content: '登录异常，请重新登录',
               isShowCancelBtn: false
             }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN')
-            }).catch(() => {})
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            }).catch(() => {
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            })
           } else {
             this.$msgBox({
               content: result.msg,

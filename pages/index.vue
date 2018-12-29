@@ -147,6 +147,7 @@ export default {
     if (this.webInfo && this.webInfo.isEnableVip) {
       this.openVip = true
     }
+    // this.$store.dispatch('REDIRECT_LOGIN', 301)
   }
 }
 </script>

@@ -17,6 +17,8 @@ export default {
     await dispatch('GET_NAV')
     const web = await dispatch('GET_WEBINFO')
     // console.log(web)
+    console.log(context.route.query.code)
+    let tokenCode = context.route.query.code || ''
     console.log('wa=============')
   },
   GET_ABOUT (store) {// 获取关联信息
@@ -100,7 +102,7 @@ export default {
     })
   },
   GET_USERINFO (store,cb) {
-    getUserInfo({orgNo: 'lingke'})
+    getUserInfo({orgNo: store.state.clientData.no})
     .then(res => {
       console.log(res)
       console.log('aaaaa')
@@ -114,9 +116,16 @@ export default {
       }
     })
   },
-  REDIRECT_LOGIN (store) {
+  REDIRECT_LOGIN (store, codeNo) {
     store.commit('SET_TEMPORARYURL');
     store.commit('SIGN_OUT');
-    this.$router.push({name: 'login'})
+    codeNo = codeNo || ''
+    let url = escape(window.location.href)
+    let no = store.state.clientData.no
+    let id = store.state.clientData.id
+    let newUrl = `http://roncoo.iok.la/auth/${no}?clientId=${id}&responseType=code&code=${codeNo}&redirectUri=${url}`
+    console.log(newUrl)
+    window.location.href = newUrl
+    // this.$router.push({name: 'login'})
   }
 }

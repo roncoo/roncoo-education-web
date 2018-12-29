@@ -89,10 +89,10 @@ export default {
               content: '登录超时，请重新登陆',
               isShowCancelBtn: false
             }).then(() => {
-              this.$store.commit('SET_TEMPORARYURL')
-              this.$store.commit('SIGN_OUT')
-              this.$router.push({name: 'login'})
-            }).catch(() => {})
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            }).catch(() => {
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            })
           } else {
             this.$msgBox({
               content: result.msg,
