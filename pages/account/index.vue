@@ -150,8 +150,10 @@ export default {
             content: '登陆超时，请重新登陆',
             isShowCancelBtn: false
           }).then(() => {
-            this.$store.dispatch('REDIRECT_LOGIN')
-          }).catch(() => {})
+            this.$store.dispatch('REDIRECT_LOGIN', result.code)
+          }).catch(() => {
+            this.$store.dispatch('REDIRECT_LOGIN', result.code)
+          })
         } else {
           this.$msgBox({
             content: result.msg,
@@ -197,8 +199,10 @@ export default {
               content: '登陆超时，请重新登陆',
               isShowCancelBtn: false
             }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN')
-            }).catch(() => {})
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            }).catch(() => {
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            })
           } else {
             this.$msgBox({
               content: result.msg,

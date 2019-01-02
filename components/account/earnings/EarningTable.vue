@@ -123,9 +123,9 @@
               content: '登录超时，请重新登录',
               isShowCancelBtn: false
             }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN')
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
             }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN')
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
             })
           } else {
             this.notdata = true
@@ -165,9 +165,9 @@
               content: '登录超时，请重新登录',
               isShowCancelBtn: false
             }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN')
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
             }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN')
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
             })
           } else {
             this.notdata = true

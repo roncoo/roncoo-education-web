@@ -225,8 +225,10 @@ export default {
                 content: res.msg,
                 isShowCancelBtn: false
               }).then(() => {
-                this.$store.dispatch('REDIRECT_LOGIN');
-              }).catch(() => {})
+                this.$store.dispatch('REDIRECT_LOGIN', result.code)
+              }).catch(() => {
+                this.$store.dispatch('REDIRECT_LOGIN', result.code)
+              })
             } else {
               this.$msgBox({
                 content: res.msg,
@@ -331,10 +333,10 @@ export default {
               content: res.msg,
               isShowCancelBtn: false
             }).then(() => {
-              this.RECORD_TEMPORARYURL()
-              this.SIGN_OUT()
-              this.$router.push({name: 'login'})
-            }).catch(() => {})
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            }).catch(() => {
+              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            })
           } else {
             this.$msgBox({
               content: res.msg,
