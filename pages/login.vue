@@ -545,6 +545,7 @@ export default {
       width: 50%;
       text-align: center;
       cursor: pointer;
+      line-height: 60px;
     }
     span {
       display: inline-block;

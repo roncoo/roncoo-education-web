@@ -14,7 +14,7 @@
         </ul>
         <ul class="top_list clearfix" v-else>
           <li class="s_left"><a href="javascript:" @click="login">登录</a></li>
-          <li><a href="javascript:" @click="login">注册</a></li>
+          <li><a href="javascript:" @click="register">注册</a></li>
         </ul>
       </div>
     </div>
@@ -70,9 +70,11 @@ export default {
       this.$router.push({name: 'vip'})
     },
     login () {
-      this.$store.dispatch('REDIRECT_LOGIN')
-      // this.$store.commit('SET_TEMPORARYURL');
-      // this.$router.push({name: 'login'});
+      this.$store.commit('SET_TEMPORARYURL');
+      this.$router.push({name: 'login'});
+    },
+    register () {
+      this.$router.push({name: 'login', query: {tab: 2}});
     }
   },
   mounted () {

@@ -14,7 +14,6 @@ const createHttp = (token) => {
   }
   // 需要全路径才能工作
   if (process.server) {
-    
     if (token) {
       head.token = token
     }
