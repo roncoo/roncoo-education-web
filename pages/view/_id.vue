@@ -1,6 +1,6 @@
 <template>
   <div class="course_detail">
-    <div class="" v-if="isbuy"></div>
+    <y-watch-video  v-if="courseInfo.isPay" :courseInfo="courseInfo" @playfunc="videoPlay" :nowNo="nowPeriodNo"></y-watch-video>
     <y-display v-else :courseInfo="courseInfo"></y-display>
     <div class=" detail_info detail_box clearfix">
       <div class="layout_left">
@@ -39,12 +39,14 @@
 import YDisplay from '~/components/course/Display'
 import YFooter from '~/components/common/Footer'
 import YSyllabus from '~/components/course/Syllabus'
-import {courseDetail, userCourseDetail} from '~/api/course.js'
+import YWatchVideo from '~/components/course/WatchVideo'
+import {courseDetail, userCourseDetail, chapterSign} from '~/api/course.js'
 export default {
   components: {
     YFooter,
     YDisplay,
     YSyllabus,
+    YWatchVideo
   },
   head () {
     return {
@@ -75,6 +77,8 @@ export default {
           result.teacherInfo = data.data.lecturer;
           result.isbuy = false;
           result.isLogin = false;
+        }else if (data.code >= 300 && data.code <= 400){
+          context.redirect('login');
         }else{
           result.courseInfo = null;
         }
@@ -99,7 +103,39 @@ export default {
     
   },
   methods: {
-    videoPlay () {
+    videoPlay (data) {
+      console.log(data)
+      if (this.courseInfo.isPay || data.isFree) {
+      window.scrollTo(0, 0)
+      console.log(data)
+      this.nowPeriodNo = data.id
+      chapterSign({
+        ip: 'string',
+        periodId: data.id,
+        videoVid: data.videoVid
+      }).then(res => {
+        res = res.data
+        this.isResetVideo = false
+        console.log(res)
+        console.log("res==========")
+        if (res.code === 200) {
+          this.play(Object.assign({vid: vid}, res.data));
+        } else if (res.code === 402) {
+          this.$msgBox({
+            content: '购买后才可以观看',
+            isShowCancelBtn: false
+          })
+        }
+      }).catch(() => {
+        this.isResetVideo = false
+      })
+      } else {
+        this.$msgBox({
+          content: '购买后才可以播放',
+          isShowCancelBtn: false
+        })
+        return false;
+      }
 
     }
   },

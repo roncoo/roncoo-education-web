@@ -47,19 +47,19 @@
         </div>
         <div class="cate_panel">
           <div  v-if="cateType == 1">
-            <dl v-for="(one, index) in chapterList" :key="index">
+            <dl v-for="(one, index) in courseInfo.chapterList" :key="index">
               <dt>第{{index + 1}}章：{{one.chapterName}}</dt>
-              <dd v-for="(two, num) in one.periodInfoV2DTOList" :key="num" :class="{on : nowNo == two.periodNo}" @click="videoPlay(two)"><i class="iconfont">&#xe690;</i><span>第{{num + 1}}讲：</span>{{two.periodName}}
+              <dd v-for="(two, num) in one.periodList" :key="num" :class="{on : nowNo == two.periodNo}" @click="videoPlay(two)"><i class="iconfont">&#xe690;</i><span>第{{num + 1}}讲：</span>{{two.periodName}}
                 <span class="no_video2" v-if="!two.periodVideoDTOList || !two.periodVideoDTOList.length">(未更新)</span>
                 <span class="c_blue" v-if="courseInfo.isFree || two.isFree">(免费)</span>
               </dd>
             </dl>
           </div>
           <div v-if="cateType == 2">
-            <dl v-for="(one, index) in chapterList" :key="index">
+            <dl v-for="(one, index) in courseInfo.chapterList" :key="index">
               <dt>{{one.chapterName}}</dt>
-              <dd v-for="(two, num) in one.periodInfoV2DTOList" :key="num" v-if="two.accessoryInfoDTOList && two.accessoryInfoDTOList.length">
-                <a href="javascript:" @click="noDown(two)"><i class="iconfont">&#xe602;</i>{{two.accessoryInfoDTOList[0].acName}}</a>
+              <dd v-for="(two, num) in one.periodList" :key="num" v-if="two.isDoc">
+                <a href="javascript:" @click="noDown(two)"><i class="iconfont">&#xe602;</i>{{two.docName}}</a>
               </dd>
             </dl>
           </div>
@@ -73,14 +73,6 @@ import {downAcc, addCollection} from '~/api/user.js'
 export default {
   props: {
     courseInfo: {
-      type: Object,
-      default: null
-    },
-    chapterList: {
-      type: Array,
-      default: []
-    },
-    teacherInfo: {
       type: Object,
       default: null
     },
@@ -159,14 +151,14 @@ export default {
     },
     videoPlay (data) {
       console.log(data)
+      if (!data.videoVid) {
+        return false;
+      }
       this.$emit('playfunc', data)
     }
   },
   mounted () {
     this.userInfo = this.$store.state.userInfo;
-    if (this.$store.state.userInfo.isVip && this.$store.state.userInfo.expireTime && new Date(this.$store.state.userInfo.expireTime).getTime() > new Date().getTime()) {
-        this.isVip = true
-      }
     console.log(this.$store.state.userInfo)
   }
 }

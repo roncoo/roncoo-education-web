@@ -102,8 +102,6 @@ export default {
   GET_USERINFO (store,cb) {
     getUserInfo({orgNo: 'lingke'})
     .then(res => {
-      console.log(res)
-      console.log('aaaaa')
       if (res.data.code == 200) {
         store.commit('SET_USER', res.data.data)
         if (cb) {

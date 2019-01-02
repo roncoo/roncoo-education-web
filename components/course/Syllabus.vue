@@ -6,12 +6,12 @@
       <div class="chapter_name">
         <span>第{{index + 1}}章&nbsp;&nbsp;</span>{{one.chapterName}}
       </div>
-      <div class="period_info" v-for="(two, num) in one.courseChapterPeriodList" :key="num">
+      <div class="period_info" v-for="(two, num) in one.periodList" :key="num">
         <div class="period_top" @click="videoPlay(two)" :class="{on : nowNo == two.periodNo}">
           <div class="period_video" :class="{no_v: !two.videoVid}"></div>
           <span class="period_num">第{{num+1}}讲</span>
           <span v-if="!two.videoVid" class="no_video">(未更新)</span>
-          <span v-if="allFree || two.isFree" class="c_blue">(免费)</span>
+          <span v-if="two.isFree" class="c_blue">(免费)</span>
           {{two.periodName}}
           <span class="video_time fr" v-if="two.videoVid">{{two.videoLength}}分钟</span>
         </div>
@@ -29,10 +29,6 @@ export default {
       type: Array,
       default: []
     },
-    courseData: {
-      type: Object,
-      default: null
-    },
     nowNo: {
       type: String,
       default: ''
@@ -40,12 +36,47 @@ export default {
   },
   data (){
     return {
-      allFree : this.courseData? this.courseData.courseInfoDTO.isFree : false 
     }
   },
   methods: {
+    noDown (item) {
+
+      console.log(item)
+      if (!this.$store.state.tokenInfo) {
+        this.$msgBox({
+          content: '登录后才可以下载'
+        }).then(res => {
+          this.$store.dispatch('REDIRECT_LOGIN');
+        }).catch(() => {
+        })
+        return false;
+      }
+      if (!item.isFree) {
+        this.$msgBox.showMsgBox({
+          content: '购买后才可以下载',
+          isShowCancelBtn: false
+        }).then(() => {
+          // this.openOrder()
+        }).catch(() => {})
+        return false;
+      }
+      downAcc({id: item.accessoryInfoDTOList[0].id}).then(res => {
+        console.log(res)
+        if (res.code == 200) {
+          window.location.href = res.data
+        } else {
+          this.$msgBox.showMsgBox({
+          content: res.msg,
+          isShowCancelBtn: false
+        }).catch(() => {})
+        }
+      })
+    },
     videoPlay (data) {
       console.log(data)
+      if (!data.videoVid) {
+        return false;
+      }
       if (!this.$store.state.tokenInfo) {
         this.$msgBox({
           content: '请先登录'
@@ -55,17 +86,9 @@ export default {
         })
         return false;
       }
-      if (data.isFree || this.allFree) {
-        this.$emit('playfunc', data)
-      }else{
-        this.$msgBox({
-          content: '该章节购买后才可以播放'
-        }).then(res => {
-          this.$store.dispatch('REDIRECT_LOGIN');
-        }).catch(() => {
-        })
-        return false;
-      }
+      
+      this.$emit('playfunc', data)
+      
     }
   }
 }
