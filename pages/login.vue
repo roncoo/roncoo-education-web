@@ -51,10 +51,9 @@
             </div>
             <p class="hellow_text">欢迎来到{{clientData.name}}</p>
             <ul class="btn_box clearfix">
-              <li><a :href="clientData.accountUrl">用户中心</a></li>
-              <li><a :href="clientData.accountUrl + '/lesson'">我的课程</a></li>
-              <li><a :href="clientData.accountUrl + '/study'">学习记录</a></li>
-              <li><a :href="clientData.accountUrl + '/order'">我的订单</a></li>
+              <li><nuxt-link :to="{name: 'account-teacher'}">用户中心</nuxt-link></li>
+              <li><nuxt-link :to="{name: 'account-study'}">学习记录</nuxt-link></li>
+              <li><nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link></li>
             </ul>
             <div>
               <a href="javascript:" @click="signOut" class="out_btn">退出登录</a>
