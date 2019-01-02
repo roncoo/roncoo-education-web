@@ -7,7 +7,7 @@ export default {
         name: '领课学院',
         domain: 'roncoo.com',
         tokenName: 'OSTK',
-        mainUrl: 'http://edu.roncoo.com',
+        mainUrl: 'http://edu.os.roncoo.com',
         accountUrl: 'http://account.edu.roncoo.com'
     }
 }
