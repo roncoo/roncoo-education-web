@@ -72,7 +72,8 @@ module.exports = {
       '/user': {target: config.baseUrl, ws: false },
       '/agent': {target: config.baseUrl, ws: false },
       '/zuul': {target: config.baseUrl, ws: false },
-      '/auth': {target: config.baseUrl, ws: false }
+      '/auth/course': {target: config.baseUrl, ws: false },
+      '/auth/user': {target: config.baseUrl, ws: false }
   },
 
   cache: true,

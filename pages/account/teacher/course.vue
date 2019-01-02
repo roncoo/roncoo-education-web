@@ -113,7 +113,7 @@ export default {
           } else {
             if (result.code >= 300 && result.code < 400) {
               this.$msgBox({
-                content: '登陆超时，请重新登陆',
+                content: '登录超时，请重新登录',
                 isShowCancelBtn: false
               }).then(() => {
                 this.$store.dispatch('REDIRECT_LOGIN', result.code)
@@ -159,7 +159,7 @@ export default {
           } else {
             if (result.code >= 300 && result.code < 400) {
               this.$msgBox({
-                content: '登陆超时，请重新登陆',
+                content: '登录超时，请重新登录',
                 isShowCancelBtn: false
               }).then(() => {
                 this.$store.dispatch('REDIRECT_LOGIN', result.code)
@@ -201,7 +201,7 @@ export default {
           this.pageObj = result.data;
         } else if (result.code > 300 && result.code <400) {
           this.$msgBox({
-            content: '登陆超时，请重新登陆',
+            content: '登录超时，请重新登录',
             isShowCancelBtn: false
           }).then(() => {
             this.$store.dispatch('REDIRECT_LOGIN', result.code)
