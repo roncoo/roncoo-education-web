@@ -38,6 +38,7 @@ export default {
   // 退出登录
   SIGN_OUT: (state) => {
     state.tokenInfo = ''
+    state.userInfo = ''
     cookie.delInClient(state.clientData.tokenName)
     removeStore('OcUserInfo')
     // setStore('tokenInfo', info.info)

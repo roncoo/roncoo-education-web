@@ -267,9 +267,9 @@ export default {
             confirmBtnText: '立即登录',
             isShowCancelBtn: false
           }).then(() => {
-            this.tab = 1
+            this.changetab(1)
           }).catch(() => {
-            this.tab = 1
+            this.changetab(1)
           })
           this.pobj = {
             mobile: '',

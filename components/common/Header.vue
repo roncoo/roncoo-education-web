@@ -64,6 +64,7 @@ export default {
     signOut () {
       this.$store.commit('SIGN_OUT');
       this.userInfo = '';
+      window.location.reload()
       console.log('退出登录')
     },
     goVip () {
@@ -89,7 +90,7 @@ export default {
     }
     console.log(this.userInfo)
     console.log("this.userInfo=============")
-    if (this.$store.state.tokenInfo) {
+    if (this.$store.state.tokenInfo && this.userInfo) {
       this.name = this.userInfo.mobile
       if (this.userInfo.userType === 2 || this.userInfo.userType === 4) {
         this.isTeacher = true

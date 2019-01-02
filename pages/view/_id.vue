@@ -78,7 +78,8 @@ export default {
           result.isbuy = false;
           result.isLogin = false;
         }else if (data.code >= 300 && data.code <= 400){
-          context.redirect('login');
+          // context.redirect('login');
+          context.store.dispatch('REDIRECT_LOGIN')
         }else{
           result.courseInfo = null;
         }
