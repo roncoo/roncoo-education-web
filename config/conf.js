@@ -3,6 +3,11 @@ if (process.env.NODE_ENV == 'development') {
     title: '领课学院',
     baseUrl: 'http://192.168.1.181:5840/api'
   }
+}else if (process.env.NODE_ENV == 'testing') {  
+  module.exports =  {
+    title: '领课学院',
+    baseUrl: 'http://192.168.1.181:5840/api'
+  }
 }else {
   module.exports =  {
     title: '领课学院',
