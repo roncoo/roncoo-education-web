@@ -1,7 +1,7 @@
 <template>
   <div class="course_detail">
-    <y-watch-video  v-if="courseInfo.isPay" :courseInfo="courseInfo" @playfunc="videoPlay" :nowNo="nowPeriodNo"></y-watch-video>
-    <y-display v-else :courseInfo="courseInfo"></y-display>
+    <y-watch-video  v-if="courseInfo.isPay" :courseInfo="courseInfo" @playfunc="videoPlay" :nowNo="nowPeriodNo" ref="watchVideo"></y-watch-video>
+    <y-display v-else :courseInfo="courseInfo" ref="watchVideo"></y-display>
     <div class=" detail_info detail_box clearfix">
       <div class="layout_left">
         <ul class="course_tab clearfix">
@@ -120,7 +120,7 @@ export default {
         console.log(res)
         console.log("res==========")
         if (res.code === 200) {
-          this.play(Object.assign({vid: vid}, res.data));
+          this.play(Object.assign({vid: data.videoVid}, res.data));
         } else if (res.code === 402) {
           this.$msgBox({
             content: '购买后才可以观看',
@@ -137,7 +137,30 @@ export default {
         })
         return false;
       }
-
+    },
+    play (data) {
+      console.log(data)
+      let box = this.$refs.watchVideo.$refs.videobox;
+      if (this.player) {
+        this.player.changeVid({
+          vid:data.vid,
+          playsafe: data.token,
+          ts: data.ts,
+          sign: data.sign,
+          autoplay: true
+        });
+      } else {
+        this.player = polyvObject('#player').videoPlayer({
+            'width': box.offsetWidth,
+            'height': box.offsetHeight,
+            'forceH5': true,
+            'code': data.code,
+            'playsafe': data.token,
+            'ts': data.ts,
+            'sign': data.sign,
+            'vid': data.vid
+        });
+      }
     }
   },
   mounted () {

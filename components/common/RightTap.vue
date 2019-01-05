@@ -60,7 +60,7 @@ export default {
   },
   data () {
     return {
-      webInfo: this.$store.state.webInfo,
+      webInfo: '',
       isKefu: false,
       hideEwm: false
     }
@@ -87,6 +87,7 @@ export default {
     }
   },
   mounted () {
+    this.webInfo = this.$store.state.webInfo
     if (this.$route.path != '/' && this.$route.path != '/index') {
       this.hideEwm = true
     }

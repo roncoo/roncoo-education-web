@@ -20,6 +20,18 @@ export default {
         this.$store.dispatch('GET_USERINFO');
       }
     }
+  },
+  mounted () {
+    (function(){
+      var sc = document.createElement('script');
+      sc.src = 'https://player.polyv.net/script/polyvplayer.min.js';
+      var sList = document.getElementsByTagName('script');
+      var s = sList[sList.length - 1]
+      s.parentNode.insertBefore(sc, s);
+    })()
+    document.addEventListener('click', () => {
+      this.$store.commit('HIDE_EWM')
+    })
   }
 }
   

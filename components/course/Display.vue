@@ -11,7 +11,7 @@
         </ul>
         <div class="clearfix">
           <div class="video_box">
-            <div class="detail_view" id="player" :style="'background-image:url('+courseInfo.courseLogo+')'"></div>
+            <div class="detail_view" id="player" ref="videobox" :style="'background-image:url('+courseInfo.courseLogo+')'"></div>
             <!-- <span class="iconfont close_video" @click="stopVideo">&#xe616;</span> -->
           </div>
           <div class="view_info">
@@ -59,7 +59,7 @@ export default {
     courseInfo: {
       type: Object,
       default: null
-    },
+    }
   },
   data () {
     return {
@@ -92,7 +92,7 @@ export default {
 
       this.showPay = true;
       this.payData = {course: this.courseInfo, payType: 'course'};
-    },
+    }
   },
   mounted () {
   }

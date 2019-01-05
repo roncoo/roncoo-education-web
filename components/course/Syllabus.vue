@@ -7,7 +7,7 @@
         <span>第{{index + 1}}章&nbsp;&nbsp;</span>{{one.chapterName}}
       </div>
       <div class="period_info" v-for="(two, num) in one.periodList" :key="num">
-        <div class="period_top" @click="videoPlay(two)" :class="{on : nowNo == two.periodNo}">
+        <div class="period_top" @click="videoPlay(two)" :class="{on : nowNo == two.id}">
           <div class="period_video" :class="{no_v: !two.videoVid}"></div>
           <span class="period_num">第{{num+1}}讲</span>
           <span v-if="!two.videoVid" class="no_video">(未更新)</span>
@@ -40,7 +40,6 @@ export default {
   },
   methods: {
     noDown (item) {
-
       console.log(item)
       if (!this.$store.state.tokenInfo) {
         this.$msgBox({
@@ -75,6 +74,10 @@ export default {
     videoPlay (data) {
       console.log(data)
       if (!data.videoVid) {
+        this.$msgBox({
+          content: '该视频未更新',
+          isShowCancelBtn: false
+        }).catch(() => {})
         return false;
       }
       if (!this.$store.state.tokenInfo) {

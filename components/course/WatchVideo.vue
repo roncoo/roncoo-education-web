@@ -31,7 +31,7 @@
     <div class="video_body">
       <div class="video_content clearfix" :class="{show_panel: cateType}">
         <div class="win_box">
-          <div class="video_win" id="player" :style="'background-image:url('+courseInfo.courseImg+')'">
+          <div class="video_win" id="player" ref="videobox" :style="'background-image:url('+courseInfo.courseLogo+')'">
           </div>
           <span class="iconfont close_video" v-if="showTop" @click="stopVideo">&#xe616;</span>
         </div>
@@ -49,7 +49,7 @@
           <div  v-if="cateType == 1">
             <dl v-for="(one, index) in courseInfo.chapterList" :key="index">
               <dt>第{{index + 1}}章：{{one.chapterName}}</dt>
-              <dd v-for="(two, num) in one.periodList" :key="num" :class="{on : nowNo == two.periodNo}" @click="videoPlay(two)"><i class="iconfont">&#xe690;</i><span>第{{num + 1}}讲：</span>{{two.periodName}}
+              <dd v-for="(two, num) in one.periodList" :key="num" :class="{on : nowNo == two.id}" @click="videoPlay(two)"><i class="iconfont">&#xe690;</i><span>第{{num + 1}}讲：</span>{{two.periodName}}
                 <span class="no_video2" v-if="!two.periodVideoDTOList || !two.periodVideoDTOList.length">(未更新)</span>
                 <span class="c_blue" v-if="courseInfo.isFree || two.isFree">(免费)</span>
               </dd>
@@ -79,7 +79,7 @@ export default {
     nowNo: {
       type: String,
       default: ''
-    },
+    }
   },
   data () {
     return {
@@ -152,6 +152,10 @@ export default {
     videoPlay (data) {
       console.log(data)
       if (!data.videoVid) {
+        this.$msgBox({
+          content: '该视频未更新',
+          isShowCancelBtn: false
+        }).catch(() => {})
         return false;
       }
       this.$emit('playfunc', data)
@@ -264,8 +268,8 @@ export default {
       border: 5px solid #000;
     }
     .video_win {
-      width: 1120px;
-      height: 595px;
+      width: 1110px;
+      height: 585px;
       -webkit-background-size: 100%;
       background-size: 100%;
       &.mini_win {
