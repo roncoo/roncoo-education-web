@@ -47,7 +47,6 @@
   </div>
 </template>
 <script>
-import {addCollection, attentionSave} from '~/api/user.js'
 import YHeader from '../common/Header'
 import DPay from '~/components/PayModal'
 export default {

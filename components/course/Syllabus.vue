@@ -59,17 +59,7 @@ export default {
         }).catch(() => {})
         return false;
       }
-      downAcc({id: item.accessoryInfoDTOList[0].id}).then(res => {
-        console.log(res)
-        if (res.code == 200) {
-          window.location.href = res.data
-        } else {
-          this.$msgBox.showMsgBox({
-          content: res.msg,
-          isShowCancelBtn: false
-        }).catch(() => {})
-        }
-      })
+      window.location.href = item.docUrl
     },
     videoPlay (data) {
       console.log(data)

@@ -5,13 +5,8 @@
         <router-link :to="{name: 'index'}"><li class="return_btn"><img class="return_img" src="~/assets/image/return.svg" alt=""></li></router-link>
         <li class="vider_title">
           {{courseInfo.courseName}}
-          <a :class="{collect_btn: true, noposi: true}" href="javascript:" @click="setCollection"><span class="iconfont">&#xe670;</span>&nbsp;收藏</a>
-          <!-- <a :class="{collect_btn: true, noposi: true, c_red: isShare}" href="javascript:"><span class="iconfont">&#xe610;</span>&nbsp;分享</a> -->
+          <!-- <a :class="{collect_btn: true, noposi: true}" href="javascript:" @click="setCollection"><span class="iconfont">&#xe670;</span>&nbsp;收藏</a> -->
         </li>
-        <!-- <li>
-          <a href="#" class="iconfont left_30">&#xe69e;</a>
-          <a href="#" class="iconfont">&#xe63e;</a>
-        </li> -->
       </ul>
       <ul class="header_right clearfix">
         <li v-if="userInfo.roleType === 2"><a :href="clientData.accountUrl + '/teacher/course'" class="left_col">讲师中心</a></li>
@@ -59,7 +54,7 @@
             <dl v-for="(one, index) in courseInfo.chapterList" :key="index">
               <dt>{{one.chapterName}}</dt>
               <dd v-for="(two, num) in one.periodList" :key="num" v-if="two.isDoc">
-                <a href="javascript:" @click="noDown(two)"><i class="iconfont">&#xe602;</i>{{two.docName}}</a>
+                <a href="javascript:" @click="noDown"><i class="iconfont">&#xe602;</i>{{two.docName}}</a>
               </dd>
             </dl>
           </div>
@@ -69,7 +64,6 @@
   </div>
 </template>
 <script>
-import {downAcc, addCollection} from '~/api/user.js'
 export default {
   props: {
     courseInfo: {
@@ -104,50 +98,25 @@ export default {
     },
     // 下载附件
     noDown (item) {
-      if (this.courseInfo.isPutaway != 1) {
+      if (!this.$store.state.tokenInfo) {
         this.$msgBox({
-          content: '该课程已下架',
-          isShowCancelBtn: false
-        }).catch(() => {})
-        return
+          content: '登录后才可以下载'
+        }).then(res => {
+          this.$store.dispatch('REDIRECT_LOGIN');
+        }).catch(() => {
+        })
+        return false;
       }
-      downAcc({id: item.accessoryInfoDTOList[0].id}).then(res => {
-        console.log(res)
-        if (res.code == 200) {
-          window.location.href = res.data
-        } else {
-          this.$msgBox({
-          content: res.msg,
+      if (!item.isFree) {
+        this.$msgBox.showMsgBox({
+          content: '购买后才可以下载',
           isShowCancelBtn: false
+        }).then(() => {
+          // this.openOrder()
         }).catch(() => {})
-        }
-      })
-    },
-    // 收藏课程
-    setCollection () {
-      addCollection({
-        collectionType: 1,
-        courseCategory: 1,
-        refNo: this.courseInfo.id,
-        mobile: this.$store.state.userInfo.mobile
-      }).then(res => {
-        console.log(res)
-        if (res.data.code === 200) {
-          this.$msgBox({
-            content: '收藏成功',
-            isShowCancelBtn: false
-          })
-          this.isCollect = true
-        } else {
-          this.$msgBox({
-            content: res.data.msg,
-            isShowCancelBtn: false
-          })
-          if (res.code === 406) {
-            this.isCollect = true
-          }
-        }
-      })
+        return false;
+      }
+      window.location.href = item.docUrl
     },
     videoPlay (data) {
       console.log(data)
