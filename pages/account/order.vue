@@ -61,8 +61,8 @@ import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DPaymodal from '~/components/account/PayModal'
 import {orderList, orderClose} from '~/api/account/course.js'
-import {getUserInfo} from '~/api/user.js'
 import DPage from '~/components/Page'
+import {myHttp} from '~/utils/myhttp.js'
 export default {
   data () {
     return {
@@ -101,75 +101,31 @@ export default {
     getOrderList () {
       this.obj.lecturerUserNo = this.$store.state.userInfo.userNo
       console.log(this.obj)
-      orderList(this.obj).then(res => {
-        let result = res.data
-        console.log(result)
-        console.log('order==========')
-        if (result.code === 200) {
-          this.pageObj = result.data;
-          if (result.data.list.length > 0) {
-            this.notdata = false;
-          } else {
-            this.notdata = true;
-          }
+      myHttp.call(this, {
+        method: orderList,
+        params: this.obj
+      }).then(res => {
+        this.pageObj = res.data;
+        if (res.data.list.length > 0) {
+          this.notdata = false;
         } else {
           this.notdata = true;
-          if (result.code >= 300 && result.code < 400) {
-            this.$msgBox({
-              content: '登录超时，请重新登录',
-              isShowCancelBtn: false
-            }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            })
-          } else {
-            this.$msgBox({
-              content: result.msg,
-              isShowCancelBtn: false
-            }).catch(() => {})
-          }
         }
-      }).catch(msg => {
-        this.$msgBox({
-          content: '加载数据失败，请稍后刷新再试！！',
-          isShowCancelBtn: false
-        })
       })
     },
     closeOrder (orderNo) {
-      orderClose({orderNo}).then(res => {
-        let result = res.data
-        console.log(result)
-        if (result.code === 200) {
-          this.$msgBox({
-            content: '取消成功',
-            isShowCancelBtn: false,
-            edit: false
-          }).then(async (val) => {
-            window.location.reload()
-          })
-        } else {
-          if (result.code >= 300 && result.code < 400) {
-            this.$msgBox({
-              content: '登录超时，请重新登录',
-              isShowCancelBtn: false
-            }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            })
-          } else {
-            this.$msgBox({
-              content: result.msg,
-              isShowCancelBtn: false
-            }).catch(() => {})
-          }
-        }
-      }).catch(msg => {
+      myHttp.call(this, {
+        method: orderClose,
+        params: {orderNo}
+      }).then(res => {
         this.$msgBox({
-          content: '加载数据失败，请稍后刷新再试！！',
-          isShowCancelBtn: false
+          content: '取消成功',
+          isShowCancelBtn: false,
+          edit: false
+        }).then(async (val) => {
+          this.getOrderList()
+        }).catch(() => {
+          this.getOrderList()
         })
       })
     }

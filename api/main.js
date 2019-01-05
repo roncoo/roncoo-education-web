@@ -31,3 +31,7 @@ export const getNav = (params={}) => {
 export const indexClass = (params={}) => {
   return http().post('/course/api/course/category/list', params)
 }
+// 招募内容
+export const recruitInfo = (params={}) => {
+  return http().post('/system/api/website/recruit/get', params)
+}

@@ -20,7 +20,7 @@
   </div>
 </template>
 <script>
-// import {recruitInfo} from '~/api/main.js'
+import {recruitInfo} from '~/api/main.js'
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/TerraceSide'
@@ -44,26 +44,23 @@ export default {
   },
   data () {
     return {
-      recruitMsg: {
-        recruitTitle: '讲师招募',
-        recruitInfo: '招募内容'
-      }
+      recruitMsg: ''
     }
   },
-  // async asyncData (context) {
-  //   let clientNo = context.store.state.clientData.no
-  //   try {
-  //     let recruitData = await recruitInfo({recruitType: 1})
-  //     console.log(recruitData)
-  //     let recruitMsg = recruitData.data.data || {}
-  //     return {recruitMsg}
-  //   } catch (e) {
-  //     context.error({message: 'User not found', statusCode: 404})
-  //   }
-  // },
+  async asyncData (context) {
+    let clientNo = context.store.state.clientData.no
+    try {
+      let recruitData = await recruitInfo({recruitType: 1})
+      console.log(recruitData)
+      let recruitMsg = recruitData.data.data || {}
+      return {recruitMsg}
+    } catch (e) {
+      context.error({message: 'User not found', statusCode: 404})
+    }
+  },
   methods: {
     goApply () {
-      this.$router.push({name: 'apply', query: {apply: '1'}})
+      this.$router.push({name: 'apply'})
     }
   },
   mounted () {

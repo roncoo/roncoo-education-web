@@ -23,6 +23,7 @@
 </template>
 <script>
   import {cardInfo} from '~/api/account/user.js'
+  import {myHttp} from '~/utils/myhttp.js'
   export default {
     data () {
       return {
@@ -35,29 +36,12 @@
       },
       // 获取银行卡信息
       getCardInfo () {
-        cardInfo({
-          lecturerUserNo: this.$store.state.userInfo.userNo
+        myHttp.call(this, {
+          method: cardInfo,
+          params: {lecturerUserNo: this.$store.state.userInfo.userNo}
         }).then(res => {
-          let result = res.data
-          console.log(result)
-          console.log('cardinfo=======' + this.$store.state.userInfo.userNo)
-          if (result.code === 200) {
-            this.card = result.data || {}
-          } else if (result.code > 300 && result.code <400) {
-            this.$msgBox({
-              content: '登录超时，请重新登录',
-              isShowCancelBtn: false
-            }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            })
-          } else {
-            this.$msgBox({
-              content: result.msg,
-              isShowCancelBtn: false
-            }).catch(() => {})
-          }
+          console.log(res)
+          this.card = res.data || {}
         })
       }
     },

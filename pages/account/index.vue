@@ -114,6 +114,7 @@ import YSide from '~/components/account/Side'
 import DUpload from '~/components/account/Upload'
 import {getUserInfo} from '~/api/user.js'
 import {updateUserEducationInf} from '~/api/account/user.js'
+import { myHttp } from '~/utils/myhttp.js'
 export default {
   data () {
     return {
@@ -140,32 +141,12 @@ export default {
   },
   methods: {
     getByUser () {
-      getUserInfo().then(res => {
-        let result = res.data
-        console.log(result)
-        if (result.code === 200) {
-          this.obj = result.data || {}
-        } else if (result.code > 300 && result.code < 400) {
-          this.$msgBox({
-            content: '登录超时，请重新登录',
-            isShowCancelBtn: false
-          }).then(() => {
-            this.$store.dispatch('REDIRECT_LOGIN', result.code)
-          }).catch(() => {
-            this.$store.dispatch('REDIRECT_LOGIN', result.code)
-          })
-        } else {
-          this.$msgBox({
-            content: result.msg,
-            isShowCancelBtn: false
-          })
-        }
-      }).catch(msg => {
-        this.$msgBox({
-          content: '加载数据失败，请稍后刷新再试！！',
-          isShowCancelBtn: false
-        })
-      })
+      myHttp.call(this, {
+        method: getUserInfo
+      }).then(res => {
+        console.log(res)
+        this.obj = res.data || {}
+      }).catch(error => {})
     },
     editInfo () {
       this.isLogin = true;
@@ -180,40 +161,22 @@ export default {
       }
       this.id = this.obj.id;
       console.log(this.obj)
-      updateUserEducationInf(this.obj).then(res => {
+      myHttp.call(this, {
+        method: updateUserEducationInf,
+        params: this.obj,
+        confirm: () => {window.location.reload()},
+        cancel: () => {window.location.reload()}
+      }).then(res => {
         console.log(res)
-        let result = res.data
-        if (result.code === 200) {
-          this.$store.commit('SET_USER', result.data)
-          this.$msgBox({
-            content: '修改成功',
-            isShowCancelBtn: false
-          }).then(async (val) => {
-            window.location.reload()
-          }).catch(() => {
-            window.location.reload()
-          })
-        } else {
-          if (result.code >= 300 && result.code < 400) {
-            this.$msgBox({
-              content: '登录超时，请重新登录',
-              isShowCancelBtn: false
-            }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            })
-          } else {
-            this.$msgBox({
-              content: result.msg,
-              isShowCancelBtn: false
-            }).then(async (val) => {
-              window.location.reload()
-            }).catch(() => {
-              window.location.reload()
-            })
-          }
-        }
+        this.$store.commit('SET_USER', res.data)
+        this.$msgBox({
+          content: '修改成功',
+          isShowCancelBtn: false
+        }).then(async (val) => {
+          window.location.reload()
+        }).catch(() => {
+          window.location.reload()
+        })
       })
     },
     setUrl (res) {

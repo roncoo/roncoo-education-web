@@ -18,7 +18,7 @@
           </div>
           <div v-if="tab === 1">
             <div class="step_info">
-              <div class="clearfix">这里是协议内容</div>
+              <div class="clearfix" v-html="recruitMsg.entryAgreement">这里是协议内容</div>
             </div>
             <footer class="info_footer">
               <input type="checkbox" id="isRead" v-model="isRead">
@@ -31,7 +31,7 @@
               <button @click="goNext()" class="next_btn">下一步</button>
             </div>
           </div>
-          <div v-show="tab === 2 && applyType === '1'">
+          <div v-show="tab === 2">
             <div class="form_group">
               <div class="label">名称:</div>
               <div class="form_ctl">
@@ -107,12 +107,14 @@
       </div>
       <p class="foot_text">
         <span v-html="webInfo.copyright"></span>
-        <span>&nbsp;|&nbsp;</span>
-        <a href="http://www.miitbeian.gov.cn/" target="_blank">{{webInfo.icp}}</a>
+      </p>
+      <p class="foot_text">
+        <a href="http://www.roncoo.net/" class="lingke_link">领课教育云</a> 提供技术支持
+        <span v-if="webInfo.icp">&nbsp;|&nbsp;</span>
+        <a href="http://www.miitbeian.gov.cn/" class="lingke_link" target="_blank">{{webInfo.icp}}</a>
         <span v-if="webInfo.prn">&nbsp;|&nbsp;</span>
-        <a :href="'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=' + webInfo.prnNo" target="_blank" v-if="webInfo.prn"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{webInfo.prn}}</a>
-        </p>
-        <p class="foot_text"><a href="http://www.roncoo.net/" class="lingke_link">领课教育云</a> 提供技术支持</p>
+        <a :href="'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=' + webInfo.prnNo" target="_blank" class="lingke_link" v-if="webInfo.prn"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{webInfo.prn}}</a>
+      </p>
     </div>
   </div>
 </template>
@@ -120,6 +122,8 @@
 import YButton from '~/components/common/CodeButton'
 import {teacherEnter} from '~/api/user.js'
 import {uploadPic} from '~/api/upload.js'
+import {recruitInfo} from '~/api/main.js'
+import {myHttp} from '~/utils/myhttp.js'
 export default {
   head () {
       return {
@@ -143,7 +147,6 @@ export default {
       clientData: this.$store.state.clientData,
       webInfo: this.$store.state.webInfo,
       userInfo: this.$store.state.userInfo,
-      recruitMsg: {},
       recruitType: 1,
       applyType: '',
       applyTitle: '',
@@ -198,6 +201,10 @@ export default {
       dataObj.applyType = applyType
       dataObj.recruitType = recruitType
       dataObj.applyTitle = applyTitle
+      let recruitData = await recruitInfo({recruitType: 1})
+      console.log(recruitData)
+      let recruitMsg = recruitData.data.data || {}
+      dataObj.recruitMsg = recruitMsg
       return dataObj
     } catch (e) {
       context.error({message: 'User not found', statusCode: 404})
@@ -355,62 +362,14 @@ export default {
         clientId: this.$store.state.clientData.id
       }
       console.log(newObj)
-      if (this.applyType === '1') {
-        teacherEnter(newObj).then(res => {
-          console.log(res)
-          let result = res.data
-          if (result.code === 200) {
-            this.step3 = true
-            this.tab = 3
-          } else {
-            if (result.code >= 300 && result.code < 400) {
-              this.$msgBox({
-                content: result.msg,
-                isShowCancelBtn: false
-              }).then(() => {
-                this.$store.commit('SET_TEMPORARYURL')
-                this.$store.commit('SIGN_OUT')
-                this.$router.push({name: 'login'})
-              }).catch(() => {})
-            } else {
-              this.$msgBox({
-                content: result.msg,
-                isShowCancelBtn: false
-              }).catch(() => {})
-            }
-          }
-        })
-      } else if (this.applyType === '2') {
-        let uname = this.obj.lecturerName
-        let mobile = this.obj.mobile
-        let passwd = this.obj.passwd
-        let confirmPasswd = this.obj.rePasswd
-        let uno = this.obj.uno
-        let addr = this.obj.addr
-        let agentObj = {
-          uname,
-          mobile,
-          passwd,
-          confirmPasswd,
-          uno,
-          addr,
-          orgNo: this.clientNo
-        }
-        console.log(agentObj)
-        agentSave(agentObj).then(res => {
-          console.log(res)
-          let result = res.data
-          if (result.code === 200) {
-            this.step3 = true
-            this.tab = 3
-          } else {
-            this.$msgBox({
-              content: result.msg,
-              isShowCancelBtn: false
-            })
-          }
-        })
-      }
+      myHttp.call(this, {
+        method: teacherEnter,
+        params: newObj
+      }).then(res => {
+        console.log(res)
+        this.step3 = true
+        this.tab = 3
+      })
     },
     goIndex () {
       this.tab = 1

@@ -63,6 +63,7 @@
 <script>
   import DPage from '~/components/Page'
   import {teacherOrderList, teacherCashList} from '~/api/account/user.js'
+  import {myHttp} from '~/utils/myhttp.js'
   export default {
     components: {
       DPage
@@ -102,86 +103,40 @@
       },
       // 获取订单收益列表
       getTeacherOrderList () {
-        teacherOrderList({
-          lecturerUserNo: this.$store.state.userInfo.userNo,
-          pageCurrent: this.pageCurrent,
-          pageSize: 10
-        }).then(res => {
-          let result  = res.data
-          console.log(result)
-          console.log('order======')
-          if (result.code === 200) {
-            this.pageObj = result.data
-            if (!result.data.list.length) {
-              this.notdata = true
-            } else {
-              this.notdata = false
-            }
-          } else if (result.code > 300 && result.code < 400) {
-            this.notdata = true
-            this.$msgBox({
-              content: '登录超时，请重新登录',
-              isShowCancelBtn: false
-            }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            })
-          } else {
-            this.notdata = true
-            this.$msgBox({
-              content: result.msg,
-              isShowCancelBtn: false
-            }).catch(() => {})
+        myHttp.call(this, {
+          method: teacherOrderList,
+          params: {
+            lecturerUserNo: this.$store.state.userInfo.userNo,
+            pageCurrent: this.pageCurrent,
+            pageSize: 10
           }
-        }).catch(() => {
-          this.notdata = true
-          this.$msgBox({
-            content: '系统繁忙，请稍后重试',
-            isShowCancelBtn: false
-          }).catch(() => {})
+        }).then(res => {
+          console.log(res)
+          this.pageObj = res.data
+          if (!res.data.list.length) {
+            this.notdata = true
+          } else {
+            this.notdata = false
+          }
         })
       },
       // 获取提现记录
       getTeacherCashList () {
-        teacherCashList({
-          lecturerUserNo: this.$store.state.userInfo.userNo,
-          pageCurrent: this.pageCurrent,
-          pageSize: 10
-        }).then(res => {
-          let result  = res.data
-          console.log(result)
-          console.log('chsh======')
-          if (result.code === 200) {
-            this.pageObj = result.data
-            if (!result.data.list.length) {
-              this.notdata = true
-            } else {
-              this.notdata = false
-            }
-          } else if (result.code > 300 && result.code < 400) {
-            this.notdata = true
-            this.$msgBox({
-              content: '登录超时，请重新登录',
-              isShowCancelBtn: false
-            }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            })
-          } else {
-            this.notdata = true
-            this.$msgBox({
-              content: result.msg,
-              isShowCancelBtn: false
-            }).catch(() => {})
+        myHttp.call(this, {
+          method: teacherCashList,
+          params: {
+            lecturerUserNo: this.$store.state.userInfo.userNo,
+            pageCurrent: this.pageCurrent,
+            pageSize: 10
           }
-        }).catch(() => {
-          this.notdata = true
-          this.$msgBox({
-            content: '系统繁忙，请稍后重试',
-            isShowCancelBtn: false
-          }).catch(() => {})
+        }).then(res => {
+          console.log(res)
+          this.pageObj = res.data
+          if (!res.data.list.length) {
+            this.notdata = true
+          } else {
+            this.notdata = false
+          }
         })
       }
     },

@@ -40,6 +40,7 @@
   import YSide from '~/components/account/Side'
   import DPage from '~/components/Page'
   import {studyList} from '~/api/account/user.js'
+  import {myHttp} from '~/utils/myhttp.js'
   export default {
     components: {
       YHeader,
@@ -65,43 +66,20 @@
         this.getStudyList()
       },
       getStudyList () {
-        studyList({
-          pageCurrent: this.pageCurrent,
-          pageSize: 20
-        }).then(res => {
-          let result  = res.data
-          console.log(result)
-          console.log('study======')
-          if (result.code === 200) {
-            this.pageObj = result.data
-            if (!result.data.list.length) {
-              this.notdata = true
-            } else {
-              this.notdata = false
-            }
-          } else if (result.code > 300 && result.code < 400) {
-            this.notdata = true
-            this.$msgBox({
-              content: '登录超时，请重新登录',
-              isShowCancelBtn: false
-            }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            })
-          } else {
-            this.notdata = true
-            this.$msgBox({
-              content: result.msg,
-              isShowCancelBtn: false
-            }).catch(() => {})
+        myHttp.call(this, {
+          method: studyList,
+          params: {
+            pageCurrent: this.pageCurrent,
+            pageSize: 20
           }
-        }).catch(() => {
-          this.notdata = true
-          this.$msgBox({
-            content: '系统繁忙，请稍后重试',
-            isShowCancelBtn: false
-          }).catch(() => {})
+        }).then(res => {
+          console.log(res)
+          this.pageObj = res.data
+          if (!res.data.list.length) {
+            this.notdata = true
+          } else {
+            this.notdata = false
+          }
         })
       }
     },

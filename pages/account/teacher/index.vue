@@ -85,6 +85,7 @@ import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DUpload from '~/components/account/Upload'
 import {getLecturerInfo, updataLecturerInfo} from '~/api/account/user.js'
+import {myHttp} from '~/utils/myhttp.js'
 export default {
   data () {
     return {
@@ -94,34 +95,15 @@ export default {
   },
   methods: {
     getByTeacher () {
-      getLecturerInfo({lecturerUserNo: this.$store.state.userInfo.userNo})
-      .then(res => {
+      myHttp.call(this, {
+        method: getLecturerInfo,
+        params: {lecturerUserNo: this.$store.state.userInfo.userNo}
+      }).then(res => {
         console.log(res)
-        if (res.data.code = 200) {
-          this.teacherInfo = res.data.data;
-          this.editor2.txt.html(this.teacherInfo.introduce)
-          this.edit = false;
-          console.log(this.teacherInfo)
-        } else {
-          if (result.code >= 300 && result.code < 400) {
-            this.$msgBox({
-              content: '登录超时，请重新登录',
-              isShowCancelBtn: false
-            }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            })
-          } else {
-            this.$msgBox({
-              content: result.msg,
-              isShowCancelBtn: false
-            }).catch(() => {})
-          }
-        }
-      })
-      .catch(()=> {
-        // 获取讲师信息失败
+        this.teacherInfo = res.data;
+        this.editor2.txt.html(this.teacherInfo.introduce)
+        this.edit = false;
+        console.log(this.teacherInfo)
       })
     },
     userUpdate (e) {
@@ -130,15 +112,19 @@ export default {
       this.teacherInfo.introduce = ht
       console.log(111)
       this.teacherInfo.lecturerUserNo = this.$store.state.userInfo.userNo;
-      updataLecturerInfo(this.teacherInfo)
-      .then(res => {
+      myHttp.call(this, {
+        method: updataLecturerInfo,
+        params: this.teacherInfo
+      }).then(res => {
         console.log(res)
-        if (res.data.code = 200) {
+        this.$msgBox({
+          content: '修改成功',
+          isShowCancelBtn: false
+        }).then(() => {
           this.getByTeacher();
-        }
-      })
-      .catch(()=> {
-        // 获取讲师信息失败
+        }).catch(() => {
+          this.getByTeacher();
+        })
       })
     },
     setUrl (res) {

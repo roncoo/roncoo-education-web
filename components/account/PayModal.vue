@@ -35,8 +35,8 @@
           <input type="radio" id="payType1" name="payType" value="1" v-model="payType">
           <label for="payType1" class="pay pay_weixin" @click="changePay(1)"></label>
         </div>
-        <div class="tip" v-if="payType === 2">支付宝支付 {{data.paidPrice}}元</div>
-        <div class="tip" v-else>微信支付 {{data.paidPrice}}元</div>
+        <div class="tip" v-if="payType === 2">支付宝支付 {{data.pricePaid}}元</div>
+        <div class="tip" v-else>微信支付 {{data.pricePaid}}元</div>
         <div class="code">
           <canvas id="canvas"></canvas>
           <div class="create_tip" v-if="load">正在生成...</div>
@@ -73,11 +73,15 @@ export default {
     },
     getOrder (pt) {
       this.load = true;
+      console.log({
+        orderNo: this.data.orderNo,
+        payType: pt
+      })
       continuePay({
         orderNo: this.data.orderNo,
         payType: pt
       }).then(res => {
-        // console.log(res)
+        console.log(res)
         let result = res.data
         if (result.code === 200) {
           this.payType = result.data.payType;
@@ -142,7 +146,7 @@ export default {
     }
   },
   mounted () {
-    // console.log(this.data)
+    console.log(this.data)
     this.payType = parseInt(this.data.payType);
     this.getOrder(this.data.payType);
   }
@@ -155,7 +159,7 @@ export default {
 .paymodal{
   position: fixed;
   left: 50%;
-  top: 20%;
+  top: 10%;
   z-index: 999;
   width: 480px;
   margin-left: -240px;
@@ -286,9 +290,10 @@ export default {
   }
   .tip2{
     margin: 0 auto;
-    width: 130px;
+    width: 200px;
     padding: 13px 0 13px 70px;
-    height: 42px;
+    height: 60px;
+    margin-bottom: 20px;
     line-height: 20px;
     font-size: 14px;
     color: #fff;

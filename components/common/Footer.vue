@@ -35,13 +35,13 @@
     </div>
     <div class="copyright" v-if="service">
       <span v-html="service.copyright"></span>
-      <span v-if="service.icp">&nbsp;|&nbsp;</span>
-      <a href="http://www.miitbeian.gov.cn/" target="_blank">{{service.icp}}</a>
-      <span v-if="service.prn">&nbsp;|&nbsp;</span>
-      <a :href="'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=' + service.prnNo" target="_blank" v-if="service.prn"><img src="~/assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{service.prn}}</a>
     </div>
     <div class="icp_num">
       <a href="http://www.roncoo.net/" target="_blank" class="lingke_link">领课教育云</a> 提供技术支持
+      <span v-if="service.icp">&nbsp;|&nbsp;</span>
+      <a href="http://www.miitbeian.gov.cn/" target="_blank" class="lingke_link">{{service.icp}}</a>
+      <span v-if="service.prn">&nbsp;|&nbsp;</span>
+      <a :href="'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=' + service.prnNo" target="_blank" v-if="service.prn" class="lingke_link"><img src="~/assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{service.prn}}</a>
     </div>
   </div>
 </template>

@@ -65,6 +65,7 @@
 <script>
   import {bindCard} from '~/api/account/user.js'
   import YButton from '~/components/common/CodeButton'
+  import {myHttp} from '~/utils/myhttp.js'
   export default {
     components: {
       YButton
@@ -124,36 +125,20 @@
         }
         this.obj.lecturerUserNo = this.$store.state.userInfo.userNo
         this.obj.clientId = this.$store.state.clientData.id
-        bindCard(this.obj).then(res => {
-          let result = res.data
-          console.log(result)
-          console.log('bind===')
-          if (result.code === 200) {
-            this.$msgBox({
-              content: '绑定成功',
-              isShowCancelBtn: false
-            }).then(() => {
-              window.location.reload()
-            }).catch(() => {
-              window.location.reload()
-            })
-          } else if (result.code > 300 && result.code < 400) {
-            this.notdata = true
-            this.$msgBox({
-              content: '登录超时，请重新登录',
-              isShowCancelBtn: false
-            }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            })
-          } else {
-            this.$msgBox({
-              content: result.msg,
-              isShowCancelBtn: false
-            }).catch(() => {})
-          }
-        }).catch(() => {})
+        myHttp.call(this, {
+          method: bindCard,
+          params: this.obj
+        }).then(res => {
+          console.log(res)
+          this.$msgBox({
+            content: '绑定成功',
+            isShowCancelBtn: false
+          }).then(() => {
+            window.location.reload()
+          }).catch(() => {
+            window.location.reload()
+          })
+        })
       }
     }
   }
