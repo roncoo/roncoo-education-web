@@ -9,12 +9,7 @@
           <span class="col_block"></span>
           {{ item.name }}
           <span class="small_text">{{ item.zoneDesc }}</span>
-          <nuxt-link v-if="item.zoneCourseCategory == 1" :to="{name: 'list'}" class="fr small_text link_text">更多课程 ></nuxt-link>
-          <nuxt-link v-else-if="item.zoneCourseCategory == 0" :to="{name: 'library'}" class="fr small_text link_text">更多题 ></nuxt-link>
-          <nuxt-link v-else-if="item.zoneCourseCategory == 2" :to="{name: 'live'}" class="fr small_text link_text">更多直播 ></nuxt-link>
-          <nuxt-link v-else-if="item.zoneCourseCategory == 3" :to="{name: 'live'}" class="fr small_text link_text">更多直播 ></nuxt-link>
-          <nuxt-link v-else-if="item.zoneCourseCategory == 4" :to="{name: 'resource'}" class="fr small_text link_text">更多资源 ></nuxt-link>
-          <nuxt-link v-else :to="{name: 'courselist'}" class="fr small_text link_text">更多课程 ></nuxt-link>
+          <nuxt-link :to="{name: 'list'}" class="fr small_text link_text">更多课程 ></nuxt-link>
         </div>
         </div>
         <div class="zone_body">

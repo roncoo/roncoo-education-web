@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div class="foot_courses fl clearfix">
+      <!-- <div class="foot_courses fl clearfix">
         <div class="courses_top">课程推荐</div>
         <div class="foot_course fl" v-for="(item, index) in courseList" :key="index">
           <div class="img_box inline_box">
@@ -41,7 +41,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -70,7 +70,7 @@ export default {
   methods: {
     changeWidth (item) {
       console.log(item)
-      this.width = 750
+      this.width = 300
       this.categoryno1 = item.id
       this.twoList = item.twoList
       this.courseList = item.courseList
@@ -179,7 +179,7 @@ export default {
   }
   .list_items {
     height: 100%;
-    width: 450px;
+    width: 300px;
     padding: 0 30px;
     overflow-y: auto;
     overflow-x: hidden;

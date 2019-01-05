@@ -156,6 +156,10 @@ export default {
       background-color: #f5f5f5;
       text-align: center;
       margin-bottom: 10px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
       i{
         line-height: 120px;
         font-size: 80px;
