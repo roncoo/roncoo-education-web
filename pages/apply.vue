@@ -18,7 +18,7 @@
           </div>
           <div v-if="tab === 1">
             <div class="step_info">
-              <div class="clearfix" v-html="recruitMsg.entryAgreement">这里是协议内容</div>
+              <div class="clearfix" v-html="webInfo.entryAgreement">这里是协议内容</div>
             </div>
             <footer class="info_footer">
               <input type="checkbox" id="isRead" v-model="isRead">
@@ -122,7 +122,6 @@
 import YButton from '~/components/common/CodeButton'
 import {teacherEnter} from '~/api/user.js'
 import {uploadPic} from '~/api/upload.js'
-import {recruitInfo} from '~/api/main.js'
 import {myHttp} from '~/utils/myhttp.js'
 export default {
   head () {
@@ -201,10 +200,6 @@ export default {
       dataObj.applyType = applyType
       dataObj.recruitType = recruitType
       dataObj.applyTitle = applyTitle
-      let recruitData = await recruitInfo({recruitType: 1})
-      console.log(recruitData)
-      let recruitMsg = recruitData.data.data || {}
-      dataObj.recruitMsg = recruitMsg
       return dataObj
     } catch (e) {
       context.error({message: 'User not found', statusCode: 404})

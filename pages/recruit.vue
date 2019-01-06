@@ -6,10 +6,10 @@
       <div class="person_content">
         <div class="person_title">
           <!-- 讲师招募 -->
-          {{recruitMsg.recruitTitle}}
+          {{webInfo.recruitTitle}}
         </div>
         <div class="person_info">
-          <div class="clearfix" v-html="recruitMsg.recruitInfo"></div>
+          <div class="clearfix" v-html="webInfo.recruitInfo"></div>
           <div>
             <a href="javascript:" class="apply_btn" @click="goApply">申请成为讲师</a>
           </div>
@@ -20,7 +20,6 @@
   </div>
 </template>
 <script>
-import {recruitInfo} from '~/api/main.js'
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/TerraceSide'
@@ -44,18 +43,7 @@ export default {
   },
   data () {
     return {
-      recruitMsg: ''
-    }
-  },
-  async asyncData (context) {
-    let clientNo = context.store.state.clientData.no
-    try {
-      let recruitData = await recruitInfo({recruitType: 1})
-      console.log(recruitData)
-      let recruitMsg = recruitData.data.data || {}
-      return {recruitMsg}
-    } catch (e) {
-      context.error({message: 'User not found', statusCode: 404})
+      webInfo: this.$store.state.webInfo
     }
   },
   methods: {
@@ -64,6 +52,7 @@ export default {
     }
   },
   mounted () {
+    this.webInfo = this.$store.state.webInfo
   },
   components: {
     YHeader,
