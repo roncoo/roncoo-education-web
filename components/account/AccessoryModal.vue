@@ -122,6 +122,7 @@ export default {
         }).then(res => {
           // console.log(res)
           if (res.code === 200) {
+            itemfile.jd = 100
             itemfile.tip = '上传成功';
             that.upload();
             that.savaPic(res.data, itemfile.name);

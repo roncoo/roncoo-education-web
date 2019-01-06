@@ -153,6 +153,7 @@ export default {
           console.log(res)
           console.log('upload')
           if (res.code === 200) {
+            itemfile.jd = 100
             itemfile.tip = '上传成功';
             that.upload();
             that.savaVideo(res.data, itemfile.name);

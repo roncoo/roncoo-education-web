@@ -81,6 +81,7 @@ export default {
         if (res.code === 200) {
           e.target.value = '';
           that.tip = '上传成功';
+          that.jd = 100
           that.$emit('rtnUrl', {name: file.name, url: res.data});
         } else {
           that.tip = res.msg;
