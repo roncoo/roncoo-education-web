@@ -27,6 +27,7 @@ export default {
     console.log('进到记录token')
     state.tokenInfo = token
     console.log(state.tokenInfo)
+    document.cookie = "OSTK=" + token
     cookie.setInClient({key: state.clientData.tokenName, val: token})
     // setStore('tokenInfo', info.info)
   },
