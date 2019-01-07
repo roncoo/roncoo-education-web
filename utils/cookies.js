@@ -21,6 +21,9 @@ export default {
     let clent = store().state.clientData;
     // console.log(clent)
     Cookie.set(key, val, {expires: 1, domain: clent.domain})
+    if (!Cookie.get(key)) {
+      document.cookie = key + "=" + val
+    }
   },
   //删除客户端cookie
   delInClient:function (key) {
