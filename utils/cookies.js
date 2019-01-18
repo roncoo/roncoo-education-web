@@ -28,6 +28,7 @@ export default {
   //删除客户端cookie
   delInClient:function (key) {
     // console.log(clent)
-    Cookie.remove(key)
+    VueCookie.delete(key);
+    // Cookie.remove(key)
   }
 }
