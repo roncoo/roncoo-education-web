@@ -1,4 +1,3 @@
-import Cookie from 'js-cookie'
 import VueCookie from 'vue-cookie'
 import store from '../store/'
 export default {
