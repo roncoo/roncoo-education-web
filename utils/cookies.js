@@ -15,14 +15,14 @@ export default {
   getInClient:function (key) {
     // let clent = store().state.clientData;
     // console.log(clent)
-    let tokenInfo = JSON.parse(VueCookie.get(key));
+    let tokenInfo = JVueCookie.get(key);
     return tokenInfo;
   },
   //获取客户端cookie
   setInClient:function ({key, val}) {
     let clent = store().state.clientData;
     console.log(clent)
-    VueCookie.set(key, JSON.stringify(val), {expires: 1, domain: clent.domain});
+    VueCookie.set(key, val, {expires: 1, domain: clent.domain});
     // Cookie.set(key, val, {expires: 1, domain: clent.domain})
   },
   //删除客户端cookie
