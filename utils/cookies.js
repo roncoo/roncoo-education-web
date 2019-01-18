@@ -15,7 +15,7 @@ export default {
   getInClient:function (key) {
     // let clent = store().state.clientData;
     // console.log(clent)
-    let tokenInfo = JVueCookie.get(key);
+    let tokenInfo = VueCookie.get(key);
     return tokenInfo;
   },
   //获取客户端cookie
