@@ -94,8 +94,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.height)
-    // this.getClass()
   }
 }
 </script>

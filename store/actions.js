@@ -98,10 +98,10 @@ export default {
     })
   },
   GET_USERINFO (store,cb) {
-    console.log('获取用户信息')
+    // console.log('获取用户信息')
     getUserInfo({orgNo: store.state.clientData.no})
     .then(res => {
-      console.log(res)
+      // console.log(res)
       if (res.data.code == 200) {
         store.commit('SET_USER', res.data.data)
         if (cb) {

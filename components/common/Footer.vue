@@ -63,8 +63,6 @@
       }
     },
     mounted () {
-      console.log(this.$store.state.aboutList)
-      console.log('about======')
       friendLink().then(res => {
         console.log(res)
         if (res.data.code === 200) {

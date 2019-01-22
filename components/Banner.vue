@@ -39,9 +39,6 @@ export default {
       interval: null
     }
   },
-  computed: {
-    // ...mapState(['webInfo'])
-  },
   methods: {
     change () {
       this.interval = setInterval(() => {
@@ -60,7 +57,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.data)
+    // console.log(this.data)
     this.change();
   },
   components: {

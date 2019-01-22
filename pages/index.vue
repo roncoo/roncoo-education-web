@@ -101,7 +101,7 @@ export default {
   },
   async asyncData(context) {
     let clientNo = context.store.state.clientData.no;
-    console.log(clientNo)
+    // console.log(clientNo)
     
     try {
       let dataObj = {}
@@ -111,8 +111,6 @@ export default {
       let blockData = await indexClass()
       // 推荐课程
       let zonedata = await zoneCourse({zoneLocation: 0})
-      console.log(zonedata.data)
-      console.log("zonedata.data=======")
       // 活动标
       let zoneList = zonedata.data.data.list || []
       let courseNoList = []
@@ -129,8 +127,6 @@ export default {
       dataObj.advData = data.data.advList || []  //轮播图
       dataObj.zoneData = zonedata.data.data.list || []  //课程专区
       dataObj.classList = blockData.data.data.courseCategoryList || [] //轮播分类
-      console.log(dataObj.classList)
-      console.log('bbbbbbbb')
       return dataObj
     } catch (e) {
       context.error({ message: 'User not found', statusCode: 404 })
