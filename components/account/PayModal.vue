@@ -155,6 +155,7 @@ export default {
 <style lang="scss" scoped>
 .h180 {
   max-height: 370px;
+  min-height: 180px;
 }
 .paymodal{
   position: fixed;

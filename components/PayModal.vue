@@ -71,7 +71,7 @@
           <a class="solid_btn order_btn" v-else-if="courseData.courseCategory == 2" :href="'/live/detail/'+courseData.id">立即学习</a>
           <a class="solid_btn order_btn" v-else-if="courseData.courseCategory == 3" :href="'/live/bunch/'+courseData.id">立即学习</a>
           <a class="solid_btn order_btn" v-else href="javascript:" @click="reload">确定</a>
-          <a class="solid_btn order_btn" target="_blank" :href="clientData.accountUrl + '/order'">查看订单</a>
+          <a class="solid_btn order_btn" target="_blank" href="/account/order">查看订单</a>
         </div>
         <div class="ewm_img" v-if="webInfo && webInfo.weixinXcx">
           <img :src="webInfo.weixinXcx" alt="">
@@ -233,6 +233,7 @@
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
 .payrun{
+  min-height: 180px;
   .modal_body{
     padding: 30px;
     // height: 180px;
