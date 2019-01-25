@@ -1,7 +1,7 @@
 ## roncoo-education-web  领课在线教育系统
 
 > nuxtjs + koa2 + vue2.0 + vuex 搭建的服务端渲染在线教育类网站前端项目
->  github项目地址: [a a](www.baidu.com) 
+>  github项目地址: [https://github.com/roncoo/roncoo-education-web](https://github.com/roncoo/roncoo-education-web) 
 >  前端演示地址: [前端演示](http://edu.os.roncoo.com/)
 >  后台演示地址: [管理后台](http://roncoo.vicp.net/boss/login)
 
