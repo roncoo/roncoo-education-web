@@ -90,7 +90,7 @@
               </div>
             </div>
             <div>
-              <a href="javascript:" @click="isSubmit" class="next_btn">提交审核</a>
+              <a href="javascript:" disabled class="next_btn disabled">提交审核</a>
             </div>
           </div>
           <div v-if="tab === 3">
@@ -545,6 +545,9 @@ export default {
     margin-left: -160px;
     margin-top: 30px;
     border: none;
+    &.disabled {
+      background: #999;
+    }
     &:hover {
       color: #fff;
       text-decoration: none;
