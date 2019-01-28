@@ -36,21 +36,20 @@ export default {
         clientId: this.$store.state.clientData.id,
         mobile: this.mobile
       })
-      this.timeOut();
-      // getMobileCode({
-      //   clientId: this.$store.state.clientData.id,
-      //   mobile: this.mobile
-      // }).then(res => {
-      //   console.log(res)
-      //   if (res.data.code === 200) {
-      //     this.timeOut();
-      //   } else {
-      //     this.$msgBox({
-      //       content: res.data.msg,
-      //       isShowCancelBtn: false
-      //     })
-      //   }
-      // })
+      getMobileCode({
+        clientId: this.$store.state.clientData.id,
+        mobile: this.mobile
+      }).then(res => {
+        console.log(res)
+        if (res.data.code === 200) {
+          this.timeOut();
+        } else {
+          this.$msgBox({
+            content: res.data.msg,
+            isShowCancelBtn: false
+          })
+        }
+      })
     },
     timeOut () {
       this.disabled = true;
