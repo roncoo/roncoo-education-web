@@ -4,9 +4,9 @@
       <div class="register_body">
         <div class="register_header">
           <div class="register_logo">
-            <a :href="clientData.mainUrl">
+            <nuxt-link :to="{name: 'index'}">
               <img :src="webInfo.logoImg" alt="" v-if="webInfo && webInfo.logoImg">
-            </a>
+            </nuxt-link>
           </div>
         </div>
         <div class="register_content">

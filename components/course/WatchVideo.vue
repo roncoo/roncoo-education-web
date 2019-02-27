@@ -9,11 +9,10 @@
         </li>
       </ul>
       <ul class="header_right clearfix">
-        <li v-if="userInfo.roleType === 2"><a :href="clientData.accountUrl + '/teacher/course'" class="left_col">讲师中心</a></li>
-        <li><a :href="clientData.accountUrl + '/order'" class="left_col">我的订单</a></li>
-        <li><a :href="clientData.accountUrl + '/lesson'" class="no_left">我的课程</a></li>
+        <li v-if="userInfo.roleType === 2"><nuxt-link :to="{name: 'account-teacher-course'}" class="left_col">讲师中心</nuxt-link></li>
+        <li><nuxt-link :to="{name: 'account-order'}" class="left_col">我的订单</nuxt-link></li>
         <li>
-          <a :href="clientData.accountUrl + '/index'" :class="{left_col: true, c_gold: isVip}">{{userInfo.mobile}}</a>
+          <nuxt-link :to="{name: 'account'}" :class="{left_col: true, c_gold: isVip}">{{userInfo.mobile}}</nuxt-link>
           <img v-if="isVip" src="~/assets/image/vip_icon.png" @click="goVip" alt="" class="vip_icon">
         </li>
        <!--  <li v-else>

@@ -197,7 +197,7 @@ export default {
             window.location.href = this.$store.state.temporaryUrl;
           });
         } else {
-          this.errTip2 = res.msg;
+          this.errTip2 = res.data.msg;
         }
       }).catch(() => {
         this.subState = false;
@@ -308,7 +308,7 @@ export default {
 
       // this.SIGN_OUT();
     } else if (this.$route.query.t) {
-      window.location.href = this.clientData.accountUrl + '/index'
+      window.location.href = this.clientData.mainUrl + '/index'
     }
   },
   components: {

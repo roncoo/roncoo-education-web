@@ -52,7 +52,6 @@ export default {
       webInfo: this.$store.state.webInfo,
       mainUrl: this.$store.state.clientData.mainUrl,
       userInfo: '',
-      accountUrl: this.$store.state.clientData.accountUrl,
       isVip: false,
       name: '',
       isTeacher: false,

@@ -1,13 +1,11 @@
 
 export default {
     CLIENT: {
-        no: 'lingke',
-        id: 'lkb65617f842ad4c37895a733b8de43cbb',
-        keys: '6ce6c389407549b18f147cb0f5543dfc',
-        name: '领课学院',
-        domain: 'vicp.net',
-        tokenName: 'OSTK',
-        mainUrl: 'http://roncoo.vicp.net',
-        accountUrl: 'http://localhost:8080'
+        no: 'lingke', // 接口需要的机构号
+        id: 'lkb65617f842ad4c37895a733b8de43cbb', // 接口需要的clientId
+        name: '领课学院', // 页面title
+        domain: 'vicp.net', // cookie作用域
+        tokenName: 'OSTK', // cookie保存的名称
+        mainUrl: 'http://roncoo.vicp.net'  // 网站域名
     }
 }
