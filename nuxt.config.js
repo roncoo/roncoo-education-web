@@ -82,7 +82,9 @@ module.exports = {
   //   max: 1000,
   //   maxAge: 900000
   // },
-
+  env: {
+    NODE_ENV: process.env.NODE_ENV || 'production'
+  },
   /*
   ** Build configuration
   */
