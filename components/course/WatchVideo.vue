@@ -44,8 +44,8 @@
             <dl v-for="(one, index) in courseInfo.chapterList" :key="index">
               <dt>第{{index + 1}}章：{{one.chapterName}}</dt>
               <dd v-for="(two, num) in one.periodList" :key="num" :class="{on : nowNo == two.id}" @click="videoPlay(two)"><i class="iconfont">&#xe690;</i><span>第{{num + 1}}讲：</span>{{two.periodName}}
-                <span class="no_video2" v-if="!two.periodVideoDTOList || !two.periodVideoDTOList.length">(未更新)</span>
-                <span class="c_blue" v-if="courseInfo.isFree || two.isFree">(免费)</span>
+                <span class="no_video2" v-if="!two.videoVid">(未更新)</span>
+                <span class="c_blue" v-if="two.isFree">(免费)</span>
               </dd>
             </dl>
           </div>
@@ -107,7 +107,7 @@ export default {
         return false;
       }
       if (!item.isFree) {
-        this.$msgBox.showMsgBox({
+        this.$msgBox({
           content: '购买后才可以下载',
           isShowCancelBtn: false
         }).then(() => {

@@ -212,7 +212,7 @@
           } else if (res.data.orderStatus === 2) {
             if (that.order.courseType === 3) {
               this.close();
-              this.$msgBox.showMsgBox({
+              this.$msgBox({
                 content: '购买成功',
                 isShowCancelBtn: false
               }).then(res => {
