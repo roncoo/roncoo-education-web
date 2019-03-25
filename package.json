@@ -20,13 +20,13 @@
     "koa": "^2.5.2",
     "lru-cache": "^5.1.1",
     "md5": "^2.2.1",
+    "node-sass": "^4.11.0",
     "nuxt": "^2.0.0",
     "qrcode": "^1.3.2",
     "vue-cookie": "^1.1.4",
     "wangeditor": "^3.1.1"
   },
   "devDependencies": {
-    "node-sass": "^4.11.0",
     "nodemon": "^1.11.0",
     "sass-loader": "^7.1.0"
   }
