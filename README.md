@@ -10,7 +10,7 @@
 ##### 前端演示地址：[领课教育](http://edu.os.roncoo.com/) | 后台演示地址：[管理后台](http://roncoo.vicp.net/boss/login)
 
 ### 相关工程
-##### 前端工程（roncoo-education-web）：[码云地址](https://gitee.com/roncoocom/roncoo-education-web) | [Github地址](https://github.com/roncoo/roncoo-education-web)
+##### 项目工程（roncoo-education）：[码云地址](https://gitee.com/roncoocom/roncoo-education) | [Github地址](https://github.com/roncoo/roncoo-education)
 ##### 配置工程（roncoo-education-config）：[码云地址](https://gitee.com/roncoocom/roncoo-education-config) | [Github地址](https://github.com/roncoo/roncoo-education-config)
 
 ### 使用文档
