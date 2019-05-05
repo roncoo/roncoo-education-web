@@ -51,7 +51,7 @@ export default {
         return false;
       }
       if (!item.isFree) {
-        this.$msgBox.showMsgBox({
+        this.$msgBox({
           content: '购买后才可以下载',
           isShowCancelBtn: false
         }).then(() => {

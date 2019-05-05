@@ -49,7 +49,7 @@ export default {
         if (res.code === 200) {
           this.play(Object.assign({vid: vid}, res.data));
         } else if (res.code === 402) {
-          this.$msgBox.showMsgBox({
+          this.$msgBox({
             content: '购买后才可以观看',
             isShowCancelBtn: false
           })

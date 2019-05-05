@@ -157,7 +157,7 @@
             that.getOrderInfo(res.data.orderNo)
           } else {
             if (res.code >= 300 && res.code < 400) {
-              this.$msgBox.showMsgBox({
+              this.$msgBox({
                 content: res.msg,
                 isShowCancelBtn: false
               }).then(() => {
@@ -166,7 +166,7 @@
                 this.$router.push({name: 'login'})
               }).catch(() => {})
             } else {
-              this.$msgBox.showMsgBox({
+              this.$msgBox({
                 content: res.msg,
                 isShowCancelBtn: false
               }).then(() => {
@@ -177,7 +177,7 @@
             }
           }
         }).catch(() => {
-          this.$msgBox.showMsgBox({
+          this.$msgBox({
             content: '提交失败,请重试',
             isShowCancelBtn: false
           })
@@ -223,7 +223,7 @@
       }
       console.log(this.money)
       if (this.money <= 0) {
-        this.$msgBox.showMsgBox({
+        this.$msgBox({
           content: '活动异常，请联系客服',
           isShowCancelBtn: false
         }).then(() => {
