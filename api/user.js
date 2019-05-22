@@ -13,13 +13,13 @@ export const userLogin = (params={}) => {
 }
 // 用户信息
 export const getUserInfo = (params={}) => {
-  return http().post('/auth/user/api/user/ext/view', params)
+  return http().post('/user/auth/user/ext/view', params)
 }
 // 课程详情
 export const userCourseDetail = (params={}) => {
-  return http().post('/auth/course/api/course/audit/view', params)
+  return http().post('/course/auth/course/audit/view', params)
 }
 // 申请讲师
 export const teacherEnter = (params={}) => {
-  return http().post('/auth/user/api/lecturer/audit/save', params)
+  return http().post('/user/auth/lecturer/audit/save', params)
 }
