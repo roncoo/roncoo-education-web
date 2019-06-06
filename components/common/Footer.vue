@@ -64,7 +64,6 @@
     },
     mounted () {
       friendLink().then(res => {
-        console.log(res)
         if (res.data.code === 200) {
           this.friendList = res.data.data.websiteLinkList
         } else {

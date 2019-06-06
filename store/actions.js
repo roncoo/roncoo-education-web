@@ -85,7 +85,6 @@ export default {
     }
     return new Promise((resolve, reject) => {
       serviceInfo({moduleId: 3}).then(res => {
-        console.log(res.data)
         if (res.data.code == 200) {
           res.data.data.time = now.getTime();
           store.state.webInfo = res.data.data;

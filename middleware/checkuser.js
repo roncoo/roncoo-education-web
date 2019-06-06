@@ -10,6 +10,5 @@ export default function ({route, req, res, store, next}) {
     //   store.dispatch('GET_USERINFO');
     // }
   }
-  console.log(store.state)
-  console.log("checkuser==========")
+  
 }
