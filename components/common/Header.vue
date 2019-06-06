@@ -7,8 +7,7 @@
           <li v-if="isTeacher"><nuxt-link :to="{name: 'account-teacher'}">讲师中心</nuxt-link></li>
           <li class="s_left"><nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link></li>
           <li class="s_left">
-            <nuxt-link :class="{c_gold: isVip}" :to="{name: 'account'}">{{userInfo.mobile}}</nuxt-link>
-            <img v-if="isVip" src="~/assets/image/vip_icon.png" @click="goVip" alt="" class="vip_icon">
+            <nuxt-link :to="{name: 'account'}">{{userInfo.mobile}}</nuxt-link>
           </li>
           <li><a href="javascript:" @click="signOut">退出</a></li>
         </ul>
@@ -52,7 +51,6 @@ export default {
       webInfo: this.$store.state.webInfo,
       mainUrl: this.$store.state.clientData.mainUrl,
       userInfo: '',
-      isVip: false,
       name: '',
       isTeacher: false,
       navList: this.$store.state.navList.list,
@@ -71,9 +69,6 @@ export default {
       }
       console.log('退出登录')
     },
-    goVip () {
-      this.$router.push({name: 'vip'})
-    },
     login () {
       this.$store.commit('SET_TEMPORARYURL');
       this.$router.push({name: 'login'});
@@ -85,11 +80,6 @@ export default {
   mounted () {
     this.isNow = this.$route.path;
     this.userInfo = this.$store.state.userInfo;
-    if (this.webInfo && this.webInfo.isEnableVip) {
-      if (this.userInfo && this.userInfo.isVip && this.userInfo.expireTime && new Date(this.userInfo.expireTime).getTime() > new Date().getTime()) {
-        this.isVip = true
-      }
-    }
     if (this.$store.state.tokenInfo && this.userInfo) {
       this.name = this.userInfo.mobile
       if (this.userInfo.userType === 2 || this.userInfo.userType === 4) {

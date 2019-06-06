@@ -2,7 +2,7 @@
   <div class="banner">
     <ul :style="'height:'+ height+ 'px;'" @mouseout="mout" @mouseover="mover">
       <li class="item" v-for="(item, index) in data" :key="index" :style="'background-image: url('+item.advImg+');'" :class="{on:index === num}">
-        <a :href="item.advUrl" :title="item.advTitle"></a>
+        <a :href="item.advUrl" :title="item.advTitle" :target="item.advTarget"></a>
       </li>
     </ul>
     <ul class="page_dots">

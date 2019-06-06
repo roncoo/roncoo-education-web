@@ -65,7 +65,8 @@ module.exports = {
     proxy: true
   },
   proxyTable: {
-      '/course': {target: config.baseUrl, ws: false },
+      '/course/api': {target: config.baseUrl, ws: false },
+      '/course/auth': {target: config.baseUrl, ws: false },
       '/web': {target: config.baseUrl, ws: false},
       '/system': {target: config.baseUrl, ws: false },
       '/activity': {target: config.baseUrl, ws: false },
