@@ -2,7 +2,6 @@ const pkg = require('./package')
 const config = require('./config/conf')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-let plugins = ['transform-remove-console ']
 module.exports = {
   mode: 'universal',
 
@@ -95,8 +94,20 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
-    label: {
-      'plugins': plugins
+    html: {
+      minify: {
+        removeComments: true,
+        minifyCSS: true,
+        minifyJS: {
+          compress: {
+            warnings: true,
+            drop_console: true
+          },
+          sourceMap: true,
+          cache: true,
+          parallel: true
+        }
+      }
     },
     extend(config, ctx) {
       
