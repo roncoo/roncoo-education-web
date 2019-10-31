@@ -29,7 +29,9 @@
     "wangeditor": "^3.1.1"
   },
   "devDependencies": {
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "nodemon": "^1.11.0",
-    "sass-loader": "^7.1.0"
+    "sass-loader": "^7.1.0",
+    "uglifyjs-webpack-plugin": "^2.2.0"
   }
 }
