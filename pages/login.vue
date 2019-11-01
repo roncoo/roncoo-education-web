@@ -138,7 +138,7 @@ export default {
   async asyncData(context) {
     let clientNo = context.store.state.clientData.no;
     let webInfo = context.store.state.webInfo;
-    console.log(webInfo)
+    // console.log(webInfo)
     try {
       // 站点信息
       if (!webInfo) {
@@ -154,13 +154,11 @@ export default {
       // this.SIGN_OUT();
       this.$store.commit('SIGN_OUT');
       this.userInfo = '';
-      console.log('退出登录')
     },
     changetab (int) {
       this.tab = int;
       let _that = this;
       setTimeout(function(){
-        console.log(int)
         _that.tabp = int
       },200)
     },
@@ -179,12 +177,10 @@ export default {
         this.errTip2 = '请输入正确的账号或密码';
         return false;
       }
-      console.log(this.obj)
       this.obj.clientId = this.clientData.id;
       this.$nuxt.$loading.start();
       this.subState = true;
       userLogin(this.obj).then(res => {
-        console.log(res)
         this.subState = false;
         this.$nuxt.$loading.finish();
         if (res.data.code === 200) {
@@ -192,8 +188,6 @@ export default {
           this.$store.commit('GET_TEMPORARYURL');
           this.$store.dispatch('GET_USERINFO',store=>{
             this.userInfo = this.$store.state.userInfo;
-            console.log(this.userInfo)
-            console.log('llllllll')
             window.location.href = this.$store.state.temporaryUrl;
           });
         } else {
@@ -259,7 +253,6 @@ export default {
       this.$nuxt.$loading.start();
       this.subState = true;
       register(this.pobj).then(res => {
-        console.log(res)
         this.$nuxt.$loading.finish();
         this.subState = false;
         if (res.data.code === 200) {

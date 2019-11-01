@@ -100,7 +100,6 @@ export default {
     },
     getOrderList () {
       this.obj.lecturerUserNo = this.$store.state.userInfo.userNo
-      console.log(this.obj)
       myHttp.call(this, {
         method: orderList,
         params: this.obj

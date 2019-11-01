@@ -144,7 +144,6 @@ export default {
       myHttp.call(this, {
         method: getUserInfo
       }).then(res => {
-        console.log(res)
         this.obj = res.data || {}
       }).catch(error => {})
     },
@@ -160,14 +159,12 @@ export default {
         this.errTip1 = false;
       }
       this.id = this.obj.id;
-      console.log(this.obj)
       myHttp.call(this, {
         method: updateUserEducationInf,
         params: this.obj,
         confirm: () => {window.location.reload()},
         cancel: () => {window.location.reload()}
       }).then(res => {
-        console.log(res)
         this.$store.commit('SET_USER', res.data)
         this.$msgBox({
           content: '修改成功',

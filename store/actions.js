@@ -22,7 +22,7 @@ export default {
     if (CACHED.has('aboutList')) {
       const data = CACHED.get('aboutList');
       const result = JSON.parse(data);
-      console.log(' 缓存命中1')
+      // console.log(' 缓存命中1')
       // console.log(data)
       if (now.getTime() - result.time < ttl - 10000) {
         // 确保不超出缓存时间
@@ -49,7 +49,7 @@ export default {
     if (CACHED.has('navList')) {
       const data = CACHED.get('navList');
       const result = JSON.parse(data);
-      console.log(' 缓存命中2')
+      // console.log(' 缓存命中2')
       // console.log(data)
       if (now.getTime() - result.time < ttl - 10000) {
         // 确保不超出缓存时间
@@ -75,7 +75,7 @@ export default {
     if (CACHED.has('webInfo')) {
       const data = CACHED.get('webInfo');
       const result = JSON.parse(data);
-      console.log(' 缓存命中3')
+      // console.log(' 缓存命中3')
       // console.log(result)
       if (now.getTime() - result.time < ttl - 10000) {
         // 确保不超出缓存时间

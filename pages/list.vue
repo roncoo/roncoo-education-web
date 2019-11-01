@@ -114,7 +114,6 @@ export default {
       let allData = await Promise.all([courseList(obj), courseClass(classObj)])
       // 课程列表
       let courseData = allData[0]
-      console.log(courseData)
       if (courseData.data.data.list.length > 0) {
         pageObj = courseData.data.data
       }
@@ -141,7 +140,6 @@ export default {
       this.$nuxt.$loading.start();
       courseList(this.obj).then(res => {
         this.$nuxt.$loading.finish();
-        console.log(res)
         let result = res.data
         if (result.code === 200) {
           if (result.data.list.length > 0) {

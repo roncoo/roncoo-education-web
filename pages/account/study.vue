@@ -73,7 +73,6 @@
             pageSize: 20
           }
         }).then(res => {
-          console.log(res)
           this.pageObj = res.data
           if (!res.data.list.length) {
             this.notdata = true

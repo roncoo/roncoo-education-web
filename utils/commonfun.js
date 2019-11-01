@@ -1,6 +1,5 @@
 // 列表页刷新选择分类
 export const courseChange = function (vueContext) {
-  console.log(vueContext)
   if (vueContext.$route.query.categoryno1 || vueContext.$route.query.categoryno1 === '') {
     vueContext.obj.categoryId1 = vueContext.$route.query.categoryno1
   }

@@ -107,7 +107,6 @@ export default {
         })
         return
       }
-      console.log(obj)
       this.videoList = [obj];
     },
     // 加入上传列表
@@ -119,24 +118,20 @@ export default {
         file.jd = 0;
         this.uploadList.push(file);
       }
-      // console.log(this.uploadList)
       if (this.upbtn) {
         this.upload();
       }
     },
     // 上传视频
     upload () {
-      // console.log('开始上传')
       this.upbtn = false;
       let pics = this.uploadList;
-      // console.log(pics)
       let itemfile = null;
       for (var i = 0; i < pics.length; i++) {
         if (pics[i].jd === 0 && itemfile === null) {
           itemfile = pics[i];
         }
       }
-      // console.log(itemfile)
       if (itemfile) {
         let file = itemfile;
         let that = this;
@@ -145,13 +140,9 @@ export default {
         param.append('videoFile', file, file.name);
         uploadResVideo(param, function (int) {
           itemfile.jd = int;
-          // console.log(itemfile.jd)
           itemfile.tip = '上传中';
           that.uploadList = Object.assign([], that.uploadList);
-          // console.log(that.uploadList)
         }).then(res => {
-          console.log(res)
-          console.log('upload')
           if (res.code === 200) {
             itemfile.jd = 100
             itemfile.tip = '上传成功';
@@ -162,9 +153,7 @@ export default {
             that.upload();
           }
           that.uploadList = pics;
-          // console.log(res)
         }).catch(msg => {
-          // console.log(msg)
           itemfile.tip = '上传失败';
           that.upload();
         })
@@ -174,28 +163,23 @@ export default {
     },
     // 保存视频
     savaVideo (vid, tit) {
-      // console.log(vid)
       chapterVideoSave({
         chapterId: this.data.cNo,
         videoNo: vid
       }).then(res => {
         res = res.data;
-        console.log(res)
         if (res.code === 200) {
           this.getChapterVideo();
         }
-        // console.log(res)
       })
     },
     // 删除视频
     delVideo (vNo, ty, id) {
-      // console.log(id)
       // let that = this;
       if (ty) {
         this.$msgBox({
           content: '你确定要删除该视频吗?'
         }).then(() => {
-          // console.log(this.videoList)
           for (let i = 0; i < this.videoList.length; i++) {
             if (this.videoList[i].videoNo === vNo) {
               this.videoList.splice(i, 1)
@@ -215,7 +199,6 @@ export default {
           }).then(() => {
             chapterVideodel({id}).then(res => {
               res = res.data;
-              // console.log(res)
               if (res.code === 200) {
                 // that.alertOpen = false;
                 this.$msgBox({
@@ -241,11 +224,8 @@ export default {
     // 提交保存选中视频
     submit () {
       let videoNo = this.videoList && this.videoList.length ? this.videoList[0].videoNo : ''
-      console.log({videoNo, periodId: this.data.pNo})
       periodVideoUpdate({videoNo, periodId: this.data.pNo}).then(res => {
         res = res.data;
-        console.log(res)
-        console.log('save====')
         if (res.code === 200) {
           this.$emit('hidefun', event);
         } else {
@@ -282,9 +262,7 @@ export default {
       // 获取该例题已选中的图片
     periodVideoList () {
       periodVideo({periodId: this.data.pNo}).then(res => {
-        console.log(res)
         res = res.data
-        console.log('period===')
         if (res.code === 200 && res.data.list) {
           this.videoList = res.data.list
         } else {
@@ -305,7 +283,6 @@ export default {
     getChapterVideo () {
       chapterVideo({chapterId: this.data.cNo}).then(res => {
         res = res.data;
-        console.log(res)
         if (res.code === 200 && res.data.list !== null) {
           this.chapterVideoList = res.data.list;
         } else {

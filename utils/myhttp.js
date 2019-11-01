@@ -1,11 +1,5 @@
 // 处理token异常
 export const myHttp = function ({method, params={}, confirm, cancel}) {
-  // console.log(method)
-  // console.log(params)
-  // console.log(this)
-  // console.log(confirm)
-  // console.log(cancel)
-  // console.log('token处理=======')
   return new Promise((resolve, reject) => {
     method(params).then(res => {
       let result = res.data

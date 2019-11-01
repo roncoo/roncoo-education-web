@@ -129,7 +129,6 @@
           method: bindCard,
           params: this.obj
         }).then(res => {
-          console.log(res)
           this.$msgBox({
             content: '绑定成功',
             isShowCancelBtn: false

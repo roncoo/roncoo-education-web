@@ -91,7 +91,6 @@ export default {
         return false;
       }
       this.pobj.clientId = this.$store.state.clientData.id
-      console.log(this.pobj)
       updatePassword(this.pobj).then(res => {
         let result = res.data
         if (result.code === 200) {

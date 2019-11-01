@@ -118,8 +118,6 @@ export default {
   methods: {
     // 获取上传附件
     getUrl (file) {
-      console.log(file)
-      console.log('file======')
       this.docUrl = file.url || ''
       this.obj.docName = file.name || ''
       this.obj.docUrl = file.url || ''
@@ -142,7 +140,6 @@ export default {
       let arr = this.list
       arr[no].periodDesc = 'true';
       this.list = arr;
-      // console.log(no)
     },
     // 更新例题
     updatas (data) {
@@ -163,7 +160,6 @@ export default {
       }
       updatePraxis(data).then(res => {
         this.solidBtn = false;
-        // console.log(res)
         if (res.data.code === 200) {
           this.obj.docName = ''
           this.obj.docUrl = ''
@@ -196,7 +192,6 @@ export default {
       }).then(async (val) => {
         deletePraxis({id: no}).then(res => {
           res = res.data
-          console.log(res)
           if (res.code === 200) {
             this.$msgBox({
               content: '删除成功',
@@ -231,7 +226,6 @@ export default {
         chapterId: this.$route.query.no
       }).then(res => {
         res = res.data;
-        console.log(res)
         if (res.code === 200) {
           this.list = res.data.userPeriodAuditList || [];
           this.obj.courseNo = res.data.courseNo;
@@ -254,19 +248,16 @@ export default {
             }).catch(() => {})
           }
         }
-        // console.log(res)
       }).catch(() => {
       })
     },
     // 保存排序
     saveSort () {
-      // console.log(this.list)
       if (!this.list.length) {
         return
       }
       updatePraxisSort({list: this.list}).then(res => {
         res = res.data
-        // console.log(res)
         if (res.code === 200) {
           this.isSort = 1;
         } else {
@@ -295,8 +286,6 @@ export default {
       // console.log(this.obj)
       this.sort = this.int;
       this.obj.isFree = this.obj.isFree ? 1 : 0;
-      console.log(this.obj)
-      console.log('aaaaa-----')
       savePraxis(this.obj).then(res => {
         res = res.data;
         this.solidBtn = false;
@@ -324,7 +313,6 @@ export default {
             }).catch(() => {})
           }
         }
-        // console.log(res)
       }).catch(() => {
         this.solidBtn = false;
         this.$msgBox({
@@ -339,7 +327,6 @@ export default {
     this.obj.chapterId = this.$route.query.no;
     this.chapterList();
     this.$dragging.$on('dragend', ({ value }) => {
-      // console.log(value.list)
       this.saveSort();
     })
   },

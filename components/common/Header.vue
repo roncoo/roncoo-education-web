@@ -61,13 +61,11 @@ export default {
     signOut () {
       this.$store.commit('SIGN_OUT');
       this.userInfo = '';
-      console.log(this.$route.path)
       if (this.$route.path.includes('account')) {
         this.$router.push({name: 'login'})
       } else {
         window.location.reload()
       }
-      console.log('退出登录')
     },
     login () {
       this.$store.commit('SET_TEMPORARYURL');

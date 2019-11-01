@@ -43,7 +43,6 @@ export default {
     },
   },
   mounted () {
-    console.log(this.list)
     if (this.$route.params.id) {
       this.now = this.$route.params.id
     }

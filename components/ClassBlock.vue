@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     changeWidth (item) {
-      console.log(item)
       this.width = 300
       this.categoryno1 = item.id
       this.twoList = item.twoList
@@ -81,7 +80,6 @@ export default {
     },
     // 跳转详情页
     goDetail (id, type) {
-      console.log(id)
       let name = ''
       if (type === 1) {
         name = 'courselDetail'

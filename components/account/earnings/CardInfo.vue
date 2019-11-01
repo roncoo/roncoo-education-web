@@ -40,7 +40,6 @@
           method: cardInfo,
           params: {lecturerUserNo: this.$store.state.userInfo.userNo}
         }).then(res => {
-          console.log(res)
           this.card = res.data || {}
         })
       }

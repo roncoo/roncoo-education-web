@@ -107,7 +107,6 @@ export default {
       let dataObj = {}
       // 轮播图
       let { data } = await advList({platShow: 0})
-      console.log(data.data.advList)
       // 轮播图上的分类
       let blockData = await indexClass()
       // 推荐课程

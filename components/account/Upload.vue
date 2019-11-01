@@ -65,18 +65,14 @@ export default {
         uploadType = uploadDoc
         typeFile = 'docFile'
       }
-      // console.log(uploadType, typeFile)
       param.append(typeFile, file, file.name);
       // console.log(param)
       uploadType(param, function (int) {
         that.jd = int;
         that.ov = 1;
         that.tip = '上传中...';
-        // console.log(int)
       }).then(res => {
         e.target.value = '';
-        console.log(res)
-        console.log('upload--------')
         that.ov = 2;
         if (res.code === 200) {
           e.target.value = '';
@@ -86,7 +82,6 @@ export default {
         } else {
           that.tip = res.msg;
         }
-        // console.log(res)
       }).catch(() => {
         that.ov = 2;
         that.tip = '上传失败';
