@@ -1,6 +1,5 @@
 const pkg = require('./package')
 const config = require('./config/conf')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   mode: 'universal',
