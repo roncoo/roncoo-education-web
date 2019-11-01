@@ -30,6 +30,6 @@
   },
   "devDependencies": {
     "nodemon": "^1.11.0",
-    "sass-loader": "^7.1.0",
+    "sass-loader": "^7.1.0"
   }
 }
