@@ -356,12 +356,10 @@ export default {
         code,
         clientId: this.$store.state.clientData.id
       }
-      console.log(newObj)
       myHttp.call(this, {
         method: teacherEnter,
         params: newObj
       }).then(res => {
-        console.log(res)
         this.step3 = true
         this.tab = 3
       })
@@ -377,17 +375,13 @@ export default {
     },
     // 编辑器上传图片
     editorUpload (files, insert) {
-      console.log(files)
       let file = files[0];
       let param = new FormData();
       param.append('picFile', file, file.name);
       this.$nuxt.$loading.start()
       uploadPic(param, function (int) {
-        console.log(int)
       }).then(res => {
         this.$nuxt.$loading.finish()
-        console.log(res)
-        console.log('load=======')
         if (res.code === 200) {
           let imgUrl = res.data
           insert(imgUrl)
@@ -406,8 +400,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.webInfo)
-    console.log('webInfo=============')
     let E = require('wangeditor')
     this.editor2 = new E('#lecturerInfo')
     this.editor2.customConfig.uploadImgMaxLength = 1

@@ -65,7 +65,8 @@ module.exports = {
     proxy: true
   },
   proxyTable: {
-      '/course': {target: config.baseUrl, ws: false },
+      '/course/api': {target: config.baseUrl, ws: false },
+      '/course/auth': {target: config.baseUrl, ws: false },
       '/web': {target: config.baseUrl, ws: false},
       '/system': {target: config.baseUrl, ws: false },
       '/activity': {target: config.baseUrl, ws: false },
@@ -92,6 +93,21 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
+    html: {
+      minify: {
+        removeComments: true,
+        minifyCSS: true,
+        minifyJS: {
+          compress: {
+            warnings: true,
+            drop_console: true
+          },
+          sourceMap: true,
+          cache: true,
+          parallel: true
+        }
+      }
+    },
     extend(config, ctx) {
       
     }

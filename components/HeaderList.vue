@@ -117,7 +117,6 @@ export default {
       this.goCourseList()
     },
     changeFour (fourNow) {
-      console.log(fourNow)
       this.fourNow1 = fourNow
       this.goCourseList()
     },
@@ -139,10 +138,8 @@ export default {
         categoryType: 5,
         orgNo: this.clientData.no
       }).then(res => {
-        console.log(res)
         if (res.code === 200 && res.data.list.length > 0) {
           this.classList = res.data.list
-          console.log(this.classList)
           this.getNextClass()
         } else {
           this.classList = []
@@ -181,8 +178,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.classList)
-    console.log('classList---------')
     if (this.$route.query.categoryno1 || this.$route.query.categoryno1 === '') {
       this.categoryObj.categoryNo1 = this.$route.query.categoryno1
     }

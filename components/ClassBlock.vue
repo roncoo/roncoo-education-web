@@ -2,7 +2,7 @@
 <template>
   <div class="class_block" @mouseleave="hideWidth" v-if="classList.length">
     <ul :class="{left_block: true, show_scroll: classList.length > 10}">
-      <li @mouseenter="changeWidth(item)" :class="{active: item.id == categoryno1}" :style="classList.length > 5 && classList.length <= 10 &&'line-height:' + (height/classList.length) + 'px;'" v-for="(item, index) in classList" :key="index">
+      <li @mouseenter="changeWidth(item)" :class="{active: item.id == categoryno1}" :style="classList.length >= 5 && classList.length <= 10 &&'line-height:' + (height/classList.length) + 'px;'" v-for="(item, index) in classList" :key="index">
         <nuxt-link :to="{name: 'list', query: {categoryno1: item.id}}">{{item.categoryName}}</nuxt-link>
         <span class="arrow"></span>
       </li>
@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     changeWidth (item) {
-      console.log(item)
       this.width = 300
       this.categoryno1 = item.id
       this.twoList = item.twoList
@@ -81,7 +80,6 @@ export default {
     },
     // 跳转详情页
     goDetail (id, type) {
-      console.log(id)
       let name = ''
       if (type === 1) {
         name = 'courselDetail'

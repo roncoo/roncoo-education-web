@@ -50,15 +50,12 @@ export default {
   },
   async asyncData(context) {
     let {data} = await aboutInfo({navId: context.params.id});
-    console.log(data)
-    console.log('info=====')
     if (data.code == 200) {
       return {
         artTitle: data.data.artTitle,
         artDesc: data.data.artDesc
       }
     }else{
-      console.log(data)
       return {
         artTitle: '',
         artDesc: ''

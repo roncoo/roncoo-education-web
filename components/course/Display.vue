@@ -74,11 +74,9 @@ export default {
       this.$store.dispatch('REDIRECT_LOGIN');
     },
     stopVideo () {
-      console.log("video")
     },
     // 购买视频
     buyCourse (event) {
-      console.log('buy')
       if (!this.isLogin) {
         this.$msgBox({
           content: '请登录后再购买',

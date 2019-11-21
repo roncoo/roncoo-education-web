@@ -49,11 +49,9 @@ export default {
     if (this.tokenInfo && this.userInfo && this.userInfo.token == this.tokenInfo) {
       if (this.userInfo.userType === 2 || this.userInfo.userType === 4) {
         this.teacher = true;
-        console.log('teacher+++++' + this.teacher)
       }
     } else {
       getUserInfo().then(res => {
-        // console.log(res)
         let result = res.data
         if (result.code === 200) {
           if (result.data.userType === 2 || result.data.userType === 4) {

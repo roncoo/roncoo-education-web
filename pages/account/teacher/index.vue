@@ -99,24 +99,20 @@ export default {
         method: getLecturerInfo,
         params: {lecturerUserNo: this.$store.state.userInfo.userNo}
       }).then(res => {
-        console.log(res)
         this.teacherInfo = res.data;
         this.editor2.txt.html(this.teacherInfo.introduce)
         this.edit = false;
-        console.log(this.teacherInfo)
       })
     },
     userUpdate (e) {
       e.preventDefault();
       let ht = this.editor2.txt.html()
       this.teacherInfo.introduce = ht
-      console.log(111)
       this.teacherInfo.lecturerUserNo = this.$store.state.userInfo.userNo;
       myHttp.call(this, {
         method: updataLecturerInfo,
         params: this.teacherInfo
       }).then(res => {
-        console.log(res)
         this.$msgBox({
           content: '修改成功',
           isShowCancelBtn: false
@@ -128,7 +124,6 @@ export default {
       })
     },
     setUrl (res) {
-      console.log(res)
       this.teacherInfo.headImgUrl = res.url;
     }
   },
@@ -136,7 +131,6 @@ export default {
     let E = require('wangeditor')
     this.editor2 = new E('#lecturerInfo')
     this.editor2.create();
-    console.log(this.$store.state.userInfo)
     this.getByTeacher()
   },
   components: {

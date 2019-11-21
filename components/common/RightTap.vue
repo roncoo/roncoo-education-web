@@ -54,7 +54,6 @@ import {mapState} from 'vuex'
 export default {
   watch: {
     changeEwm () {
-      console.log(321)
       this.hideEwm = true
     }
   },
@@ -73,7 +72,6 @@ export default {
   methods: {
     // 显示客服列表
     showKefu () {
-      console.log(1)
       this.isKefu = true
       this.hideEwm = true
     },

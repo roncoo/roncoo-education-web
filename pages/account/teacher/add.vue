@@ -182,7 +182,6 @@ export default {
 
       this.btnDis = true;
       if (this.obj.id) {
-        console.log(this.obj)
         // console.log('courseUpdate')
         courseUpdate(this.obj).then(res => {
           this.btnDis = false;
@@ -318,7 +317,6 @@ export default {
     getCourse () {
       this.load = true;
       courseDetail({id: this.$route.query.no}).then(res => {
-        console.log(res.data)
         this.load = false;
         if (res.data.code === 200) {
           let courseData = res.data.data;

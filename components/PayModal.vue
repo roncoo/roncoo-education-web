@@ -132,10 +132,8 @@
     },
     mounted () {
       // this.qrcode('weixin://wxpay/bizpayurl?pr=GlkCzqF');
-      console.log(this.$router)
       this.order.courseId = this.data.course.id;
       this.courseData = this.data.course;
-      console.log(this.courseData)
     },
     methods: {
       reload () {
@@ -164,10 +162,8 @@
       submit () {
         let that = this;
         that.btntext = '正在提交...';
-        console.log(that.order)
         orderSave(that.order).then(res => {
           res = res.data;
-          console.log(res)
           that.btntext = '下一步';
           if (res.code === 200) {
             that.payStep = 1;
@@ -204,7 +200,6 @@
         }
         orderInfo({orderNo: no}).then(res => {
           res = res.data
-          console.log(res)
           if (res.data.orderStatus === 1) {
             setTimeout(function () {
               that.getOrderInfo(no);

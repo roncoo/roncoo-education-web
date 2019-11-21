@@ -14,9 +14,9 @@ export const courseDetail = (params={}) => {
 }
 // 课程详情(登录后)
 export const userCourseDetail = (params={}, token) => {
-  return http(token).post('/auth/course/api/course/view', params)
+  return http(token).post('/course/auth/course/view', params)
 }
 // 获取播放sign
 export const chapterSign = (params={}, token) => {
-  return http(token).post('/auth/course/api/course/sign', params)
+  return http(token).post('/course/auth/course/sign', params)
 }

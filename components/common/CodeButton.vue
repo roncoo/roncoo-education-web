@@ -22,7 +22,6 @@ export default {
   },
   methods: {
     getCode (event) {
-      console.log(this.mobile)
       if (!/^1[3|4|5|8|7][0-9]\d{8}$/.test(parseInt(this.mobile))) {
         this.$msgBox({
           content: '请输入正确手机号码',
@@ -32,15 +31,10 @@ export default {
       }
       this.$emit('cb', event)
       // 获取验证码
-      console.log({
-        clientId: this.$store.state.clientData.id,
-        mobile: this.mobile
-      })
       getMobileCode({
         clientId: this.$store.state.clientData.id,
         mobile: this.mobile
       }).then(res => {
-        console.log(res)
         if (res.data.code === 200) {
           this.timeOut();
         } else {

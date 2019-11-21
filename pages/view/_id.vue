@@ -70,8 +70,6 @@ export default {
       if (tk) {
 
         let {data} = await userCourseDetail({courseId: context.params.id}, tk);
-        console.log(data)
-        console.log('info=====')
         if (data.code == 200) {
           result.courseInfo = data.data;
           result.teacherInfo = data.data.lecturer;
@@ -86,8 +84,6 @@ export default {
       } else{
 
         let {data} = await courseDetail({courseId: context.params.id});
-        console.log(data)
-        console.log('info=====')
         if (data.code == 200) {
           result.courseInfo = data.data;
           result.teacherInfo = data.data.lecturer;
@@ -105,10 +101,8 @@ export default {
   },
   methods: {
     videoPlay (data) {
-      console.log(data)
       if (this.courseInfo.isPay || data.isFree) {
       window.scrollTo(0, 0)
-      console.log(data)
       this.nowPeriodNo = data.id
       chapterSign({
         ip: 'string',
@@ -117,8 +111,6 @@ export default {
       }).then(res => {
         res = res.data
         this.isResetVideo = false
-        console.log(res)
-        console.log("res==========")
         if (res.code === 200) {
           this.play(Object.assign({vid: data.videoVid}, res.data));
         } else if (res.code === 402) {
@@ -139,7 +131,6 @@ export default {
       }
     },
     play (data) {
-      console.log(data)
       let box = this.$refs.watchVideo.$refs.videobox;
       if (this.player) {
         this.player.changeVid({
@@ -164,7 +155,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.courseInfo)
   }
 }
 </script>

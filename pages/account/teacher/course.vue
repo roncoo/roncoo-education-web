@@ -153,7 +153,6 @@ export default {
           isPutaway: isp
         }).then(res => {
           let result = res.data
-          console.log(result)
           if (result.code === 200) {
             item.isPutaway = isp;
           } else {
@@ -190,11 +189,8 @@ export default {
       let astat = this.tab === 3 ? '' : this.tab;
       this.pda.auditStatus = astat;
       this.pda.pageCurrent = this.pageCurrent;
-      console.log(this.pda)
       lecturerCourseList(this.pda).then(res => {
         let result = res.data
-        console.log(result)
-        console.log('course----')
         if (result.code === 200 && result.data.list.length > 0) {
           this.courseList = result.data.list;
           this.notdata = false;

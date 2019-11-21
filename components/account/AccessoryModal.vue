@@ -93,7 +93,6 @@ export default {
         file.jd = 0;
         this.uploadList.push(file);
       }
-      // console.log(this.uploadList)
       if (this.upbtn) {
         this.upload();
       }
@@ -104,7 +103,6 @@ export default {
       let pics = this.uploadList;
       let itemfile = null;
       for (var i = 0; i < pics.length; i++) {
-        // console.log(i)
         if (pics[i].jd === 0 && itemfile === null) {
           itemfile = pics[i];
         }
@@ -120,7 +118,6 @@ export default {
           itemfile.tip = '上传中';
           that.uploadList = Object.assign([], that.uploadList);
         }).then(res => {
-          // console.log(res)
           if (res.code === 200) {
             itemfile.jd = 100
             itemfile.tip = '上传成功';
@@ -141,7 +138,6 @@ export default {
     },
     // 保存图片
     savaPic (src, tit) {
-      // console.log(src)
       let cobj = {
         acName: tit,
         acUrl: src,
@@ -153,9 +149,7 @@ export default {
       if (this.live) {
         cobj.courseCategory = 2
       }
-      // console.log(cobj)
       accessoryChapterSave(cobj).then(res => {
-        // console.log(res)
         if (this.list === null) {
           this.list = [];
         }
@@ -173,7 +167,6 @@ export default {
           content: '你确定需要删除该课件吗?'
         }).then(res => {
           accessoryRemove({id}).then(res => {
-            // console.log(res)
             this.getAc();
           }).catch(() => {
             this.$msgBox({
@@ -210,7 +203,6 @@ export default {
     getAc () {
       this.load = true;
       accessoryList({refNo: this.data.refNo}).then(res => {
-        // console.log(res)
         this.load = false;
         if (res.code === 200) {
           this.list = res.data.list;
@@ -242,14 +234,12 @@ export default {
   },
   mounted () {
     this.kg = false;
-    // console.log(this.data)
     this.savePic.lecturerUserNo = this.userInfo.userNo;
     this.savePic.orgNo = this.userInfo.orgNo;
     this.getAc();
   },
   created () {
     // this.ty = this.type;
-    // console.log(this.tokenInfo)
   }
 }
 </script>

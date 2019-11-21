@@ -20,7 +20,6 @@ export default {
   //获取客户端cookie
   setInClient:function ({key, val}) {
     let clent = store().state.clientData;
-    console.log(clent)
     VueCookie.set(key, val, {expires: 1, domain: clent.domain});
     // Cookie.set(key, val, {expires: 1, domain: clent.domain})
   },

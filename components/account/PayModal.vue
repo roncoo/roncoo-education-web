@@ -73,15 +73,10 @@ export default {
     },
     getOrder (pt) {
       this.load = true;
-      console.log({
-        orderNo: this.data.orderNo,
-        payType: pt
-      })
       continuePay({
         orderNo: this.data.orderNo,
         payType: pt
       }).then(res => {
-        console.log(res)
         let result = res.data
         if (result.code === 200) {
           this.payType = result.data.payType;
@@ -125,13 +120,11 @@ export default {
       })
     },
     changePay (int) {
-      // console.log(int)
       this.getOrder(int);
     },
     getOrderInfo (no) {
       let that = this;
       orderInfo({orderNo: no}).then(res => {
-        // console.log(res)
         let result = res.data
         if (result.data.orderStatus === 1) {
           setTimeout(function () {
@@ -146,7 +139,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.data)
     this.payType = parseInt(this.data.payType);
     this.getOrder(this.data.payType);
   }

@@ -144,9 +144,7 @@
         that.order.courseNo = that.info.courseNo
         that.order.userNo = that.userInfo.userNo
         that.order.courseCategory = that.info.courseCategory
-        console.log(that.order)
         avtivityPay(that.order).then(res => {
-          console.log(res)
           that.btntext = '下一步';
           if (res.code === 200) {
             that.payStep = 1;
@@ -190,7 +188,6 @@
           return false;
         }
         orderInfo({orderNo: no}).then(res => {
-          console.log(res)
           if (res.data.orderStatus === 1) {
             setTimeout(function () {
               that.getOrderInfo(no);
@@ -204,9 +201,6 @@
       }
     },
     mounted () {
-      console.log(this.info)
-      console.log(this.userInfo)
-      console.log(this.webInfo)
       if (this.webInfo) {
         if (this.webInfo.isEnableVip && this.userInfo.isVip) {
           if (this.userInfo.expireTime) {
@@ -221,7 +215,6 @@
       } else if (this.info.discountType === 2) {
         this.money = this.isVip ? (this.info.fabPrice - this.info.discountPrice).toFixed(2) : (this.info.orgPrice - this.info.discountPrice).toFixed(2)
       }
-      console.log(this.money)
       if (this.money <= 0) {
         this.$msgBox({
           content: '活动异常，请联系客服',
