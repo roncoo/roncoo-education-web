@@ -1,9 +1,8 @@
 {
-  "name": "open-cloud",
-  "version": "1.0.0",
-  "description": "My impressive Nuxt.js project",
+  "name": "lingke-cloud-web",
+  "version": "5.0.0",
+  "description": "roncoo education web",
   "author": "laiwenbiao",
-  "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "build": "nuxt build",
