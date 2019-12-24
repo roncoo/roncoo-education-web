@@ -1,4 +1,4 @@
-
+// 生产环境
 export default {
     CLIENT: {
         no: 'lingke', // 接口需要的机构号
