@@ -1,16 +1,13 @@
 <div align=center><img src="logo.jpg"/></div>
 
-# 领课教育 - 一个全行业都适用的分布式在线教育系统
-
-### 我们需要您的支持！
-《领课教育》很荣幸能进入2019 年最受欢迎中国开源软件评选名单，请帮忙投我们一票！[2019最受欢迎中国开源软件](https://www.oschina.net/p/roncoo-education?from=timeline&isappinstalled=0)
-
 ---
 ### 相关工程
 ##### 领课教育系统(roncoo-education)：[码云地址](https://gitee.com/roncoocom/roncoo-education) | [Github地址](https://github.com/roncoo/roncoo-education)
 ##### 前端门户系统(roncoo-education-web)：[码云地址](https://gitee.com/roncoocom/roncoo-education-web) | [Github地址](https://github.com/roncoo/roncoo-education-web)
 ##### 后台管理系统(roncoo-education-admin)：[码云地址](https://gitee.com/roncoocom/roncoo-education-admin) | [Github地址](https://github.com/roncoo/roncoo-education-admin)
 ---
+
+# 领课教育 - 一个全行业都适用的分布式在线教育系统
 
 ### 项目介绍（如果对你有用，请给个star！）
 领课教育（roncoo-education）是基于领课网络多年的在线教育平台开发和运营经验打造出来的产品，致力于打造一个全行业都适用的分布式在线教育系统。系统采用前后端分离模式，前台采用vue.js为核心框架，后台采用Spring Cloud为核心框架。系统目前主要功能有课程点播功能，支持多家视频云的接入，课程附件管理功能，支持多家存储云的接入，讲师管理功能，支持讲师入驻功能，可以帮助个人或者企业快速实现一个轻量级的在线教育平台。
