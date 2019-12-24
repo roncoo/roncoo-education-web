@@ -6,10 +6,10 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "test": "cross-env NODE_ENV=testing node server/index.js",
+    "start": "node server/index.js",
     "build": "nuxt build",
     "build-dev": "cross-env NODE_ENV=development nuxt build",
     "build-test": "cross-env NODE_ENV=testing nuxt build",
-    "start": "node server/index.js",
     "generate": "nuxt generate"
   },
   "dependencies": {
