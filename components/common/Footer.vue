@@ -41,7 +41,7 @@
       <span v-if="service.icp">&nbsp;|&nbsp;</span>
       <a href="http://www.miitbeian.gov.cn/" target="_blank" class="lingke_link">{{service.icp}}</a>
       <span v-if="service.prn">&nbsp;|&nbsp;</span>
-      <a :href="'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=' + service.prnNo" target="_blank" v-if="service.prn" class="lingke_link"><img src="~/assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{service.prn}}</a>
+      <a :href="'http://www.beian.gov.cn/portal/index'" target="_blank" v-if="service.prn" class="lingke_link"><img src="~/assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{service.prn}}</a>
     </div>
   </div>
 </template>
