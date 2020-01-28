@@ -78,4 +78,4 @@ dist
 
 # IDE
 .idea
-.iml
+*.iml
