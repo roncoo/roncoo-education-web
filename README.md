@@ -44,11 +44,11 @@ roncoo-education-admin是后台管理工程，核心框架：vue-element-admin
 
 <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=6920ae9a2042652e51b5688abf8ef88427d9e292578d076b8cc4018eda76d6c3"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="在线教育系统-领课⑥" title="在线教育系统-领课⑥"> 532451240</a> 可加
 
-> QQ群: 903738971(已满)  
-> QQ群: 74876271 (已满)  
-> QQ群: 774890501(已满)  
-> QQ群: 702189511(已满)  
-> QQ群: 826617734(已满)
+> QQ群：903738971(已满)  
+> QQ群：74876271 (已满)  
+> QQ群：774890501(已满)  
+> QQ群：702189511(已满)  
+> QQ群：826617734(已满)
 
 ### 商业合作
 * 如果想使用教育系统，我们商业版功能更强大！
