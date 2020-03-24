@@ -35,16 +35,16 @@ roncoo-education-admin是后台管理工程，核心框架：vue-element-admin
 * 支付功能模块，无缝对接[龙果支付系统](https://pay.roncoo.net/)商业版
 
 ### 演示地址
-##### 前端演示地址：[领课教育](http://edu.os.roncoo.com/) | 后台演示地址：[运营后台](http://roncoo.vicp.net/web)
+##### 前端演示地址：[领课教育](http://edu.os.roncoo.com/) | 后台演示地址：[运营后台](http://edu.os.roncoo.com/admin)
 
 ### 使用文档
 ##### [项目介绍](https://blog.roncoo.com/article/1105321762337357826) | [部署文档](https://blog.roncoo.com/article/1103554925858197505) | [常见问题](https://blog.roncoo.com/article/1105309620724858882)
 
 ### 官方QQ群（加群免费获取sql脚本）
 
-<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=6920ae9a2042652e51b5688abf8ef88427d9e292578d076b8cc4018eda76d6c3"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="在线教育系统-领课⑥" title="在线教育系统-领课⑥"> 532451240</a> 可加
+<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=6b66a953c914f45131bd8bd0936a410cc58b3820d8828ed8f9ad884ada667873"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="在线教育系统-领课⑦" title="在线教育系统-领课⑦"> 1028579521</a> 可加
 
-> QQ群：903738971(已满)  
+> QQ群：532451240(已满)   
 > QQ群：74876271 (已满)  
 > QQ群：774890501(已满)  
 > QQ群：702189511(已满)  
