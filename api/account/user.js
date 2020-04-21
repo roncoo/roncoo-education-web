@@ -13,7 +13,7 @@ export const getLecturerInfoAudit = (params={}) => {
   return http().post('/user/auth/lecturer/audit/view', params)
 }
 // 修改讲师信息
-export const updataLecturerInfo = (params={}) => {
+export const updataLecturerInfoAudit = (params={}) => {
   return http().post('/user/auth/lecturer/audit/update', params)
 }
 // 修改密码
