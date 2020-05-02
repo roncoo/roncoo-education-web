@@ -84,7 +84,7 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DUpload from '~/components/account/Upload'
-import {getLecturerInfo, updataLecturerInfo} from '~/api/account/user.js'
+import {getLecturerInfoAudit, updataLecturerInfoAudit} from '~/api/account/user.js'
 import {myHttp} from '~/utils/myhttp.js'
 export default {
   data () {
@@ -96,7 +96,7 @@ export default {
   methods: {
     getByTeacher () {
       myHttp.call(this, {
-        method: getLecturerInfo,
+        method: getLecturerInfoAudit,
         params: {lecturerUserNo: this.$store.state.userInfo.userNo}
       }).then(res => {
         this.teacherInfo = res.data;
@@ -110,7 +110,7 @@ export default {
       this.teacherInfo.introduce = ht
       this.teacherInfo.lecturerUserNo = this.$store.state.userInfo.userNo;
       myHttp.call(this, {
-        method: updataLecturerInfo,
+        method: updataLecturerInfoAudit,
         params: this.teacherInfo
       }).then(res => {
         this.$msgBox({
