@@ -118,6 +118,7 @@ export default {
       errTip1: '',
       errTip2: '',
       userInfo: this.$store.state.userInfo,
+      ipInfo: {},
       obj: {
         agent: '登录',
         clientId: this.$store.state.clientData.id,
@@ -178,6 +179,11 @@ export default {
         return false;
       }
       this.obj.clientId = this.clientData.id;
+      this.obj.city = this.ipInfo.city
+      this.obj.province = this.ipInfo.pro
+      this.obj.loginIp = this.ipInfo.ip
+      this.obj.os = this.getOsInfo().version
+      this.obj.browser = this.getBrowserInfo().name + this.getBrowserInfo().version
       this.$nuxt.$loading.start();
       this.subState = true;
       userLogin(this.obj).then(res => {
@@ -202,6 +208,68 @@ export default {
         }).catch(() => {})
       })
       return false;
+    },
+    getBrowserInfo: function () {
+      /* eslint-disable */
+      const Sys = {};
+      const ua = navigator.userAgent.toLowerCase();
+      let s;
+      (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = s[1]
+        : (s = ua.match(/msie ([\d]+)/)) ? Sys.ie = s[1]
+        : (s = ua.match(/edge\/([\d]+)/)) ? Sys.edge = s[1]
+          : (s = ua.match(/firefox\/([\d]+)/)) ? Sys.firefox = s[1]
+            : (s = ua.match(/(?:opera|opr).([\d]+)/)) ? Sys.opera = s[1] :
+              (s = ua.match(/chrome\/([\d]+)/)) ? Sys.chrome = s[1] :
+                (s = ua.match(/version\/([\d]+).*safari/)) ? Sys.safari = s[1] : 0;
+      // 根据关系进行判断
+      if (Sys.ie) return { name: 'IE', version: Sys.ie };
+      if (Sys.edge) return { name: 'EDGE:', version: Sys.edge };
+      if (Sys.firefox) return { name: 'Firefox:', version: Sys.firefox };
+      if (Sys.chrome) return { name: 'Chrome:', version: Sys.chrome };
+      if (Sys.opera) return { name: 'Opera:', version: Sys.opera };
+      if (Sys.safari) return { name: 'Safari:', version: Sys.safari };
+      return { name: 'Unkonwn', version: '0.0.0' };
+    },
+    // 获取系统信息
+    getOsInfo: function () {
+      const userAgent = navigator.userAgent.toLowerCase();
+      let name = 'Unknown';
+      let version = 'Unknown';
+      if (userAgent.indexOf('win') > -1) {
+        name = 'Windows';
+        if (userAgent.indexOf('windows nt 5.0') > -1) {
+          version = 'Windows 2000';
+        } else if (userAgent.indexOf('windows nt 5.1') > -1 || userAgent.indexOf('windows nt 5.2') > -1) {
+          version = 'Windows XP';
+        } else if (userAgent.indexOf('windows nt 6.0') > -1) {
+          version = 'Windows Vista';
+        } else if (userAgent.indexOf('windows nt 6.1') > -1 || userAgent.indexOf('windows 7') > -1) {
+          version = 'Windows 7';
+        } else if (userAgent.indexOf('windows nt 6.2') > -1 || userAgent.indexOf('windows 8') > -1) {
+          version = 'Windows 8';
+        } else if (userAgent.indexOf('windows nt 6.3') > -1) {
+          version = 'Windows 8.1';
+        } else if (userAgent.indexOf('windows nt 6.2') > -1 || userAgent.indexOf('windows nt 10.0') > -1) {
+          version = 'Windows 10';
+        } else {
+          version = 'Unknown';
+        }
+      } else if (userAgent.indexOf('iphone') > -1) {
+        name = 'Iphone';
+      } else if (userAgent.indexOf('mac') > -1) {
+        name = 'Mac';
+      } else if (userAgent.indexOf('x11') > -1 || userAgent.indexOf('unix') > -1 || userAgent.indexOf('sunname') > -1 || userAgent.indexOf('bsd') > -1) {
+        name = 'Unix';
+      } else if (userAgent.indexOf('linux') > -1) {
+        if (userAgent.indexOf('android') > -1) {
+          name = 'Android';
+        } else {
+          name = 'Linux';
+        }
+      } else {
+        name = 'Unknown';
+      }
+      return { name, version };
     },
     // 注册
     regSubmit: function (e) {
@@ -292,6 +360,9 @@ export default {
     if (this.webInfo) {
       this.service = this.webInfo
     }
+    this.$axios.get('http://gateway.doityun.com/ip/info').then(res => {
+      this.ipInfo = res.data.data
+    })
     // this.GET_TEMPORARYURL();
     this.obj.clientId = 1;
     if (this.$route.query.t === 'login') {

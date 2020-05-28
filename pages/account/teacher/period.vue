@@ -10,7 +10,7 @@
           <div class="step">3.提交审核</div>
         </div>
         <div class="main_cont course_period">
-          <div class="tip">可<span class="c_red">"拖动"</span>课时名称调整先后顺序</div>
+          <div class="tip">可<span class="c_red">"拖动"</span>章节名称调整先后顺序</div>
           <table class="table">
             <thead>
               <tr>
@@ -21,7 +21,7 @@
             </thead>
             <tbody>
               <tr v-for="(item, index) in chapterList" v-dragging="{ item: item, list: chapterList }" :key="item.chapterNo" v-if="item.chapterDesc != 'true'">
-                <td>第{{ index + 1 }}讲</td>
+                <td>第{{ index + 1 }}章</td>
                 <td class="name">{{item.chapterName}}</td>
                 <td class="operate">
                   <a href="javascript:" class="text_link" @click="edit(index)">修改</a><br>
@@ -33,22 +33,22 @@
                 </td>
               </tr>
               <tr v-else>
-                <td>第{{ index + 1 }}讲</td>
-                <td class="name"><input type="text" v-model="item.chapterName" class="form_input" placeholder="请输入课时名称"></td>
+                <td>第{{ index + 1 }}章</td>
+                <td class="name"><input type="text" v-model="item.chapterName" class="form_input" placeholder="请输入章节名称"></td>
                 <td class="operate">
                   <button @click="updatas(item)" class="solid_btn" :disabled="btnDab">保存</button>
                 </td>
               </tr>
               <tr>
-                <td>第{{num}}讲</td>
-                <td class="name"><input type="text" v-model="newData.chapterName" class="form_input" placeholder="请输入课时名称"></td>
+                <td>第{{num}}章</td>
+                <td class="name"><input type="text" v-model="newData.chapterName" class="form_input" placeholder="请输入章节名称"></td>
                 <td class="operate">
                   <button @click="addPeriod" class="solid_btn" :disabled="btnDab">保存</button>
                 </td>
               </tr>
             </tbody>
           </table>
-          <router-link to="/teacher/course/check" class="cont_btn solid_btn">下一步</router-link>
+          <router-link to="/teacher/check" class="cont_btn solid_btn">下一步</router-link>
         </div>
       </div>
     </div>
