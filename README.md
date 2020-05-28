@@ -41,14 +41,11 @@ roncoo-education-admin是后台管理工程，核心框架：vue-element-admin
 ##### [项目介绍](https://blog.roncoo.com/article/1105321762337357826) | [部署文档](https://blog.roncoo.com/article/1103554925858197505) | [常见问题](https://blog.roncoo.com/article/1105309620724858882)
 
 ### 官方QQ群（加群免费获取sql脚本）
+<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=b446c0b90f3bf13219b3b77153c42a69b4caef5a1c721b2b97aefa17a9828e75"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="在线教育系统-领课⑧" title="在线教育系统-领课⑧"> 154407415</a> 可加
 
-<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=6b66a953c914f45131bd8bd0936a410cc58b3820d8828ed8f9ad884ada667873"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="在线教育系统-领课⑦" title="在线教育系统-领课⑦"> 1028579521</a> 可加
-
-> QQ群：532451240(已满)   
-> QQ群：74876271 (已满)  
-> QQ群：774890501(已满)  
-> QQ群：702189511(已满)  
-> QQ群：826617734(已满)
+> QQ群：1028579521(已满)
+> QQ群：532451240(已满)  QQ群：903738971(已满)   QQ群：74876271 (已满)  
+> QQ群：774890501(已满)   QQ群：702189511(已满)   QQ群：826617734(已满)
 
 ### 商业合作
 * 如果想使用教育系统，我们商业版功能更强大！
