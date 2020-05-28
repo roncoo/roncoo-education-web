@@ -41,8 +41,7 @@ roncoo-education-admin是后台管理工程，核心框架：vue-element-admin
 ##### [项目介绍](https://blog.roncoo.com/article/1105321762337357826) | [部署文档](https://blog.roncoo.com/article/1103554925858197505) | [常见问题](https://blog.roncoo.com/article/1105309620724858882)
 
 ### 官方QQ群（加群免费获取sql脚本）
-
-<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=e0f66ae59613b485ae95664444aa4b4e210848da8bc2f09bd9eb6eaa654dd6b5"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="在线教育系统-领课⑧" title="在线教育系统-领课⑧"> 154407415</a> 可加
+<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=e0f66ae59613b485ae95664444aa4b4e210848da8bc2f09bd9eb6eaa654dd6b5"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="在线教育系统-领课⑧" title="在线教育系统-领课⑧"> 154407415</a> 可加
 
 > QQ群：1028579521(已满)
 > QQ群：532451240(已满)  QQ群：903738971(已满)   QQ群：74876271 (已满)  
