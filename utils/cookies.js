@@ -25,8 +25,10 @@ export default {
   },
   //删除客户端cookie
   delInClient:function (key) {
+    // fix logout bug
+    let clent = store().state.clientData;
     // console.log(clent)
-    VueCookie.delete(key);
+    VueCookie.delete(key, {domain: clent.domain});
     // Cookie.remove(key)
   }
 }
