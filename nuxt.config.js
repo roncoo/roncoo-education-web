@@ -24,9 +24,6 @@ module.exports = {
       {name: 'viewport', content: 'width=device-width, initial-scale=1'},
       {hid: 'description', name: 'description', content: pkg.description}
     ],
-    script: [{
-      src: 'https://hm.baidu.com/hm.js?b5a05711ca4f8e14460cf19e4147f30c'
-    }]
     // link: [
     //   { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     // ]
