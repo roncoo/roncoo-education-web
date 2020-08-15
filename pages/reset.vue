@@ -60,7 +60,7 @@
         <span v-if="service.prn">&nbsp;|&nbsp;</span>
         <a :href="'http://www.beian.gov.cn/portal/index'" target="_blank" v-if="service.prn"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{service.prn}}</a>
       </p>
-      <p class="footer_text"><a href="http://www.roncoo.net/" class="lingke_link">领课教育云</a> 提供技术支持</p>
+      <a href="http://www.doityun.com/" target="_blank" class="lingke_link">IT云提供计算服务</a>
     </div>
   </div>
 </template>

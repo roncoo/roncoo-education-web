@@ -109,7 +109,7 @@
         <span v-html="webInfo.copyright"></span>
       </p>
       <p class="foot_text">
-        <a href="http://www.roncoo.net/" class="lingke_link">领课教育云</a> 提供技术支持
+        <a href="http://www.doityun.com/" target="_blank" class="lingke_link">IT云提供计算服务</a>
         <span v-if="webInfo.icp">&nbsp;|&nbsp;</span>
         <a href="http://www.miitbeian.gov.cn/" class="lingke_link" target="_blank">{{webInfo.icp}}</a>
         <span v-if="webInfo.prn">&nbsp;|&nbsp;</span>
