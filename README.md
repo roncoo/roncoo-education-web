@@ -44,11 +44,12 @@
 * 支付功能模块，可无缝对接[龙果支付系统](https://pay.roncoo.net/)商业版
 
 ### 官方QQ群（加群免费获取sql脚本）
-<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=b446c0b90f3bf13219b3b77153c42a69b4caef5a1c721b2b97aefa17a9828e75"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="在线教育系统-领课⑧" title="在线教育系统-领课⑧"> 154407415</a> 可加
+<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=gUMsT34mD_zxSVi2SJyObEbkinhpboc1&jump_from=webapi"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="在线教育系统-领课⑨" title="在线教育系统-领课⑨"> 284915592</a> 可加
 
 > QQ群：1028579521(已满)
 > QQ群：532451240(已满)  QQ群：903738971(已满)   QQ群：74876271 (已满)  
 > QQ群：774890501(已满)   QQ群：702189511(已满)   QQ群：826617734(已满)
+> QQ群：154407415(已满)
 
 ### 商业合作
 * 如果您想使用功能更完善的教育系统，我们有商业版！
