@@ -5,146 +5,275 @@
     <div class="i_content" v-for="(item, index) in zoneData" :key="index">
       <div class="i_zone">
         <div class="zone_header">
-        <div class="big_text">
-          <span class="col_block"></span>
-          {{ item.name }}
-          <span class="small_text">{{ item.zoneDesc }}</span>
-          <nuxt-link :to="{name: 'list'}" class="fr small_text link_text">更多课程 ></nuxt-link>
-        </div>
+          <div class="big_text">
+            <span class="col_block"></span>
+            {{ item.name }}
+            <span class="small_text">{{ item.zoneDesc }}</span>
+            <nuxt-link :to="{ name: 'list' }" class="fr small_text link_text"
+              >更多课程 ></nuxt-link
+            >
+          </div>
         </div>
         <div class="zone_body">
           <ul class="clearfix course_list">
             <li v-for="(that, int) in item.zoneCourseList" :key="int">
-              <nuxt-link target="_blank" :to="{name: 'view-id', params: {id: that.id}}">
+              <nuxt-link
+                target="_blank"
+                :to="{ name: 'view-id', params: { id: that.id } }"
+              >
                 <div class="img_box">
-                  <img :src="that.courseLogo" alt="">
+                  <img :src="that.courseLogo" alt="" />
                 </div>
-              <p>{{ that.courseName }}</p>
-              <span v-if="that.isFree" class="price_box">免费</span>
-              <span class="price_box" v-else>￥{{that.courseOriginal.toFixed(2)}}<span class="font_12 padl_10" v-if="openVip && that.courseDiscount != that.courseOriginal">SVIP:{{that.courseDiscount ? '￥' + that.courseDiscount.toFixed(2) : '免费'}}</span></span>
+                <p>{{ that.courseName }}</p>
+                <span v-if="that.isFree" class="price_box">免费</span>
+                <span class="price_box" v-else
+                  >￥{{ that.courseOriginal.toFixed(2)
+                  }}<span
+                    class="font_12 padl_10"
+                    v-if="openVip && that.courseDiscount != that.courseOriginal"
+                    >SVIP:{{
+                      that.courseDiscount
+                        ? "￥" + that.courseDiscount.toFixed(2)
+                        : "免费"
+                    }}</span
+                  ></span
+                >
               </nuxt-link>
             </li>
             <li v-for="thatLive in item.liveCourseList" :key="thatLive.id">
-              <nuxt-link target="_blank" :to="{name: 'live-id', params: {id: thatLive.id}}">
+              <nuxt-link
+                target="_blank"
+                :to="{ name: 'live-id', params: { id: thatLive.id } }"
+              >
                 <div class="img_box">
-                  <img :src="thatLive.courseLogo" alt="">
+                  <img :src="thatLive.courseLogo" alt="" />
                   <div class="live_time">
-                    <p style="font-size: 12px;" v-if="thatLive.liveTime">开播时间：{{thatLive.liveTime}}</p>
-                    <p style="font-size: 12px;" v-if="thatLive.endTime">有效期至：{{thatLive.endTime}}</p>
+                    <p style="font-size: 12px" v-if="thatLive.liveTime">
+                      开播时间：{{ thatLive.liveTime }}
+                    </p>
+                    <p style="font-size: 12px" v-if="thatLive.endTime">
+                      有效期至：{{ thatLive.endTime }}
+                    </p>
                   </div>
                 </div>
-              <p>{{ thatLive.courseName }}（直播）</p>
-              <span class="price_box" v-if="thatLive.isFree">免费</span>
-              <span class="price_box" v-else>￥{{thatLive.courseOriginal.toFixed(2)}}<span class="font_12 padl_10" v-if="openVip && thatLive.courseDiscount != thatLive.courseOriginal">SVIP:{{thatLive.courseDiscount ? '￥' + thatLive.courseDiscount.toFixed(2) : '免费'}}</span></span>
+                <p>{{ thatLive.courseName }}（直播）</p>
+                <span class="price_box" v-if="thatLive.isFree">免费</span>
+                <span class="price_box" v-else
+                  >￥{{ thatLive.courseOriginal.toFixed(2)
+                  }}<span
+                    class="font_12 padl_10"
+                    v-if="
+                      openVip &&
+                      thatLive.courseDiscount != thatLive.courseOriginal
+                    "
+                    >SVIP:{{
+                      thatLive.courseDiscount
+                        ? "￥" + thatLive.courseDiscount.toFixed(2)
+                        : "免费"
+                    }}</span
+                  ></span
+                >
               </nuxt-link>
             </li>
-            <li v-for="thatGroup in item.zoneCourseCombinaRefList" :key="thatGroup.id">
-              <nuxt-link target="_blank" :to="{name: 'liveAndBunch', params: {id: thatGroup.id}}">
+            <li
+              v-for="thatGroup in item.zoneCourseCombinaRefList"
+              :key="thatGroup.id"
+            >
+              <nuxt-link
+                target="_blank"
+                :to="{ name: 'liveAndBunch', params: { id: thatGroup.id } }"
+              >
                 <div class="img_box">
-                  <img :src="thatGroup.courseLogo" alt="">
+                  <img :src="thatGroup.courseLogo" alt="" />
                 </div>
-              <p>{{ thatGroup.courseName }} (录播+直播)</p>
-              <span class="price_box" v-if="thatGroup.isFree">免费</span>
-              <span class="price_box" v-else>￥{{thatGroup.courseOriginal.toFixed(2)}}<span class="font_12 padl_10" v-if="openVip && thatGroup.courseDiscount != thatGroup.courseOriginal">SVIP:{{thatGroup.courseDiscount ? '￥' + thatGroup.courseDiscount.toFixed(2) : '免费'}}</span></span>
+                <p>{{ thatGroup.courseName }} (录播+直播)</p>
+                <span class="price_box" v-if="thatGroup.isFree">免费</span>
+                <span class="price_box" v-else
+                  >￥{{ thatGroup.courseOriginal.toFixed(2)
+                  }}<span
+                    class="font_12 padl_10"
+                    v-if="
+                      openVip &&
+                      thatGroup.courseDiscount != thatGroup.courseOriginal
+                    "
+                    >SVIP:{{
+                      thatGroup.courseDiscount
+                        ? "￥" + thatGroup.courseDiscount.toFixed(2)
+                        : "免费"
+                    }}</span
+                  ></span
+                >
               </nuxt-link>
             </li>
           </ul>
           <ul class="test_list clearfix">
-            <li :class="{test_option: true, right_0: (num % 2 == 1)}" v-for="(resource, num) in item.zoneCourseLibList" :key="resource.id">
-              <nuxt-link target="_blank" :to="{name: 'libraryDetail', params: {id: resource.id}}"><i class="iconfont">&#xe6be;</i>{{resource.courseName}}</nuxt-link>
+            <li
+              :class="{ test_option: true, right_0: num % 2 == 1 }"
+              v-for="(resource, num) in item.zoneCourseLibList"
+              :key="resource.id"
+            >
+              <nuxt-link
+                target="_blank"
+                :to="{ name: 'libraryDetail', params: { id: resource.id } }"
+                ><i class="iconfont">&#xe6be;</i
+                >{{ resource.courseName }}</nuxt-link
+              >
             </li>
           </ul>
         </div>
       </div>
     </div>
-  <y-footer></y-footer>
-  <right-tap></right-tap>
+    <y-footer></y-footer>
+    <right-tap></right-tap>
+    <div class="videoAlert" v-if="isvideoAlert">
+      <div class="videoAlertbox">
+        <a href="https://edu.roncoo.net/video"  target="_blank">
+          <img
+            src="../assets/image/videoAlert.png"
+            class="videoAlertImg"
+            alt="视频点播平台"
+          />
+        </a>
+        <img
+          src="../assets/image/videoAlertClone.png"
+          class="videoAlertClone"
+          @click="cloneVideoAlert()"
+          alt="视频点播平台"
+        />
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import YHeader from '~/components/common/Header'
-import YBanner from '~/components/Banner'
-import YFooter from '~/components/common/Footer'
-import RightTap from '~/components/common/RightTap'
-import {zoneCourse, advList, indexClass} from '~/api/main.js'
+import YHeader from "~/components/common/Header";
+import YBanner from "~/components/Banner";
+import YFooter from "~/components/common/Footer";
+import RightTap from "~/components/common/RightTap";
+import { zoneCourse, advList, indexClass } from "~/api/main.js";
 export default {
   components: {
     YHeader,
     YBanner,
     YFooter,
-    RightTap
+    RightTap,
   },
-  head () {
-      return {
-        title: this.$store.state.clientData.name,
-        meta: [
-            {
-                hid: 'keywords',
-                name: 'keywords',
-                content: this.$store.state.webInfo.websiteKeyword
-            },
-            {
-                hid: 'description',
-                name: 'description',
-                content: this.$store.state.webInfo.websiteDesc
-            }
-        ]
-      }
-  },
-  data () {
+  head() {
     return {
+      title: this.$store.state.clientData.name,
+      meta: [
+        {
+          hid: "keywords",
+          name: "keywords",
+          content: this.$store.state.webInfo.websiteKeyword,
+        },
+        {
+          hid: "description",
+          name: "description",
+          content: this.$store.state.webInfo.websiteDesc,
+        },
+      ],
+    };
+  },
+  data() {
+    return {
+      isvideoAlert: true,
       webInfo: this.$store.state.webInfo,
       clientNo: this.$store.state.clientData.no,
       openVip: false,
       advData: this.$store.state.advData,
-    }
+    };
   },
   async asyncData(context) {
     let clientNo = context.store.state.clientData.no;
     // console.log(clientNo)
-    
+
     try {
-      let dataObj = {}
+      let dataObj = {};
       // 轮播图
-      let { data } = await advList({platShow: 0})
+      let { data } = await advList({ platShow: 0 });
       // 轮播图上的分类
-      let blockData = await indexClass()
+      let blockData = await indexClass();
       // 推荐课程
-      let zonedata = await zoneCourse({zoneLocation: 0})
+      let zonedata = await zoneCourse({ zoneLocation: 0 });
       // 活动标
-      let zoneList = zonedata.data.data.list || []
-      let courseNoList = []
-      zoneList.forEach(item => {
+      let zoneList = zonedata.data.data.list || [];
+      let courseNoList = [];
+      zoneList.forEach((item) => {
         for (let that in item) {
-          if (item[that] && typeof item[that] == 'object' && item[that].length && that != 'zoneCourseLibList' && that != 'zoneResourceInfoList') {
-            item[that].forEach(course => {
+          if (
+            item[that] &&
+            typeof item[that] == "object" &&
+            item[that].length &&
+            that != "zoneCourseLibList" &&
+            that != "zoneResourceInfoList"
+          ) {
+            item[that].forEach((course) => {
               // console.log(course)
-              courseNoList.push(course.courseNo)
-            })
+              courseNoList.push(course.courseNo);
+            });
           }
         }
-      })
-      dataObj.advData = data.data.advList || []  //轮播图
-      dataObj.zoneData = zonedata.data.data.list || []  //课程专区
-      dataObj.classList = blockData.data.data.courseCategoryList || [] //轮播分类
-      return dataObj
+      });
+      dataObj.advData = data.data.advList || []; //轮播图
+      dataObj.zoneData = zonedata.data.data.list || []; //课程专区
+      dataObj.classList = blockData.data.data.courseCategoryList || []; //轮播分类
+      return dataObj;
     } catch (e) {
-      context.error({ message: 'User not found', statusCode: 404 })
+      context.error({ message: "User not found", statusCode: 404 });
     }
   },
   methods: {
+    cloneVideoAlert() {
+      this.isvideoAlert = false;
+    }
   },
-  mounted () {
+  mounted() {
     if (this.webInfo && this.webInfo.isEnableVip) {
-      this.openVip = true
+      this.openVip = true;
     }
     // this.$store.dispatch('REDIRECT_LOGIN', 301)
+  },
+};
+</script>
+<style lang="scss" scoped>
+.videoAlert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  //background: rgba(0,0,0,.4);
+
+  .videoAlertbox {
+    position: absolute;
+    width: 420px;
+    top: 50%;
+    left: 50%;
+    height: 472px;
+    margin: -246px 0 0 -210px;
+
+    .videoAlertImg {
+      height: 472px;
+      width: 420px;
+    }
+    .videoAlertClone {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      margin-left: -16px;
+      width: 32px;
+      font-size: 30px;
+      height: 32px;
+      border-radius: 20px;
+    }
   }
 }
-</script>
+</style>
 <style lang="scss" rel="stylesheet/scss">
 .index_page {
-  .clearfix:before, .clearfix:after {
+  .clearfix:before,
+  .clearfix:after {
     content: "";
     display: table;
   }
@@ -202,7 +331,7 @@ export default {
       &:hover {
         box-shadow: 0px 3px 18px rgba(0, 0, 0, 0.2);
         transform: translateY(-2px);
-        transition: all .3s;
+        transition: all 0.3s;
       }
       a {
         display: block;
@@ -266,8 +395,8 @@ export default {
       }
     }
   }
-  .test_list{
-    .test_option{
+  .test_list {
+    .test_option {
       float: left;
       width: 520px;
       padding: 18px 25px;
@@ -280,7 +409,7 @@ export default {
         margin-right: 0px;
       }
     }
-    .iconfont{
+    .iconfont {
       margin-right: 6px;
     }
   }
