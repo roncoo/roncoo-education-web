@@ -1,8 +1,6 @@
-<div align=center>
- <img src="logo.jpg"/>
- <h2>一个各行业都适用的分布式在线教育系统</h2>
- <a href="http://doc.os.roncoos.com/"><strong>领课教育系统-开源版-项目文档</strong></a>
-</div>
+<div align=center><img src="logo.jpg"/></div>
+
+<h2 align=center>一个各行业都适用的分布式在线教育系统</h2>
 
 ##### 领课教育系统(roncoo-education)：[码云地址](https://gitee.com/roncoocom/roncoo-education) | [Github地址](https://github.com/roncoo/roncoo-education)
 > roncoo-education是后台工程，核心框架：Spring Cloud  
@@ -44,12 +42,13 @@
 * 支付功能模块，可无缝对接[龙果支付系统](https://pay.roncoo.net/)商业版
 
 ### 官方QQ群（加群免费获取sql脚本）
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=5hPSMiWCiKukEStUPngTpPHgt-v1JTL9&jump_from=webapi"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="在线教育系统-领课⑨" title="在线教育系统-领课⑨"> 284915592</a> 可加
+
+<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=DOTD1t5YG-KYfi6JSW4Yms9XWFkNsya6&jump_from=webapi"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="在线教育系统-领课⑩" title="在线教育系统-领课⑩"> 703455569</a> 可加
 
 > QQ群：1028579521(已满)
 > QQ群：532451240(已满)  QQ群：903738971(已满)   QQ群：74876271 (已满)  
 > QQ群：774890501(已满)   QQ群：702189511(已满)   QQ群：826617734(已满)
-> QQ群：154407415(已满)
+> QQ群：154407415(已满)   QQ群：284915592(已满)
 
 ### 商业合作
 * 如果您想使用功能更完善的教育系统，我们有商业版！
@@ -62,3 +61,56 @@
 
 ## 项目推荐
 ##### 龙果支付系统(roncoo-pay)：[码云地址](https://gitee.com/roncoocom/roncoo-pay) | [Github地址](https://github.com/roncoo/roncoo-pay)
+
+#### 目录结构
+``` 
+roncoo-education-web/
+├── api/ api接口列表目录
+│   ├── method.js
+│   ├── main.js
+├── assets/ 公用的静态资源目录
+│   ├── CSS/
+│   ├── JS
+│   ├── fonts
+│   ├── image
+├── component/ 
+│   ├── 所有的自定义组件
+├── config/ 配置文件目录
+│   ├── conf.js  系统编译配置文件
+│   ├── index.js  系统全局配置文件
+│   ├── dev.env.js  开发模式的全局配置
+│   ├── pro.env.js  生产模式的全局配置
+│   ├── index.js  测试模式的全局配置
+├── layouts/
+│   ├── 布局目录
+├── middleware/
+│   ├── 中间件目录
+├── pages/
+│   ├── 页面目录
+├── plugins/
+│   ├── 所有的第三方或自定义插件的目录
+├── static/
+│   ├── 静态文件目录
+├── store/
+│   ├── actions.js
+│   ├── getters.js
+│   ├── index.js
+│   ├── mutations.js
+├── utils/
+│   ├── 自定义工具类目录
+└── next.config.js   nextjs 配置文件 
+```
+
+#### 编译使用
+``` bash
+# install dependencies
+$ npm install
+
+# serve with hot reload at localhost:3000
+$ npm run dev
+
+# build for production and launch server
+$ npm run build
+$ npm start
+
+```
