@@ -9,7 +9,7 @@ WORKDIR /web
 EXPOSE 3000
 # 这里使用yarn
 RUN yarn install
-RUN yarn run build:modern
+RUN yarn run build
 # 或者使用npm
 #RUN npm install
 #RUN npm run build:modern
