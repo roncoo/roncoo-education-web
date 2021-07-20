@@ -34,6 +34,7 @@
 </template>
 <script>
   import {serviceInfo, getNav} from '~/api/main.js'
+  import bq from 'bq-static'
 export default {
   props: {
     active: {
@@ -76,6 +77,7 @@ export default {
     }
   },
   mounted () {
+    bq()
     this.isNow = this.$route.path;
     this.userInfo = this.$store.state.userInfo;
     if (this.$store.state.tokenInfo && this.userInfo) {

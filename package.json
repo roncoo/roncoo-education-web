@@ -4,7 +4,7 @@
   "description": "roncoo education web",
   "author": "laiwenbiao",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "dev": "cross-env PORT=3001 NODE_ENV=development nodemon server/index.js --watch server",
     "test": "cross-env NODE_ENV=testing node server/index.js",
     "start": "cross-env NODE_ENV=production node server/index.js",
     "build": "nuxt build",
@@ -17,6 +17,7 @@
     "@nuxtjs/axios": "^5.0.0",
     "awe-dnd": "^0.3.4",
     "axios": "^0.19.0",
+    "bq-static": "^1.1.6",
     "cross-env": "^5.2.0",
     "koa": "^2.5.2",
     "lru-cache": "^5.1.1",

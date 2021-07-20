@@ -20,6 +20,7 @@
   </header>
 </template>
 <script>
+import bq from 'bq-static'
 import {getUserInfo} from '~/api/user.js'
 export default {
   props: {
@@ -46,6 +47,7 @@ export default {
     }
   },
   mounted () {
+    bq()
     if (this.tokenInfo && this.userInfo && this.userInfo.token == this.tokenInfo) {
       if (this.userInfo.userType === 2 || this.userInfo.userType === 4) {
         this.teacher = true;
