@@ -16,7 +16,7 @@
     "@gauseen/nuxt-proxy": "^1.0.1",
     "@nuxtjs/axios": "^5.0.0",
     "awe-dnd": "^0.3.4",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bq-static": "^1.1.6",
     "cross-env": "^5.2.0",
     "koa": "^2.5.2",
