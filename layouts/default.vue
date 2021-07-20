@@ -9,7 +9,7 @@ export default {
   head () {
     return {
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: this.$store.state.webInfo.logoIco }
+        { hid: 'icon', rel: 'icon', type: 'image/x-icon', href: this.$store.state.webInfo.logoIco }
       ]
     }
   },
@@ -36,7 +36,7 @@ export default {
     })
   }
 }
-  
+
 </script>
 <style>
 html {
