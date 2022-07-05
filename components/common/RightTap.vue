@@ -1,6 +1,6 @@
 <template>
   <div class="right_window">
-    <div class="iconfont right_item show_xcx" @click.stop="hideEwm = false" @mouseenter="hideEwm = false" v-if="webInfo && webInfo.weixinXcx">
+    <div class="iconfont right_item show_xcx" @click.stop="hideEwm = false" @mouseout="hideEwm=true" @mouseenter="hideEwm = false" v-if="webInfo && webInfo.weixinXcx">
       &#xe619;
       <!-- <div class="wx_xcx">
         <div class="xcx_title">微信小程序</div>
@@ -61,7 +61,7 @@ export default {
     return {
       webInfo: '',
       isKefu: false,
-      hideEwm: false
+      hideEwm: true
     }
   },
   computed: {

@@ -28,6 +28,14 @@
           <nuxt-link :class="{active: isNow === item.navUrl}" :to="item.navUrl" :target="item.target">{{item.navTitle}}</nuxt-link>
         </li>
       </ul>
+      <div class="search_box clearfix" v-if="!hideTop">
+        <div class="clearfix">
+          <button class="search_btn" @click="handleSearch">
+            <span class="iconfont"></span>
+          </button>
+          <input type="text" class="search_input" @keydown.enter.stop="handleSearch" placeholder="请输入搜索内容" v-model="search"/>
+        </div>
+      </div>
       <nuxt-link v-if="hideTop" :to="{name: 'index'}" class="go_index font_14 c_blue">返回首页</nuxt-link>
     </div>
   </div>
@@ -45,10 +53,14 @@ export default {
     },
     hideSearch: {
       type: Boolean
+    },
+    searchText:{
+      type:String
     }
   },
   data () {
     return {
+      search:'',
       webInfo: this.$store.state.webInfo,
       mainUrl: this.$store.state.clientData.mainUrl,
       userInfo: '',
@@ -59,6 +71,9 @@ export default {
     }
   },
   methods: {
+    handleSearch(){
+      this.$router.push({name: 'search',query:{search:this.search}})
+    },
     signOut () {
       this.$store.commit('SIGN_OUT');
       this.userInfo = '';
@@ -78,6 +93,8 @@ export default {
   },
   mounted () {
     bq()
+    console.log(this.$store.state.navList.list,'this.$store.state.navList.list')
+    this.search = this.searchText
     this.isNow = this.$route.path;
     this.userInfo = this.$store.state.userInfo;
     if (this.$store.state.tokenInfo && this.userInfo) {
@@ -158,6 +175,15 @@ export default {
       height: 52px;
     }
   }
+  .search_box{
+    display: inline-block;
+    position: relative;
+    top: -50px;
+    right: -100px;
+    width: 200px;
+    height: 40px;
+    margin: 13px 0 0;
+  }
   .h_nav_ul {
     display: inline-block;
     margin-left: 280px;
@@ -174,6 +200,52 @@ export default {
         color: red;
         text-decoration: none;
       }
+    }
+  }
+  .search_btn{
+    position: absolute;
+    cursor: pointer;
+    height: 32px;
+    line-height: 32px;
+    background: #fff;
+    border: 0;
+    left: 5px;
+    top: 2px;
+    background: none;
+    width: 35px;
+    font-size: 14px;
+    outline: none;
+    .iconfont{
+      font-size: 24px;
+      color: #333;
+    }
+  }
+  .search_input{
+    height: 40px;
+    line-height: 40px;
+    font-size: 13px;
+    color: #333;
+    border: none;
+    width: 100%;
+    padding-left: 42px;
+    padding-right: 12px;
+    border-radius: 20px;
+    background-color: #f7f8fa;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .clearfix{
+    &:before{
+      content: "";
+      display: table;
+    }
+    &:after{
+      content: "";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden;
     }
   }
 </style>

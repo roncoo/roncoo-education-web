@@ -20,3 +20,8 @@ export const userCourseDetail = (params={}, token) => {
 export const chapterSign = (params={}, token) => {
   return http(token).post('/course/auth/course/sign', params)
 }
+
+// 课程搜索列表(未登录)
+export function getSearchCourseList(params={},page=1,size=10){
+  return http().post('/course/api/course/search/list',{pageCurrent:page,pageSize:size,...params})
+}

@@ -176,7 +176,7 @@ export default {
   },
   data() {
     return {
-      isvideoAlert: true,
+      isvideoAlert: false,
       webInfo: this.$store.state.webInfo,
       clientNo: this.$store.state.clientData.no,
       openVip: false,
