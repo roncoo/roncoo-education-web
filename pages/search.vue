@@ -17,7 +17,7 @@
           <div class="img_box">
             <img class="course_img" :src="item.courseLogo" alt="">
           </div>
-          <p>{{item.courseName}}</p>
+          <p v-html="item.courseName"></p>
           <span class="price_box" v-if="item.isFree">免费</span>
           <span class="price_box" v-else>￥{{item.courseOriginal.toFixed(2)}}<span class="font_12 padl_10" v-if="openVip && item.courseOriginal !== item.courseDiscount">SVIP:{{item.courseDiscount ? '￥' + item.courseDiscount.toFixed(2) : '免费'}}</span></span>
         </nuxt-link>
@@ -76,7 +76,8 @@ export default {
   async asyncData (context) {
     let dataObj = {
       map:{
-        courseName:''
+        courseName:'',
+        isHfield:1
       },
       opts:{
         list:[]
