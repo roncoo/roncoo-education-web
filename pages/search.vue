@@ -125,11 +125,12 @@ export default {
       this.ctrl.loading = true
       getSearchCourseList(this.map,this.page.pageCurrent,this.page.pageSize).then(res=>{
         this.ctrl.loading = false
-        if (res.code === 200) {
-          this.opts.list = res.data.list || []
-          this.page.pageCurrent = res.data.pageCurrent
-          this.page.totalPage = res.data.totalPage || 1
-          this.page.totalCount = res.data.totalCount
+        console.log(res,'getSearchCourseList')
+        if (res.data.code === 200) {
+          this.opts.list = res.data.data.list || []
+          this.page.pageCurrent = res.data.data.pageCurrent
+          this.page.totalPage = res.data.data.totalPage || 1
+          this.page.totalCount = res.data.data.totalCount
         }else{
           this.opts.list = []
           this.page.pageCurrent = 1
