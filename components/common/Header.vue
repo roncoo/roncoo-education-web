@@ -93,7 +93,6 @@ export default {
   },
   mounted () {
     bq()
-    console.log(this.$store.state.navList.list,'this.$store.state.navList.list')
     this.search = this.searchText
     this.isNow = this.$route.path;
     this.userInfo = this.$store.state.userInfo;

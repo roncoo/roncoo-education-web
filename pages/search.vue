@@ -93,7 +93,6 @@ export default {
     try {
       dataObj.map.courseName = context.query.search
       let res = await getSearchCourseList(dataObj.map,dataObj.page.pageCurrent,dataObj.page.pageSize)
-      console.log(res.data,'getSearchCourseList')
       if(res.data.code === 200) {
         dataObj.opts.list = res.data.data.list || []
         dataObj.page.pageCurrent = res.data.data.pageCurrent || 1
@@ -126,7 +125,6 @@ export default {
       this.ctrl.loading = true
       getSearchCourseList(this.map,this.page.pageCurrent,this.page.pageSize).then(res=>{
         this.ctrl.loading = false
-        console.log(res,'getSearchCourseList')
         if (res.data.code === 200) {
           this.opts.list = res.data.data.list || []
           this.page.pageCurrent = res.data.data.pageCurrent
