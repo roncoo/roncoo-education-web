@@ -25,7 +25,7 @@
       </div>
       <ul class="h_nav_ul clearfix" v-if="!hideTop && navList">
         <li v-for="(item, index) in navList" :key="index">
-          <nuxt-link :class="{active: isNow === item.navUrl}" :to="item.navUrl" :target="item.target">{{item.navTitle}}</nuxt-link>
+          <a :class="{active: isNow === item.navUrl}" :href="item.navUrl" :target="item.target">{{item.navTitle}}</a>
         </li>
       </ul>
       <div class="search_box clearfix" v-if="!hideTop">
