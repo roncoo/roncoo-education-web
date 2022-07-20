@@ -24,12 +24,17 @@ export default {
     }
   },
   mounted () {
+    var _hmt = _hmt || [];
     (function(){
       var sc = document.createElement('script');
       sc.src = 'https://player.polyv.net/script/polyvplayer.min.js';
       var sList = document.getElementsByTagName('script');
       var s = sList[sList.length - 1]
       s.parentNode.insertBefore(sc, s);
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d5b2309e95c3b686b3c8ff6f1abbaef1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
     })()
     document.addEventListener('click', () => {
       this.$store.commit('HIDE_EWM')
