@@ -6,6 +6,6 @@ export default {
         name: '领课教育系统(开源版)-打造全行业都适用的在线教育系统', // 页面title
         domain: 'localhost', // cookie作用域
         tokenName: 'OSTK', // cookie保存的名称
-        mainUrl: 'http://localhost:3000' // 网站域名
+        mainUrl: 'http://localhost:3001' // 网站域名
     }
 }

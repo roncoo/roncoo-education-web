@@ -4,7 +4,7 @@
       <div class="h_top_body">
         <ul class="top_list clearfix" v-if="userInfo">
           <li><a :href="mainUrl+'/recruit'">讲师招募</a></li>
-          <li v-if="isTeacher"><nuxt-link :to="{name: 'account-teacher'}">讲师中心</nuxt-link></li>
+          <li v-if="isTeacher"><nuxt-link :to="{name: 'account-teacher-course'}">课程管理</nuxt-link></li>
           <li class="s_left"><nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link></li>
           <li class="s_left">
             <nuxt-link :to="{name: 'account'}">{{userInfo.mobile}}</nuxt-link>

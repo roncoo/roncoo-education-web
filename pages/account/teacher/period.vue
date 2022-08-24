@@ -24,11 +24,11 @@
                 <td>第{{ index + 1 }}章</td>
                 <td class="name">{{item.chapterName}}</td>
                 <td class="operate">
-                  <a href="javascript:" class="text_link" @click="edit(index)">修改</a><br>
                   <router-link :to="'/account/teacher/praxis?no=' +item.id+ '&i='+ (index +1)" class="text_link">
                     课时管理
                     <span v-if="item.periodNum" class="c_red">({{item.periodNum}})</span>
                   </router-link><br>
+                  <a href="javascript:" class="text_link" @click="edit(index)">修改</a><br>
                   <a href="javascript:" @click="del(item.id)" class="text_link">删除</a>
                 </td>
               </tr>

@@ -40,11 +40,11 @@
                 <td v-else><button class="orange_btn" @click="putaWay(item)">课程上架</button></td>
                 <td class="operate">
                   <span>
-                    <router-link :to="{ name: 'account-teacher-add', query: { no: item.id }}" class="text_link">修改</router-link>
+                    <router-link :to="'/account/teacher/period?no=' +item.id" class="text_link">章节管理</router-link>
                   </span>
                   <br>
                   <span>
-                    <router-link :to="'/account/teacher/period?no=' +item.id" class="text_link">课时管理</router-link>
+                    <router-link :to="{ name: 'account-teacher-add', query: { no: item.id }}" class="text_link">修改</router-link>
                   </span>
                   <br>
                   <span>
@@ -105,10 +105,6 @@ export default {
         deleteCourse({id}).then(res => {
           let result = res.data
           if (result.code === 200) {
-            this.$msgBox({
-              content: '删除成功',
-              isShowCancelBtn: false
-            })
             this.getCourseList()
           } else {
             if (result.code >= 300 && result.code < 400) {
@@ -218,8 +214,8 @@ export default {
   },
   mounted () {
     // console.log('课程列表')
-    this.getCourseList();
     this.pda.lecturerUserNo = this.$store.state.userInfo.userNo;
+    this.getCourseList();
   },
   created () {
   },

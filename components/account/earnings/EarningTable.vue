@@ -149,12 +149,4 @@
     background: #fff;
     border-radius: 8px;
   }
-  .notdata {
-    text-align: center;
-    font-size: 30px;
-    i {
-      font-size: 30px;
-      margin-right: 10px;
-    }
-  }
 </style>

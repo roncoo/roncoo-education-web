@@ -15,8 +15,9 @@
   border-radius: 8px;
 }
 .notdata {
+  padding: 60px 0;
   text-align: center;
-  font-size: 30px;
+  font-size: 20px;
   i {
     font-size: 30px;
     margin-right: 10px;
@@ -199,7 +200,7 @@
   }
 }
 .form{
-  min-height: 550px;
+  //min-height: 550px;
   .form_group{
     margin-bottom: 20px;
     .label{

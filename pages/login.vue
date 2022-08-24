@@ -23,6 +23,7 @@
             </form>
             <input type="checkbox" class="check"><span class="next_auto">下次自动登录</span>
             <nuxt-link class="is_go" :to="{name: 'reset'}">忘记密码</nuxt-link>
+            <div style="margin-top: 20px;">讲师账号：13800138001 密码：123qwe</div>
           </div>
           <div class="form_body r180" v-if="tabp == 2">
             <form action="" @submit="regSubmit">
@@ -43,17 +44,15 @@
           </div>
         </div>
         <div class="login_form" v-else>
-          <div class="login_title is_login">欢迎来到{{clientData.name}}</div>
+          <div class="login_title is_login">领课教育系统（开源版）</div>
           <div class="form_body">
             <div class="img_box">
               <img v-if="userInfo.headImgUrl" :src="userInfo.headImgUrl" alt="" />
               <img v-else src="../assets/image/friend.jpg" alt="" />
             </div>
-            <p class="hellow_text">欢迎来到{{clientData.name}}</p>
             <ul class="btn_box clearfix">
-              <li><nuxt-link :to="{name: 'account-teacher'}">用户中心</nuxt-link></li>
-              <li><nuxt-link :to="{name: 'account-study'}">学习记录</nuxt-link></li>
               <li><nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link></li>
+              <li><nuxt-link :to="{name: 'account-study'}">学习记录</nuxt-link></li>
             </ul>
             <div>
               <a href="javascript:" @click="signOut" class="out_btn">退出登录</a>
@@ -384,7 +383,9 @@ export default {
 <style lang="scss" rel="stylesheet/scss">
 .login_page {
   .login_box {
-    height: 600px;
+    height: 500px;
+    //width: 1200px;
+    margin: 0 auto;
     background: url(../assets/image/login_bg.jpg) no-repeat center center;
     .center_box {
       width: 1200px;
@@ -437,7 +438,7 @@ export default {
     width: 380px;
     position: absolute;
     top: 80px;
-    right: 0px;
+    right: 80px;
     border-radius: 6px;
     transition: all 0.8s;
     transform: perspective(600px);

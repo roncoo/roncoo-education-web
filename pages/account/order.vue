@@ -248,17 +248,6 @@ export default {
       }
     }
   }
-  .notdata{
-    text-align: center;
-    padding: 60px 0;
-    font-size: 30px;
-    color: #999;
-    min-height: 400px;
-    i{
-      font-size: 30px;
-      padding-right: 12px;
-    }
-  }
   .page {
      margin-bottom: 20px;
      margin-top: 10px;

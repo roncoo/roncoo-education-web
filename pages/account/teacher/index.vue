@@ -42,9 +42,6 @@
            </form>
         </div>
         <div class="main_cont form" v-show="!edit">
-          <div class="c_orange" v-if="teacherInfo.auditStatus === 0">*设置修改的信息需要通过审核才能生效，若已经修改请耐心等待！</div>
-          <div class="c_orange" v-if="teacherInfo.auditStatus === 2">*审核失败，失败原因：{{teacherInfo.auditOpinion}}</div>
-          <br>
           <div class="form_group">
             <div class="label">讲师头像:</div>
             <div class="form_ctl upload_ctl">
@@ -73,6 +70,8 @@
               <button href="javascript:" @click="edit = true" class="submit_btn">修改</button>
             </div>
           </div>
+          <div class="c_orange" style="margin-left: 120px;" v-if="teacherInfo.auditStatus === 0">*修改的信息需要通过审核才能生效，若已经修改请耐心等待！</div>
+          <div class="c_orange" style="margin-left: 120px;" v-if="teacherInfo.auditStatus === 2">*审核失败，失败原因：{{teacherInfo.auditOpinion}}</div>
         </div>
       </div>
     </div>
