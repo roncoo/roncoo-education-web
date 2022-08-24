@@ -437,7 +437,7 @@ export default {
   .login_form {
     width: 380px;
     position: absolute;
-    top: 80px;
+    top: 20px;
     right: 80px;
     border-radius: 6px;
     transition: all 0.8s;
