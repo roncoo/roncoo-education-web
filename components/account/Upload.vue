@@ -1,14 +1,14 @@
 <template>
   <div class="upload_com">
-    <div v-if="ov == 1" class="progress"><div class="entity" :style="{width: jd + '%'}">{{tip}}</div></div>
-    <button v-else  class="solid_btn" @click="upimg" type="button">{{btntxt}}</button>
-    <div class="tip" v-if="ov == 2 && !upOk">{{tip}}</div>
-    <input :id="docId" name="file" style="display: none;" type="file" :accept="accept" multiple="multiple" @change="update"/>
+    <div v-if="ov == 1" class="progress"><div class="entity" :style="{width: jd + '%'}">{{ tip }}</div></div>
+    <button v-else class="solid_btn" type="button" @click="upimg">{{ btntxt }}</button>
+    <div v-if="ov == 2 && !upOk" class="tip">{{ tip }}</div>
+    <input :id="docId" name="file" style="display: none;" type="file" :accept="accept" multiple="multiple" @change="update">
   </div>
 </template>
 <script>
-import {uploadPic, uploadDoc, uploadResVideo} from '~/api/upload.js'
-import {mapState} from 'vuex'
+import { uploadPic, uploadDoc } from '~/api/upload.js'
+import { mapState } from 'vuex'
 export default {
   props: {
     isresource: {
@@ -30,14 +30,7 @@ export default {
       type: Boolean
     }
   },
-  watch: {
-    upOk (newData) {
-      if (newData) {
-        this.ov = 0
-      }
-    }
-  },
-  data () {
+  data() {
     return {
       docId: '',
       ov: 0,
@@ -48,61 +41,68 @@ export default {
   computed: {
     ...mapState(['clientData'])
   },
+  watch: {
+    upOk(newData) {
+      if (newData) {
+        this.ov = 0
+      }
+    }
+  },
+  mounted() {
+    this.tip = ''
+  },
+  created() {
+    this.docId = this.randomString(6)
+  },
   methods: {
     // 选择上传图片
-    upimg () {
-      let myfile = document.getElementById(this.docId);
-      myfile.click();
+    upimg() {
+      const myfile = document.getElementById(this.docId)
+      myfile.click()
     },
-    update (e) {
-      let file = e.target.files[0];
-      let that = this;
+    update(e) {
+      const file = e.target.files[0]
+      const that = this
       let uploadType = uploadPic
       let typeFile = 'picFile'
       /* eslint-disable no-undef */
-      let param = new FormData();
+      const param = new FormData()
       if (this.isresource) {
         uploadType = uploadDoc
         typeFile = 'docFile'
       }
-      param.append(typeFile, file, file.name);
+      param.append(typeFile, file, file.name)
       // console.log(param)
-      uploadType(param, function (int) {
-        that.jd = int;
-        that.ov = 1;
-        that.tip = '上传中...';
+      uploadType(param, function(int) {
+        that.jd = int
+        that.ov = 1
+        that.tip = '上传中...'
       }).then(res => {
-        e.target.value = '';
-        that.ov = 2;
+        e.target.value = ''
+        that.ov = 2
         if (res.code === 200) {
-          e.target.value = '';
-          that.tip = '上传成功';
+          e.target.value = ''
+          that.tip = '上传成功'
           that.jd = 100
-          that.$emit('rtnUrl', {name: file.name, url: res.data});
+          that.$emit('rtnUrl', { name: file.name, url: res.data })
         } else {
-          that.tip = res.msg;
+          that.tip = res.msg
         }
       }).catch(() => {
-        that.ov = 2;
-        that.tip = '上传失败';
+        that.ov = 2
+        that.tip = '上传失败'
       })
     },
-    randomString (len) {
-      len = len || 32;
-      let $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
-      let maxPos = $chars.length;
-      let pwd = '';
+    randomString(len) {
+      len = len || 32
+      const $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
+      const maxPos = $chars.length
+      let pwd = ''
       for (let i = 0; i < len; i++) {
-        pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+        pwd += $chars.charAt(Math.floor(Math.random() * maxPos))
       }
-      return pwd;
+      return pwd
     }
-  },
-  mounted () {
-    this.tip = ''
-  },
-  created () {
-    this.docId = this.randomString(6);
   }
 }
 </script>

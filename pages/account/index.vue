@@ -1,13 +1,13 @@
 <template>
   <div class="">
-    <y-header></y-header>
+    <y-header />
     <div class="container account_cont clearfix">
-      <y-side></y-side>
+      <y-side />
       <div class="main_box">
         <ul class="tabs clearfix">
           <a class="tab on">基础信息</a>
         </ul>
-        <div class="main_cont form" v-if="isLogin">
+        <div v-if="isLogin" class="main_cont form">
           <form action="" @submit="userEducationInfUpdate">
             <div class="form_group">
               <div class="label">用户名:</div>
@@ -18,35 +18,35 @@
             <div class="form_group">
               <div class="label">昵称:</div>
               <div class="form_ctl">
-                  <input type="text" v-model="obj.nickname" class="form_input" placeholder="请输入昵称">
+                <input v-model="obj.nickname" type="text" class="form_input" placeholder="请输入昵称">
               </div>
             </div>
             <div class="form_group">
               <div class="label">年龄:</div>
               <div class="form_ctl">
-                  <input type="text" v-model="obj.age" class="form_input" placeholder="请输入昵称">
+                <input v-model="obj.age" type="text" class="form_input" placeholder="请输入昵称">
               </div>
             </div>
             <div class="form_group">
               <div class="label">性别:</div>
               <div class="form_ctl form_ctl_radio">
-                <input type="radio" v-model="obj.sex" class="radiobox" id="sex1" value="1" name="sex">
+                <input id="sex1" v-model="obj.sex" type="radio" class="radiobox" value="1" name="sex">
                 <label for="sex1">男</label>
-                <input type="radio" v-model="obj.sex" class="radiobox" id="sex2" value="2" name="sex">
+                <input id="sex2" v-model="obj.sex" type="radio" class="radiobox" value="2" name="sex">
                 <label for="sex2">女</label>
-                <input type="radio" v-model="obj.sex" class="radiobox" id="sex3" value="3" name="sex">
+                <input id="sex3" v-model="obj.sex" type="radio" class="radiobox" value="3" name="sex">
                 <label for="sex3">保密</label>
               </div>
             </div>
             <div class="form_group">
               <div class="label">讲师头像:</div>
               <div class="form_ctl upload_ctl">
-                <input type="hidden" v-model="obj.headImgUrl">
+                <input v-model="obj.headImgUrl" type="hidden">
                 <div class="preview">
-                  <img :src="obj.headImgUrl" alt="" v-if="obj.headImgUrl">
-                  <i class="iconfont" v-else>&#xe6b2;</i>
+                  <img v-if="obj.headImgUrl" :src="obj.headImgUrl" alt="">
+                  <i v-else class="iconfont">&#xe6b2;</i>
                 </div>
-                <d-upload @rtnUrl="setUrl"></d-upload>
+                <d-upload @rtnUrl="setUrl" />
                 <p class="tip">* 图片尺寸为800x800，图片大小&lt;500KB，建议使用真人照片，便于品牌宣传效果</p>
               </div>
             </div>
@@ -58,7 +58,7 @@
             </div>
           </form>
         </div>
-        <div class="main_cont form" v-else>
+        <div v-else class="main_cont form">
           <div class="form_group">
             <div class="label">用户名:</div>
             <div class="form_ctl">
@@ -80,19 +80,19 @@
           <div class="form_group">
             <div class="label">性别:</div>
             <div class="form_ctl">
-              <div class="text" v-if="obj.sex === 1">男</div>
-              <div class="text" v-else-if="obj.sex === 2">女</div>
-              <div class="text" v-else-if="obj.sex === 3">保密</div>
+              <div v-if="obj.sex === 1" class="text">男</div>
+              <div v-else-if="obj.sex === 2" class="text">女</div>
+              <div v-else-if="obj.sex === 3" class="text">保密</div>
             </div>
           </div>
           <div class="form_group">
             <div class="label">讲师头像:</div>
             <div class="form_ctl upload_ctl">
-              <input type="hidden" v-model="obj.headImgUrl">
-                <div class="preview">
-                  <img :src="obj.headImgUrl" alt="" v-if="obj.headImgUrl">
-                  <i class="iconfont" v-else>&#xe6b2;</i>
-                </div>
+              <input v-model="obj.headImgUrl" type="hidden">
+              <div class="preview">
+                <img v-if="obj.headImgUrl" :src="obj.headImgUrl" alt="">
+                <i v-else class="iconfont">&#xe6b2;</i>
+              </div>
             </div>
           </div>
           <div class="form_group">
@@ -104,7 +104,7 @@
         </div>
       </div>
     </div>
-    <y-footer></y-footer>
+    <y-footer />
   </div>
 </template>
 <script>
@@ -112,11 +112,17 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DUpload from '~/components/account/Upload'
-import {getUserInfo} from '~/api/user.js'
-import {updateUserEducationInf} from '~/api/account/user.js'
+import { getUserInfo } from '~/api/user.js'
+import { updateUserEducationInf } from '~/api/account/user.js'
 import { myHttp } from '~/utils/myhttp.js'
 export default {
-  data () {
+  components: {
+    YHeader,
+    YFooter,
+    YSide,
+    DUpload
+  },
+  data() {
     return {
       isLogin: false,
       region1: [],
@@ -139,55 +145,49 @@ export default {
       }
     }
   },
+  mounted() {
+    this.getByUser()
+  },
   methods: {
-    getByUser () {
+    getByUser() {
       myHttp.call(this, {
         method: getUserInfo
       }).then(res => {
         this.obj = res.data || {}
-      }).catch(error => {})
+      })
     },
-    editInfo () {
-      this.isLogin = true;
+    editInfo() {
+      this.isLogin = true
     },
-    userEducationInfUpdate (e) {
-      e.preventDefault();
+    userEducationInfUpdate(e) {
+      e.preventDefault()
       if (!this.obj.nickname) {
-        this.errTip1 = '请输入昵称';
-        return false;
+        this.errTip1 = '请输入昵称'
+        return false
       } else {
-        this.errTip1 = false;
+        this.errTip1 = false
       }
-      this.id = this.obj.id;
+      this.id = this.obj.id
       myHttp.call(this, {
         method: updateUserEducationInf,
         params: this.obj,
-        confirm: () => {window.location.reload()},
-        cancel: () => {window.location.reload()}
+        confirm: () => { window.location.reload() },
+        cancel: () => { window.location.reload() }
       }).then(res => {
         this.$store.commit('SET_USER', res.data)
         this.$msgBox({
           content: '修改成功',
           isShowCancelBtn: false
-        }).then(async (val) => {
+        }).then(async(val) => {
           window.location.reload()
         }).catch(() => {
           window.location.reload()
         })
       })
     },
-    setUrl (res) {
-      this.obj.headImgUrl = res.url;
+    setUrl(res) {
+      this.obj.headImgUrl = res.url
     }
-  },
-  mounted () {
-    this.getByUser()
-  },
-  components: {
-    YHeader,
-    YFooter,
-    YSide,
-    DUpload
   }
 }
 </script>

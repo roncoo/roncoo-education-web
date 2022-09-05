@@ -5,11 +5,11 @@
         <div class="register_header">
           <div class="register_logo">
             <nuxt-link :to="{name: 'index'}">
-              <img :src="webInfo.logoImg" alt="" v-if="webInfo && webInfo.logoImg">
+              <img v-if="webInfo && webInfo.logoImg" :src="webInfo.logoImg" alt="">
             </nuxt-link>
           </div>
           <p>
-            已有账号，<nuxt-link :to="{name: 'login'}">立即登陆</nuxt-link><span></span><nuxt-link :to="{name: 'index'}">返回首页</nuxt-link>
+            已有账号，<nuxt-link :to="{name: 'login'}">立即登陆</nuxt-link><span /><nuxt-link :to="{name: 'index'}">返回首页</nuxt-link>
           </p>
         </div>
         <div class="register_content">
@@ -18,30 +18,30 @@
             <div class="form_group">
               <div class="label">手机号:</div>
               <div class="form_ctl">
-                <input type="text" maxlength="11" @change="enterPhone" v-model="obj.mobile">
-                <p class="err" v-show="errTip0">{{errTip0}}</p>
+                <input v-model="obj.mobile" type="text" maxlength="11" @change="enterPhone">
+                <p v-show="errTip0" class="err">{{ errTip0 }}</p>
               </div>
             </div>
             <div class="form_group">
               <div class="label">验证码:</div>
               <div class="form_ctl">
-                <input type="text" maxlength="6" v-model="obj.code" name="code" @change="enter">
+                <input v-model="obj.code" type="text" maxlength="6" name="code" @change="enter">
                 <y-button :mobile="obj.mobile" />
-                <p class="err" v-show="errTip1">{{errTip1}}</p>
+                <p v-show="errTip1" class="err">{{ errTip1 }}</p>
               </div>
             </div>
             <div class="form_group">
               <div class="label">新密码:</div>
               <div class="form_ctl">
-                <input type="password" v-model="obj.newPassword" @change="enter" name="password">
-                <p class="err" v-show="errTip2">{{errTip2}}</p>
+                <input v-model="obj.newPassword" type="password" name="password" @change="enter">
+                <p v-show="errTip2" class="err">{{ errTip2 }}</p>
               </div>
             </div>
             <div class="form_group">
               <div class="label">重复密码:</div>
               <div class="form_ctl">
-                <input type="password" v-model="obj.confirmPassword" @change="enter" name="repassword">
-                <p class="err" v-show="errTip3">{{errTip3}}</p>
+                <input v-model="obj.confirmPassword" type="password" name="repassword" @change="enter">
+                <p v-show="errTip3" class="err">{{ errTip3 }}</p>
               </div>
             </div>
             <div class="form_group">
@@ -54,11 +54,11 @@
         </div>
       </div>
       <p class="footer_text">
-        <span v-if="service.copyright" v-html="service.copyright"></span>
+        <span v-if="service.copyright" v-html="service.copyright" />
         <span v-if="service.icp">&nbsp;|&nbsp;</span>
-        <a href="http://www.miitbeian.gov.cn/" target="_blank">{{service.icp}}</a>
+        <a href="http://www.miitbeian.gov.cn/" target="_blank">{{ service.icp }}</a>
         <span v-if="service.prn">&nbsp;|&nbsp;</span>
-        <a :href="'http://www.beian.gov.cn/portal/index'" target="_blank" v-if="service.prn"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{service.prn}}</a>
+        <a v-if="service.prn" :href="'http://www.beian.gov.cn/portal/index'" target="_blank"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ service.prn }}</a>
       </p>
       <a href="http://www.doityun.com/" target="_blank" class="lingke_link">IT云提供计算服务</a>
     </div>
@@ -66,14 +66,17 @@
 </template>
 <script>
 import YButton from '~/components/common/CodeButton'
-import {updatePassword} from '~/api/account/user.js'
+import { updatePassword } from '~/api/account/user.js'
 export default {
-  metaInfo () {
-      return {
-        title: '修改密码'
-      }
+  metaInfo() {
+    return {
+      title: '修改密码'
+    }
   },
-  data () {
+  components: {
+    YButton
+  },
+  data() {
     return {
       errTip0: '',
       errTip1: '',
@@ -89,58 +92,63 @@ export default {
       service: {}
     }
   },
+  mounted() {
+    if (this.webInfo) {
+      this.service = this.webInfo
+    }
+  },
   methods: {
-    goLogin () {
-      this.$router.push({path: '/login'});
+    goLogin() {
+      this.$router.push({ path: '/login' })
     },
     // 输入内容
-    enter (e) {
-      let name = e.target.name;
+    enter(e) {
+      const name = e.target.name
       if (name === 'code') {
         if (this.obj.code.length !== 6) {
-          this.errTip1 = '请输入正确的手机验证码';
-          return false;
+          this.errTip1 = '请输入正确的手机验证码'
+          return false
         } else {
-          this.errTip1 = false;
+          this.errTip1 = false
         }
       } else if (name === 'password') {
         if (this.obj.newPassword.length < 6 || this.obj.newPassword.length > 16) {
-          this.errTip2 = '请输入6-16位的登录密码,区分大小写,不可有空格';
-          return false;
+          this.errTip2 = '请输入6-16位的登录密码,区分大小写,不可有空格'
+          return false
         } else {
-          this.errTip2 = false;
+          this.errTip2 = false
         }
       } else if (name === 'repassword') {
         if (this.obj.newPassword !== this.obj.confirmPassword) {
-          this.errTip3 = '两次输入密码不一致';
-          return false;
+          this.errTip3 = '两次输入密码不一致'
+          return false
         } else {
-          this.errTip3 = false;
+          this.errTip3 = false
         }
       }
     },
     // 输入手机
-    enterPhone () {
+    enterPhone() {
       if (this.obj.mobile.length === 11) {
         if ((/^1[3|4|5|8|7][0-9]\d{4,8}$/.test(this.obj.mobile.trim()))) {
-          this.errTip0 = false;
-          this.getCodeBtn = true;
+          this.errTip0 = false
+          this.getCodeBtn = true
         } else {
-          this.errTip0 = '请输入正确手机';
-          this.getCodeBtn = false;
+          this.errTip0 = '请输入正确手机'
+          this.getCodeBtn = false
         }
       } else {
-        this.errTip0 = false;
-        this.getCodeBtn = false;
+        this.errTip0 = false
+        this.getCodeBtn = false
       }
     },
-    showMsg (msg) {
+    showMsg(msg) {
       this.$msgBox({
         content: msg,
         isShowCancelBtn: false
       }).catch(() => {})
     },
-    resetPsw (e) {
+    resetPsw(e) {
       e.preventDefault()
       if (!(/^1[3|4|5|8|7][0-9]\d{4,8}$/.test(this.obj.mobile.trim()))) {
         this.showMsg('请输入正确格式的手机号码')
@@ -161,17 +169,17 @@ export default {
       this.obj.clientId = this.$store.state.clientData.id
       console.log(this.obj)
       updatePassword(this.obj).then(res => {
-        let result = res.data
+        const result = res.data
         if (result.code === 200) {
           this.$msgBox({
             content: '修改成功',
             isShowCancelBtn: false
           }).then(() => {
             this.$store.commit('SIGN_OUT')
-            this.$router.push({name: 'login'})
+            this.$router.push({ name: 'login' })
           }).catch(() => {
             this.$store.commit('SIGN_OUT')
-            this.$router.push({name: 'login'})
+            this.$router.push({ name: 'login' })
           })
         } else {
           this.$msgBox({
@@ -183,14 +191,6 @@ export default {
         this.showMsg('系统繁忙，请稍后重试')
       })
     }
-  },
-  mounted () {
-    if (this.webInfo) {
-      this.service = this.webInfo
-    }
-  },
-  components: {
-    YButton
   }
 }
 </script>

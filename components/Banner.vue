@@ -1,20 +1,23 @@
 <template>
   <div class="banner">
     <ul :style="'height:'+ height+ 'px;'" @mouseout="mout" @mouseover="mover">
-      <li class="item" v-for="(item, index) in data" :key="index" :style="'background-image: url('+item.advImg+');'" :class="{on:index === num}">
-        <a :href="item.advUrl" :title="item.advTitle" :target="item.advTarget"></a>
+      <li v-for="(item, index) in data" :key="index" class="item" :style="'background-image: url('+item.advImg+');'" :class="{on:index === num}">
+        <a :href="item.advUrl" :title="item.advTitle" :target="item.advTarget" />
       </li>
     </ul>
     <ul class="page_dots">
-      <span class="dots" v-for="(item, index) in data" :class="{on:index === num}" @mouseenter="num = index" :key="index"></span>
+      <span v-for="(item, index) in data" :key="index" class="dots" :class="{on:index === num}" @mouseenter="num = index" />
     </ul>
-    <y-class-block :height="height" :classList="classList" />
+    <y-class-block :height="height" :class-list="classList" />
   </div>
 </template>
 <script>
 import YClassBlock from './ClassBlock'
 // import {mapState} from 'vuex'
 export default {
+  components: {
+    YClassBlock
+  },
   props: {
     data: {
       // 手机号
@@ -23,7 +26,7 @@ export default {
     },
     classList: {
       type: [Object, Array],
-      default () {
+      default() {
         return []
       }
     },
@@ -32,36 +35,33 @@ export default {
       default: 456
     }
   },
-  data () {
+  data() {
     return {
       webInfo: this.$store.state.webInfo,
       num: 0,
       interval: null
     }
   },
+  mounted() {
+    // console.log(this.data)
+    this.change()
+  },
   methods: {
-    change () {
+    change() {
       this.interval = setInterval(() => {
         if (this.num + 1 >= this.data.length) {
-          this.num = 0;
+          this.num = 0
         } else {
-          this.num++;
+          this.num++
         }
       }, 3000)
     },
-    mout () {
-      this.change();
+    mout() {
+      this.change()
     },
-    mover () {
-      clearInterval(this.interval);
+    mover() {
+      clearInterval(this.interval)
     }
-  },
-  mounted () {
-    // console.log(this.data)
-    this.change();
-  },
-  components: {
-    YClassBlock
   }
 }
 </script>

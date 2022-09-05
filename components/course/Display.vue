@@ -1,49 +1,49 @@
 <!-- 课程信息展示 -->
 <template>
   <div class="">
-    <y-header :active="'kczx'"></y-header>
+    <y-header :active="'kczx'" />
     <div class="detail_content">
       <div class="detail_body">
         <ul class="detail_header clearfix">
           <li><nuxt-link :to="{name: 'index'}">首页</nuxt-link><span>></span></li>
           <li><nuxt-link :to="{name: 'list'}">录播中心</nuxt-link><span>></span></li>
-          <li>{{courseInfo.courseName}}</li>
+          <li>{{ courseInfo.courseName }}</li>
         </ul>
         <div class="clearfix">
           <div class="video_box">
-            <div class="detail_view" id="player" ref="videobox" :style="'background-image:url('+courseInfo.courseLogo+')'"></div>
+            <div id="player" ref="videobox" class="detail_view" :style="'background-image:url('+courseInfo.courseLogo+')'" />
             <!-- <span class="iconfont close_video" @click="stopVideo">&#xe616;</span> -->
           </div>
           <div class="view_info">
-            <p>{{courseInfo.courseName}}</p>
+            <p>{{ courseInfo.courseName }}</p>
             <div class="view_price">
               <div>
-                价格:<span v-if="!courseInfo.isFree">￥{{courseInfo.courseOriginal ? courseInfo.courseOriginal.toFixed(2) : '0.00'}}</span>
+                价格:<span v-if="!courseInfo.isFree">￥{{ courseInfo.courseOriginal ? courseInfo.courseOriginal.toFixed(2) : '0.00' }}</span>
                 <span v-else>免费</span>
               </div>
             </div>
             <div class="view_teacher">
-              <span class="text_b">讲师:</span>{{courseInfo.lecturer.lecturerName}}
+              <span class="text_b">讲师:</span>{{ courseInfo.lecturer.lecturerName }}
             </div>
             <!-- <div class="view_teacher mgt20" v-else>
               <span class="text_b">有效期:</span>永久
             </div> -->
             <div class="view_teacher mgt20">
-              <span class="text_b">购买人数:</span>{{courseInfo.countBuy}} 人
+              <span class="text_b">购买人数:</span>{{ courseInfo.countBuy }} 人
             </div>
             <div class="foot_box">
               <div class="study_num">
-                <span class="iconfont mgr10">&#xe60a;</span>{{courseInfo.countStudy}} 人已学习
+                <span class="iconfont mgr10">&#xe60a;</span>{{ courseInfo.countStudy }} 人已学习
               </div>
-              <button class="buy_btn" v-if="courseInfo.isFree && !isLogin" @click="goLogin">登录观看</button>
-              <button class="buy_btn" id="buyBtn" v-else @click="buyCourse">立即购买</button>
+              <button v-if="courseInfo.isFree && !isLogin" class="buy_btn" @click="goLogin">登录观看</button>
+              <button v-else id="buyBtn" class="buy_btn" @click="buyCourse">立即购买</button>
             </div>
             <!-- <a :class="{collect_btn: true, share: true, c_red: isShare}" href="javascript:"><span class="iconfont">&#xe610;</span>&nbsp;分享</a> -->
           </div>
         </div>
       </div>
     </div>
-    <d-pay :isCourse="true" @hidefun="showPay = false" :data="payData" v-if="showPay"></d-pay>
+    <d-pay v-if="showPay" :is-course="true" :data="payData" @hidefun="showPay = false" />
   </div>
 </template>
 <script>
@@ -60,41 +60,41 @@ export default {
       default: null
     }
   },
-  data () {
+  data() {
     return {
       payData: null,
       showPay: false,
       isCollect: '',
       activityText: '',
-      isLogin: this.$store.state.tokenInfo ? true : false
+      isLogin: !!this.$store.state.tokenInfo
     }
   },
+  mounted() {
+  },
   methods: {
-    goLogin () {
-      this.$store.dispatch('REDIRECT_LOGIN');
+    goLogin() {
+      this.$store.dispatch('REDIRECT_LOGIN')
     },
-    stopVideo () {
+    stopVideo() {
     },
     // 购买视频
-    buyCourse (event) {
+    buyCourse(event) {
       if (!this.isLogin) {
         this.$msgBox({
           content: '请登录后再购买',
           isShowCancelBtn: false
         }).then(() => {
-          this.$store.dispatch('REDIRECT_LOGIN');
+          this.$store.dispatch('REDIRECT_LOGIN')
         })
         return
       }
 
-      this.showPay = true;
-      this.payData = {course: this.courseInfo, payType: 'course'};
+      this.showPay = true
+      this.payData = { course: this.courseInfo, payType: 'course' }
     }
-  },
-  mounted () {
   }
 }
-  
+
 </script>
 
 <style lang="scss" rel="stylesheet/scss">

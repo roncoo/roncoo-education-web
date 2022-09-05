@@ -1,42 +1,42 @@
 <template>
   <div>
-    <y-header></y-header>
+    <y-header />
     <div class="container account_cont clearfix">
-      <y-side :type="'wddd'"></y-side>
+      <y-side :type="'wddd'" />
       <div class="main_box">
         <ul class="tabs clearfix">
           <a class="tab" :class="{on: num == 0}" @click="clicktab(0)">所有订单</a>
           <a class="tab" :class="{on: num == 1}" @click="clicktab(1)">待支付订单</a>
           <a class="tab" :class="{on: num == 2}" @click="clicktab(2)">已完成订单</a>
         </ul>
-        <div class="notdata" v-if="notdata">
+        <div v-if="notdata" class="notdata">
           <i class="iconfont">&#xe6be;</i>暂时没有数据
         </div>
-        <div class="person_info" v-if="!notdata">
-          <div class="order_content" v-for="(item, index) in pageObj.list" :key="index">
+        <div v-if="!notdata" class="person_info">
+          <div v-for="(item, index) in pageObj.list" :key="index" class="order_content">
             <div class="order_title clearfix">
-              <span class="order_num">订单号：{{item.orderNo}}</span>
-              <span class="time">{{item.gmtCreate}}</span>
+              <span class="order_num">订单号：{{ item.orderNo }}</span>
+              <span class="time">{{ item.gmtCreate }}</span>
             </div>
             <div class="order_body clearfix">
               <div class="body_left clearfix">
-                <div class="img_box fl" v-if="item.courseLogo">
+                <div v-if="item.courseLogo" class="img_box fl">
                   <img :src="item.courseLogo" alt="">
                 </div>
                 <p class="fl">
-                  {{item.courseName}}
+                  {{ item.courseName }}
                 </p>
               </div>
               <ul class="body_right clearfix">
-                <li class="money">￥{{item.pricePaid}}</li>
+                <li class="money">￥{{ item.pricePaid }}</li>
                 <li v-if="item.payType == 1">微信支付</li>
                 <li v-if="item.payType == 2">支付宝支付</li>
-                <li class="alipay" v-if="item.orderStatus == 1">等待支付</li>
-                <li class="alipay" v-if="item.orderStatus == 2">已支付</li>
-                <li class="alipay" v-if="item.orderStatus == 3">支付失败</li>
-                <li class="alipay" v-if="item.orderStatus == 4">已关闭</li>
-                <li class="alipay" v-if="item.orderStatus == 5">已退款</li>
-                <li class="alipay" v-if="item.orderStatus == 6">已解绑</li>
+                <li v-if="item.orderStatus == 1" class="alipay">等待支付</li>
+                <li v-if="item.orderStatus == 2" class="alipay">已支付</li>
+                <li v-if="item.orderStatus == 3" class="alipay">支付失败</li>
+                <li v-if="item.orderStatus == 4" class="alipay">已关闭</li>
+                <li v-if="item.orderStatus == 5" class="alipay">已退款</li>
+                <li v-if="item.orderStatus == 6" class="alipay">已解绑</li>
                 <li v-if="item.orderStatus == 2">
                   <nuxt-link :to="{name: 'view-id', params: {id: item.courseId}}" class="go_btn">进入学习</nuxt-link>
                 </li>
@@ -47,12 +47,12 @@
               </ul>
             </div>
           </div>
-          <d-page v-if="pageObj.totalPage > 1 && !notdata" :page="pageObj" @btnClick="getPage"></d-page>
+          <d-page v-if="pageObj.totalPage > 1 && !notdata" :page="pageObj" @btnClick="getPage" />
         </div>
       </div>
     </div>
-    <d-paymodal class="" :data="payData" @hidefun="showPay = false" v-if="showPay"></d-paymodal>
-    <y-footer></y-footer>
+    <d-paymodal v-if="showPay" class="" :data="payData" @hidefun="showPay = false" />
+    <y-footer />
   </div>
 </template>
 <script>
@@ -60,11 +60,18 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DPaymodal from '~/components/account/PayModal'
-import {orderList, orderClose} from '~/api/account/course.js'
+import { orderList, orderClose } from '~/api/account/course.js'
 import DPage from '~/components/Page'
-import {myHttp} from '~/utils/myhttp.js'
+import { myHttp } from '~/utils/myhttp.js'
 export default {
-  data () {
+  components: {
+    YHeader,
+    YFooter,
+    YSide,
+    DPage,
+    DPaymodal
+  },
+  data() {
     return {
       num: 0,
       showPay: false,
@@ -83,66 +90,59 @@ export default {
       }
     }
   },
+  mounted() {
+    this.obj = {
+      orderStatus: 0,
+      pageCurrent: 1,
+      pageSize: 10
+    }
+    this.getOrderList()
+  },
   methods: {
-    pay (item) {
-      this.payData = item;
-      this.showPay = true;
+    pay(item) {
+      this.payData = item
+      this.showPay = true
     },
-    clicktab (int) {
-      this.num = int;
-      this.obj.orderStatus = int;
-      this.obj.pageCurrent = 1;
-      this.getOrderList();
+    clicktab(int) {
+      this.num = int
+      this.obj.orderStatus = int
+      this.obj.pageCurrent = 1
+      this.getOrderList()
     },
-    getPage: function (int) {
-      this.obj.pageCurrent = int;
-      this.getOrderList();
+    getPage: function(int) {
+      this.obj.pageCurrent = int
+      this.getOrderList()
     },
-    getOrderList () {
+    getOrderList() {
       this.obj.lecturerUserNo = this.$store.state.userInfo.userNo
       myHttp.call(this, {
         method: orderList,
         params: this.obj
       }).then(res => {
-        this.pageObj = res.data;
+        this.pageObj = res.data
         if (res.data.list.length > 0) {
-          this.notdata = false;
+          this.notdata = false
         } else {
-          this.notdata = true;
+          this.notdata = true
         }
       })
     },
-    closeOrder (orderNo) {
+    closeOrder(orderNo) {
       myHttp.call(this, {
         method: orderClose,
-        params: {orderNo}
+        params: { orderNo }
       }).then(res => {
         this.$msgBox({
           content: '取消成功',
           isShowCancelBtn: false,
           edit: false
-        }).then(async (val) => {
+        }).then(async(val) => {
           this.getOrderList()
         }).catch(() => {
           this.getOrderList()
         })
       })
     }
-  },
-  mounted () {
-    this.obj = {
-      orderStatus: 0,
-      pageCurrent: 1,
-      pageSize: 10
-    }
-    this.getOrderList();
-  },
-  components: {
-    YHeader,
-    YFooter,
-    YSide,
-    DPage,
-    DPaymodal
   }
 }
 </script>

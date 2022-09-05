@@ -1,19 +1,20 @@
 // /src/components/MessageBox/index.vue
 <template>
-    <div class="message-box" v-show="isShowMessageBox">
-      <div class="mask" @click="cancel"></div>
-      <div class="message-content">
-        <h3 class="title">{{ title }}</h3>
-        <p class="content">{{ content }}</p>
-        <div>
-          <input type="text" v-model="inputValue" v-if="isShowInput" ref="input">
-        </div>
-        <div class="btn-group">
-            <button class="btn-default solid_btn" @click="cancel" v-show="isShowCancelBtn">{{ cancelBtnText }}</button>
-            <button class="btn-primary btn-confirm solid_btn" @click="confirm" v-show="isShowConfimrBtn">{{ confirmBtnText }}</button>
-        </div>
+  <div v-show="isShowMessageBox" class="message-box">
+    <div class="mask" @click="cancel" />
+    <div class="message-content">
+      <h3 class="title">{{ title }}</h3>
+      <p class="content">{{ content }}</p>
+      <div>
+        <!-- eslint-disable-next-line  -->
+        <input v-if="isShowInput" ref="input" v-model="inputValue" type="text">
+      </div>
+      <div class="btn-group">
+        <button v-show="isShowCancelBtn" class="btn-default solid_btn" @click="cancel">{{ cancelBtnText }}</button>
+        <button v-show="isShowConfimrBtn" class="btn-primary btn-confirm solid_btn" @click="confirm">{{ confirmBtnText }}</button>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -27,8 +28,14 @@ export default {
       type: String,
       default: '这是弹框内容'
     },
-    isShowInput: false,
-    inputValue: '',
+    isShowInput: {
+      type: Boolean,
+      default: false
+    },
+    inputValue: {
+      type: String,
+      default: ''
+    },
     isShowCancelBtn: {
       type: Boolean,
       default: true
@@ -46,52 +53,52 @@ export default {
       default: '确定'
     }
   },
-  data () {
+  data() {
     return {
       isShowMessageBox: false,
       resolve: '',
       reject: '',
       promise: '' // 保存promise对象
-    };
+    }
   },
   methods: {
     // 确定,将promise断定为resolve状态
-    confirm: function () {
-      this.isShowMessageBox = false;
+    confirm: function() {
+      this.isShowMessageBox = false
       if (this.isShowInput) {
-        this.resolve(this.inputValue);
+        this.resolve(this.inputValue)
       } else {
-        this.resolve('confirm');
+        this.resolve('confirm')
       }
-      this.remove();
+      this.remove()
     },
     // 取消,将promise断定为reject状态
-    cancel: function () {
-      this.isShowMessageBox = false;
-      this.reject('cancel');
-      this.remove();
+    cancel: function() {
+      this.isShowMessageBox = false
+      this.reject('cancel')
+      this.remove()
     },
     // 弹出messageBox,并创建promise对象
-    showMsgBox: function () {
-      this.isShowMessageBox = true;
+    showMsgBox: function() {
+      this.isShowMessageBox = true
       this.promise = new Promise((resolve, reject) => {
-        this.resolve = resolve;
-        this.reject = reject;
-      });
+        this.resolve = resolve
+        this.reject = reject
+      })
       // 返回promise对象
-      return this.promise;
+      return this.promise
     },
-    remove: function () {
+    remove: function() {
       setTimeout(() => {
-        this.destroy();
-      }, 300);
+        this.destroy()
+      }, 300)
     },
-    destroy: function () {
-      this.$destroy();
-      document.body.removeChild(this.$el);
+    destroy: function() {
+      this.$destroy()
+      document.body.removeChild(this.$el)
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
   .message-box{

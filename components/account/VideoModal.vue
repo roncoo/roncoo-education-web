@@ -1,17 +1,17 @@
 <template>
   <div class="" :class="{on: open}">
-    <div class="mask" @click="close()"></div>
-    <div class="modal_panel image_panel" id="image_panel_importance">
+    <div class="mask" @click="close()" />
+    <div id="image_panel_importance" class="modal_panel image_panel">
       <div class="modal_head">
         <span class="fl">视频管理</span>
-        <a href="javascript:" @click="close()" class="close iconfont">&#xe616;</a>
+        <a href="javascript:" class="close iconfont" @click="close()">&#xe616;</a>
       </div>
       <div class="modal_body">
         <div class="upload_box clearfix">
-          <span></span>
+          <span />
           <div class="fr">
             <span>大小不超过500M</span>
-            <input type="file" @change="addUpload" multiple="multiple" accept="video/mp4,video/avi,video/mpg,video/mpeg,video/ram,.flv,video/mov,video/asf,video/3gp,video/f4v,video/wmv,video/x-ms-wmv" style="display: none;" id="file">
+            <input id="file" type="file" multiple="multiple" accept="video/mp4,video/avi,video/mpg,video/mpeg,video/ram,.flv,video/mov,video/asf,video/3gp,video/f4v,video/wmv,video/x-ms-wmv" style="display: none;" @change="addUpload">
             <button class="solid_btn" @click="upimg">本地上传</button>
           </div>
         </div>
@@ -19,30 +19,31 @@
           <div class="left_list">
             <div data-v-1300c342="" class="title">已选视频</div>
             <ul class="">
-              <li class="img" v-for="(item, index) in videoList" :key="index">
+              <li v-for="(item, index) in videoList" :key="index" class="img">
                 <div class="oper">
                   <i class="iconfont gb" title="从库移除" @click="delVideo(item.videoNo, 1)">&#xe68c;</i>
                 </div>
                 <div class="icon iconfont" :title="item.videoName">&#xe690;</div>
-                <a href="javascript:" :title="item.videoName">{{item.videoName}}</a>
+                <a href="javascript:" :title="item.videoName">{{ item.videoName }}</a>
               </li>
             </ul>
           </div>
           <div class="right_list">
             <div data-v-1300c342="" class="title">视频库列表</div>
             <ul>
-              <li class="img" v-for="(item, index) in chapterVideoList" :key="index" @click="selVideo(item)" title="点击选择">
+              <li v-for="(item, index) in chapterVideoList" :key="index" class="img" title="点击选择" @click="selVideo(item)">
                 <div class="oper">
                   <i class="iconfont gb" title="从库移除" @click.stop="delVideo(item.videoNo, 0, item.id)">&#xe68c;</i>
                 </div>
                 <div class="icon iconfont" :title="item.videoName">&#xe690;</div>
-                <a href="javascript:" :title="item.videoName">{{item.videoName}}</a>
+                <a href="javascript:" :title="item.videoName">{{ item.videoName }}</a>
               </li>
-              <li class="img" v-for="(item, index) in uploadList" v-if="item.tip !== '上传成功'" :key="index + 'ls'">
-                <div class="tip">{{item.tip}}</div>
-                <div class="progress"><div class="entity" :style="{width: item.jd + '%'}"></div></div>
+              <!-- eslint-disable-next-line  -->
+              <li v-for="(item, index) in uploadList" v-if="item.tip !== '上传成功'" :key="index + 'ls'" class="img">
+                <div class="tip">{{ item.tip }}</div>
+                <div class="progress"><div class="entity" :style="{width: item.jd + '%'}" /></div>
                 <img :src="item.wait" alt="">
-                <a href="javascript:">{{item.name}}</a>
+                <a href="javascript:">{{ item.name }}</a>
               </li>
             </ul>
           </div>
@@ -56,8 +57,8 @@
   </div>
 </template>
 <script>
-import {uploadResVideo} from '~/api/upload.js'
-import {periodVideoUpdate, chapterVideoSave, periodVideo, chapterVideo, chapterVideodel} from '~/api/account/course.js'
+import { uploadResVideo } from '~/api/upload.js'
+import { periodVideoUpdate, chapterVideoSave, periodVideo, chapterVideo, chapterVideodel } from '~/api/account/course.js'
 export default {
   props: {
     open: {
@@ -74,7 +75,7 @@ export default {
       default: 1
     }
   },
-  data () {
+  data() {
     return {
       flag: true,
       kg: true,
@@ -92,14 +93,19 @@ export default {
       uploadList: []
     }
   },
+  mounted() {
+    this.kg = false
+    this.periodVideoList()
+    this.getChapterVideo()
+  },
   methods: {
     // 选择上传视频
-    upimg () {
-      let myfile = document.getElementById('file');
-      myfile.click();
+    upimg() {
+      const myfile = document.getElementById('file')
+      myfile.click()
     },
     // 选择视频
-    selVideo (obj) {
+    selVideo(obj) {
       if (this.videoList && this.videoList.length) {
         this.$msgBox({
           content: '只能选择一个视频',
@@ -107,74 +113,74 @@ export default {
         })
         return
       }
-      this.videoList = [obj];
+      this.videoList = [obj]
     },
     // 加入上传列表
-    addUpload (e) {
-      let files = e.target.files;
+    addUpload(e) {
+      const files = e.target.files
       for (var i = 0; i < files.length; i++) {
-        let file = files[i];
-        file.tip = '等待上传';
-        file.jd = 0;
-        this.uploadList.push(file);
+        const file = files[i]
+        file.tip = '等待上传'
+        file.jd = 0
+        this.uploadList.push(file)
       }
       if (this.upbtn) {
-        this.upload();
+        this.upload()
       }
     },
     // 上传视频
-    upload () {
-      this.upbtn = false;
-      let pics = this.uploadList;
-      let itemfile = null;
+    upload() {
+      this.upbtn = false
+      const pics = this.uploadList
+      let itemfile = null
       for (var i = 0; i < pics.length; i++) {
         if (pics[i].jd === 0 && itemfile === null) {
-          itemfile = pics[i];
+          itemfile = pics[i]
         }
       }
       if (itemfile) {
-        let file = itemfile;
-        let that = this;
+        const file = itemfile
+        const that = this
         /* eslint-disable no-undef */
-        let param = new FormData();
-        param.append('videoFile', file, file.name);
-        uploadResVideo(param, function (int) {
-          itemfile.jd = int;
-          itemfile.tip = '上传中';
-          that.uploadList = Object.assign([], that.uploadList);
+        const param = new FormData()
+        param.append('videoFile', file, file.name)
+        uploadResVideo(param, function(int) {
+          itemfile.jd = int
+          itemfile.tip = '上传中'
+          that.uploadList = Object.assign([], that.uploadList)
         }).then(res => {
           if (res.code === 200) {
             itemfile.jd = 100
-            itemfile.tip = '上传成功';
-            that.upload();
-            that.savaVideo(res.data, itemfile.name);
+            itemfile.tip = '上传成功'
+            that.upload()
+            that.savaVideo(res.data, itemfile.name)
           } else {
-            itemfile.tip = res.msg;
-            that.upload();
+            itemfile.tip = res.msg
+            that.upload()
           }
-          that.uploadList = pics;
+          that.uploadList = pics
         }).catch(msg => {
-          itemfile.tip = '上传失败';
-          that.upload();
+          itemfile.tip = '上传失败'
+          that.upload()
         })
       } else {
-        this.upbtn = true;
+        this.upbtn = true
       }
     },
     // 保存视频
-    savaVideo (vid, tit) {
+    savaVideo(vid, tit) {
       chapterVideoSave({
         chapterId: this.data.cNo,
         videoNo: vid
       }).then(res => {
-        res = res.data;
+        res = res.data
         if (res.code === 200) {
-          this.getChapterVideo();
+          this.getChapterVideo()
         }
       })
     },
     // 删除视频
-    delVideo (vNo, ty, id) {
+    delVideo(vNo, ty, id) {
       // let that = this;
       if (ty) {
         this.$msgBox({
@@ -197,17 +203,17 @@ export default {
           this.$msgBox({
             content: '你确定要删除该视频吗?'
           }).then(() => {
-            chapterVideodel({id}).then(res => {
-              res = res.data;
+            chapterVideodel({ id }).then(res => {
+              res = res.data
               if (res.code === 200) {
                 // that.alertOpen = false;
                 this.$msgBox({
                   content: '删除成功',
                   isShowCancelBtn: false
                 })
-                this.getChapterVideo();
+                this.getChapterVideo()
               } else {
-                alert(res.msg);
+                alert(res.msg)
               }
             })
           }).catch(() => {
@@ -222,12 +228,12 @@ export default {
       }
     },
     // 提交保存选中视频
-    submit () {
-      let videoNo = this.videoList && this.videoList.length ? this.videoList[0].videoNo : ''
-      periodVideoUpdate({videoNo, periodId: this.data.pNo}).then(res => {
-        res = res.data;
+    submit() {
+      const videoNo = this.videoList && this.videoList.length ? this.videoList[0].videoNo : ''
+      periodVideoUpdate({ videoNo, periodId: this.data.pNo }).then(res => {
+        res = res.data
         if (res.code === 200) {
-          this.$emit('hidefun', event);
+          this.$emit('hidefun', event)
         } else {
           this.$msgBox({
             content: res.msg,
@@ -242,26 +248,26 @@ export default {
       })
       // this.$emit('hidefun', event);
     },
-    close () {
+    close() {
       if (this.upbtn) {
-        this.$emit('hidefun', event);
+        this.$emit('hidefun', event)
       } else {
         this.$msgBox({
           content: '视频正在上传,确定关闭上传窗口吗?'
         }).then(res => {
-          this.$emit('hidefun', event);
+          this.$emit('hidefun', event)
         })
       }
     },
-    btnClick (event) {
-      this.$emit('btnClick', event);
+    btnClick(event) {
+      this.$emit('btnClick', event)
     },
-    changeTab (int) {
-      this.$emit('change', int);
+    changeTab(int) {
+      this.$emit('change', int)
     },
-      // 获取该例题已选中的图片
-    periodVideoList () {
-      periodVideo({periodId: this.data.pNo}).then(res => {
+    // 获取该例题已选中的图片
+    periodVideoList() {
+      periodVideo({ periodId: this.data.pNo }).then(res => {
         res = res.data
         if (res.code === 200 && res.data.list) {
           this.videoList = res.data.list
@@ -276,15 +282,15 @@ export default {
               this.$store.dispatch('REDIRECT_LOGIN', result.code)
             })
           }
-          this.videoList = [];
+          this.videoList = []
         }
-      });
+      })
     },
-    getChapterVideo () {
-      chapterVideo({chapterId: this.data.cNo}).then(res => {
-        res = res.data;
+    getChapterVideo() {
+      chapterVideo({ chapterId: this.data.cNo }).then(res => {
+        res = res.data
         if (res.code === 200 && res.data.list !== null) {
-          this.chapterVideoList = res.data.list;
+          this.chapterVideoList = res.data.list
         } else {
           if (res.code > 300 && res.code < 400) {
             this.$msgBox({
@@ -296,16 +302,11 @@ export default {
               this.$store.dispatch('REDIRECT_LOGIN', result.code)
             })
           }
-          this.chapterVideoList = [];
+          this.chapterVideoList = []
         }
-      });
+      })
     }
-  },
-  mounted () {
-    this.kg = false;
-    this.periodVideoList();
-    this.getChapterVideo();
-  },
+  }
 }
 </script>
 <style lang="scss" rel="stylesheet/scss">

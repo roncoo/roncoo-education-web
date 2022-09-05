@@ -6,48 +6,48 @@
     </div>
     <div class="mgt10">
       <span class="c_333">提现卡号：</span>
-      <span>{{card.bankCardNo ? card.bankCardNo : '未绑定，请点击'}}</span>
-      <span class="default_btn a_btn c_blue" v-if="!card.bankCardNo" @click="showBind">进入绑定></span>
+      <span>{{ card.bankCardNo ? card.bankCardNo : '未绑定，请点击' }}</span>
+      <span v-if="!card.bankCardNo" class="default_btn a_btn c_blue" @click="showBind">进入绑定></span>
     </div>
     <div class="mgt10">
       <span class="c_333">开户行：</span>
-      <span>{{card.bankName ? card.bankName : '未绑定，请点击'}}</span>
-      <span class="default_btn a_btn c_blue" v-if="!card.bankName" @click="showBind">进入绑定></span>
+      <span>{{ card.bankName ? card.bankName : '未绑定，请点击' }}</span>
+      <span v-if="!card.bankName" class="default_btn a_btn c_blue" @click="showBind">进入绑定></span>
     </div>
     <div class="mgt10">
       <span class="c_333">开户名：</span>
-      <span>{{card.bankUserName ? card.bankUserName : '未绑定，请点击'}}</span>
-      <span class="default_btn a_btn c_blue" v-if="!card.bankUserName" @click="showBind">进入绑定></span>
+      <span>{{ card.bankUserName ? card.bankUserName : '未绑定，请点击' }}</span>
+      <span v-if="!card.bankUserName" class="default_btn a_btn c_blue" @click="showBind">进入绑定></span>
     </div>
   </div>
 </template>
 <script>
-  import {cardInfo} from '~/api/account/user.js'
-  import {myHttp} from '~/utils/myhttp.js'
-  export default {
-    data () {
-      return {
-        card: ''
-      }
+import { cardInfo } from '~/api/account/user.js'
+import { myHttp } from '~/utils/myhttp.js'
+export default {
+  data() {
+    return {
+      card: ''
+    }
+  },
+  mounted() {
+    this.getCardInfo()
+  },
+  methods: {
+    showBind() {
+      this.$emit('showBind')
     },
-    methods: {
-      showBind () {
-        this.$emit('showBind')
-      },
-      // 获取银行卡信息
-      getCardInfo () {
-        myHttp.call(this, {
-          method: cardInfo,
-          params: {lecturerUserNo: this.$store.state.userInfo.userNo}
-        }).then(res => {
-          this.card = res.data || {}
-        })
-      }
-    },
-    mounted () {
-      this.getCardInfo()
+    // 获取银行卡信息
+    getCardInfo() {
+      myHttp.call(this, {
+        method: cardInfo,
+        params: { lecturerUserNo: this.$store.state.userInfo.userNo }
+      }).then(res => {
+        this.card = res.data || {}
+      })
     }
   }
+}
 </script>
 <style lang="scss" scoped>
   .card_info {

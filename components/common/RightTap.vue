@@ -1,12 +1,12 @@
 <template>
   <div class="right_window">
-    <div class="iconfont right_item show_xcx" @click.stop="hideEwm = false" @mouseout="hideEwm=true" @mouseenter="hideEwm = false" v-if="webInfo && webInfo.weixinXcx">
+    <div v-if="webInfo && webInfo.weixinXcx" class="iconfont right_item show_xcx" @click.stop="hideEwm = false" @mouseout="hideEwm=true" @mouseenter="hideEwm = false">
       &#xe619;
       <!-- <div class="wx_xcx">
         <div class="xcx_title">微信小程序</div>
         <img class="show_img" :src="webInfo.weixinXcx" alt="">
       </div> -->
-      <div class="xcx_box" v-if="webInfo && webInfo.weixinXcx && !hideEwm">
+      <div v-if="webInfo && webInfo.weixinXcx && !hideEwm" class="xcx_box">
         <div class="ewm_box">
           <img class="ewm_img" :src="webInfo.weixinXcx" alt="">
           <p>关注小程序</p>
@@ -21,27 +21,27 @@
         <img class="show_img" :src="webInfo.weixin" alt="">
       </div>
     </div> -->
-    <div class="iconfont right_item show_kefu" v-if="webInfo && webInfo.isShowService" @mouseenter="showKefu" @mouseleave="hideKefu">
+    <div v-if="webInfo && webInfo.isShowService" class="iconfont right_item show_kefu" @mouseenter="showKefu" @mouseleave="hideKefu">
       &#xe635;
-      <div :class="{kefu: true}" v-if="isKefu">
-        <a :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service1 + '&site=qq&menu=yes'" v-if="webInfo.service1" target="_blank">
-          客服：{{webInfo.service1}}
+      <div v-if="isKefu" :class="{kefu: true}">
+        <a v-if="webInfo.service1" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service1 + '&site=qq&menu=yes'" target="_blank">
+          客服：{{ webInfo.service1 }}
           <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
         </a>
-        <a :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service2 + '&site=qq&menu=yes'" v-if="webInfo.service2" target="_blank">
-          客服：{{webInfo.service2}}
+        <a v-if="webInfo.service2" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service2 + '&site=qq&menu=yes'" target="_blank">
+          客服：{{ webInfo.service2 }}
           <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
         </a>
-        <a :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service3 + '&site=qq&menu=yes'" v-if="webInfo.service3" target="_blank">
-          客服：{{webInfo.service3}}
+        <a v-if="webInfo.service3" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service3 + '&site=qq&menu=yes'" target="_blank">
+          客服：{{ webInfo.service3 }}
           <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
         </a>
-        <a :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service4 + '&site=qq&menu=yes'" v-if="webInfo.service4" target="_blank">
-          客服：{{webInfo.service4}}
+        <a v-if="webInfo.service4" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service4 + '&site=qq&menu=yes'" target="_blank">
+          客服：{{ webInfo.service4 }}
           <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
         </a>
-        <a :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service5 + '&site=qq&menu=yes'" v-if="webInfo.service5" target="_blank">
-          客服：{{webInfo.service5}}
+        <a v-if="webInfo.service5" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service5 + '&site=qq&menu=yes'" target="_blank">
+          客服：{{ webInfo.service5 }}
           <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
         </a>
       </div>
@@ -50,14 +50,8 @@
   </div>
 </template>
 <script>
-import {mapState} from 'vuex'
 export default {
-  watch: {
-    changeEwm () {
-      this.hideEwm = true
-    }
-  },
-  data () {
+  data() {
     return {
       webInfo: '',
       isKefu: false,
@@ -65,29 +59,34 @@ export default {
     }
   },
   computed: {
-    changeEwm () {
+    changeEwm() {
       return this.$store.state.changeEwm
+    }
+  },
+  watch: {
+    changeEwm() {
+      this.hideEwm = true
+    }
+  },
+  mounted() {
+    this.webInfo = this.$store.state.webInfo
+    if (this.$route.path !== '/' && this.$route.path !== '/index') {
+      this.hideEwm = true
     }
   },
   methods: {
     // 显示客服列表
-    showKefu () {
+    showKefu() {
       this.isKefu = true
       this.hideEwm = true
     },
     // 隐藏客服列表
-    hideKefu () {
+    hideKefu() {
       this.isKefu = false
     },
     // 返回顶部
-    goTop () {
-      window.scrollTo(0, 0);
-    }
-  },
-  mounted () {
-    this.webInfo = this.$store.state.webInfo
-    if (this.$route.path != '/' && this.$route.path != '/index') {
-      this.hideEwm = true
+    goTop() {
+      window.scrollTo(0, 0)
     }
   }
 }

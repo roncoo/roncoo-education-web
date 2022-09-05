@@ -1,8 +1,8 @@
 <template>
   <div class="">
-    <y-header></y-header>
+    <y-header />
     <div class="container account_cont">
-      <y-side :type="side"></y-side>
+      <y-side :type="side" />
       <div class="main_box">
         <div class="step_panel">
           <div class="step on">1.填写课程信息</div>
@@ -20,30 +20,31 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in chapterList" v-dragging="{ item: item, list: chapterList }" :key="item.chapterNo" v-if="item.chapterDesc != 'true'">
+              <!-- eslint-disable-next-line  -->
+              <tr v-for="(item, index) in chapterList" v-if="item.chapterDesc != 'true'" :key="item.chapterNo" v-dragging="{ item: item, list: chapterList }">
                 <td>第{{ index + 1 }}章</td>
-                <td class="name">{{item.chapterName}}</td>
+                <td class="name">{{ item.chapterName }}</td>
                 <td class="operate">
                   <router-link :to="'/account/teacher/praxis?no=' +item.id+ '&i='+ (index +1)" class="text_link">
                     课时管理
-                    <span v-if="item.periodNum" class="c_red">({{item.periodNum}})</span>
+                    <span v-if="item.periodNum" class="c_red">({{ item.periodNum }})</span>
                   </router-link><br>
                   <a href="javascript:" class="text_link" @click="edit(index)">修改</a><br>
-                  <a href="javascript:" @click="del(item.id)" class="text_link">删除</a>
+                  <a href="javascript:" class="text_link" @click="del(item.id)">删除</a>
                 </td>
               </tr>
               <tr v-else>
                 <td>第{{ index + 1 }}章</td>
-                <td class="name"><input type="text" v-model="item.chapterName" class="form_input" placeholder="请输入章节名称"></td>
+                <td class="name"><input v-model="item.chapterName" type="text" class="form_input" placeholder="请输入章节名称"></td>
                 <td class="operate">
-                  <button @click="updatas(item)" class="solid_btn" :disabled="btnDab">保存</button>
+                  <button class="solid_btn" :disabled="btnDab" @click="updatas(item)">保存</button>
                 </td>
               </tr>
               <tr>
-                <td>第{{num}}章</td>
-                <td class="name"><input type="text" v-model="newData.chapterName" class="form_input" placeholder="请输入章节名称"></td>
+                <td>第{{ num }}章</td>
+                <td class="name"><input v-model="newData.chapterName" type="text" class="form_input" placeholder="请输入章节名称"></td>
                 <td class="operate">
-                  <button @click="addPeriod" class="solid_btn" :disabled="btnDab">保存</button>
+                  <button class="solid_btn" :disabled="btnDab" @click="addPeriod">保存</button>
                 </td>
               </tr>
             </tbody>
@@ -52,21 +53,21 @@
         </div>
       </div>
     </div>
-    <y-footer class=""></y-footer>
+    <y-footer class="" />
   </div>
 </template>
 <script>
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
-import {saveChapter, courseChapterList, updateChapter, deleteChapter, chapterSort} from '~/api/account/course.js'
+import { saveChapter, courseChapterList, updateChapter, deleteChapter, chapterSort } from '~/api/account/course.js'
 export default {
-  head () {
-    return {
-      title: '添加课程章节'
-    }
+  components: {
+    YHeader,
+    YFooter,
+    YSide
   },
-  data () {
+  data() {
     return {
       showModal: false,
       modalData: null,
@@ -81,34 +82,47 @@ export default {
       }
     }
   },
+  head() {
+    return {
+      title: '添加课程章节'
+    }
+  },
+  mounted() {
+    this.newData.courseId = this.$route.query.no
+    this.num = this.chapterList.length + 1
+    this.getChapterList()
+    this.$dragging.$on('dragend', () => {
+      this.saveSort()
+    })
+  },
   methods: {
-    addPeriod () {
+    addPeriod() {
       if (this.newData.chapterName === '') {
         this.$msgBox({
           content: '请输入课时名称',
           isShowCancelBtn: false
         })
-        return false;
+        return false
       }
-      this.btnDab = true;
-      this.newData.sort = this.num;
+      this.btnDab = true
+      this.newData.sort = this.num
       saveChapter(this.newData).then(res => {
-        res = res.data;
+        res = res.data
         // console.log(res)
-      this.btnDab = false;
+        this.btnDab = false
         if (res.code === 200) {
           this.chapterList.push(res.data)
-          this.num = this.chapterList.length + 1;
-          this.newData.chapterName = '';
+          this.num = this.chapterList.length + 1
+          this.newData.chapterName = ''
         } else {
           if (res.code >= 300 && res.code < 400) {
             this.$msgBox({
               content: res.msg,
               isShowCancelBtn: false
             }).then(() => {
-                this.$store.dispatch('REDIRECT_LOGIN', result.code)
+              this.$store.dispatch('REDIRECT_LOGIN', res.code)
             }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+              this.$store.dispatch('REDIRECT_LOGIN', res.code)
             })
           } else {
             this.$msgBox({
@@ -118,7 +132,7 @@ export default {
           }
         }
       }).catch(() => {
-        this.btnDab = false;
+        this.btnDab = false
         this.$msgBox({
           content: '添加失败',
           isShowCancelBtn: false
@@ -126,13 +140,13 @@ export default {
       })
     },
     // 修改例题
-    edit (no) {
-      let arr = this.chapterList
-      arr[no].chapterDesc = 'true';
-      this.chapterList = Object.assign([], arr);
+    edit(no) {
+      const arr = this.chapterList
+      arr[no].chapterDesc = 'true'
+      this.chapterList = Object.assign([], arr)
     },
     // 更新例题
-    updatas (data) {
+    updatas(data) {
       if (data.chapterName === '') {
         this.$msgBox({
           content: '请输入课时名称',
@@ -140,14 +154,14 @@ export default {
         }).catch(() => {})
         return
       }
-      this.btnDab = true;
-      data.periodDesc = '';
+      this.btnDab = true
+      data.periodDesc = ''
       updateChapter(data).then(res => {
         // console.log(res)
-        this.btnDab = false;
-        this.getChapterList();
+        this.btnDab = false
+        this.getChapterList()
       }).catch(() => {
-        this.btnDab = false;
+        this.btnDab = false
         this.$msgBox({
           content: '修改失败',
           isShowCancelBtn: false
@@ -155,29 +169,29 @@ export default {
       })
     },
     // 删除例题
-    del (no) {
-      let that = this;
+    del(no) {
+      const that = this
       this.$msgBox({
         content: '确认删除该例题?'
-      }).then(async (val) => {
-        deleteChapter({id: no}).then(res => {
-          res = res.data;
+      }).then(async(val) => {
+        deleteChapter({ id: no }).then(res => {
+          res = res.data
           // console.log(res)
           if (res.code === 200) {
             this.$msgBox({
               content: '删除成功',
               isShowCancelBtn: false
             })
-            that.getChapterList();
+            that.getChapterList()
           } else {
             if (res.code >= 300 && res.code < 400) {
               this.$msgBox({
                 content: res.msg,
                 isShowCancelBtn: false
               }).then(() => {
-                this.$store.dispatch('REDIRECT_LOGIN', result.code)
+                this.$store.dispatch('REDIRECT_LOGIN', res.code)
               }).catch(() => {
-                this.$store.dispatch('REDIRECT_LOGIN', result.code)
+                this.$store.dispatch('REDIRECT_LOGIN', res.code)
               })
             } else {
               this.$msgBox({
@@ -192,20 +206,18 @@ export default {
           content: '删除失败',
           isShowCancelBtn: false
         })
-        })
+      })
     },
     // 保存排序
-    saveSort () {
+    saveSort() {
       // console.log(this.chapterList)
-      let sort = new Array();
+      const sort = []
       for (var i = 0; i < this.chapterList.length; i++) {
         sort.push(this.chapterList[i].id)
       }
-      chapterSort({chapterIdList: sort}).then(res => {
+      chapterSort({ chapterIdList: sort }).then(res => {
         res = res.data
-        // console.log(res)
-        if (res.code === 200) {
-        } else {
+        if (res.code !== 200) {
           this.$msgBox({
             content: res.msg,
             isShowCancelBtn: false
@@ -218,25 +230,25 @@ export default {
         })
       })
     },
-    getChapterList () {
+    getChapterList() {
       // courseId
       courseChapterList({
         courseId: this.newData.courseId
       }).then(res => {
-        res = res.data;
+        res = res.data
         // console.log(res)
         if (res.code === 200) {
-          this.chapterList = res.data.userChapterAuditList || [];
-          this.num = this.chapterList.length + 1;
+          this.chapterList = res.data.userChapterAuditList || []
+          this.num = this.chapterList.length + 1
         } else {
           if (res.code >= 300 && res.code < 400) {
             this.$msgBox({
               content: res.msg,
               isShowCancelBtn: false
             }).then(() => {
-                this.$store.dispatch('REDIRECT_LOGIN', result.code)
+              this.$store.dispatch('REDIRECT_LOGIN', res.code)
             }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
+              this.$store.dispatch('REDIRECT_LOGIN', res.code)
             })
           } else {
             this.$msgBox({
@@ -252,19 +264,6 @@ export default {
         })
       })
     }
-  },
-  mounted () {
-    this.newData.courseId = this.$route.query.no;
-    this.num = this.chapterList.length + 1;
-    this.getChapterList();
-    this.$dragging.$on('dragend', () => {
-      this.saveSort();
-    })
-  },
-  components: {
-    YHeader,
-    YFooter,
-    YSide
   }
 }
 </script>

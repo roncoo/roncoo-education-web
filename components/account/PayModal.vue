@@ -1,54 +1,54 @@
 <template>
   <div class="">
-    <div class="mask" @click="close"></div>
+    <div class="mask" @click="close" />
     <div class="paymodal codemodal">
       <div class="modal_head">
         <span class="fl">收银台</span>
         <a href="javascript:" class="close iconfont" @click="close">&#xe616;</a>
       </div>
-      <div class="modal_body payrun h180" v-if="payStep === 2">
+      <div v-if="payStep === 2" class="modal_body payrun h180">
         <div class="icon iconfont c_green minIcon">&#xe69f;<span class="c_333">订单支付成功!</span></div>
         <!-- <div class="tip">支付成功</div> -->
         <div class="center mgt20">
           <a v-if="data.courseCategory == 1" :href="clientData.mainUrl + '/view/'+data.courseId" class="solid_btn">立即学习</a>
           <a v-else-if="data.courseCategory == 2" :href="clientData.mainUrl + '/live/detail/'+data.courseId" class="solid_btn">立即学习</a>
           <a v-else-if="data.courseCategory == 3" :href="clientData.mainUrl + '/live/bunch/'+data.courseId" class="solid_btn">立即学习</a>
-          <a class="solid_btn" v-else href="javascript:" @click="reload">确定</a>
+          <a v-else class="solid_btn" href="javascript:" @click="reload">确定</a>
         </div>
-        <div class="ewm_img" v-if="webInfo && webInfo.weixinXcx">
+        <div v-if="webInfo && webInfo.weixinXcx" class="ewm_img">
           <img :src="webInfo.weixinXcx" alt="">
           <p class="mgt10">微信扫码关注小程序</p>
           <p>学习更便捷</p>
         </div>
       </div>
-      <div class="modal_body payrun" v-else-if="payStep === 3">
+      <div v-else-if="payStep === 3" class="modal_body payrun">
         <div class="icon iconfont c_red">&#xe68c;</div>
         <div class="tip">支付失败</div>
         <div class="center">
           <button class="solid_btn" @click="resetPay">重新支付</button>
         </div>
       </div>
-      <div class="modal_body" v-else>
+      <div v-else class="modal_body">
         <div class="pay_type">
-          <input type="radio" id="payType2" name="payType" value="2" v-model="payType">
-          <label for="payType2" class="pay pay_ali" @click="changePay(2)"></label>
-          <input type="radio" id="payType1" name="payType" value="1" v-model="payType">
-          <label for="payType1" class="pay pay_weixin" @click="changePay(1)"></label>
+          <input id="payType2" v-model="payType" type="radio" name="payType" value="2">
+          <label for="payType2" class="pay pay_ali" @click="changePay(2)" />
+          <input id="payType1" v-model="payType" type="radio" name="payType" value="1">
+          <label for="payType1" class="pay pay_weixin" @click="changePay(1)" />
         </div>
-        <div class="tip" v-if="payType === 2">支付宝支付 {{data.pricePaid}}元</div>
-        <div class="tip" v-else>微信支付 {{data.pricePaid}}元</div>
+        <div v-if="payType === 2" class="tip">支付宝支付 {{ data.pricePaid }}元</div>
+        <div v-else class="tip">微信支付 {{ data.pricePaid }}元</div>
         <div class="code">
-          <canvas id="canvas"></canvas>
-          <div class="create_tip" v-if="load">正在生成...</div>
+          <canvas id="canvas" />
+          <div v-if="load" class="create_tip">正在生成...</div>
         </div>
-        <p class="tip2" v-if="payType === 2">请使用支付宝扫描<br> 二维码以完成订单</p>
-        <p class="tip2" v-else>请使用微信扫描<br> 二维码以完成订单</p>
+        <p v-if="payType === 2" class="tip2">请使用支付宝扫描<br> 二维码以完成订单</p>
+        <p v-else class="tip2">请使用微信扫描<br> 二维码以完成订单</p>
       </div>
     </div>
   </div>
 </template>
 <script>
-import {continuePay, orderInfo} from '~/api/account/course.js'
+import { continuePay, orderInfo } from '~/api/account/course.js'
 import QRCode from 'qrcode'
 export default {
   props: {
@@ -57,30 +57,34 @@ export default {
       default: null
     }
   },
-  data () {
+  data() {
     return {
       payStep: 1,
       payType: 1,
       load: true
     }
   },
+  mounted() {
+    this.payType = parseInt(this.data.payType)
+    this.getOrder(this.data.payType)
+  },
   methods: {
-    reload () {
-      window.location.reload();
+    reload() {
+      window.location.reload()
     },
-    close (event) {
-      this.$emit('hidefun', event);
+    close(event) {
+      this.$emit('hidefun', event)
     },
-    getOrder (pt) {
-      this.load = true;
+    getOrder(pt) {
+      this.load = true
       continuePay({
         orderNo: this.data.orderNo,
         payType: pt
       }).then(res => {
-        let result = res.data
+        const result = res.data
         if (result.code === 200) {
-          this.payType = result.data.payType;
-          this.qrcode(result.data.payMessage);
+          this.payType = result.data.payType
+          this.qrcode(result.data.payMessage)
           this.getOrderInfo(result.data.orderNo)
         } else {
           if (result.code >= 300 && result.code < 400) {
@@ -97,50 +101,46 @@ export default {
               content: result.msg,
               isShowCancelBtn: false
             }).then(() => {
-              this.$emit('hidefun', event);
+              this.$emit('hidefun', event)
             }).catch(() => {})
           }
         }
       }).catch(msg => {
-        this.getOrder(this.data.payType);
+        this.getOrder(this.data.payType)
       })
     },
-    resetPay () {
-      this.payStep = 1;
-      this.getOrder(this.payType);
+    resetPay() {
+      this.payStep = 1
+      this.getOrder(this.payType)
     },
-    qrcode (url) {
-      let that = this;
+    qrcode(url) {
+      const that = this
       QRCode.toCanvas(document.getElementById('canvas'), url, {
         width: 180,
         height: 180
-      }, function (error) {
+      }, function(error) {
         if (error) console.error(error)
-        that.load = false;
+        that.load = false
       })
     },
-    changePay (int) {
-      this.getOrder(int);
+    changePay(int) {
+      this.getOrder(int)
     },
-    getOrderInfo (no) {
-      let that = this;
-      orderInfo({orderNo: no}).then(res => {
-        let result = res.data
+    getOrderInfo(no) {
+      const that = this
+      orderInfo({ orderNo: no }).then(res => {
+        const result = res.data
         if (result.data.orderStatus === 1) {
-          setTimeout(function () {
-            that.getOrderInfo(no);
-          }, 1000);
+          setTimeout(function() {
+            that.getOrderInfo(no)
+          }, 1000)
         } else if (result.data.orderStatus === 2) {
-          that.payStep = 2;
+          that.payStep = 2
         } else {
-          that.payStep = 3;
+          that.payStep = 3
         }
       })
     }
-  },
-  mounted () {
-    this.payType = parseInt(this.data.payType);
-    this.getOrder(this.data.payType);
   }
 }
 </script>

@@ -1,8 +1,8 @@
 // 处理token异常
-export const myHttp = function ({method, params={}, confirm, cancel}) {
+export const myHttp = function({ method, params = {}, confirm, cancel }) {
   return new Promise((resolve, reject) => {
     method(params).then(res => {
-      let result = res.data
+      const result = res.data
       if (result.code === 200) {
         resolve(result)
       } else {

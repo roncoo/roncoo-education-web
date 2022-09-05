@@ -1,24 +1,21 @@
 {
   "name": "roncoo-education-web",
-  "version": "10.0.0-RELEASE",
-  "description": "roncoo education web",
-  "author": "laiwenbiao",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
-    "dev": "cross-env PORT=3001 NODE_ENV=development nodemon server/index.js --watch server",
-    "test": "cross-env NODE_ENV=testing node server/index.js",
-    "start": "cross-env NODE_ENV=production node server/index.js",
-    "build": "nuxt build",
-    "build-dev": "cross-env NODE_ENV=development nuxt build",
-    "build-test": "cross-env NODE_ENV=testing nuxt build",
+    "dev": "cross-env NODE_ENV=development nuxt",
+    "lint": "eslint --fix ",
+    "build": "cross-env NODE_ENV=production  nuxt build",
+    "build-online": "cross-env NODE_ENV=production ONLINE=true nuxt build",
+    "start": "nuxt start",
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@gauseen/nuxt-proxy": "^1.0.1",
-    "@nuxtjs/axios": "^5.0.0",
+    "@nuxtjs/proxy": "^2.1.0",
     "awe-dnd": "^0.3.4",
     "axios": "^0.21.2",
     "bq-static": "^1.1.6",
-    "cross-env": "^5.2.0",
+    "cross-env": "^5.2.1",
     "koa": "^2.5.2",
     "lru-cache": "^5.1.1",
     "md5": "^2.2.1",
@@ -29,8 +26,15 @@
     "wangeditor": "^3.1.1"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-vue": "^7.8.0",
     "sass": "^1.49.0",
-    "sass-loader": "^10.1.0"
+    "sass-loader": "^7.3.1",
+    "prettier": "^2.2.1",
+    "uglifyjs-webpack-plugin": "1"
   }
 }

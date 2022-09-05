@@ -1,18 +1,18 @@
 <!-- 轮播图上的分类 -->
 <template>
-  <div class="class_block" @mouseleave="hideWidth" v-if="classList.length">
+  <div v-if="classList.length" class="class_block" @mouseleave="hideWidth">
     <ul :class="{left_block: true, show_scroll: classList.length > 10}">
-      <li @mouseenter="changeWidth(item)" :class="{active: item.id == categoryno1}" :style="classList.length >= 5 && classList.length <= 10 &&'line-height:' + (height/classList.length) + 'px;'" v-for="(item, index) in classList" :key="index">
-        <nuxt-link :to="{name: 'list', query: {categoryno1: item.id}}">{{item.categoryName}}</nuxt-link>
-        <span class="arrow"></span>
+      <li v-for="(item, index) in classList" :key="index" :class="{active: item.id == categoryno1}" :style="classList.length >= 5 && classList.length <= 10 &&'line-height:' + (height/classList.length) + 'px;'" @mouseenter="changeWidth(item)">
+        <nuxt-link :to="{name: 'list', query: {categoryno1: item.id}}">{{ item.categoryName }}</nuxt-link>
+        <span class="arrow" />
       </li>
     </ul>
     <div class="big_block clearfix" :style="'width:' + width + 'px;'">
       <div class="list_items fl clearfix">
-        <div class="list_item clearfix" v-for="(item, index) in twoList" :key="index">
-          <nuxt-link :to="{name: 'list', query: {categoryno1, categoryno2: item.id}}" :class="{class_header: true, has_three: item.threeList.length, fl: true}">{{item.categoryName}}</nuxt-link>
+        <div v-for="(item, index) in twoList" :key="index" class="list_item clearfix">
+          <nuxt-link :to="{name: 'list', query: {categoryno1, categoryno2: item.id}}" :class="{class_header: true, has_three: item.threeList.length, fl: true}">{{ item.categoryName }}</nuxt-link>
           <div class="fl three_box">
-            <nuxt-link :to="{name: 'list', query: {categoryno1, categoryno2: item.id, categoryno3: that.id}}" class="three_link" v-for="(that, num) in item.threeList" :key="num">{{that.categoryName}}</nuxt-link>
+            <nuxt-link v-for="(that, num) in item.threeList" :key="num" :to="{name: 'list', query: {categoryno1, categoryno2: item.id, categoryno3: that.id}}" class="three_link">{{ that.categoryName }}</nuxt-link>
           </div>
         </div>
       </div>
@@ -49,16 +49,19 @@
 export default {
   props: {
     height: {
-      type: [String, Number]
+      type: [String, Number],
+      default() {
+        return 200
+      }
     },
     classList: {
       type: [Array, Object],
-      default () {
+      default() {
         return []
       }
     }
   },
-  data () {
+  data() {
     return {
       webInfo: this.$store.state.webInfo,
       width: 0,
@@ -67,19 +70,21 @@ export default {
       categoryno1: ''
     }
   },
+  mounted() {
+  },
   methods: {
-    changeWidth (item) {
+    changeWidth(item) {
       this.width = 300
       this.categoryno1 = item.id
       this.twoList = item.twoList
       this.courseList = item.courseList
     },
-    hideWidth () {
+    hideWidth() {
       this.width = 0
       this.categoryno1 = ''
     },
     // 跳转详情页
-    goDetail (id, type) {
+    goDetail(id, type) {
       let name = ''
       if (type === 1) {
         name = 'courselDetail'
@@ -88,10 +93,8 @@ export default {
       } else if (type === 3) {
         name = 'liveAndBunch'
       }
-      this.$router.push({name, params: {id}})
+      this.$router.push({ name, params: { id }})
     }
-  },
-  mounted () {
   }
 }
 </script>

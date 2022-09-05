@@ -1,17 +1,17 @@
 <template>
   <div class="h_header">
-    <div class="h_top" v-if="!hideTop">
+    <div v-show="!hideTop" class="h_top">
       <div class="h_top_body">
-        <ul class="top_list clearfix" v-if="userInfo">
+        <ul v-show="userInfo" class="top_list clearfix">
           <li><a :href="mainUrl+'/recruit'">讲师招募</a></li>
-          <li v-if="isTeacher"><nuxt-link :to="{name: 'account-teacher-course'}">课程管理</nuxt-link></li>
+          <li v-show="isTeacher"><nuxt-link :to="{name: 'account-teacher-course'}">课程管理</nuxt-link></li>
           <li class="s_left"><nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link></li>
           <li class="s_left">
-            <nuxt-link :to="{name: 'account'}">{{userInfo.mobile}}</nuxt-link>
+            <nuxt-link :to="{name: 'account'}">{{ userInfo.mobile }}</nuxt-link>
           </li>
           <li><a href="javascript:" @click="signOut">退出</a></li>
         </ul>
-        <ul class="top_list clearfix" v-else>
+        <ul v-show="!userInfo" class="top_list clearfix">
           <li class="s_left"><a href="javascript:" @click="login">登录</a></li>
           <li><a href="javascript:" @click="register">注册</a></li>
         </ul>
@@ -20,47 +20,51 @@
     <div class="h_nav">
       <div class="h_logo">
         <a :href="mainUrl">
-          <img :src="webInfo.logoImg" alt="" v-if="webInfo">
+          <img v-if="webInfo" :src="webInfo.logoImg" alt="">
         </a>
       </div>
-      <ul class="h_nav_ul clearfix" v-if="!hideTop && navList">
+      <ul v-show="!hideTop && navList" class="h_nav_ul clearfix">
         <li v-for="(item, index) in navList" :key="index">
-          <a :class="{active: isNow === item.navUrl}" :href="item.navUrl" :target="item.target">{{item.navTitle}}</a>
+          <a :class="{active: isNow === item.navUrl}" :href="item.navUrl" :target="item.target">{{ item.navTitle }}</a>
         </li>
       </ul>
-      <div class="search_box clearfix" v-if="!hideTop">
+      <div v-show="!hideTop" class="search_box clearfix">
         <div class="clearfix">
           <button class="search_btn" @click="handleSearch">
             <span class="iconfont"></span>
           </button>
-          <input type="text" class="search_input" @keydown.enter.stop="handleSearch" placeholder="请输入搜索内容" v-model="search"/>
+          <input v-model="search" type="text" class="search_input" placeholder="请输入搜索内容" @keydown.enter.stop="handleSearch">
         </div>
       </div>
-      <nuxt-link v-if="hideTop" :to="{name: 'index'}" class="go_index font_14 c_blue">返回首页</nuxt-link>
+      <nuxt-link v-show="hideTop" :to="{name: 'index'}" class="go_index font_14 c_blue">返回首页</nuxt-link>
     </div>
   </div>
 </template>
 <script>
-  import {serviceInfo, getNav} from '~/api/main.js'
-  import bq from 'bq-static'
+import bq from 'bq-static'
 export default {
   props: {
     active: {
-      type: String
+      type: String,
+      default: ''
+
     },
     hideTop: {
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     hideSearch: {
-      type: Boolean
+      type: Boolean,
+      default: false
     },
-    searchText:{
-      type:String
+    searchText: {
+      type: String,
+      default: ''
     }
   },
-  data () {
+  data() {
     return {
-      search:'',
+      search: '',
       webInfo: this.$store.state.webInfo,
       mainUrl: this.$store.state.clientData.mainUrl,
       userInfo: '',
@@ -70,37 +74,37 @@ export default {
       isNow: ''
     }
   },
-  methods: {
-    handleSearch(){
-      this.$router.push({name: 'search',query:{search:this.search}})
-    },
-    signOut () {
-      this.$store.commit('SIGN_OUT');
-      this.userInfo = '';
-      if (this.$route.path.includes('account')) {
-        this.$router.push({name: 'login'})
-      } else {
-        window.location.reload()
-      }
-    },
-    login () {
-      this.$store.commit('SET_TEMPORARYURL');
-      this.$router.push({name: 'login'});
-    },
-    register () {
-      this.$router.push({name: 'login', query: {tab: 2}});
-    }
-  },
-  mounted () {
+  mounted() {
     bq()
     this.search = this.searchText
-    this.isNow = this.$route.path;
-    this.userInfo = this.$store.state.userInfo;
+    this.isNow = this.$route.path
+    this.userInfo = this.$store.state.userInfo
     if (this.$store.state.tokenInfo && this.userInfo) {
       this.name = this.userInfo.mobile
       if (this.userInfo.userType === 2 || this.userInfo.userType === 4) {
         this.isTeacher = true
       }
+    }
+  },
+  methods: {
+    handleSearch() {
+      this.$router.push({ name: 'search', query: { search: this.search }})
+    },
+    signOut() {
+      this.$store.commit('SIGN_OUT')
+      this.userInfo = ''
+      if (this.$route.path.includes('account')) {
+        this.$router.push({ name: 'login' })
+      } else {
+        window.location.reload()
+      }
+    },
+    login() {
+      this.$store.commit('SET_TEMPORARYURL')
+      this.$router.push({ name: 'login' })
+    },
+    register() {
+      this.$router.push({ name: 'login', query: { tab: 2 }})
     }
   }
 }

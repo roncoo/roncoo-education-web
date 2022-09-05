@@ -1,12 +1,12 @@
 <template>
   <div class="index_page">
-    <y-header :active="'index'"></y-header>
-    <y-banner :data="advData" :height="366" :classList="classList"></y-banner>
-    <div class="i_content" v-for="(item, index) in zoneData" :key="index">
+    <y-header :active="'index'" />
+    <y-banner :data="advData" :height="366" :class-list="classList" />
+    <div v-for="(item, index) in zoneData" :key="index" class="i_content">
       <div class="i_zone">
         <div class="zone_header">
           <div class="big_text">
-            <span class="col_block"></span>
+            <span class="col_block" />
             {{ item.name }}
             <span class="small_text">{{ item.zoneDesc }}</span>
             <nuxt-link :to="{ name: 'list' }" class="fr small_text link_text">更多课程 ></nuxt-link>
@@ -17,28 +17,28 @@
             <li v-for="(that, int) in item.zoneCourseList" :key="int">
               <nuxt-link target="_blank" :to="{ name: 'view-id', params: { id: that.id } }">
                 <div class="img_box">
-                  <img :src="that.courseLogo" alt=""/>
+                  <img :src="that.courseLogo" alt="">
                 </div>
                 <p>{{ that.courseName }}</p>
                 <span v-if="that.isFree" class="price_box">免费</span>
-                <span class="price_box" v-else>￥{{ that.courseOriginal.toFixed(2) }}
-                  <span class="font_12 padl_10" v-if="openVip && that.courseDiscount != that.courseOriginal">SVIP:{{ that.courseDiscount ? "￥" + that.courseDiscount.toFixed(2) : "免费" }}</span></span>
+                <span v-else class="price_box">￥{{ that.courseOriginal.toFixed(2) }}
+                  <span v-if="openVip && that.courseDiscount != that.courseOriginal" class="font_12 padl_10">SVIP:{{ that.courseDiscount ? "￥" + that.courseDiscount.toFixed(2) : "免费" }}</span></span>
               </nuxt-link>
             </li>
             <li v-for="thatLive in item.liveCourseList" :key="thatLive.id">
               <nuxt-link target="_blank" :to="{ name: 'live-id', params: { id: thatLive.id } }">
                 <div class="img_box">
-                  <img :src="thatLive.courseLogo" alt=""/>
+                  <img :src="thatLive.courseLogo" alt="">
                   <div class="live_time">
-                    <p style="font-size: 12px" v-if="thatLive.liveTime"> 开播时间：{{ thatLive.liveTime }} </p>
-                    <p style="font-size: 12px" v-if="thatLive.endTime"> 有效期至：{{ thatLive.endTime }} </p>
+                    <p v-if="thatLive.liveTime" style="font-size: 12px"> 开播时间：{{ thatLive.liveTime }} </p>
+                    <p v-if="thatLive.endTime" style="font-size: 12px"> 有效期至：{{ thatLive.endTime }} </p>
                   </div>
                 </div>
                 <p>{{ thatLive.courseName }}（直播）</p>
-                <span class="price_box" v-if="thatLive.isFree">免费</span>
-                <span class="price_box" v-else>￥{{ thatLive.courseOriginal.toFixed(2) }}
-                  <span class="font_12 padl_10" v-if="openVip && thatLive.courseDiscount != thatLive.courseOriginal">
-                  SVIP:{{ thatLive.courseDiscount ? "￥" + thatLive.courseDiscount.toFixed(2) : "免费" }}
+                <span v-if="thatLive.isFree" class="price_box">免费</span>
+                <span v-else class="price_box">￥{{ thatLive.courseOriginal.toFixed(2) }}
+                  <span v-if="openVip && thatLive.courseDiscount != thatLive.courseOriginal" class="font_12 padl_10">
+                    SVIP:{{ thatLive.courseDiscount ? "￥" + thatLive.courseDiscount.toFixed(2) : "免费" }}
                   </span>
                 </span>
               </nuxt-link>
@@ -46,63 +46,82 @@
             <li v-for="thatGroup in item.zoneCourseCombinaRefList" :key="thatGroup.id">
               <nuxt-link target="_blank" :to="{ name: 'liveAndBunch', params: { id: thatGroup.id } }">
                 <div class="img_box">
-                  <img :src="thatGroup.courseLogo" alt=""/>
+                  <img :src="thatGroup.courseLogo" alt="">
                 </div>
                 <p>{{ thatGroup.courseName }} (录播+直播)</p>
-                <span class="price_box" v-if="thatGroup.isFree">免费</span>
-                <span class="price_box" v-else>￥{{ thatGroup.courseOriginal.toFixed(2) }}<span class="font_12 padl_10" v-if=" openVip && thatGroup.courseDiscount != thatGroup.courseOriginal">SVIP:{{ thatGroup.courseDiscount ? "￥" + thatGroup.courseDiscount.toFixed(2) : "免费" }}</span></span>
+                <span v-if="thatGroup.isFree" class="price_box">免费</span>
+                <span v-else class="price_box">￥{{ thatGroup.courseOriginal.toFixed(2) }}<span v-if=" openVip && thatGroup.courseDiscount != thatGroup.courseOriginal" class="font_12 padl_10">SVIP:{{ thatGroup.courseDiscount ? "￥" + thatGroup.courseDiscount.toFixed(2) : "免费" }}</span></span>
               </nuxt-link>
             </li>
           </ul>
           <ul class="test_list clearfix">
-            <li :class="{ test_option: true, right_0: num % 2 == 1 }" v-for="(resource, num) in item.zoneCourseLibList" :key="resource.id">
+            <li v-for="(resource, num) in item.zoneCourseLibList" :key="resource.id" :class="{ test_option: true, right_0: num % 2 == 1 }">
               <nuxt-link target="_blank" :to="{ name: 'libraryDetail', params: { id: resource.id } }"><i class="iconfont">&#xe6be;</i>{{ resource.courseName }}</nuxt-link>
             </li>
           </ul>
         </div>
       </div>
     </div>
-    <y-footer></y-footer>
-    <right-tap></right-tap>
-    <div class="videoAlert" v-if="isvideoAlert">
+    <y-footer />
+    <right-tap />
+    <div v-if="isvideoAlert" class="videoAlert">
       <div class="videoAlertbox">
         <a href="https://edu.roncoo.net/video" target="_blank">
-          <img src="../assets/image/videoAlert.png" class="videoAlertImg" alt="视频点播平台"/> </a>
-        <img src="../assets/image/videoAlertClone.png" class="videoAlertClone" @click="cloneVideoAlert()" alt="视频点播平台"/>
+          <img src="../assets/image/videoAlert.png" class="videoAlertImg" alt="视频点播平台"> </a>
+        <img src="../assets/image/videoAlertClone.png" class="videoAlertClone" alt="视频点播平台" @click="cloneVideoAlert()">
       </div>
     </div>
   </div>
 </template>
 <script>
-import YHeader from "~/components/common/Header";
-import YBanner from "~/components/Banner";
-import YFooter from "~/components/common/Footer";
-import RightTap from "~/components/common/RightTap";
-import {advList, indexClass, zoneCourse} from "~/api/main.js";
+import YHeader from '~/components/common/Header'
+import YBanner from '~/components/Banner'
+import YFooter from '~/components/common/Footer'
+import RightTap from '~/components/common/RightTap'
+import { advList, indexClass, zoneCourse } from '~/api/main.js'
 
 export default {
   components: {
     YHeader,
     YBanner,
     YFooter,
-    RightTap,
+    RightTap
   },
-  head() {
-    return {
-      title: this.$store.state.clientData.name,
-      meta: [
-        {
-          hid: "keywords",
-          name: "keywords",
-          content: this.$store.state.webInfo.websiteKeyword,
-        },
-        {
-          hid: "description",
-          name: "description",
-          content: this.$store.state.webInfo.websiteDesc,
-        },
-      ],
-    };
+  async asyncData(context) {
+    try {
+      const dataObj = {}
+      // 轮播图
+      const { data } = await advList({ platShow: 0 })
+      // 轮播图上的分类
+      const blockData = await indexClass()
+      // 推荐课程
+      const zonedata = await zoneCourse({ zoneLocation: 0 })
+      // 活动标
+      const zoneList = zonedata.data.data.list || []
+      const courseNoList = []
+      zoneList.forEach((item) => {
+        for (const that in item) {
+          if (
+            item[that] &&
+            typeof item[that] === 'object' &&
+            item[that].length &&
+            that !== 'zoneCourseLibList' &&
+            that !== 'zoneResourceInfoList'
+          ) {
+            item[that].forEach((course) => {
+              // console.log(course)
+              courseNoList.push(course.courseNo)
+            })
+          }
+        }
+      })
+      dataObj.advData = data.data.advList || [] // 轮播图
+      dataObj.zoneData = zonedata.data.data.list || [] // 课程专区
+      dataObj.classList = blockData.data.data.courseCategoryList || [] // 轮播分类
+      return dataObj
+    } catch (e) {
+      context.error({ message: 'User not found', statusCode: 404 })
+    }
   },
   data() {
     return {
@@ -110,60 +129,38 @@ export default {
       webInfo: this.$store.state.webInfo,
       clientNo: this.$store.state.clientData.no,
       openVip: false,
-      advData: this.$store.state.advData,
-    };
-  },
-  async asyncData(context) {
-    let clientNo = context.store.state.clientData.no;
-    // console.log(clientNo)
-
-    try {
-      let dataObj = {};
-      // 轮播图
-      let {data} = await advList({platShow: 0});
-      // 轮播图上的分类
-      let blockData = await indexClass();
-      // 推荐课程
-      let zonedata = await zoneCourse({zoneLocation: 0});
-      // 活动标
-      let zoneList = zonedata.data.data.list || [];
-      let courseNoList = [];
-      zoneList.forEach((item) => {
-        for (let that in item) {
-          if (
-            item[that] &&
-            typeof item[that] == "object" &&
-            item[that].length &&
-            that != "zoneCourseLibList" &&
-            that != "zoneResourceInfoList"
-          ) {
-            item[that].forEach((course) => {
-              // console.log(course)
-              courseNoList.push(course.courseNo);
-            });
-          }
-        }
-      });
-      dataObj.advData = data.data.advList || []; //轮播图
-      dataObj.zoneData = zonedata.data.data.list || []; //课程专区
-      dataObj.classList = blockData.data.data.courseCategoryList || []; //轮播分类
-      return dataObj;
-    } catch (e) {
-      context.error({message: "User not found", statusCode: 404});
+      advData: this.$store.state.advData
     }
   },
-  methods: {
-    cloneVideoAlert() {
-      this.isvideoAlert = false;
+  head() {
+    return {
+      title: this.$store.state.clientData.name,
+      meta: [
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content: this.$store.state.webInfo.websiteKeyword
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.$store.state.webInfo.websiteDesc
+        }
+      ]
     }
   },
   mounted() {
     if (this.webInfo && this.webInfo.isEnableVip) {
-      this.openVip = true;
+      this.openVip = true
     }
     // this.$store.dispatch('REDIRECT_LOGIN', 301)
   },
-};
+  methods: {
+    cloneVideoAlert() {
+      this.isvideoAlert = false
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 .videoAlert {

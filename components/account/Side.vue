@@ -1,10 +1,10 @@
 <template>
   <header class="side_box">
-    <div class="menu_panel" v-if="teacher">
+    <div v-if="teacher" class="menu_panel">
       <h3 class="title"><i class="iconfont">&#xe640;</i>讲师中心</h3>
       <ul class="menus">
         <li :class="{on: type == 'kcgl'}"><router-link :to="{name: 'account-teacher-course'}">课程管理</router-link></li>
-        <li :class="{on: type == 'syqk'}" v-if="userInfo && userInfo.userType != 1"><router-link :to="{name: 'account-earnings'}">收益情况</router-link></li>
+        <li v-if="userInfo && userInfo.userType != 1" :class="{on: type == 'syqk'}"><router-link :to="{name: 'account-earnings'}">收益情况</router-link></li>
         <li :class="{on: type == 'jsxx'}"><router-link :to="{name: 'account-teacher'}">讲师信息</router-link></li>
       </ul>
     </div>
@@ -21,7 +21,7 @@
 </template>
 <script>
 import bq from 'bq-static'
-import {getUserInfo} from '~/api/user.js'
+import { getUserInfo } from '~/api/user.js'
 export default {
   props: {
     type: {
@@ -29,7 +29,7 @@ export default {
       default: 'grxx'
     }
   },
-  data () {
+  data() {
     return {
       teacher: false,
       isLive: false,
@@ -41,26 +41,26 @@ export default {
       userInfo: this.$store.state.userInfo
     }
   },
-  methods: {
-    close () {
-      this.$emit('close')
-    }
-  },
-  mounted () {
+  mounted() {
     bq()
-    if (this.tokenInfo && this.userInfo && this.userInfo.token == this.tokenInfo) {
+    if (this.tokenInfo && this.userInfo && this.userInfo.token === this.tokenInfo) {
       if (this.userInfo.userType === 2 || this.userInfo.userType === 4) {
-        this.teacher = true;
+        this.teacher = true
       }
     } else {
       getUserInfo().then(res => {
-        let result = res.data
+        const result = res.data
         if (result.code === 200) {
           if (result.data.userType === 2 || result.data.userType === 4) {
-            this.teacher = true;
+            this.teacher = true
           }
         }
       })
+    }
+  },
+  methods: {
+    close() {
+      this.$emit('close')
     }
   }
 }

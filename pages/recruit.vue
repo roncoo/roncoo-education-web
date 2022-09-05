@@ -1,22 +1,22 @@
 <template>
   <div>
-    <y-header :active="'zmzx'"></y-header>
+    <y-header :active="'zmzx'" />
     <div class="person_body clearfix">
-      <y-side :type="'jszm'" :showSide="'zm'"></y-side>
+      <y-side :type="'jszm'" :show-side="'zm'" />
       <div class="person_content">
         <div class="person_title">
           <!-- 讲师招募 -->
-          {{webInfo.recruitTitle}}
+          {{ webInfo.recruitTitle }}
         </div>
         <div class="person_info">
-          <div class="clearfix" v-html="webInfo.recruitInfo"></div>
+          <div class="clearfix" v-html="webInfo.recruitInfo" />
           <div>
             <a href="javascript:" class="apply_btn" @click="goApply">申请成为讲师</a>
           </div>
         </div>
       </div>
     </div>
-    <y-footer></y-footer>
+    <y-footer />
   </div>
 </template>
 <script>
@@ -24,40 +24,40 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/TerraceSide'
 export default {
-  head () {
-      return {
-        title: this.$store.state.clientData.name + '-讲师招募',
-        meta: [
-            {
-                hid: 'keywords',
-                name: 'keywords',
-                content: this.$store.state.webInfo.websiteKeyword
-            },
-            {
-                hid: 'description',
-                name: 'description',
-                content: this.$store.state.webInfo.websiteDesc
-            }
-        ]
-      }
-  },
-  data () {
-    return {
-      webInfo: this.$store.state.webInfo
-    }
-  },
-  methods: {
-    goApply () {
-      this.$router.push({name: 'apply'})
-    }
-  },
-  mounted () {
-    this.webInfo = this.$store.state.webInfo
-  },
   components: {
     YHeader,
     YFooter,
     YSide
+  },
+  data() {
+    return {
+      webInfo: this.$store.state.webInfo
+    }
+  },
+  head() {
+    return {
+      title: this.$store.state.clientData.name + '-讲师招募',
+      meta: [
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content: this.$store.state.webInfo.websiteKeyword
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.$store.state.webInfo.websiteDesc
+        }
+      ]
+    }
+  },
+  mounted() {
+    this.webInfo = this.$store.state.webInfo
+  },
+  methods: {
+    goApply() {
+      this.$router.push({ name: 'apply' })
+    }
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="model" @click="close"></div>
-    <div class="pay_box font_14" v-if="payStep === 0">
+    <div class="model" @click="close" />
+    <div v-if="payStep === 0" class="pay_box font_14">
       <div class="clearfix box_title b_245">
         <span class="fl font_b">订单详情</span>
         <span class="fr iconfont close" @click="close()">&#xe616;</span>
@@ -13,9 +13,9 @@
       <div class="clesrfix c_333 mgt10 h100 border_b">
         <div class="fl w60">
           <div class="img"><img :src="info.courseImg" alt=""></div>
-          <div class="name">{{info.courseName}}</div>
+          <div class="name">{{ info.courseName }}</div>
         </div>
-        <div class="fl w40 c_red center">{{money}}</div>
+        <div class="fl w40 c_red center">{{ money }}</div>
         <!-- <div class="fl w40 c_red center" v-if="info.discountType == 1">
           ￥{{isVip ? (info.fabPrice * info.discountPrice).toFixed(2) : (info.orgPrice * info.discountPrice).toFixed(2)}}
         </div>
@@ -25,31 +25,31 @@
       </div>
       <div class="pd20 border_b">
         <span>备注:</span>
-        <input class="remark" v-model="order.remark" type="text">
+        <input v-model="order.remark" class="remark" type="text">
       </div>
       <div class="pay_type">
-        <input type="radio" id="payType2" name="payType" value="2" v-model="order.payType">
-        <label for="payType2" class="pay pay_ali"></label>
-        <input type="radio" id="payType1" name="payType" value="1" v-model="order.payType">
-        <label for="payType1" class="pay pay_weixin"></label>
+        <input id="payType2" v-model="order.payType" type="radio" name="payType" value="2">
+        <label for="payType2" class="pay pay_ali" />
+        <input id="payType1" v-model="order.payType" type="radio" name="payType" value="1">
+        <label for="payType1" class="pay pay_weixin" />
       </div>
       <div class="modal_foot">
-        <button class="solid_btn" @click="submit" :disabled="btntext === '正在提交...'">{{btntext}}</button>
+        <button class="solid_btn" :disabled="btntext === '正在提交...'" @click="submit">{{ btntext }}</button>
       </div>
     </div>
-    <div class="paymodal codemodal" v-else-if="payStep === 1">
+    <div v-else-if="payStep === 1" class="paymodal codemodal">
       <div class="modal_head">
         <span class="fl">收银台</span>
-        <a href="javascript:" @click="close()" class="close iconfont">&#xe616;</a>
+        <a href="javascript:" class="close iconfont" @click="close()">&#xe616;</a>
       </div>
       <div class="modal_body">
-        <div class="tip" v-if="orderInfo.payType === 2">支付宝支付 {{orderInfo.price.toFixed(2)}}元</div>
-        <div class="tip" v-else>微信支付 {{orderInfo.price.toFixed(2)}}元</div>
-        <div class="code" id="qrcode">
-          <canvas id="canvas"></canvas>
+        <div v-if="orderInfo.payType === 2" class="tip">支付宝支付 {{ orderInfo.price.toFixed(2) }}元</div>
+        <div v-else class="tip">微信支付 {{ orderInfo.price.toFixed(2) }}元</div>
+        <div id="qrcode" class="code">
+          <canvas id="canvas" />
         </div>
-        <p class="tip2" v-if="orderInfo.payType === 2">请使用支付宝扫描<br> 二维码以完成订单</p>
-        <p class="tip2" v-else>请使用微信扫描<br> 二维码以完成订单</p>
+        <p v-if="orderInfo.payType === 2" class="tip2">请使用支付宝扫描<br> 二维码以完成订单</p>
+        <p v-else class="tip2">请使用微信扫描<br> 二维码以完成订单</p>
         <div class="tip_panel">
           提示: <br>
           支付成功前请勿手动关闭页面 <br>
@@ -57,26 +57,26 @@
         </div>
       </div>
     </div>
-    <div class="paymodal payrun" v-else-if="payStep === 2">
+    <div v-else-if="payStep === 2" class="paymodal payrun">
       <div class="modal_head">
         <span class="fl">收银台</span>
-        <a href="javascript:" @click="close()" class="close iconfont">&#xe616;</a>
+        <a href="javascript:" class="close iconfont" @click="close()">&#xe616;</a>
       </div>
       <div class="modal_body">
         <div class="icon iconfont c_green">&#xe69f;</div>
         <div class="tip">支付成功</div>
         <div class="center">
-          <router-link class="solid_btn" v-if="info.courseCategory == 1" :to="{name: 'courselDetail', params: {id: info.id}}">立即学习</router-link>
-          <router-link class="solid_btn" v-else-if="info.courseCategory == 2" :to="{name: 'liveDetail', params: {id: info.id}}">立即学习</router-link>
-          <router-link class="solid_btn" v-else-if="info.courseCategory == 3" :to="{name: 'liveAndBunch', params: {id: info.id}}">立即学习</router-link>
-          <button class="solid_btn" v-else @click="reload">确定</button>
+          <router-link v-if="info.courseCategory == 1" class="solid_btn" :to="{name: 'courselDetail', params: {id: info.id}}">立即学习</router-link>
+          <router-link v-else-if="info.courseCategory == 2" class="solid_btn" :to="{name: 'liveDetail', params: {id: info.id}}">立即学习</router-link>
+          <router-link v-else-if="info.courseCategory == 3" class="solid_btn" :to="{name: 'liveAndBunch', params: {id: info.id}}">立即学习</router-link>
+          <button v-else class="solid_btn" @click="reload">确定</button>
         </div>
       </div>
     </div>
-    <div class="paymodal payrun" v-else-if="payStep === 3">
+    <div v-else-if="payStep === 3" class="paymodal payrun">
       <div class="modal_head">
         <span class="fl">收银台</span>
-        <a href="javascript:" @click="close()" class="close iconfont">&#xe616;</a>
+        <a href="javascript:" class="close iconfont" @click="close()">&#xe616;</a>
       </div>
       <div class="modal_body">
         <div class="icon iconfont c_red">&#xe68c;</div>
@@ -89,144 +89,144 @@
   </div>
 </template>
 <script>
-  import {avtivityPay} from '~/api/activity.js'
-  import {orderInfo} from '~/api/course.js'
-  import QRCode from 'qrcode'
-  import {mapState, mapMutations} from 'vuex'
-  export default {
-    props: {
-      info: {
-        type: [Object, Array],
-        default: null
-      }
-    },
-    data () {
-      return {
-        money: '',
-        isVip: false,
-        order: {
-          payType: 1,
-          channelType: 1,
-          remark: '',
-          userNo: ''
-        },
-        checkPay: false,
-        btntext: '下一步',
-        payStep: 0,
-        orderInfo: null
-      }
-    },
-    computed: {
-      ...mapState(['userInfo', 'tokenInfo', 'clientData', 'webInfo'])
-    },
-    methods: {
-      ...mapMutations(['RECORD_TEMPORARYURL', 'SIGN_OUT', 'RECORD_USERINFO']),
-      reload () {
-        window.location.reload();
+import { avtivityPay } from '~/api/activity.js'
+import { orderInfo } from '~/api/course.js'
+import QRCode from 'qrcode'
+import { mapState, mapMutations } from 'vuex'
+export default {
+  props: {
+    info: {
+      type: [Object, Array],
+      default: null
+    }
+  },
+  data() {
+    return {
+      money: '',
+      isVip: false,
+      order: {
+        payType: 1,
+        channelType: 1,
+        remark: '',
+        userNo: ''
       },
-      close (event) {
-        this.checkPay = true;
-        this.$emit('hidefun', event);
-      },
-      qrcode (url) {
-        QRCode.toCanvas(document.getElementById('canvas'), url, {
-          width: 180,
-          height: 180
-        }, function (error) {
-          if (error) console.error(error)
-          console.log('success!')
-        })
-      },
-      submit () {
-        let that = this;
-        that.btntext = '正在提交...';
-        that.order.actId = that.info.actId
-        that.order.courseNo = that.info.courseNo
-        that.order.userNo = that.userInfo.userNo
-        that.order.courseCategory = that.info.courseCategory
-        avtivityPay(that.order).then(res => {
-          that.btntext = '下一步';
-          if (res.code === 200) {
-            that.payStep = 1;
-            that.orderInfo = res.data;
-            this.ocl = setTimeout(function () {
-              that.qrcode(res.data.payMessage);
-            }, 100);
-            that.getOrderInfo(res.data.orderNo)
-          } else {
-            if (res.code >= 300 && res.code < 400) {
-              this.$msgBox({
-                content: res.msg,
-                isShowCancelBtn: false
-              }).then(() => {
-                this.RECORD_TEMPORARYURL()
-                this.SIGN_OUT();
-                this.$router.push({name: 'login'})
-              }).catch(() => {})
-            } else {
-              this.$msgBox({
-                content: res.msg,
-                isShowCancelBtn: false
-              }).then(() => {
-                if (res.msg == '已经购买过本课程，无需重复购买') {
-                  this.close()
-                }
-              }).catch(() => {})
-            }
-          }
-        }).catch(() => {
-          this.$msgBox({
-            content: '提交失败,请重试',
-            isShowCancelBtn: false
-          })
-          that.btntext = '重新提交';
-        })
-      },
-      getOrderInfo (no) {
-        let that = this;
-        if (this.checkPay) {
-          return false;
-        }
-        orderInfo({orderNo: no}).then(res => {
-          if (res.data.orderStatus === 1) {
-            setTimeout(function () {
-              that.getOrderInfo(no);
-            }, 1000);
-          } else if (res.data.orderStatus === 2) {
-            that.payStep = 2;
-          } else {
-            that.payStep = 3;
-          }
-        })
-      }
-    },
-    mounted () {
-      if (this.webInfo) {
-        if (this.webInfo.isEnableVip && this.userInfo.isVip) {
-          if (this.userInfo.expireTime) {
-            if ((new Date(this.userInfo.expireTime)).getTime() > (new Date().getTime())) {
-              this.isVip = true
-            }
+      checkPay: false,
+      btntext: '下一步',
+      payStep: 0,
+      orderInfo: null
+    }
+  },
+  computed: {
+    ...mapState(['userInfo', 'tokenInfo', 'clientData', 'webInfo'])
+  },
+  mounted() {
+    if (this.webInfo) {
+      if (this.webInfo.isEnableVip && this.userInfo.isVip) {
+        if (this.userInfo.expireTime) {
+          if ((new Date(this.userInfo.expireTime)).getTime() > (new Date().getTime())) {
+            this.isVip = true
           }
         }
-      }
-      if (this.info.discountType === 1) {
-        this.money = this.isVip ? (this.info.fabPrice * this.info.discountPrice).toFixed(2) : (this.info.orgPrice * this.info.discountPrice).toFixed(2)
-      } else if (this.info.discountType === 2) {
-        this.money = this.isVip ? (this.info.fabPrice - this.info.discountPrice).toFixed(2) : (this.info.orgPrice - this.info.discountPrice).toFixed(2)
-      }
-      if (this.money <= 0) {
-        this.$msgBox({
-          content: '活动异常，请联系客服',
-          isShowCancelBtn: false
-        }).then(() => {
-          this.close()
-        }).catch(() => {
-          this.close()
-        })
       }
     }
+    if (this.info.discountType === 1) {
+      this.money = this.isVip ? (this.info.fabPrice * this.info.discountPrice).toFixed(2) : (this.info.orgPrice * this.info.discountPrice).toFixed(2)
+    } else if (this.info.discountType === 2) {
+      this.money = this.isVip ? (this.info.fabPrice - this.info.discountPrice).toFixed(2) : (this.info.orgPrice - this.info.discountPrice).toFixed(2)
+    }
+    if (this.money <= 0) {
+      this.$msgBox({
+        content: '活动异常，请联系客服',
+        isShowCancelBtn: false
+      }).then(() => {
+        this.close()
+      }).catch(() => {
+        this.close()
+      })
+    }
+  },
+  methods: {
+    ...mapMutations(['RECORD_TEMPORARYURL', 'SIGN_OUT', 'RECORD_USERINFO']),
+    reload() {
+      window.location.reload()
+    },
+    close(event) {
+      this.checkPay = true
+      this.$emit('hidefun', event)
+    },
+    qrcode(url) {
+      QRCode.toCanvas(document.getElementById('canvas'), url, {
+        width: 180,
+        height: 180
+      }, function(error) {
+        if (error) console.error(error)
+        console.log('success!')
+      })
+    },
+    submit() {
+      const that = this
+      that.btntext = '正在提交...'
+      that.order.actId = that.info.actId
+      that.order.courseNo = that.info.courseNo
+      that.order.userNo = that.userInfo.userNo
+      that.order.courseCategory = that.info.courseCategory
+      avtivityPay(that.order).then(res => {
+        that.btntext = '下一步'
+        if (res.code === 200) {
+          that.payStep = 1
+          that.orderInfo = res.data
+          this.ocl = setTimeout(function() {
+            that.qrcode(res.data.payMessage)
+          }, 100)
+          that.getOrderInfo(res.data.orderNo)
+        } else {
+          if (res.code >= 300 && res.code < 400) {
+            this.$msgBox({
+              content: res.msg,
+              isShowCancelBtn: false
+            }).then(() => {
+              this.RECORD_TEMPORARYURL()
+              this.SIGN_OUT()
+              this.$router.push({ name: 'login' })
+            }).catch(() => {})
+          } else {
+            this.$msgBox({
+              content: res.msg,
+              isShowCancelBtn: false
+            }).then(() => {
+              if (res.msg == '已经购买过本课程，无需重复购买') {
+                this.close()
+              }
+            }).catch(() => {})
+          }
+        }
+      }).catch(() => {
+        this.$msgBox({
+          content: '提交失败,请重试',
+          isShowCancelBtn: false
+        })
+        that.btntext = '重新提交'
+      })
+    },
+    getOrderInfo(no) {
+      const that = this
+      if (this.checkPay) {
+        return false
+      }
+      orderInfo({ orderNo: no }).then(res => {
+        if (res.data.orderStatus === 1) {
+          setTimeout(function() {
+            that.getOrderInfo(no)
+          }, 1000)
+        } else if (res.data.orderStatus === 2) {
+          that.payStep = 2
+        } else {
+          that.payStep = 3
+        }
+      })
+    }
   }
+}
 </script>
 <style lang="scss" scoped>
 a:hover {

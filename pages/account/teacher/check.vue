@@ -55,7 +55,7 @@
               &nbsp;
             </div>
             <div class="form_ctl">
-              <button @click="goBack" href="javascript:" class="submit_btn">
+              <button href="javascript:" class="submit_btn" @click="goBack">
                 查看
               </button>
             </div>
@@ -66,54 +66,54 @@
   </div>
 </template>
 <script>
-  import YSide from '~/components/account/Side'
-  export default {
-    components: {
-      YSide
-    },
-    head() {
-      return {
-        title: this.$store.state.clientData.name + ' - 点播管理'
-      }
-    },
-    data() {
-      return {
-        sideType: 'kcgl'
-      }
-    },
-    mounted() {
+import YSide from '~/components/account/Side'
+export default {
+  components: {
+    YSide
+  },
+  data() {
+    return {
+      sideType: 'kcgl'
+    }
+  },
+  head() {
+    return {
+      title: this.$store.state.clientData.name + ' - 点播管理'
+    }
+  },
+  mounted() {
+    if (this.$route.query.type === '3') {
+      this.sideType = 'zhtc'
+    } else if (this.$route.query.type === '2') {
+      this.sideType = 'zbgl'
+    } else if (this.$route.query.type === '5') {
+      this.sideType = 'kyxm'
+    } else if (this.$route.query.t === '5') {
+      this.sideType = 'tkgl'
+    } else if (this.$route.query.t === '4') {
+      this.sideType = 'zygl'
+    }
+  },
+  methods: {
+    goBack() {
       if (this.$route.query.type === '3') {
-        this.sideType = 'zhtc'
+        this.$router.push({ name: 'courseGroup' })
       } else if (this.$route.query.type === '2') {
-        this.sideType = 'zbgl'
+        this.$router.push({ name: 'account-live' })
+      } else if (this.$route.query.type === '4') {
+        this.$router.push({ name: 'resource' })
       } else if (this.$route.query.type === '5') {
-        this.sideType = 'kyxm'
+        this.$router.push({ name: 'open' })
       } else if (this.$route.query.t === '5') {
-        this.sideType = 'tkgl'
+        this.$router.push({ name: 'account-library' })
       } else if (this.$route.query.t === '4') {
-        this.sideType = 'zygl'
-      }
-    },
-    methods: {
-      goBack() {
-        if (this.$route.query.type === '3') {
-          this.$router.push({ name: 'courseGroup' })
-        } else if (this.$route.query.type === '2') {
-          this.$router.push({ name: 'account-live' })
-        } else if (this.$route.query.type === '4') {
-          this.$router.push({ name: 'resource' })
-        } else if (this.$route.query.type === '5') {
-          this.$router.push({ name: 'open' })
-        } else if (this.$route.query.t === '5') {
-          this.$router.push({ name: 'account-library' })
-        } else if (this.$route.query.t === '4') {
-          this.$router.push({ name: 'account-resource' })
-        } else {
-          this.$router.push({ name: 'account-teacher-course' })
-        }
+        this.$router.push({ name: 'account-resource' })
+      } else {
+        this.$router.push({ name: 'account-teacher-course' })
       }
     }
   }
+}
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
   .person_body {

@@ -1,114 +1,82 @@
 const pkg = require('./package')
-const config = require('./config/conf')
-
-module.exports = {
+const config = require('./config').default
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+export default {
   mode: 'universal',
-
-  router: {
-    middleware: ['states', 'checkuser'],
-    extendRoutes (routes, resolve) {
-      routes.push({
-        name: 'custom',
-        path: '*',
-        component: resolve(__dirname, 'pages/index.vue')
-      })
-    }
+  telemetry: false,
+  server: {
+    port: 3001 // default: 3001
   },
-  /*
-  ** Headers of the page
-  */
   head: {
-    title: config.title,
+    title: 'roncoo-education-web',
+    htmlAttrs: {
+      lang: 'zh-g'
+    },
     meta: [
-      {charset: 'utf-8'},
-      {name: 'viewport', content: 'width=device-width, initial-scale=1'},
-      {hid: 'description', name: 'description', content: pkg.description}
+      { charset: 'utf-8' },
+      { name: 'renderer', content: 'webkit' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { 'http-equiv': 'content-type', content: 'text/html;charset=utf-8' },
+      { hid: 'description', name: 'description', content: pkg.description }
     ],
-    // link: [
-    //   { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    // ]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '' }
+    ]
   },
-
-  /*
-  ** Customize the progress-bar color
-  */
-  loading: { color: '#fff' },
-
-  /*
-  ** Global CSS
-  */
   css: [
     '@/assets/css/main.scss'
   ],
-
-  /*
-  ** Plugins to load before mounting the App
-  */
+  router: {
+    middleware: ['checkuser'],
+    extendRoutes() {}
+  },
   plugins: [
     '~/plugins/message.js',
     '~/plugins/dragging.js'
   ],
-
-  /*
-  ** Nuxt.js modules
-  */
   modules: [
-    // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios',
-    '@gauseen/nuxt-proxy',
+    '@nuxtjs/proxy'
   ],
-  /*
-  ** Axios module configuration
-  */
   axios: {
-    // See https://github.com/nuxt-community/axios-module#options
     proxy: true
   },
-  proxyTable: {
-      '/course/api': {target: config.baseUrl, ws: false },
-      '/course/auth': {target: config.baseUrl, ws: false },
-      '/web': {target: config.baseUrl, ws: false},
-      '/system': {target: config.baseUrl, ws: false },
-      '/activity': {target: config.baseUrl, ws: false },
-      '/user': {target: config.baseUrl, ws: false },
-      '/agent': {target: config.baseUrl, ws: false },
-      '/auth/course': {target: config.baseUrl, ws: false },
-      '/auth/user': {target: config.baseUrl, ws: false }
+  proxy: {
+    '/gateway': {
+      target: config.baseUrl,
+      ws: false,
+      pathRewrite: {
+        '^/gateway': '' // 重写接口
+      }
+    }
   },
-
-  cache: true,
-  // or
-  // cache: {
-  //   max: 1000,
-  //   maxAge: 900000
-  // },
   env: {
     NODE_ENV: process.env.NODE_ENV || 'production'
   },
-  /*
-  ** Build configuration
-  */
   build: {
-    /*
-    ** You can extend webpack config here
-    */
-    html: {
-      minify: {
-        removeComments: true,
-        minifyCSS: true,
-        minifyJS: {
-          compress: {
-            warnings: true,
-            drop_console: true
-          },
-          sourceMap: true,
-          cache: true,
-          parallel: true
-        }
+    postcss: null,
+    parallel: true,
+    transpile: [/^element-ui/],
+    extractCSS: { allChunks: true },
+    extend(config, ctx) {
+      if (ctx.isDev && ctx.isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
       }
     },
-    extend(config, ctx) {
-
-    }
+    // 过滤日志
+    plugins: process.env.ONLINE === 'true' ? [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          compress: {
+            warnings: false,
+            pure_funcs: ['console.log']
+          }
+        }
+      })
+    ] : []
   }
 }

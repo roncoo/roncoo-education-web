@@ -1,41 +1,40 @@
 <template>
   <div>
-    <nuxt/>
+    <nuxt />
   </div>
 </template>
 
 <script>
 export default {
-  head () {
+  head() {
     return {
       link: [
         { hid: 'icon', rel: 'icon', type: 'image/x-icon', href: this.$store.state.webInfo.logoIco }
       ]
     }
   },
-  created () {
+  created() {
     if (process.client) {
-      this.$store.commit('INIT_WEB');
-      if (!!this.$store.state.tokenInfo) {
-        if (!this.$store.state.userInfo || this.$store.state.tokenInfo != this.$store.state.userInfo.token) {
-          this.$store.dispatch('GET_USERINFO');
+      this.$store.commit('INIT_WEB')
+      if (this.$store.state.tokenInfo) {
+        if (!this.$store.state.userInfo || this.$store.state.tokenInfo !== this.$store.state.userInfo.token) {
+          this.$store.dispatch('GET_USERINFO')
         }
       }
     }
+    var _hmt = _hmt || []
   },
-  mounted () {
-    var _hmt = _hmt || [];
-    (function(){
-      var sc = document.createElement('script');
-      sc.src = 'https://player.polyv.net/script/polyvplayer.min.js';
-      var sList = document.getElementsByTagName('script');
-      var s = sList[sList.length - 1]
-      s.parentNode.insertBefore(sc, s);
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?d5b2309e95c3b686b3c8ff6f1abbaef1";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })()
+  mounted() {
+    var sc = document.createElement('script')
+    sc.src = 'https://player.polyv.net/script/polyvplayer.min.js'
+    var sList = document.getElementsByTagName('script')
+    var s = sList[sList.length - 1]
+    s.parentNode.insertBefore(sc, s)
+    var hm = document.createElement('script')
+    hm.src = 'https://hm.baidu.com/hm.js?d5b2309e95c3b686b3c8ff6f1abbaef1'
+    var scr = document.getElementsByTagName('script')[0]
+    console.log(scr, scr.parentNode)
+    document.body.insertBefore(hm, s)
     document.addEventListener('click', () => {
       this.$store.commit('HIDE_EWM')
     })

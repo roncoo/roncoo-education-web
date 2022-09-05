@@ -1,23 +1,23 @@
 <template>
   <header class="side_box">
-    <div class="menu_panel" v-if="showSide === 'zm'">
+    <div v-if="showSide === 'zm'" class="menu_panel">
       <h3 class="title">招募中心</h3>
       <ul class="menus">
         <li :class="{on: type == 'jszm'}"><router-link :to="{name: 'teacherRecruit'}">讲师招募</router-link></li>
       </ul>
     </div>
-    <div class="menu_panel" v-for="(item, index) in list" :key="index" v-if="showSide === 'wm'">
-      <h3 class="title">{{item.navName}}</h3>
+    <!-- eslint-disable-next-line  -->
+    <div v-for="(item, index) in list" v-if="showSide === 'wm'" :key="index" class="menu_panel">
+      <h3 class="title">{{ item.navName }}</h3>
       <ul class="menus">
-        <li :class="{on: now == that.id}" v-for="(that, index)  in item.websiteNavList" :key="index">
-          <nuxt-link :to="{name: 'terrace-id', params: {id: that.id}}">{{that.navName}}</nuxt-link>
+        <li v-for="that in item.websiteNavList" :key="that.id" :class="{on: now == that.id}">
+          <nuxt-link :to="{name: 'terrace-id', params: {id: that.id}}">{{ that.navName }}</nuxt-link>
         </li>
       </ul>
     </div>
   </header>
 </template>
 <script>
-import {aboutList} from '~/api/main.js'
 export default {
   props: {
     type: {
@@ -29,22 +29,22 @@ export default {
       default: 'zm'
     }
   },
-  data () {
+  data() {
     return {
-      list: this.$store.state.aboutList ? this.$store.state.aboutList.list: [],
+      list: this.$store.state.aboutList ? this.$store.state.aboutList.list : [],
       now: ''
     }
   },
-  methods: {
-    changeAbout (id) {
-      this.now = id
-      // this.$emit('changeInfo', id)
-      this.$router.push({name: 'terrace-id', params: {id}})
-    },
-  },
-  mounted () {
+  mounted() {
     if (this.$route.params.id) {
       this.now = this.$route.params.id
+    }
+  },
+  methods: {
+    changeAbout(id) {
+      this.now = id
+      // this.$emit('changeInfo', id)
+      this.$router.push({ name: 'terrace-id', params: { id }})
     }
   }
 }

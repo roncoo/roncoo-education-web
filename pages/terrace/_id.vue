@@ -1,42 +1,50 @@
 <template>
   <div>
-    <y-header :active="'index'"></y-header>
+    <y-header :active="'index'" />
     <div class="person_body clearfix">
-      <y-side :showSide="'wm'"></y-side>
+      <y-side :show-side="'wm'" />
       <div class="person_content">
         <div class="person_title">
-          {{artTitle}}
+          {{ artTitle }}
         </div>
         <div class="person_info">
-          <p class="top_text" v-html="artDesc"></p>
+          <p class="top_text" v-html="artDesc" />
         </div>
       </div>
     </div>
-    <y-footer></y-footer>
+    <y-footer />
   </div>
 </template>
 <script>
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/TerraceSide'
-import {aboutInfo} from '~/api/main.js'
+import { aboutInfo } from '~/api/main.js'
 export default {
-  head () {
-      return {
-        title: this.artTitle,
-        meta: [
-            {
-                name: 'keywords',
-                content: this.webInfo.websiteKeyword
-            },
-            {
-                name: 'description',
-                content: this.webInfo.websiteDesc
-            }
-        ]
-      }
+  components: {
+    YHeader,
+    YFooter,
+    YSide
   },
-  data () {
+  validate({ params }) {
+    // 必须是number类型
+    return /^\d+$/.test(params.id)
+  },
+  async asyncData(context) {
+    const { data } = await aboutInfo({ navId: context.params.id })
+    if (data.code === 200) {
+      return {
+        artTitle: data.data.artTitle,
+        artDesc: data.data.artDesc
+      }
+    } else {
+      return {
+        artTitle: '',
+        artDesc: ''
+      }
+    }
+  },
+  data() {
     return {
       webInfo: this.$store.state.webInfo,
       navId: '',
@@ -44,36 +52,28 @@ export default {
       artDesc: ''
     }
   },
-  validate ({ params }) {
-    // 必须是number类型
-    return /^\d+$/.test(params.id)
-  },
-  async asyncData(context) {
-    let {data} = await aboutInfo({navId: context.params.id});
-    if (data.code == 200) {
-      return {
-        artTitle: data.data.artTitle,
-        artDesc: data.data.artDesc
-      }
-    }else{
-      return {
-        artTitle: '',
-        artDesc: ''
-      }
+  head() {
+    return {
+      title: this.artTitle,
+      meta: [
+        {
+          name: 'keywords',
+          content: this.webInfo.websiteKeyword
+        },
+        {
+          name: 'description',
+          content: this.webInfo.websiteDesc
+        }
+      ]
     }
   },
-  mounted () {
-    if (this.artTitle == '') {
+  mounted() {
+    if (this.artTitle === '') {
       this.$msgBox({
         content: '获取信息失败',
         isShowCancelBtn: false
       })
     }
-  },
-  components: {
-    YHeader,
-    YFooter,
-    YSide
   }
 }
 </script>

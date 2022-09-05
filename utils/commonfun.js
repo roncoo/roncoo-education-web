@@ -1,5 +1,5 @@
 // 列表页刷新选择分类
-export const courseChange = function (vueContext) {
+export const courseChange = function(vueContext) {
   if (vueContext.$route.query.categoryno1 || vueContext.$route.query.categoryno1 === '') {
     vueContext.obj.categoryId1 = vueContext.$route.query.categoryno1
   }
@@ -10,7 +10,7 @@ export const courseChange = function (vueContext) {
     vueContext.obj.categoryId3 = vueContext.$route.query.categoryno3
   }
   if (vueContext.$route.query.four) {
-    let four = vueContext.$route.query.four
+    const four = vueContext.$route.query.four
     if (parseInt(four) === 3) {
       vueContext.obj.isFree = ''
       vueContext.obj.isVipFree = ''

@@ -1,15 +1,11 @@
 import * as axios from 'axios'
 import cookie from '../utils/cookies'
-import LRU from 'lru-cache'
 import config from '../config'
 // console.log(axios.defaults)
 const createHttp = (token) => {
-
-// console.log("api==============")
-
-  let options = {
+  const options = {
   }
-  let head = {
+  const head = {
     orgno: config.CLIENT.no
   }
   // 需要全路径才能工作
@@ -17,14 +13,17 @@ const createHttp = (token) => {
     if (token) {
       head.token = token
     }
-    options.baseURL = process.env._AXIOS_BASE_URL_
+    options.baseURL = config.baseUrl
+  } else {
+    options.baseURL = '/gateway/'
   }
+
   if (process.client) {
     // console.log(cookie.getInClient(config.CLIENT.tokenName));
     head.token = cookie.getInClient(config.CLIENT.tokenName)
   }
-  
-  options.headers = head;
+
+  options.headers = head
 
   return axios.create(options)
 }

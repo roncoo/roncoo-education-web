@@ -6,42 +6,42 @@
       <div class="main_box">
         <y-card-info @showBind="showBind" />
         <y-earning-table v-show="hideBind" />
-        <y-bind-card @closeBind="closeBind" v-show="!hideBind" />
+        <y-bind-card v-show="!hideBind" @closeBind="closeBind" />
       </div>
     </div>
     <y-footer />
   </div>
 </template>
 <script>
-  import YHeader from '~/components/common/Header'
-  import YFooter from '~/components/common/Footer'
-  import YSide from '~/components/account/Side'
-  import YCardInfo from '~/components/account/earnings/CardInfo'
-  import YEarningTable from '~/components/account/earnings/EarningTable'
-  import YBindCard from '~/components/account/earnings/BindCard'
-  export default {
-    components: {
-      YHeader,
-      YFooter,
-      YSide,
-      YCardInfo,
-      YEarningTable,
-      YBindCard
+import YHeader from '~/components/common/Header'
+import YFooter from '~/components/common/Footer'
+import YSide from '~/components/account/Side'
+import YCardInfo from '~/components/account/earnings/CardInfo'
+import YEarningTable from '~/components/account/earnings/EarningTable'
+import YBindCard from '~/components/account/earnings/BindCard'
+export default {
+  components: {
+    YHeader,
+    YFooter,
+    YSide,
+    YCardInfo,
+    YEarningTable,
+    YBindCard
+  },
+  data() {
+    return {
+      hideBind: true
+    }
+  },
+  methods: {
+    showBind() {
+      this.hideBind = false
     },
-    data () {
-      return {
-        hideBind: true
-      }
-    },
-    methods: {
-      showBind () {
-        this.hideBind = false
-      },
-      closeBind () {
-        this.hideBind = true
-      }
+    closeBind() {
+      this.hideBind = true
     }
   }
+}
 </script>
 <style lang="scss">
 @import '~/assets/css/account.scss';

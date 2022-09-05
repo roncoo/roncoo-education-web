@@ -5,12 +5,12 @@
         <div class="register_header">
           <div class="register_logo">
             <nuxt-link :to="{name: 'index'}">
-              <img :src="webInfo.logoImg" alt="" v-if="webInfo && webInfo.logoImg">
+              <img v-if="webInfo && webInfo.logoImg" :src="webInfo.logoImg" alt="">
             </nuxt-link>
           </div>
         </div>
         <div class="register_content">
-          <div class="register_title">{{applyTitle}}</div>
+          <div class="register_title">{{ applyTitle }}</div>
           <div class="steps">
             <span class="step" :class="{step_ok: step1}">签订协议</span>
             <span class="step" :class="{step_ok: step2}">填写资料</span>
@@ -21,76 +21,76 @@
               <div class="clearfix" v-html="webInfo.entryAgreement">这里是协议内容</div>
             </div>
             <footer class="info_footer">
-              <input type="checkbox" id="isRead" v-model="isRead">
+              <input id="isRead" v-model="isRead" type="checkbox">
               <label for="isRead">
                 我已阅读并同意此协议
               </label>
               <span class="c_red">（温馨提示：阅读整个协议，才能进行下一步。）</span>
             </footer>
             <div>
-              <button @click="goNext()" class="next_btn">下一步</button>
+              <button class="next_btn" @click="goNext()">下一步</button>
             </div>
           </div>
           <div v-show="tab === 2">
             <div class="form_group">
               <div class="label">名称:</div>
               <div class="form_ctl">
-                <input type="text" placeholder="请输入讲师名称" v-model="obj.lecturerName">
-                <p class="err" v-show="errTip2">{{errTip2}}</p>
+                <input v-model="obj.lecturerName" type="text" placeholder="请输入讲师名称">
+                <p v-show="errTip2" class="err">{{ errTip2 }}</p>
               </div>
             </div>
             <div class="form_group">
               <div class="label">邮箱:</div>
               <div class="form_ctl">
-                <input type="text" name="email" @change="enter" placeholder="请输入邮箱" v-model="obj.email">
-                <p class="err" v-show="errTip4">{{errTip4}}</p>
+                <input v-model="obj.email" type="text" name="email" placeholder="请输入邮箱" @change="enter">
+                <p v-show="errTip4" class="err">{{ errTip4 }}</p>
               </div>
             </div>
             <div class="form_group">
               <div class="label">简介:</div>
               <div class="form_ctl">
-                <div id="lecturerInfo"></div>
+                <div id="lecturerInfo" />
               </div>
             </div>
             <hr>
             <div class="form_group">
               <div class="label">手机号:</div>
               <div class="form_ctl">
-                <input type="text" maxlength="11" placeholder="请输入注册手机号" v-model="obj.mobile">
-                <p class="err" v-show="errTip0">{{errTip0}}</p>
+                <input v-model="obj.mobile" type="text" maxlength="11" placeholder="请输入注册手机号">
+                <p v-show="errTip0" class="err">{{ errTip0 }}</p>
               </div>
             </div>
             <div class="form_group">
               <div class="label">验证码:</div>
               <div class="form_ctl">
-                <input type="text" maxlength="6" name="code" @change="enter" placeholder="请输入手机验证码" v-model="obj.code">
-                <y-button :mobile="obj.mobile" @cb="submitBtn = true"></y-button>
-                <p class="err" v-show="errTip1">{{errTip1}}</p>
+                <input v-model="obj.code" type="text" maxlength="6" name="code" placeholder="请输入手机验证码" @change="enter">
+                <y-button :mobile="obj.mobile" @cb="submitBtn = true" />
+                <p v-show="errTip1" class="err">{{ errTip1 }}</p>
               </div>
             </div>
             <div class="form_group">
               <div class="label">密码:</div>
               <div class="form_ctl">
-                <input type="password" name="pwd" @change="enter" placeholder="请输入密码" v-model="obj.passwd">
-                <p class="err" v-show="errTip6">{{errTip6}}</p>
+                <input v-model="obj.passwd" type="password" name="pwd" placeholder="请输入密码" @change="enter">
+                <p v-show="errTip6" class="err">{{ errTip6 }}</p>
               </div>
             </div>
-            <div class="form_group" v-if="sendCode">
+            <div v-if="sendCode" class="form_group">
               <div class="label">确认密码:</div>
               <div class="form_ctl">
-                <input type="password" name="repwd" @change="enter" placeholder="请再次输入秘密" v-model="obj.rePasswd">
-                <p class="err" v-show="errTip5">{{errTip5}}</p>
+                <input v-model="obj.rePasswd" type="password" name="repwd" placeholder="请再次输入秘密" @change="enter">
+                <p v-show="errTip5" class="err">{{ errTip5 }}</p>
               </div>
             </div>
-            <div class="form_group" v-if="isReferralCode">
+            <div v-if="isReferralCode" class="form_group">
               <div class="label">推荐码:</div>
               <div class="form_ctl">
-                <input type="text" maxlength="6" placeholder="请输入推荐码" v-model="obj.referralCode">
-                <p class="err" v-show="errTip7">{{errTip7}}</p>
+                <input v-model="obj.referralCode" type="text" maxlength="6" placeholder="请输入推荐码">
+                <p v-show="errTip7" class="err">{{ errTip7 }}</p>
               </div>
             </div>
             <div>
-              <a href="javascript:" @click="isSubmit" class="next_btn">提交审核</a>
+              <a href="javascript:" class="next_btn" @click="isSubmit">提交审核</a>
             </div>
           </div>
           <div v-if="tab === 3">
@@ -106,42 +106,48 @@
         </div>
       </div>
       <p class="foot_text">
-        <span v-html="webInfo.copyright"></span>
+        <span v-html="webInfo.copyright" />
       </p>
       <p class="foot_text">
         <a href="http://www.doityun.com/" target="_blank" class="lingke_link">IT云提供计算服务</a>
         <span v-if="webInfo.icp">&nbsp;|&nbsp;</span>
-        <a href="http://www.miitbeian.gov.cn/" class="lingke_link" target="_blank">{{webInfo.icp}}</a>
+        <a href="http://www.miitbeian.gov.cn/" class="lingke_link" target="_blank">{{ webInfo.icp }}</a>
         <span v-if="webInfo.prn">&nbsp;|&nbsp;</span>
-        <a :href="'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=' + webInfo.prnNo" target="_blank" class="lingke_link" v-if="webInfo.prn"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{webInfo.prn}}</a>
+        <a v-if="webInfo.prn" :href="'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=' + webInfo.prnNo" target="_blank" class="lingke_link"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ webInfo.prn }}</a>
       </p>
     </div>
   </div>
 </template>
 <script>
 import YButton from '~/components/common/CodeButton'
-import {teacherEnter} from '~/api/user.js'
-import {uploadPic} from '~/api/upload.js'
-import {myHttp} from '~/utils/myhttp.js'
+import { teacherEnter } from '~/api/user.js'
+import { uploadPic } from '~/api/upload.js'
+import { myHttp } from '~/utils/myhttp.js'
 export default {
-  head () {
-      return {
-        title: this.applyTitle,
-        meta: [
-            {
-                hid: 'keywords',
-                name: 'keywords',
-                content: this.$store.state.webInfo.websiteKeyword
-            },
-            {
-                hid: 'description',
-                name: 'description',
-                content: this.$store.state.webInfo.websiteDesc
-            }
-        ]
-      }
+  components: {
+    YButton
   },
-  data () {
+  async asyncData(context) {
+    const dataObj = {}
+    const clientNo = context.store.state.clientData.no
+    const applyType = context.query.apply
+    let recruitType = ''
+    let applyTitle = ''
+    try {
+      if (applyType === '1') {
+        recruitType = 1
+        applyTitle = '申请成为讲师'
+      }
+      dataObj.clientNo = clientNo
+      dataObj.applyType = applyType
+      dataObj.recruitType = recruitType
+      dataObj.applyTitle = applyTitle
+      return dataObj
+    } catch (e) {
+      context.error({ message: 'User not found', statusCode: 404 })
+    }
+  },
+  data() {
     return {
       clientData: this.$store.state.clientData,
       webInfo: this.$store.state.webInfo,
@@ -185,66 +191,70 @@ export default {
       tab: 1
     }
   },
-  async asyncData (context) {
-    let dataObj = {}
-    let clientNo = context.store.state.clientData.no
-    let applyType = context.query.apply
-    let recruitType = ''
-    let applyTitle = ''
-    try {
-      if (applyType === '1') {
-        recruitType = 1
-        applyTitle = '申请成为讲师'
-      }
-      dataObj.clientNo = clientNo
-      dataObj.applyType = applyType
-      dataObj.recruitType = recruitType
-      dataObj.applyTitle = applyTitle
-      return dataObj
-    } catch (e) {
-      context.error({message: 'User not found', statusCode: 404})
+  head() {
+    return {
+      title: this.applyTitle,
+      meta: [
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content: this.$store.state.webInfo.websiteKeyword
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.$store.state.webInfo.websiteDesc
+        }
+      ]
     }
   },
+  mounted() {
+    const E = require('wangeditor')
+    this.editor2 = new E('#lecturerInfo')
+    this.editor2.customConfig.uploadImgMaxLength = 1
+    this.editor2.customConfig.customUploadImg = this.editorUpload
+    this.editor2.create()
+  },
   methods: {
-    setUrl (res) {
-      this.obj.headImgUrl = res.url;
+    setUrl(res) {
+      this.obj.headImgUrl = res.url
     },
-    enter (e) {
-      let name = e.target.name;
+    enter(e) {
+      const name = e.target.name
       if (name === 'code') {
         if (this.obj.code.length !== 6) {
-          this.errTip1 = '请输入正确的手机验证码';
-          return false;
+          this.errTip1 = '请输入正确的手机验证码'
+          return false
         } else {
-          this.errTip1 = false;
+          this.errTip1 = false
         }
       }
       if (name === 'email') {
         if (!(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/).test(this.obj.email)) {
-          this.errTip4 = '请输入正确的邮箱';
-          return false;
+          this.errTip4 = '请输入正确的邮箱'
+          return false
         } else {
-          this.errTip4 = '';
+          this.errTip4 = ''
         }
       }
       if (name === 'pwd') {
         if (this.obj.passwd.length < 6) {
-          this.errTip6 = '密码长度不能小于6位数';
-          return false;
+          this.errTip6 = '密码长度不能小于6位数'
+          return false
         } else {
-          this.errTip6 = '';
+          this.errTip6 = ''
         }
       }
       if (name === 'repwd') {
         if (this.obj.rePasswd !== this.obj.passwd) {
-          this.errTip5 = '两次密码不一致';
-          return false;
+          this.errTip5 = '两次密码不一致'
+          return false
         } else {
-          this.errTip5 = '';
+          this.errTip5 = ''
         }
       }
     },
-    goNext () {
+    goNext() {
       if (!this.isRead) {
         this.$msgBox({
           content: '请先阅读协议',
@@ -255,28 +265,28 @@ export default {
       this.step2 = true
       this.tab = 2
     },
-    isSubmit () {
+    isSubmit() {
       if (!(/^1[3|4|5|8|7][0-9]\d{4,8}$/.test(this.obj.mobile.trim())) || this.obj.mobile.trim().length !== 11) {
-        this.errTip0 = '请输入正确手机号码';
+        this.errTip0 = '请输入正确手机号码'
         return
       } else {
         this.errTip0 = ''
       }
       if (!this.obj.code) {
-        this.errTip1 = '请输入手机验证码';
+        this.errTip1 = '请输入手机验证码'
         return
       } else {
         this.errTip1 = ''
       }
       if (!this.obj.lecturerName) {
-        this.errTip2 = '请输入昵称';
+        this.errTip2 = '请输入昵称'
         return
       } else {
         this.errTip2 = ''
       }
       if (!(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/).test(this.obj.email)) {
-        this.errTip4 = '请输入正确的邮箱';
-        return false;
+        this.errTip4 = '请输入正确的邮箱'
+        return false
       }
       if (!this.obj.referralCode && this.isReferralCode) {
         this.errTip7 = '请输入推荐码'
@@ -329,20 +339,20 @@ export default {
           return
         }
       }
-      let ht = this.editor2.txt.html();
+      const ht = this.editor2.txt.html()
       this.obj.introduce = ht
-      let headImgUrl = this.obj.headImgUrl
-      let introduce = ht
-      let lecturerName = this.obj.lecturerName
-      let lecturerMobile = this.obj.mobile
-      let lecturerEmail = this.obj.email
-      let mobilePsw = this.obj.passwd
-      let repassword = this.obj.rePasswd
-      let referralCode = this.obj.referralCode
-      let code = this.obj.code
-      let grade = this.gradeNoList.join(',')
-      let subject = this.subjectNoList.join(',')
-      let newObj = {
+      const headImgUrl = this.obj.headImgUrl
+      const introduce = ht
+      const lecturerName = this.obj.lecturerName
+      const lecturerMobile = this.obj.mobile
+      const lecturerEmail = this.obj.email
+      const mobilePsw = this.obj.passwd
+      const repassword = this.obj.rePasswd
+      const referralCode = this.obj.referralCode
+      const code = this.obj.code
+      const grade = this.gradeNoList.join(',')
+      const subject = this.subjectNoList.join(',')
+      const newObj = {
         headImgUrl,
         introduce,
         lecturerName,
@@ -364,26 +374,26 @@ export default {
         this.tab = 3
       })
     },
-    goIndex () {
+    goIndex() {
       this.tab = 1
       this.step2 = false
       this.step3 = false
-      this.$router.push({name: 'index'})
+      this.$router.push({ name: 'index' })
     },
-    goLogin () {
-      this.$router.push({path: '/login'});
+    goLogin() {
+      this.$router.push({ path: '/login' })
     },
     // 编辑器上传图片
-    editorUpload (files, insert) {
-      let file = files[0];
-      let param = new FormData();
-      param.append('picFile', file, file.name);
+    editorUpload(files, insert) {
+      const file = files[0]
+      const param = new FormData()
+      param.append('picFile', file, file.name)
       this.$nuxt.$loading.start()
-      uploadPic(param, function (int) {
+      uploadPic(param, function(int) {
       }).then(res => {
         this.$nuxt.$loading.finish()
         if (res.code === 200) {
-          let imgUrl = res.data
+          const imgUrl = res.data
           insert(imgUrl)
         } else {
           this.$msgBox({
@@ -398,16 +408,6 @@ export default {
         })
       })
     }
-  },
-  mounted () {
-    let E = require('wangeditor')
-    this.editor2 = new E('#lecturerInfo')
-    this.editor2.customConfig.uploadImgMaxLength = 1
-    this.editor2.customConfig.customUploadImg = this.editorUpload
-    this.editor2.create();
-  },
-  components: {
-    YButton
   }
 }
 </script>

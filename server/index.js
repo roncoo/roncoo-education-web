@@ -6,7 +6,7 @@ const app = new Koa()
 const port = process.env.PORT || 3000
 
 // Import and Set Nuxt.js options
-let config = require('../nuxt.config.js')
+const config = require('../nuxt.config.js')
 config.dev = !(app.env === 'production')
 
 async function start() {

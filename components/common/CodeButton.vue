@@ -1,8 +1,8 @@
 <template>
-  <button class="yzm_btn" type="button" :disabled="disabled" @click="getCode">{{txt}}</button>
+  <button class="yzm_btn" type="button" :disabled="disabled" @click="getCode">{{ txt }}</button>
 </template>
 <script>
-import {getMobileCode} from '~/api/user.js'
+import { getMobileCode } from '~/api/user.js'
 export default {
   props: {
     mobile: {
@@ -11,7 +11,7 @@ export default {
       default: 1
     }
   },
-  data () {
+  data() {
     return {
       txt: '获取验证码',
       disabled: false
@@ -21,13 +21,13 @@ export default {
     // ...mapState(['clientData'])
   },
   methods: {
-    getCode (event) {
+    getCode(event) {
       if (!/^1[3|4|5|8|7][0-9]\d{8}$/.test(parseInt(this.mobile))) {
         this.$msgBox({
           content: '请输入正确手机号码',
           isShowCancelBtn: false
         })
-        return false;
+        return false
       }
       this.$emit('cb', event)
       // 获取验证码
@@ -36,7 +36,7 @@ export default {
         mobile: this.mobile
       }).then(res => {
         if (res.data.code === 200) {
-          this.timeOut();
+          this.timeOut()
         } else {
           this.$msgBox({
             content: res.data.msg,
@@ -45,18 +45,18 @@ export default {
         }
       })
     },
-    timeOut () {
-      this.disabled = true;
-      let num = 60;
-      this.txt = num;
-      let nt = setInterval(() => {
+    timeOut() {
+      this.disabled = true
+      let num = 60
+      this.txt = num
+      const nt = setInterval(() => {
         if (num <= 0) {
-          clearInterval(nt);
-          this.txt = '重新获取';
-          this.disabled = false;
+          clearInterval(nt)
+          this.txt = '重新获取'
+          this.disabled = false
         } else {
-          num--;
-          this.txt = num + 's';
+          num--
+          this.txt = num + 's'
         }
       }, 1000)
     }

@@ -1,10 +1,10 @@
 <template>
   <div class="detail_video">
     <div class="video_header clearfix">
-      <ul class="header_left clearfix" v-if="userInfo">
+      <ul v-if="userInfo" class="header_left clearfix">
         <router-link :to="{name: 'index'}"><li class="return_btn"><img class="return_img" src="~/assets/image/return.svg" alt=""></li></router-link>
         <li class="vider_title">
-          {{courseInfo.courseName}}
+          {{ courseInfo.courseName }}
           <!-- <a :class="{collect_btn: true, noposi: true}" href="javascript:" @click="setCollection"><span class="iconfont">&#xe670;</span>&nbsp;收藏</a> -->
         </li>
       </ul>
@@ -12,10 +12,10 @@
         <li v-if="userInfo.roleType === 2"><nuxt-link :to="{name: 'account-teacher-course'}" class="left_col">讲师中心</nuxt-link></li>
         <li><nuxt-link :to="{name: 'account-order'}" class="left_col">我的订单</nuxt-link></li>
         <li>
-          <nuxt-link :to="{name: 'account'}" :class="{left_col: true, c_gold: isVip}">{{userInfo.mobile}}</nuxt-link>
-          <img v-if="isVip" src="~/assets/image/vip_icon.png" @click="goVip" alt="" class="vip_icon">
+          <nuxt-link :to="{name: 'account'}" :class="{left_col: true, c_gold: isVip}">{{ userInfo.mobile }}</nuxt-link>
+          <img v-if="isVip" src="~/assets/image/vip_icon.png" alt="" class="vip_icon" @click="goVip">
         </li>
-       <!--  <li v-else>
+        <!--  <li v-else>
           <a href="javascript:" @click="login" class="left_col">登录</a>
           <nuxt-link to="login?tab=2" class="pd_0">注册</nuxt-link>
         </li> -->
@@ -25,35 +25,35 @@
     <div class="video_body">
       <div class="video_content clearfix" :class="{show_panel: cateType}">
         <div class="win_box">
-          <div class="video_win" id="player" ref="videobox" :style="'background-image:url('+courseInfo.courseLogo+')'">
-          </div>
-          <span class="iconfont close_video" v-if="showTop" @click="stopVideo">&#xe616;</span>
+          <div id="player" ref="videobox" class="video_win" :style="'background-image:url('+courseInfo.courseLogo+')'" />
+          <span v-if="showTop" class="iconfont close_video" @click="stopVideo">&#xe616;</span>
         </div>
         <div class="video_info">
-          <a href="javascript:" @click="changeTab(1)" :class="{on: cateType == 1}">
+          <a href="javascript:" :class="{on: cateType == 1}" @click="changeTab(1)">
             <i class="iconfont">&#xe908;</i>
             <p>章节</p>
           </a>
-          <a href="javascript:" @click="changeTab(2)" :class="{on: cateType == 2}">
+          <a href="javascript:" :class="{on: cateType == 2}" @click="changeTab(2)">
             <i class="iconfont">&#xe602;</i>
             <p>课件</p>
           </a>
         </div>
         <div class="cate_panel">
-          <div  v-if="cateType == 1">
+          <div v-if="cateType == 1">
             <dl v-for="(one, index) in courseInfo.chapterList" :key="index">
-              <dt>第{{index + 1}}章：{{one.chapterName}}</dt>
-              <dd v-for="(two, num) in one.periodList" :key="num" :class="{on : nowNo == two.id}" @click="videoPlay(two)"><i class="iconfont">&#xe690;</i><span>第{{num + 1}}讲：</span>{{two.periodName}}
-                <span class="no_video2" v-if="!two.videoVid">(未更新)</span>
-                <span class="c_blue" v-if="two.isFree">(免费)</span>
+              <dt>第{{ index + 1 }}章：{{ one.chapterName }}</dt>
+              <dd v-for="(two, num) in one.periodList" :key="num" :class="{on : nowNo == two.id}" @click="videoPlay(two)"><i class="iconfont">&#xe690;</i><span>第{{ num + 1 }}讲：</span>{{ two.periodName }}
+                <span v-if="!two.videoVid" class="no_video2">(未更新)</span>
+                <span v-if="two.isFree" class="c_blue">(免费)</span>
               </dd>
             </dl>
           </div>
           <div v-if="cateType == 2">
             <dl v-for="(one, index) in courseInfo.chapterList" :key="index">
-              <dt>{{one.chapterName}}</dt>
-              <dd v-for="(two, num) in one.periodList" :key="num" v-if="two.isDoc">
-                <a href="javascript:" @click="noDown"><i class="iconfont">&#xe602;</i>{{two.docName}}</a>
+              <dt>{{ one.chapterName }}</dt>
+              <!-- eslint-disable-next-line  -->
+              <dd v-for="(two, num) in one.periodList" v-if="two.isDoc" :key="num">
+                <a href="javascript:" @click="noDown"><i class="iconfont">&#xe602;</i>{{ two.docName }}</a>
               </dd>
             </dl>
           </div>
@@ -74,7 +74,7 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       isVip: false,
       showTop: false,
@@ -83,28 +83,32 @@ export default {
       userInfo: ''
     }
   },
+  mounted() {
+    this.userInfo = this.$store.state.userInfo
+    console.log(this.$store.state.userInfo)
+  },
   methods: {
 
-    changeTab (int) {
+    changeTab(int) {
       if (int === this.cateType) {
-        this.cateType = 0;
+        this.cateType = 0
       } else {
-        this.cateType = int;
+        this.cateType = int
       }
     },
-    goVip () {
-      this.$router.push({name: 'vip'})
+    goVip() {
+      this.$router.push({ name: 'vip' })
     },
     // 下载附件
-    noDown (item) {
+    noDown(item) {
       if (!this.$store.state.tokenInfo) {
         this.$msgBox({
           content: '登录后才可以下载'
         }).then(res => {
-          this.$store.dispatch('REDIRECT_LOGIN');
+          this.$store.dispatch('REDIRECT_LOGIN')
         }).catch(() => {
         })
-        return false;
+        return false
       }
       if (!item.isFree) {
         this.$msgBox({
@@ -113,25 +117,21 @@ export default {
         }).then(() => {
           // this.openOrder()
         }).catch(() => {})
-        return false;
+        return false
       }
       window.location.href = item.docUrl
     },
-    videoPlay (data) {
+    videoPlay(data) {
       console.log(data)
       if (!data.videoVid) {
         this.$msgBox({
           content: '该视频未更新',
           isShowCancelBtn: false
         }).catch(() => {})
-        return false;
+        return false
       }
       this.$emit('playfunc', data)
     }
-  },
-  mounted () {
-    this.userInfo = this.$store.state.userInfo;
-    console.log(this.$store.state.userInfo)
   }
 }
 </script>
@@ -255,7 +255,7 @@ export default {
       float: right;
       padding-top: 20px;
       height: 595px;
-      background-color: #333;      
+      background-color: #333;
       a {
         overflow: hidden;
         display: block;

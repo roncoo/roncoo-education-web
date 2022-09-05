@@ -1,22 +1,22 @@
 <!-- 课程大纲列表 -->
 <template>
   <div class="sy_body">
-    <div class="title"><span></span>课程大纲</div>
-    <div class="chapter_info" v-for="(one, index) in list" :key="index">
+    <div class="title"><span />课程大纲</div>
+    <div v-for="(one, index) in list" :key="index" class="chapter_info">
       <div class="chapter_name">
-        <span>第{{index + 1}}章&nbsp;&nbsp;</span>{{one.chapterName}}
+        <span>第{{ index + 1 }}章&nbsp;&nbsp;</span>{{ one.chapterName }}
       </div>
-      <div class="period_info" v-for="(two, num) in one.periodList" :key="num">
-        <div class="period_top" @click="videoPlay(two)" :class="{on : nowNo == two.id}">
-          <div class="period_video" :class="{no_v: !two.videoVid}"></div>
-          <span class="period_num">第{{num+1}}讲</span>
+      <div v-for="(two, num) in one.periodList" :key="num" class="period_info">
+        <div class="period_top" :class="{on : nowNo == two.id}" @click="videoPlay(two)">
+          <div class="period_video" :class="{no_v: !two.videoVid}" />
+          <span class="period_num">第{{ num+1 }}讲</span>
           <span v-if="!two.videoVid" class="no_video">(未更新)</span>
           <span v-if="two.isFree" class="c_blue">(免费)</span>
-          {{two.periodName}}
-          <span class="video_time fr" v-if="two.videoVid">{{two.videoLength}}分钟</span>
+          {{ two.periodName }}
+          <span v-if="two.videoVid" class="video_time fr">{{ two.videoLength }}分钟</span>
         </div>
         <!-- <a :href="two.accessoryInfoDTOList[0].acUrl" v-if="two.accessoryInfoDTOList && userInfo && two.accessoryInfoDTOList.length && !minVideo">下载课件</a> -->
-        <a href="javascript:" @click="noDown(two)" v-if="two.isDoc">下载课件</a>
+        <a v-if="two.isDoc" href="javascript:" @click="noDown(two)">下载课件</a>
       </div>
     </div>
   </div>
@@ -27,28 +27,30 @@ export default {
   props: {
     list: {
       type: Array,
-      default: []
+      default() {
+        return []
+      }
     },
     nowNo: {
       type: String,
       default: ''
-    },
+    }
   },
-  data (){
+  data() {
     return {
     }
   },
   methods: {
-    noDown (item) {
+    noDown(item) {
       console.log(item)
       if (!this.$store.state.tokenInfo) {
         this.$msgBox({
           content: '登录后才可以下载'
         }).then(res => {
-          this.$store.dispatch('REDIRECT_LOGIN');
+          this.$store.dispatch('REDIRECT_LOGIN')
         }).catch(() => {
         })
-        return false;
+        return false
       }
       if (!item.isFree) {
         this.$msgBox({
@@ -57,31 +59,30 @@ export default {
         }).then(() => {
           // this.openOrder()
         }).catch(() => {})
-        return false;
+        return false
       }
       window.location.href = item.docUrl
     },
-    videoPlay (data) {
+    videoPlay(data) {
       console.log(data)
       if (!data.videoVid) {
         this.$msgBox({
           content: '该视频未更新',
           isShowCancelBtn: false
         }).catch(() => {})
-        return false;
+        return false
       }
       if (!this.$store.state.tokenInfo) {
         this.$msgBox({
           content: '请先登录'
         }).then(res => {
-          this.$store.dispatch('REDIRECT_LOGIN');
+          this.$store.dispatch('REDIRECT_LOGIN')
         }).catch(() => {
         })
-        return false;
+        return false
       }
-      
+
       this.$emit('playfunc', data)
-      
     }
   }
 }

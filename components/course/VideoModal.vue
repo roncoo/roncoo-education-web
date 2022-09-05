@@ -1,20 +1,20 @@
 <!-- 播放视频窗口 -->
 <template>
   <div class="video_modal">
-    <div class="mask" @click="close()"></div>
+    <div class="mask" @click="close()" />
     <div class="video_content">
       <div class="modal_head">
-        <a href="javascript:" @click="close()" class="close iconfont">&#xe616;</a>
+        <a href="javascript:" class="close iconfont" @click="close()">&#xe616;</a>
       </div>
-      <div class="modal_body" ref="playerbox">
-        <div id="player"></div>
+      <div ref="playerbox" class="modal_body">
+        <div id="player" />
       </div>
     </div>
   </div>
 </template>
 <script>
-import {chapterSign} from '@/api/course.js'
-import {mapState} from 'vuex'
+import { chapterSign } from '@/api/course.js'
+import { mapState } from 'vuex'
 export default {
   props: {
     data: {
@@ -22,7 +22,7 @@ export default {
       default: null
     }
   },
-  mounted () {
+  mounted() {
     console.log(this.data)
     /* eslint-disable*/
     this.videoPlay(this.data.vid);

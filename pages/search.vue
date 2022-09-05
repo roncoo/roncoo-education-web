@@ -1,47 +1,97 @@
 <template>
-<div class="search_page">
-  <y-header :active="'search'" :search-text="$route.query.search"></y-header>
-  <div class="search_input">
-    <div class="search_box_content clearfix">
-      <div class="form">
-        <span class="iconfont"></span>
-        <input type="text" class="search_box_input" v-model="map.courseName"/>
-        <button class="search_btn" @click="handleSearch">搜索</button>
+  <div class="search_page">
+    <y-header :active="'search'" :search-text="$route.query.search" />
+    <div class="search_input">
+      <div class="search_box_content clearfix">
+        <div class="form">
+          <span class="iconfont"></span>
+          <input v-model="map.courseName" type="text" class="search_box_input">
+          <button class="search_btn" @click="handleSearch">搜索</button>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="search_content">
-    <ul class="clearfix" v-if="opts.list && opts.list.length > 0">
-      <li v-for="(item, index) in opts.list" :key="index">
-        <nuxt-link target="_blank" :to="{name: 'view-id', params: {id: item.id}}" class="course_info">
-          <div class="img_box">
-            <img class="course_img" :src="item.courseLogo" alt="">
-          </div>
-          <p v-html="item.courseName"></p>
-          <span class="price_box" v-if="item.isFree">免费</span>
-          <span class="price_box" v-else>￥{{item.courseOriginal.toFixed(2)}}<span class="font_12 padl_10" v-if="openVip && item.courseOriginal !== item.courseDiscount">SVIP:{{item.courseDiscount ? '￥' + item.courseDiscount.toFixed(2) : '免费'}}</span></span>
-        </nuxt-link>
-      </li>
-    </ul>
-    <div class="no_data" v-if="!opts.list || opts.list.length === 0">
-      暂无数据
+    <div class="search_content">
+      <ul v-if="opts.list && opts.list.length > 0" class="clearfix">
+        <li v-for="(item, index) in opts.list" :key="index">
+          <nuxt-link target="_blank" :to="{name: 'view-id', params: {id: item.id}}" class="course_info">
+            <div class="img_box">
+              <img class="course_img" :src="item.courseLogo" alt="">
+            </div>
+            <p v-html="item.courseName" />
+            <span v-if="item.isFree" class="price_box">免费</span>
+            <span v-else class="price_box">￥{{ item.courseOriginal.toFixed(2) }}<span v-if="openVip && item.courseOriginal !== item.courseDiscount" class="font_12 padl_10">SVIP:{{ item.courseDiscount ? '￥' + item.courseDiscount.toFixed(2) : '免费' }}</span></span>
+          </nuxt-link>
+        </li>
+      </ul>
+      <div v-if="!opts.list || opts.list.length === 0" class="no_data">
+        暂无数据
+      </div>
+      <d-page v-if="page.totalPage > 1" :page="page" @btnClick="getPage" />
     </div>
-    <d-page v-if="page.totalPage > 1" :page="page" @btnClick="getPage"></d-page>
+    <y-footer />
+    <right-tap />
   </div>
-  <y-footer></y-footer>
-  <right-tap></right-tap>
-</div>
 </template>
 
 <script>
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
-import RightTap from "~/components/common/RightTap";
-import {getSearchCourseList} from "~/api/course";
-import DPage from "~/components/Page";
+import RightTap from '~/components/common/RightTap'
+import { getSearchCourseList } from '~/api/course'
+import DPage from '~/components/Page'
 export default {
-  name: "search",
-  head () {
+  name: 'Search',
+  components: {
+    YHeader,
+    YFooter,
+    DPage,
+    RightTap
+  },
+  async asyncData(context) {
+    const dataObj = {
+      map: {
+        courseName: '',
+        isHfield: 1
+      },
+      opts: {
+        list: []
+      },
+      page: {
+        pageCurrent: 1,
+        pageSize: 10,
+        totalPage: 1,
+        totalCount: 0
+      }
+    }
+    dataObj.webInfo = context.store.state.webInfo
+    try {
+      dataObj.map.courseName = context.query.search
+      const res = await getSearchCourseList(dataObj.map, dataObj.page.pageCurrent, dataObj.page.pageSize)
+      if (res.data.code === 200) {
+        dataObj.opts.list = res.data.data.list || []
+        dataObj.page.pageCurrent = res.data.data.pageCurrent || 1
+        dataObj.page.totalPage = res.data.data.totalPage || 1
+        dataObj.page.totalCount = res.data.data.totalCount || 0
+        return dataObj
+      } else {
+        // return dataObj
+        context.error({ message: res.data.msg, statusCode: 404 })
+      }
+    } catch (e) {
+      context.error({ message: 'User not found', statusCode: 404 })
+    }
+  },
+  data() {
+    return {
+      openVip: false,
+
+      ctrl: {
+        loading: false
+      }
+
+    }
+  },
+  head() {
     return {
       title: this.$store.state.clientData.name,
       meta: [
@@ -58,53 +108,9 @@ export default {
       ]
     }
   },
-  data(){
-    return {
-      openVip:false,
-
-      ctrl:{
-        loading:false
-      },
-
-    }
-  },
   watch: {
-    '$route' () {
+    '$route'() {
       this.getList()
-    }
-  },
-  async asyncData (context) {
-    let dataObj = {
-      map:{
-        courseName:'',
-        isHfield:1
-      },
-      opts:{
-        list:[]
-      },
-      page:{
-        pageCurrent:1,
-        pageSize:10,
-        totalPage:1,
-        totalCount:0
-      }
-    }
-    dataObj.webInfo = context.store.state.webInfo
-    try {
-      dataObj.map.courseName = context.query.search
-      let res = await getSearchCourseList(dataObj.map,dataObj.page.pageCurrent,dataObj.page.pageSize)
-      if(res.data.code === 200) {
-        dataObj.opts.list = res.data.data.list || []
-        dataObj.page.pageCurrent = res.data.data.pageCurrent || 1
-        dataObj.page.totalPage = res.data.data.totalPage || 1
-        dataObj.page.totalCount = res.data.data.totalCount || 0
-        return dataObj
-      }else{
-        // return dataObj
-        context.error({ message: res.data.msg, statusCode: 404 })
-      }
-    }catch (e) {
-      context.error({ message: 'User not found', statusCode: 404 })
     }
   },
   mounted() {
@@ -112,31 +118,31 @@ export default {
       this.openVip = true
     }
   },
-  methods:{
-    getPage (int) {
-      window.scrollTo(0, 0);
-      this.page.pageCurrent = int;
-      this.getList();
-    },
-    handleSearch(){
+  methods: {
+    getPage(int) {
+      window.scrollTo(0, 0)
+      this.page.pageCurrent = int
       this.getList()
     },
-    getList(){
+    handleSearch() {
+      this.getList()
+    },
+    getList() {
       this.ctrl.loading = true
-      getSearchCourseList(this.map,this.page.pageCurrent,this.page.pageSize).then(res=>{
+      getSearchCourseList(this.map, this.page.pageCurrent, this.page.pageSize).then(res => {
         this.ctrl.loading = false
         if (res.data.code === 200) {
           this.opts.list = res.data.data.list || []
           this.page.pageCurrent = res.data.data.pageCurrent
           this.page.totalPage = res.data.data.totalPage || 1
           this.page.totalCount = res.data.data.totalCount
-        }else{
+        } else {
           this.opts.list = []
           this.page.pageCurrent = 1
           this.page.totalPage = 1
           this.page.totalCount = 0
         }
-      }).catch(()=>{
+      }).catch(() => {
         this.ctrl.loading = false
         this.opts.list = []
         this.page.pageCurrent = 1
@@ -144,12 +150,6 @@ export default {
         this.page.totalCount = 0
       })
     }
-  },
-  components: {
-    YHeader,
-    YFooter,
-    DPage,
-    RightTap
   }
 }
 </script>

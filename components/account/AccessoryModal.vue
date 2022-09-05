@@ -1,33 +1,33 @@
 <template>
   <div class="">
-    <div class="mask" @click="close()"></div>
+    <div class="mask" @click="close()" />
     <div class="modal_panel accessory_panel">
       <div class="modal_head">
-        <a href="javascript:" @click="close()" class="close iconfont">&#xe616;</a>
+        <a href="javascript:" class="close iconfont" @click="close()">&#xe616;</a>
       </div>
       <div class="modal_body">
         <div class="upload_box clearfix">
           <span>请上传课程附件</span>
           <div class="fr">
             <span>大小不超过200M</span>
-            <input type="file" @change="addUpload" style="display: none;" id="file">
+            <input id="file" type="file" style="display: none;" @change="addUpload">
             <button class="solid_btn" :disabled="!upbtn" @click="upimg">本地上传</button>
           </div>
         </div>
-        <div class="ac_list" v-loading="load">
-            <ul class="">
-              <li class="item_ac clearfix" v-for="(item, index) in list" :key="index">
-                <a :href="item.acUrl" class="name">{{item.acName}}</a>
-                <a href="javascript:" class="c_blue del" @click="del(item.id)">删除</a>
-              </li>
-              <li class="item_ac" v-for="(item, index) in uploadList" v-if="item.tip !== '上传成功'" :key="index + 'ls'">
-                <div class="name">{{item.name}}</div>
-                <div class="progress">
-                  <div class="entity" :style="{width: item.jd + '%'}"></div>
-                  <div class="tip">{{item.tip}}</div>
-                </div>
-              </li>
-            </ul>
+        <div v-loading="load" class="ac_list">
+          <ul class="">
+            <li v-for="(item, index) in list" :key="index" class="item_ac clearfix">
+              <a :href="item.acUrl" class="name">{{ item.acName }}</a>
+              <a href="javascript:" class="c_blue del" @click="del(item.id)">删除</a>
+            </li>
+            <li v-for="(item, index) in uploadList" v-if="item.tip !== '上传成功'" :key="index + 'ls'" class="item_ac">
+              <div class="name">{{ item.name }}</div>
+              <div class="progress">
+                <div class="entity" :style="{width: item.jd + '%'}" />
+                <div class="tip">{{ item.tip }}</div>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
       <div class="modal_foot">
@@ -38,8 +38,8 @@
   </div>
 </template>
 <script>
-import {uploadDoc} from '~/api/upload.js'
-import {accessoryList, accessoryChapterSave, accessoryRemove} from '~/api/course.js'
+import { uploadDoc } from '~/api/upload.js'
+import { accessoryList, accessoryChapterSave, accessoryRemove } from '~/api/course.js'
 export default {
   props: {
     data: {
@@ -56,7 +56,7 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       load: false,
       kg: true,
@@ -71,9 +71,18 @@ export default {
       uploadList: []
     }
   },
+  mounted() {
+    this.kg = false
+    this.savePic.lecturerUserNo = this.userInfo.userNo
+    this.savePic.orgNo = this.userInfo.orgNo
+    this.getAc()
+  },
+  created() {
+    // this.ty = this.type;
+  },
   methods: {
     // 选择上传图片
-    upimg () {
+    upimg() {
       if (this.list && this.list.length) {
         this.$msgBox({
           content: '只能上传一个,请先删除其他课件',
@@ -81,64 +90,64 @@ export default {
         })
         return
       }
-      let myfile = document.getElementById('file');
-      myfile.click();
+      const myfile = document.getElementById('file')
+      myfile.click()
     },
     // 加入上传列表
-    addUpload (e) {
-      let files = e.target.files;
+    addUpload(e) {
+      const files = e.target.files
       for (var i = 0; i < files.length; i++) {
-        let file = files[i];
-        file.tip = '等待上传';
-        file.jd = 0;
-        this.uploadList.push(file);
+        const file = files[i]
+        file.tip = '等待上传'
+        file.jd = 0
+        this.uploadList.push(file)
       }
       if (this.upbtn) {
-        this.upload();
+        this.upload()
       }
     },
     // 上传图片
-    upload () {
-      this.upbtn = false;
-      let pics = this.uploadList;
-      let itemfile = null;
+    upload() {
+      this.upbtn = false
+      const pics = this.uploadList
+      let itemfile = null
       for (var i = 0; i < pics.length; i++) {
         if (pics[i].jd === 0 && itemfile === null) {
-          itemfile = pics[i];
+          itemfile = pics[i]
         }
       }
       if (itemfile) {
-        let file = itemfile;
-        let that = this;
+        const file = itemfile
+        const that = this
         /* eslint-disable no-undef */
-        let param = new FormData();
-        param.append('docFile', file, file.name);
-        uploadDoc(param, function (int) {
-          itemfile.jd = int;
-          itemfile.tip = '上传中';
-          that.uploadList = Object.assign([], that.uploadList);
+        const param = new FormData()
+        param.append('docFile', file, file.name)
+        uploadDoc(param, function(int) {
+          itemfile.jd = int
+          itemfile.tip = '上传中'
+          that.uploadList = Object.assign([], that.uploadList)
         }).then(res => {
           if (res.code === 200) {
             itemfile.jd = 100
-            itemfile.tip = '上传成功';
-            that.upload();
-            that.savaPic(res.data, itemfile.name);
+            itemfile.tip = '上传成功'
+            that.upload()
+            that.savaPic(res.data, itemfile.name)
           } else {
-            itemfile.tip = res.msg;
-            that.upload();
+            itemfile.tip = res.msg
+            that.upload()
           }
-          that.uploadList = pics;
+          that.uploadList = pics
         }).catch(msg => {
-          itemfile.tip = '上传失败';
-          that.upload();
+          itemfile.tip = '上传失败'
+          that.upload()
         })
       } else {
-        this.upbtn = true;
+        this.upbtn = true
       }
     },
     // 保存图片
-    savaPic (src, tit) {
-      let cobj = {
+    savaPic(src, tit) {
+      const cobj = {
         acName: tit,
         acUrl: src,
         courseCategory: 1,
@@ -151,9 +160,9 @@ export default {
       }
       accessoryChapterSave(cobj).then(res => {
         if (this.list === null) {
-          this.list = [];
+          this.list = []
         }
-        this.list.push(res.data);
+        this.list.push(res.data)
       }).catch(() => {
         this.$msgBox({
           content: '上传失败!',
@@ -162,50 +171,50 @@ export default {
       })
     },
     // 删除i
-    del (id) {
-        this.$msgBox({
-          content: '你确定需要删除该课件吗?'
-        }).then(res => {
-          accessoryRemove({id}).then(res => {
-            this.getAc();
-          }).catch(() => {
-            this.$msgBox({
-              content: '删除失败',
-              isShowCancelBtn: false
-            })
-          })
+    del(id) {
+      this.$msgBox({
+        content: '你确定需要删除该课件吗?'
+      }).then(res => {
+        accessoryRemove({ id }).then(res => {
+          this.getAc()
         }).catch(() => {
-          console.log('取消删除')
+          this.$msgBox({
+            content: '删除失败',
+            isShowCancelBtn: false
+          })
         })
+      }).catch(() => {
+        console.log('取消删除')
+      })
     },
     // 提交保存选中图片
-    submit () {
-      this.close();
+    submit() {
+      this.close()
     },
-    close () {
+    close() {
       if (this.upbtn) {
-        this.$emit('hidefun', event);
+        this.$emit('hidefun', event)
       } else {
         this.$msgBox({
           content: '文件正在上传,确定关闭上传窗口吗?'
         }).then(res => {
-          this.$emit('hidefun', event);
+          this.$emit('hidefun', event)
         })
       }
     },
-    btnClick (event) {
-      this.$emit('btnClick', event);
+    btnClick(event) {
+      this.$emit('btnClick', event)
     },
-    changeTab (int) {
-      this.$emit('change', int);
+    changeTab(int) {
+      this.$emit('change', int)
     },
-      // 获取该例题已选中的图片
-    getAc () {
-      this.load = true;
-      accessoryList({refNo: this.data.refNo}).then(res => {
-        this.load = false;
+    // 获取该例题已选中的图片
+    getAc() {
+      this.load = true
+      accessoryList({ refNo: this.data.refNo }).then(res => {
+        this.load = false
         if (res.code === 200) {
-          this.list = res.data.list;
+          this.list = res.data.list
         } else {
           if (result.code >= 300 && result.code < 400) {
             this.$msgBox({
@@ -224,22 +233,13 @@ export default {
           }
         }
       }).catch(() => {
-        this.load = false;
+        this.load = false
         this.$msgBox({
           content: '获取附件失败',
           isShowCancelBtn: false
         })
       })
     }
-  },
-  mounted () {
-    this.kg = false;
-    this.savePic.lecturerUserNo = this.userInfo.userNo;
-    this.savePic.orgNo = this.userInfo.orgNo;
-    this.getAc();
-  },
-  created () {
-    // this.ty = this.type;
   }
 }
 </script>

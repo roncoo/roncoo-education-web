@@ -1,36 +1,35 @@
-import axios from 'axios'
-import {serviceInfo, getNav, aboutList} from '~/api/main'
-export default function ({route, req, res, store, next}) {
-  let now = new Date();
+import { serviceInfo, getNav } from '~/api/main'
+export default function({ route, req, res, store, next }) {
+  const now = new Date()
   // console.log(route)
   if (!store.state.webInfo || now.getTime() - store.state.webInfo.time > 300000) {
     // 获取站点信息
-    serviceInfo({moduleId: 3}).then(res => {
-        // console.log(res.data)
-        console.log("res.data==============")
-      if (res.data.code  == 200) {
-        res.data.data.time = now.getTime();
-        store.commit('SET_ITEMS', {key: 'webInfo', value: res.data.data});
-      } else{
+    serviceInfo({ moduleId: 3 }).then(res => {
+      // console.log(res.data)
+      console.log('res.data==============')
+      if (res.data.code === 200) {
+        res.data.data.time = now.getTime()
+        store.commit('SET_ITEMS', { key: 'webInfo', value: res.data.data })
+      } else {
         console.log(res.data)
       }
     }).catch(() => {
-      console.log("获取站点信息失败")
+      console.log('获取站点信息失败')
     })
   }
   if (!store.state.navList || now.getTime() - store.state.navList.time > 500000) {
     // 获取导航信息
     getNav().then(res => {
-        // console.log(res.data)
-        // console.log('nav==============')
-      if (res.data.code  == 200) {
-        res.data.data.time = now.getTime();
-        store.commit('SET_ITEMS', {key: 'navList', value: res.data.data});
-      } else{
+      // console.log(res.data)
+      // console.log('nav==============')
+      if (res.data.code === 200) {
+        res.data.data.time = now.getTime()
+        store.commit('SET_ITEMS', { key: 'navList', value: res.data.data })
+      } else {
         console.log(res.data)
       }
     }).catch(() => {
-      console.log("获取导航信息失败")
+      console.log('获取导航信息失败')
     })
   }
   // if (!store.state.aboutList || now.getTime() - store.state.aboutList.time > 500000) {

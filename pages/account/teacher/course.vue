@@ -1,8 +1,8 @@
 <template>
   <div>
-    <y-header></y-header>
+    <y-header />
     <div class="person_body container account_cont clearfix">
-      <y-side :type="'kcgl'"></y-side>
+      <y-side :type="'kcgl'" />
       <div class="main_box">
         <ul class="tabs clearfix">
           <a class="tab" :class="{on: tab == 3}" @click="clicktab(3)">全部课程</a>
@@ -12,10 +12,10 @@
           <nuxt-link :to="{name:'account-teacher-add'}" class="fr solid_btn">新增课程</nuxt-link>
         </ul>
         <div class="main_cont">
-          <div class="notdata" v-if="notdata">
+          <div v-if="notdata" class="notdata">
             <i class="iconfont">&#xe6be;</i>暂时没有数据
           </div>
-          <table class="course_table table" v-else>
+          <table v-else class="course_table table">
             <thead>
               <tr>
                 <th>课程名称</th>
@@ -29,13 +29,13 @@
             <tbody>
               <tr v-for="item in courseList" :key="item.courseNo">
                 <td class="name"><img class="icon" :src="item.courseLogo" alt="">
-                  <p class="fr txt">{{item.courseName}}</p></td>
-                <td class="c_orange" v-if="item.isFree">免费</td>
-                <td class="c_orange" v-else>付费</td>
-                <td class="c_red">¥{{item.courseOriginal}}</td>
-                <td class="c_green" v-if="item.auditStatus === 1">审核通过</td>
-                <td class="c_red" v-else-if="item.auditStatus === 2">审核不通过</td>
-                <td class="c_blue" v-else>待审核</td>
+                  <p class="fr txt">{{ item.courseName }}</p></td>
+                <td v-if="item.isFree" class="c_orange">免费</td>
+                <td v-else class="c_orange">付费</td>
+                <td class="c_red">¥{{ item.courseOriginal }}</td>
+                <td v-if="item.auditStatus === 1" class="c_green">审核通过</td>
+                <td v-else-if="item.auditStatus === 2" class="c_red">审核不通过</td>
+                <td v-else class="c_blue">待审核</td>
                 <td v-if="item.isPutaway"><button class="gray_btn" @click="putaWay(item)">课程下架</button></td>
                 <td v-else><button class="orange_btn" @click="putaWay(item)">课程上架</button></td>
                 <td class="operate">
@@ -48,17 +48,17 @@
                   </span>
                   <br>
                   <span>
-                    <a v-if="item.isDelete" @click="deleteItem(item.id)" href="javascript:" class="text_link">删除</a>
+                    <a v-if="item.isDelete" href="javascript:" class="text_link" @click="deleteItem(item.id)">删除</a>
                   </span>
                 </td>
               </tr>
             </tbody>
           </table>
-          <d-page v-if="pageObj.totalPage > 1" :page="pageObj" @btnClick="getPage"></d-page>
+          <d-page v-if="pageObj.totalPage > 1" :page="pageObj" @btnClick="getPage" />
         </div>
       </div>
     </div>
-    <y-footer></y-footer>
+    <y-footer />
   </div>
 </template>
 <script>
@@ -66,10 +66,15 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DPage from '~/components/Page'
-import {lecturerCourseList, coursePutaway, deleteCourse} from '~/api/account/course.js'
-import {getUserInfo} from '~/api/user.js'
+import { lecturerCourseList, coursePutaway, deleteCourse } from '~/api/account/course.js'
 export default {
-  data () {
+  components: {
+    YHeader,
+    YFooter,
+    YSide,
+    DPage
+  },
+  data() {
     return {
       side: 'kcgl',
       tab: 3,
@@ -92,18 +97,25 @@ export default {
     }
   },
   computed: {
-    webInfo () {
+    webInfo() {
       return this.$store.state.webInfo
     }
   },
+  mounted() {
+    // console.log('课程列表')
+    this.pda.lecturerUserNo = this.$store.state.userInfo.userNo
+    this.getCourseList()
+  },
+  created() {
+  },
   methods: {
     // 删除课程
-    deleteItem (id) {
+    deleteItem(id) {
       this.$msgBox({
         content: '确认删除该课程？'
       }).then(() => {
-        deleteCourse({id}).then(res => {
-          let result = res.data
+        deleteCourse({ id }).then(res => {
+          const result = res.data
           if (result.code === 200) {
             this.getCourseList()
           } else {
@@ -129,15 +141,15 @@ export default {
         // console.log('取消')
       })
     },
-    getPage: function (int) {
-      this.pageCurrent = int;
-      this.getCourseList();
+    getPage: function(int) {
+      this.pageCurrent = int
+      this.getCourseList()
     },
     // 课程上下架
-    putaWay (item) {
+    putaWay(item) {
       // console.log(item)
-      let isp = item.isPutaway ? 0 : 1;
-      let txt = '确定下架该课程';
+      const isp = item.isPutaway ? 0 : 1
+      let txt = '确定下架该课程'
       if (isp) {
         txt = '确定上架该课程?'
       }
@@ -148,9 +160,9 @@ export default {
           id: item.id,
           isPutaway: isp
         }).then(res => {
-          let result = res.data
+          const result = res.data
           if (result.code === 200) {
-            item.isPutaway = isp;
+            item.isPutaway = isp
           } else {
             if (result.code >= 300 && result.code < 400) {
               this.$msgBox({
@@ -169,29 +181,29 @@ export default {
             }
           }
         }).catch(msg => {
-        this.$msgBox({
-          content: '操作失败',
-          isShowCancelBtn: false
+          this.$msgBox({
+            content: '操作失败',
+            isShowCancelBtn: false
+          })
         })
       })
-      })
     },
-    clicktab: function (int) {
-      this.tab = int;
-      this.pageCurrent = 1;
-      this.getCourseList();
+    clicktab: function(int) {
+      this.tab = int
+      this.pageCurrent = 1
+      this.getCourseList()
     },
-    getCourseList () {
-      let astat = this.tab === 3 ? '' : this.tab;
-      this.pda.auditStatus = astat;
-      this.pda.pageCurrent = this.pageCurrent;
+    getCourseList() {
+      const astat = this.tab === 3 ? '' : this.tab
+      this.pda.auditStatus = astat
+      this.pda.pageCurrent = this.pageCurrent
       lecturerCourseList(this.pda).then(res => {
-        let result = res.data
+        const result = res.data
         if (result.code === 200 && result.data.list.length > 0) {
-          this.courseList = result.data.list;
-          this.notdata = false;
-          this.pageObj = result.data;
-        } else if (result.code > 300 && result.code <400) {
+          this.courseList = result.data.list
+          this.notdata = false
+          this.pageObj = result.data
+        } else if (result.code > 300 && result.code < 400) {
           this.$msgBox({
             content: '登录超时，请重新登录',
             isShowCancelBtn: false
@@ -201,8 +213,8 @@ export default {
             this.$store.dispatch('REDIRECT_LOGIN', result.code)
           })
         } else {
-          this.notdata = true;
-          this.pageObj.totalPage = 0;
+          this.notdata = true
+          this.pageObj.totalPage = 0
         }
       }).catch(msg => {
         this.$msgBox({
@@ -211,19 +223,6 @@ export default {
         })
       })
     }
-  },
-  mounted () {
-    // console.log('课程列表')
-    this.pda.lecturerUserNo = this.$store.state.userInfo.userNo;
-    this.getCourseList();
-  },
-  created () {
-  },
-  components: {
-    YHeader,
-    YFooter,
-    YSide,
-    DPage
   }
 }
 </script>

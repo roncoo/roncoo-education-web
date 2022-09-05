@@ -1,81 +1,81 @@
 <template>
   <div class="">
-    <y-header></y-header>
+    <y-header />
     <div class="container account_cont clearfix">
-      <y-side :type="'jsxx'"></y-side>
+      <y-side :type="'jsxx'" />
       <div class="main_box">
         <div class="tabs">
           <span class="tab on">讲师信息</span>
         </div>
-        <div class="main_cont form" v-show="edit">
-           <form action="" @submit="userUpdate">
-              <div class="form_group">
-                <div class="label">讲师头像:</div>
-                <div class="form_ctl upload_ctl">
-                  <input type="hidden" v-model="teacherInfo.headImgUrl">
-                  <div class="preview">
-                    <img :src="teacherInfo.headImgUrl" alt="" v-if="teacherInfo.headImgUrl">
-                    <i class="iconfont" v-else>&#xe6b2;</i>
-                  </div>
-                  <d-upload @rtnUrl="setUrl"></d-upload>
-                  <p class="tip">* 图片尺寸为800x800，图片大小&lt;500KB，建议使用真人照片，便于品牌宣传效果</p>
+        <div v-show="edit" class="main_cont form">
+          <form action="" @submit="userUpdate">
+            <div class="form_group">
+              <div class="label">讲师头像:</div>
+              <div class="form_ctl upload_ctl">
+                <input v-model="teacherInfo.headImgUrl" type="hidden">
+                <div class="preview">
+                  <img v-if="teacherInfo.headImgUrl" :src="teacherInfo.headImgUrl" alt="">
+                  <i v-else class="iconfont">&#xe6b2;</i>
                 </div>
+                <d-upload @rtnUrl="setUrl" />
+                <p class="tip">* 图片尺寸为800x800，图片大小&lt;500KB，建议使用真人照片，便于品牌宣传效果</p>
               </div>
-              <div class="form_group">
-                <div class="label">讲师昵称:</div>
-                <div class="form_ctl">
-                    <input type="text" v-model="teacherInfo.lecturerName" class="form_input" placeholder="请输入昵称">
-                </div>
+            </div>
+            <div class="form_group">
+              <div class="label">讲师昵称:</div>
+              <div class="form_ctl">
+                <input v-model="teacherInfo.lecturerName" type="text" class="form_input" placeholder="请输入昵称">
               </div>
-              <div class="form_group">
-                <div class="label">个人简介</div>
-                  <div class="form_ctl">
-                    <div id="lecturerInfo"></div>
-                  </div>
+            </div>
+            <div class="form_group">
+              <div class="label">个人简介</div>
+              <div class="form_ctl">
+                <div id="lecturerInfo" />
               </div>
-              <div class="form_group">
-               <div class="label">&nbsp;</div>
-                <div class="form_ctl">
-                   <button class="submit_btn">确认</button>
-                </div>
-             </div>
-           </form>
+            </div>
+            <div class="form_group">
+              <div class="label">&nbsp;</div>
+              <div class="form_ctl">
+                <button class="submit_btn">确认</button>
+              </div>
+            </div>
+          </form>
         </div>
-        <div class="main_cont form" v-show="!edit">
+        <div v-show="!edit" class="main_cont form">
           <div class="form_group">
             <div class="label">讲师头像:</div>
             <div class="form_ctl upload_ctl">
-              <input type="hidden" v-model="teacherInfo.headImgUrl">
-                <div class="preview">
-                  <img :src="teacherInfo.headImgUrl" alt="" v-if="teacherInfo.headImgUrl">
-                  <i class="iconfont" v-else>&#xe6b2;</i>
-                </div>
+              <input v-model="teacherInfo.headImgUrl" type="hidden">
+              <div class="preview">
+                <img v-if="teacherInfo.headImgUrl" :src="teacherInfo.headImgUrl" alt="">
+                <i v-else class="iconfont">&#xe6b2;</i>
+              </div>
             </div>
           </div>
           <div class="form_group">
             <div class="label">讲师昵称:</div>
             <div class="form_ctl">
-              <div class="text">{{teacherInfo.lecturerName}}</div>
+              <div class="text">{{ teacherInfo.lecturerName }}</div>
             </div>
           </div>
           <div class="form_group">
             <div class="label">个人简介:</div>
             <div class="form_ctl">
-              <div class="text" v-html="teacherInfo.introduce"></div>
+              <div class="text" v-html="teacherInfo.introduce" />
             </div>
           </div>
           <div class="form_group">
             <div class="label">&nbsp;</div>
             <div class="form_ctl">
-              <button href="javascript:" @click="edit = true" class="submit_btn">修改</button>
+              <button href="javascript:" class="submit_btn" @click="edit = true">修改</button>
             </div>
           </div>
-          <div class="c_orange" style="margin-left: 120px;" v-if="teacherInfo.auditStatus === 0">*修改的信息需要通过审核才能生效，若已经修改请耐心等待！</div>
-          <div class="c_orange" style="margin-left: 120px;" v-if="teacherInfo.auditStatus === 2">*审核失败，失败原因：{{teacherInfo.auditOpinion}}</div>
+          <div v-if="teacherInfo.auditStatus === 0" class="c_orange" style="margin-left: 120px;">*修改的信息需要通过审核才能生效，若已经修改请耐心等待！</div>
+          <div v-if="teacherInfo.auditStatus === 2" class="c_orange" style="margin-left: 120px;">*审核失败，失败原因：{{ teacherInfo.auditOpinion }}</div>
         </div>
       </div>
     </div>
-    <y-footer></y-footer>
+    <y-footer />
   </div>
 </template>
 <script>
@@ -83,31 +83,43 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DUpload from '~/components/account/Upload'
-import {getLecturerInfoAudit, updataLecturerInfoAudit} from '~/api/account/user.js'
-import {myHttp} from '~/utils/myhttp.js'
+import { getLecturerInfoAudit, updataLecturerInfoAudit } from '~/api/account/user.js'
+import { myHttp } from '~/utils/myhttp.js'
 export default {
-  data () {
+  components: {
+    YHeader,
+    YFooter,
+    YSide,
+    DUpload
+  },
+  data() {
     return {
       edit: false,
       teacherInfo: {}
     }
   },
+  mounted() {
+    const E = require('wangeditor')
+    this.editor2 = new E('#lecturerInfo')
+    this.editor2.create()
+    this.getByTeacher()
+  },
   methods: {
-    getByTeacher () {
+    getByTeacher() {
       myHttp.call(this, {
         method: getLecturerInfoAudit,
-        params: {lecturerUserNo: this.$store.state.userInfo.userNo}
+        params: { lecturerUserNo: this.$store.state.userInfo.userNo }
       }).then(res => {
-        this.teacherInfo = res.data;
+        this.teacherInfo = res.data
         this.editor2.txt.html(this.teacherInfo.introduce)
-        this.edit = false;
+        this.edit = false
       })
     },
-    userUpdate (e) {
-      e.preventDefault();
-      let ht = this.editor2.txt.html()
+    userUpdate(e) {
+      e.preventDefault()
+      const ht = this.editor2.txt.html()
       this.teacherInfo.introduce = ht
-      this.teacherInfo.lecturerUserNo = this.$store.state.userInfo.userNo;
+      this.teacherInfo.lecturerUserNo = this.$store.state.userInfo.userNo
       myHttp.call(this, {
         method: updataLecturerInfoAudit,
         params: this.teacherInfo
@@ -116,27 +128,15 @@ export default {
           content: '修改成功',
           isShowCancelBtn: false
         }).then(() => {
-          this.getByTeacher();
+          this.getByTeacher()
         }).catch(() => {
-          this.getByTeacher();
+          this.getByTeacher()
         })
       })
     },
-    setUrl (res) {
-      this.teacherInfo.headImgUrl = res.url;
+    setUrl(res) {
+      this.teacherInfo.headImgUrl = res.url
     }
-  },
-  mounted () {
-    let E = require('wangeditor')
-    this.editor2 = new E('#lecturerInfo')
-    this.editor2.create();
-    this.getByTeacher()
-  },
-  components: {
-    YHeader,
-    YFooter,
-    YSide,
-    DUpload
   }
 }
 </script>
