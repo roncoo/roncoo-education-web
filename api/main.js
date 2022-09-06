@@ -9,7 +9,7 @@ export const advList = (params = {}) => {
 }
 // 关于我们列表
 export const aboutList = (params = {}) => {
-  return http().post('/system/api/website/nav/list', params)
+  return http().get('/system/api/website/nav/list', params)
 }
 // 关于我们信息
 export const aboutInfo = (params = {}) => {

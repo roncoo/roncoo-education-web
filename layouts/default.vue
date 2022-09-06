@@ -32,8 +32,6 @@ export default {
     s.parentNode.insertBefore(sc, s)
     var hm = document.createElement('script')
     hm.src = 'https://hm.baidu.com/hm.js?d5b2309e95c3b686b3c8ff6f1abbaef1'
-    var scr = document.getElementsByTagName('script')[0]
-    console.log(scr, scr.parentNode)
     document.body.insertBefore(hm, s)
     document.addEventListener('click', () => {
       this.$store.commit('HIDE_EWM')
