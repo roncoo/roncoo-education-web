@@ -80,7 +80,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.websiteInfo)
     bq()
     this.search = this.searchText
     this.isNow = this.$route.path

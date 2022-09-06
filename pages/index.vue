@@ -1,52 +1,28 @@
 <template>
   <div class="index_page">
     <y-header :active="'index'" />
-    <y-banner :data="advData" :height="366" :class-list="classList" />
+    <y-banner :data="advData" :height="366" :category-list="classList" />
     <div v-for="(item, index) in zoneData" :key="index" class="i_content">
       <div class="i_zone">
         <div class="zone_header">
           <div class="big_text">
             <span class="col_block" />
-            {{ item.name }}
+            {{ item.zoneName }}
             <span class="small_text">{{ item.zoneDesc }}</span>
             <nuxt-link :to="{ name: 'list' }" class="fr small_text link_text">更多课程 ></nuxt-link>
           </div>
         </div>
         <div class="zone_body">
           <ul class="clearfix course_list">
-            <li v-for="(that, int) in item.zoneListList" :key="int">
+            <li v-for="(that, int) in item.courseList" :key="int">
               <nuxt-link target="_blank" :to="{ name: 'view-id', params: { id: that.id } }">
                 <div class="img_box">
                   <img :src="that.courseLogo" alt="">
                 </div>
                 <p>{{ that.courseName }}</p>
-                <span v-if="that.isFree" class="price_box">免费</span>
-                <span v-else class="price_box">￥{{ that.courseOriginal.toFixed(2) }}
-                  <span v-if="openVip && that.courseDiscount != that.courseOriginal" class="font_12 padl_10">SVIP:{{ that.courseDiscount ? "￥" + that.courseDiscount.toFixed(2) : "免费" }}</span></span>
+                <span v-if="that.coursePrice" class="price_box">免费</span>
+                <span v-else class="price_box">￥{{ that.coursePrice }}</span>
               </nuxt-link>
-            </li>
-            <li v-for="thatLive in item.courseList" :key="thatLive.id">
-              <nuxt-link target="_blank" :to="{ name: 'live-id', params: { id: thatLive.id } }">
-                <div class="img_box">
-                  <img :src="thatLive.courseLogo" alt="">
-                  <div class="live_time">
-                    <p v-if="thatLive.liveTime" style="font-size: 12px"> 开播时间：{{ thatLive.liveTime }} </p>
-                    <p v-if="thatLive.endTime" style="font-size: 12px"> 有效期至：{{ thatLive.endTime }} </p>
-                  </div>
-                </div>
-                <p>{{ thatLive.courseName }}</p>
-                <span v-if="thatLive.isFree" class="price_box">免费</span>
-                <span v-else class="price_box">￥{{ thatLive.courseOriginal.toFixed(2) }}
-                  <span v-if="openVip && thatLive.courseDiscount != thatLive.courseOriginal" class="font_12 padl_10">
-                    SVIP:{{ thatLive.courseDiscount ? "￥" + thatLive.courseDiscount.toFixed(2) : "免费" }}
-                  </span>
-                </span>
-              </nuxt-link>
-            </li>
-          </ul>
-          <ul class="test_list clearfix">
-            <li v-for="(resource, num) in item.zoneListLibList" :key="resource.id" :class="{ test_option: true, right_0: num % 2 == 1 }">
-              <nuxt-link target="_blank" :to="{ name: 'libraryDetail', params: { id: resource.id } }"><i class="iconfont">&#xe6be;</i>{{ resource.courseName }}</nuxt-link>
             </li>
           </ul>
         </div>
@@ -54,18 +30,11 @@
     </div>
     <y-footer />
     <right-tap />
-    <div v-if="isvideoAlert" class="videoAlert">
-      <div class="videoAlertbox">
-        <a href="https://edu.roncoo.net/video" target="_blank">
-          <img src="../assets/image/videoAlert.png" class="videoAlertImg" alt="视频点播平台"> </a>
-        <img src="../assets/image/videoAlertClone.png" class="videoAlertClone" alt="视频点播平台" @click="cloneVideoAlert()">
-      </div>
-    </div>
   </div>
 </template>
 <script>
 import YHeader from '~/components/common/Header'
-import YBanner from '~/components/Banner'
+import YBanner from '~/components/index/Banner'
 import YFooter from '~/components/common/Footer'
 import RightTap from '~/components/common/RightTap'
 import { carouselList, categoryList, zoneList } from '~/api/main.js'
@@ -88,15 +57,12 @@ export default {
       dataObj.zoneData = await zoneList({})
       return dataObj
     } catch (e) {
-      context.error({ message: 'User not found', statusCode: 404 })
+      context.error({ message: 'data no found', statusCode: 404 })
     }
   },
   data() {
     return {
-      isvideoAlert: false,
       websiteInfo: this.$store.state.websiteInfo,
-      clientNo: this.$store.state.clientData.no,
-      openVip: false,
       advData: this.$store.state.advData
     }
   },
@@ -118,17 +84,8 @@ export default {
     }
   },
   mounted() {
-    console.log(this.zoneData)
-    if (this.websiteInfo && this.websiteInfo.isEnableVip) {
-      this.openVip = true
-    }
-    // this.$store.dispatch('REDIRECT_LOGIN', 301)
   },
-  methods: {
-    cloneVideoAlert() {
-      this.isvideoAlert = false
-    }
-  }
+  methods: {}
 }
 </script>
 <style lang="scss" scoped>
@@ -139,7 +96,6 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 1000;
-  //background: rgba(0,0,0,.4);
 
   .videoAlertbox {
     position: absolute;
@@ -166,8 +122,7 @@ export default {
     }
   }
 }
-</style>
-<style lang="scss" rel="stylesheet/scss">
+
 .index_page {
   .clearfix:before,
   .clearfix:after {

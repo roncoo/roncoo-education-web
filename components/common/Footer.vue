@@ -27,10 +27,10 @@
         </div>
       </div>
     </div>
-    <div v-show="friendList && friendList.length" class="friend_link">
+    <div v-show="friendLinkList && friendLinkList.length" class="friend_link">
       <ul class="clearfix">
         <li class="link_one">友情链接:</li>
-        <li v-for="(item, index) in friendList" :key="index"><a :href="item.linkUrl" :target="item.linkTarget">{{ item.linkName }}</a></li>
+        <li v-for="(item, index) in friendLinkList" :key="index"><a :href="item.linkUrl" :target="item.linkTarget">{{ item.linkName }}</a></li>
       </ul>
     </div>
     <div v-show="service" class="copyright">
@@ -55,14 +55,13 @@ export default {
       clientData: this.$store.state.clientData || {},
       service: this.$store.state.websiteInfo || {},
       list: this.$store.state.aboutList ? this.$store.state.aboutList.list : [],
-      friendList: []
+      friendLinkList: []
     }
   },
   mounted() {
     linkList().then(res => {
-      console.log(res)
       if (res) {
-        this.friendList = res
+        this.friendLinkList = res
       } else {
         console.log('友情链接获取失败！')
       }

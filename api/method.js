@@ -7,7 +7,6 @@ const createHttp = (token) => {
   const head = {
     orgno: config.CLIENT.no
   }
-  // 需要全路径才能工作
   if (process.server) {
     if (token) {
       head.token = token
@@ -16,17 +15,15 @@ const createHttp = (token) => {
   } else {
     options.baseURL = '/gateway/'
   }
-
   if (process.client) {
     head.token = cookie.getInClient(config.CLIENT.tokenName)
   }
-
   options.headers = head
   const http = axios.create(options)
   http.interceptors.request.use(function(config) {
     return config
   }, function(error) {
-    console.warn(error)
+    console.error(error)
     if (process.client) {
       return Promise.reject(error)
     }
@@ -47,7 +44,6 @@ const createHttp = (token) => {
       return Promise.resolve(error.response.data)
     }
   })
-
   return http
 }
 

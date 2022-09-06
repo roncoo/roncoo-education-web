@@ -1,8 +1,8 @@
 <!-- 轮播图上的分类 -->
 <template>
-  <div v-if="classList.length" class="class_block" @mouseleave="hideWidth">
-    <ul :class="{left_block: true, show_scroll: classList.length > 10}">
-      <li v-for="(item, index) in classList" :key="index" :class="{active: item.id == categoryno1}" :style="classList.length >= 5 && classList.length <= 10 &&'line-height:' + (height/classList.length) + 'px;'" @mouseenter="changeWidth(item)">
+  <div v-if="list.length" class="class_block" @mouseleave="hideWidth">
+    <ul :class="{left_block: true, show_scroll: list.length > 10}">
+      <li v-for="(item, index) in list" :key="index" :class="{active: item.id == categoryno1}" :style="list.length >= 5 && list.length <= 10 &&'line-height:' + (height/list.length) + 'px;'" @mouseenter="changeWidth(item)">
         <nuxt-link :to="{name: 'list', query: {categoryno1: item.id}}">{{ item.categoryName }}</nuxt-link>
         <span class="arrow" />
       </li>
@@ -16,32 +16,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="foot_courses fl clearfix">
-        <div class="courses_top">课程推荐</div>
-        <div class="foot_course fl" v-for="(item, index) in courseList" :key="index">
-          <div class="img_box inline_box">
-            <nuxt-link :to="{name: 'view-id', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 1">
-              <img class="course_img" :src="item.courseImg" alt="">
-            </nuxt-link>
-            <nuxt-link :to="{name: 'liveDetail', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 2">
-              <img class="course_img" :src="item.courseImg" alt="">
-            </nuxt-link>
-            <nuxt-link :to="{name: 'liveAndBunch', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 3">
-              <img class="course_img" :src="item.courseImg" alt="">
-            </nuxt-link>
-          </div>
-          <div class="course_info inline_box">
-            <nuxt-link :to="{name: 'courselDetail', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 1" class="course_name">{{item.courseName}}</nuxt-link>
-            <nuxt-link :to="{name: 'liveDetail', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 2" class="course_name">{{item.courseName}}</nuxt-link>
-            <nuxt-link :to="{name: 'liveAndBunch', params: {id: item.courseId}}" target="_blank" v-if="item.courseCategory === 3" class="course_name">{{item.courseName}}</nuxt-link>
-            <p class="course_price" v-if="item.isFree">免费</p>
-            <div class="course_price" v-else>
-              ￥{{item.orgPrice}}
-              <p v-if="websiteInfo && websiteInfo.isEnableVip && item.fabPrice != item.orgPrice" class="font_12 c_gold mgt3">SVIP:{{item.fabPrice ? '￥' + item.fabPrice : '免费'}}</p>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -54,7 +28,7 @@ export default {
         return 200
       }
     },
-    classList: {
+    list: {
       type: [Array, Object],
       default() {
         return []

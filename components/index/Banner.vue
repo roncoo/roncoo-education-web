@@ -8,22 +8,22 @@
     <ul class="page_dots">
       <span v-for="(item, index) in data" :key="index" class="dots" :class="{on:index === num}" @mouseenter="num = index" />
     </ul>
-    <y-class-block :height="height" :class-list="classList" />
+    <y-category :height="height" :list="categoryList" />
   </div>
 </template>
 <script>
-import YClassBlock from './ClassBlock'
-// import {mapState} from 'vuex'
+import YCategory from './Category'
+
 export default {
   components: {
-    YClassBlock
+    YCategory
   },
   props: {
     data: {
       type: [Object, Array],
       default: null
     },
-    classList: {
+    categoryList: {
       type: [Object, Array],
       default() {
         return []

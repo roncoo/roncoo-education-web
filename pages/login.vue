@@ -358,9 +358,7 @@ export default {
     if (this.websiteInfo) {
       this.service = this.websiteInfo
     }
-    this.$axios.get('http://gateway.doityun.com/ip/info').then(res => {
-      this.ipInfo = res.data
-    })
+ 
     // this.GET_TEMPORARYURL();
     this.obj.clientId = 1;
     if (this.$route.query.t === 'login') {
