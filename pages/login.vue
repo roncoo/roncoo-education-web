@@ -358,15 +358,11 @@ export default {
     if (this.websiteInfo) {
       this.service = this.websiteInfo
     }
- 
-    // this.GET_TEMPORARYURL();
     this.obj.clientId = 1;
     if (this.$route.query.t === 'login') {
       this.$store.commit('SIGN_OUT');
       this.userInfo = '';
       this.errTip1 = '未登录或登录超时,请重新登录';
-
-      // this.SIGN_OUT();
     } else if (this.$route.query.t) {
       window.location.href = this.clientData.mainUrl + '/index'
     }

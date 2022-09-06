@@ -24,7 +24,7 @@
 <script>
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
-import YHeaderList from '~/components/HeaderList'
+import YHeaderList from '~/components/list/HeaderList'
 import DPage from '~/components/Page'
 import RightTap from '~/components/common/RightTap'
 import { courseClass, courseList } from '~/api/course.js'
@@ -109,7 +109,7 @@ export default {
       dataObj.free = free
       return dataObj
     } catch (e) {
-      context.error({ message: 'User not found', statusCode: 404 })
+      context.error({ message: 'Data not found', statusCode: 404 })
     }
   },
   data() {
@@ -144,9 +144,6 @@ export default {
     }
   },
   mounted() {
-    if (this.websiteInfo && this.websiteInfo.isEnableVip) {
-      this.openVip = true
-    }
     courseChange(this)
     if (this.$route.query.free) {
       this.obj.isFree = 1
