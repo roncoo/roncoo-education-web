@@ -24,7 +24,7 @@
     <div class="h_nav">
       <div class="h_logo">
         <a :href="mainUrl">
-          <img v-if="websiteInfo" :src="websiteInfo.logoImg" alt="">
+          <img v-if="websiteInfo" :src="websiteInfo.websiteLogo" alt="">
         </a>
       </div>
       <ul v-show="!hideTop && navList" class="h_nav_ul clearfix">
@@ -75,11 +75,12 @@ export default {
       userInfo: '',
       name: '',
       isTeacher: false,
-      navList: this.$store.state.navList.list,
+      navList: this.$store.state.navList,
       isNow: ''
     }
   },
   mounted() {
+    console.log(this.websiteInfo)
     bq()
     this.search = this.searchText
     this.isNow = this.$route.path

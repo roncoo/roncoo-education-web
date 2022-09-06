@@ -43,48 +43,47 @@ export default {
   // },
   GET_NAV(store) { // 获取导航信息
     const now = new Date()
-    if (CACHED.has('navList')) {
-      const data = CACHED.get('navList')
-      const result = JSON.parse(data)
-      // console.log(' 缓存命中2')
-      // console.log(data)
-      if (now.getTime() - result.time < ttl - 10000) {
-        // 确保不超出缓存时间
-        store.state.navList = result
-        return Promise.resolve(data)
-      }
-    }
+    // if (CACHED.has('navList')) {
+    //   const data = CACHED.get('navList')
+    //   const result = JSON.parse(data)
+    //   // console.log(' 缓存命中2')
+    //   // console.log(data)
+    //   if (now.getTime() - result.time < ttl - 10000) {
+    //     // 确保不超出缓存时间
+    //     store.state.navList = result
+    //     return Promise.resolve(data)
+    //   }
+    // }
     return new Promise((resolve, reject) => {
       navList().then(res => {
-        if (res.code === 200) {
-          res.data.time = now.getTime()
-          store.state.navList = res.data
-          CACHED.set('navList', JSON.stringify(res.data), ttl)
+        console.log(res)
+        if (res) {
+          res.time = now.getTime()
+          store.state.navList = res
         }
-        resolve(res.data)
+        resolve(res)
       }).catch(error => {
         reject(error)
       })
     })
   },
-  GET_WEBSITE(store) { // 获取网站信息
-    const now = new Date()
-    if (CACHED.has('websiteInfo')) {
-      const data = CACHED.get('websiteInfo')
-      const result = JSON.parse(data)
-      if (now.getTime() - result.time < ttl - 10000) {
-        store.state.websiteInfo = result
-        return Promise.resolve(data)
-      }
-    }
+  GET_WEBSITE(store) { // 获取网站信息`
+    // const now = new Date()
+    // if (CACHED.has('websiteInfo')) {
+    //   const data = CACHED.get('websiteInfo')
+    //   const result = JSON.parse(data) || { time: 0 }
+    //   if (now.getTime() - result.time < ttl - 10000) {
+    //     store.state.websiteInfo = result
+    //     return Promise.resolve(data)
+    //   }
+    // }
     return new Promise((resolve, reject) => {
       websiteInfo().then(res => {
-        if (res.code === 200) {
-          res.data.time = now.getTime()
-          store.state.websiteInfo = res.data
-          CACHED.set('websiteInfo', JSON.stringify(res.data), ttl)
+        if (res) {
+          store.state.websiteInfo = res
+          CACHED.set('websiteInfo', JSON.stringify(res), ttl)
         }
-        resolve(res.data)
+        resolve(res)
       }).catch(error => {
         reject(error)
       })
@@ -94,8 +93,8 @@ export default {
     // console.log('获取用户信息')
     getUserInfo({ orgNo: store.state.clientData.no })
       .then(res => {
-        if (res.code === 200) {
-          store.commit('SET_USER', res.data)
+        if (res) {
+          store.commit('SET_USER', res)
           if (cb) {
             cb(store)
           }

@@ -33,15 +33,11 @@ const createHttp = (token) => {
   })
 
   http.interceptors.response.use(function(response) {
-    console.log(response)
-    if (response.code === 200) {
-      // console.log(response.data)
-      return Promise.resolve(response.data)
+    const res = response.data
+    if (res.code === 200) {
+      return Promise.resolve(res.data)
     } else {
-      console.warn(JSON.stringify(response.data))
-
-      console.error(response.data)
-      return Promise.resolve(response.data)
+      return Promise.resolve(res.data)
     }
   }, function(error) {
     if (process.client) {

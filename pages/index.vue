@@ -91,33 +91,11 @@ export default {
     try {
       const dataObj = {}
       // 轮播图
-      const { carouselData } = await carouselList()
+      dataObj.advData = await carouselList()
       // 分类
-      const categoryData = await categoryList()
+      dataObj.classList = await categoryList()
       // 分区
-      const zoneData = await zoneList({})
-      // // 活动标
-      // const zoneList = zoneData.data || []
-      // const courseNoList = []
-      // zoneList.forEach((item) => {
-      //   for (const that in item) {
-      //     if (
-      //       item[that] &&
-      //       typeof item[that] === 'object' &&
-      //       item[that].length &&
-      //       that !== 'zoneListLibList' &&
-      //       that !== 'zoneResourceInfoList'
-      //     ) {
-      //       item[that].forEach((course) => {
-      //         // console.log(course)
-      //         courseNoList.push(course.courseNo)
-      //       })
-      //     }
-      //   }
-      // })
-      dataObj.advData = carouselData.data || [] // 轮播图
-      dataObj.classList = categoryData.data || [] // 分类
-      dataObj.zoneData = zoneData.data || [] // 专区
+      dataObj.zoneData = await zoneList({})
       return dataObj
     } catch (e) {
       context.error({ message: 'User not found', statusCode: 404 })

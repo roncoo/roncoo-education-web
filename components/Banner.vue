@@ -20,7 +20,6 @@ export default {
   },
   props: {
     data: {
-      // 手机号
       type: [Object, Array],
       default: null
     },
