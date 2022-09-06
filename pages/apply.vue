@@ -5,7 +5,7 @@
         <div class="register_header">
           <div class="register_logo">
             <nuxt-link :to="{name: 'index'}">
-              <img v-if="webInfo && webInfo.logoImg" :src="webInfo.logoImg" alt="">
+              <img v-if="websiteInfo && websiteInfo.logoImg" :src="websiteInfo.logoImg" alt="">
             </nuxt-link>
           </div>
         </div>
@@ -18,7 +18,7 @@
           </div>
           <div v-if="tab === 1">
             <div class="step_info">
-              <div class="clearfix" v-html="webInfo.entryAgreement">这里是协议内容</div>
+              <div class="clearfix" v-html="websiteInfo.entryAgreement">这里是协议内容</div>
             </div>
             <footer class="info_footer">
               <input id="isRead" v-model="isRead" type="checkbox">
@@ -106,14 +106,14 @@
         </div>
       </div>
       <p class="foot_text">
-        <span v-html="webInfo.copyright" />
+        <span v-html="websiteInfo.copyright" />
       </p>
       <p class="foot_text">
         <a href="http://www.doityun.com/" target="_blank" class="lingke_link">IT云提供计算服务</a>
-        <span v-if="webInfo.icp">&nbsp;|&nbsp;</span>
-        <a href="http://www.miitbeian.gov.cn/" class="lingke_link" target="_blank">{{ webInfo.icp }}</a>
-        <span v-if="webInfo.prn">&nbsp;|&nbsp;</span>
-        <a v-if="webInfo.prn" :href="'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=' + webInfo.prnNo" target="_blank" class="lingke_link"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ webInfo.prn }}</a>
+        <span v-if="websiteInfo.icp">&nbsp;|&nbsp;</span>
+        <a href="http://www.miitbeian.gov.cn/" class="lingke_link" target="_blank">{{ websiteInfo.icp }}</a>
+        <span v-if="websiteInfo.prn">&nbsp;|&nbsp;</span>
+        <a v-if="websiteInfo.prn" :href="'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=' + websiteInfo.prnNo" target="_blank" class="lingke_link"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ websiteInfo.prn }}</a>
       </p>
     </div>
   </div>
@@ -123,6 +123,7 @@ import YButton from '~/components/common/CodeButton'
 import { teacherEnter } from '~/api/user.js'
 import { uploadPic } from '~/api/upload.js'
 import { myHttp } from '~/utils/myhttp.js'
+
 export default {
   components: {
     YButton
@@ -150,7 +151,7 @@ export default {
   data() {
     return {
       clientData: this.$store.state.clientData,
-      webInfo: this.$store.state.webInfo,
+      websiteInfo: this.$store.state.websiteInfo,
       userInfo: this.$store.state.userInfo,
       recruitType: 1,
       applyType: '',
@@ -198,12 +199,12 @@ export default {
         {
           hid: 'keywords',
           name: 'keywords',
-          content: this.$store.state.webInfo.websiteKeyword
+          content: this.$store.state.websiteInfo.websiteKeyword
         },
         {
           hid: 'description',
           name: 'description',
-          content: this.$store.state.webInfo.websiteDesc
+          content: this.$store.state.websiteInfo.websiteDesc
         }
       ]
     }
@@ -412,17 +413,20 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss">
-  hr {
-    margin-bottom: 30px;
-  }
-  .applymsg_page {
-    .register {
+hr {
+  margin-bottom: 30px;
+}
+
+.applymsg_page {
+  .register {
     background: rgb(247, 247, 247);
     padding-bottom: 30px;
+
     .register_body {
       width: 900px;
       margin: 0 auto 30px;
     }
+
     .foot_text, .text_p {
       text-align: center;
       font-size: 12px;
@@ -430,30 +434,37 @@ export default {
       padding: 10px 0;
     }
   }
+
   .register_header {
     height: 112px;
     // padding-top: 30px;
     position: relative;
+
     .register_logo {
       position: absolute;
       top: 30px;
+
       img {
         width: 186px;
         height: 52px;
       }
     }
+
     .text_p {
       font-size: 14px;
       text-align: right;
       height: 18px;
       line-height: 18px;
       margin-top: 48px;
+
       a {
         color: #0099FF;
+
         &:hover {
           text-decoration: none;
         }
       }
+
       span {
         display: inline-block;
         width: 1px;
@@ -465,11 +476,13 @@ export default {
       }
     }
   }
+
   .register_content {
     border-radius: 8px;
     background: #fff;
     padding-bottom: 30px;
     min-height: 600px;
+
     .register_title {
       border-radius: 8px 8px 0 0;
       height: 80px;
@@ -480,9 +493,11 @@ export default {
       color: #333;
     }
   }
+
   .steps {
     width: 840px;
     margin: 0 auto;
+
     .step {
       display: inline-block;
       line-height: 30px;
@@ -492,29 +507,34 @@ export default {
       margin: 30px 1px;
       background: rgba(242, 242, 242, 1);
       text-align: center;
+
       &.step_ok {
         background: rgba(0, 153, 255, 1);
         color: #fff;
       }
     }
   }
+
   .step_info {
     width: 798px;
     padding: 20px;
     border: 1px solid rgb(228, 228, 228);
     margin: 0 auto;
+
     .info_title {
       font-size: 16px;
       font-weight: 700;
       color: #333;
       text-align: center;
     }
+
     .text_p {
       font-size: 14px;
       text-align: left;
       color: #333;
     }
   }
+
   .info_footer {
     width: 798px;
     line-height: 30px;
@@ -523,6 +543,7 @@ export default {
     font-size: 14px;
     border: 1px solid rgb(228, 228, 228);
   }
+
   .next_btn {
     display: inline-block;
     width: 320px;
@@ -537,161 +558,188 @@ export default {
     margin-left: -160px;
     margin-top: 30px;
     border: none;
+
     &:hover {
       color: #fff;
       text-decoration: none;
     }
+
     &.b_dis {
       background: #ccc;
     }
   }
-  .form_group{
-      margin-bottom: 20px;
-      font-size: 14px;
-      .label{
-        text-align: right;
-        float: left;
-        display: block;
-        width: 110px;
-        line-height: 36px;
-        color: #333;
-      }
-      .form_ctl{
-        margin-left: 12px;
-        float: left;
-        width: 700px;
-        position: relative;
-        .photo_text {
-          width: 176px;
-          position: absolute;
-          top: 15px;
-          left: 116px;
-          font-size: 12px;
-          color: #999;
-        }
-        input {
-          width: 310px;
-          height: 46px;
-          padding-left: 10px;
-          border-radius: 6px;
-          font-size: 14px;
-          margin-top: -5px;
-          &.reset_yzm {
-            width: 200px;
-            padding-right: 110px;
-          }
-          &.check_item {
-            width: 14px;
-            height: 14px;
-            position: relative;
-            top: 3px;
-          }
-        }
-        .yzm_btn {
-          width: 100px;
-          height: 46px;
-          position: absolute;
-          left: 210px;
-          top: -5px;
-          line-height: 48px;
-          background: rgb(213, 20, 35);
-          border-radius: 0 6px 6px 0;
-          text-align: center;
-          color: #fff;
-          cursor: pointer;
-          border: none;
-          &:disabled {
-            background: #999;
-          }
-        }
-      }
-      .text{
-        color: #333;
-        line-height: 36px;
-      }
-      &:after{
-        content: '';
-        display: block;
-        clear: both;
-      }
+
+  .form_group {
+    margin-bottom: 20px;
+    font-size: 14px;
+
+    .label {
+      text-align: right;
+      float: left;
+      display: block;
+      width: 110px;
+      line-height: 36px;
+      color: #333;
     }
-    .no_phone {
-      width: 96px;
-      height: 96px;
-      background: rgb(242, 242, 242);
-      border-radius: 6px;
+
+    .form_ctl {
+      margin-left: 12px;
+      float: left;
+      width: 700px;
       position: relative;
-      text-align: center;
-      line-height: 80px;
-      font-weight: 700;
-      color: #999;
-      font-size: 20px;
-      span {
+
+      .photo_text {
+        width: 176px;
+        position: absolute;
+        top: 15px;
+        left: 116px;
         font-size: 12px;
+        color: #999;
+      }
+
+      input {
+        width: 310px;
+        height: 46px;
+        padding-left: 10px;
+        border-radius: 6px;
+        font-size: 14px;
+        margin-top: -5px;
+
+        &.reset_yzm {
+          width: 200px;
+          padding-right: 110px;
+        }
+
+        &.check_item {
+          width: 14px;
+          height: 14px;
+          position: relative;
+          top: 3px;
+        }
+      }
+
+      .yzm_btn {
+        width: 100px;
+        height: 46px;
         position: absolute;
+        left: 210px;
+        top: -5px;
+        line-height: 48px;
+        background: rgb(213, 20, 35);
+        border-radius: 0 6px 6px 0;
         text-align: center;
-        width: 96px;
-        top: 20px;
-        left: 0;
-        font-weight: 400;
-      }
-    }
-    .success_msg {
-      width: 380px;
-      margin: 0 auto;
-      position: relative;
-      i {
-       color: green;
-       font-size: 70px;
-      }
-      p {
-        position: absolute;
-        left: 90px;
-        &.success_one {
-          font-size: 20px;
-          color: #333;
-          top: 0
-        }
-        &.success_two {
-          color: #999;
-          font-size: 14px;
-          top: 44px;
-          padding: 0;
-          text-align: left;
+        color: #fff;
+        cursor: pointer;
+        border: none;
+
+        &:disabled {
+          background: #999;
         }
       }
     }
-    .err{
-      color: red;
-      padding-top: 5px;
+
+    .text {
+      color: #333;
+      line-height: 36px;
     }
-    .user_photo {
+
+    &:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+  }
+
+  .no_phone {
+    width: 96px;
+    height: 96px;
+    background: rgb(242, 242, 242);
+    border-radius: 6px;
+    position: relative;
+    text-align: center;
+    line-height: 80px;
+    font-weight: 700;
+    color: #999;
+    font-size: 20px;
+
+    span {
+      font-size: 12px;
+      position: absolute;
+      text-align: center;
       width: 96px;
-      height: 96px;
+      top: 20px;
+      left: 0;
+      font-weight: 400;
     }
-    .select_box {
-      height: 80px;
-      width: 146px;
-      margin: -5px 3px 0 0;
+  }
+
+  .success_msg {
+    width: 380px;
+    margin: 0 auto;
+    position: relative;
+
+    i {
+      color: green;
+      font-size: 70px;
     }
-    .text_box {
-      font-size: 14px;
-      color: #000;
-      padding: 10px;
-      border-radius: 6px;
-      resize: none;
-    }
-    .checks {
-      display: inline-block;
-      margin-left: 10px;
-      &:first-child {
-        margin-left: 0;
+
+    p {
+      position: absolute;
+      left: 90px;
+
+      &.success_one {
+        font-size: 20px;
+        color: #333;
+        top: 0
+      }
+
+      &.success_two {
+        color: #999;
+        font-size: 14px;
+        top: 44px;
+        padding: 0;
+        text-align: left;
       }
     }
-    .prn_icon {
-      width: 16px;
-      height: 16px;
-      position: relative;
+  }
+
+  .err {
+    color: red;
+    padding-top: 5px;
+  }
+
+  .user_photo {
+    width: 96px;
+    height: 96px;
+  }
+
+  .select_box {
+    height: 80px;
+    width: 146px;
+    margin: -5px 3px 0 0;
+  }
+
+  .text_box {
+    font-size: 14px;
+    color: #000;
+    padding: 10px;
+    border-radius: 6px;
+    resize: none;
+  }
+
+  .checks {
+    display: inline-block;
+    margin-left: 10px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+
+  .prn_icon {
+    width: 16px;
+    height: 16px;
+    position: relative;
       top: 3px;
     }
   }

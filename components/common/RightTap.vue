@@ -1,47 +1,47 @@
 <template>
   <div class="right_window">
-    <div v-if="webInfo && webInfo.weixinXcx" class="iconfont right_item show_xcx" @click.stop="hideEwm = false" @mouseout="hideEwm=true" @mouseenter="hideEwm = false">
+    <div v-if="websiteInfo && websiteInfo.weixinXcx" class="iconfont right_item show_xcx" @click.stop="hideEwm = false" @mouseout="hideEwm=true" @mouseenter="hideEwm = false">
       &#xe619;
       <!-- <div class="wx_xcx">
         <div class="xcx_title">微信小程序</div>
-        <img class="show_img" :src="webInfo.weixinXcx" alt="">
+        <img class="show_img" :src="websiteInfo.weixinXcx" alt="">
       </div> -->
-      <div v-if="webInfo && webInfo.weixinXcx && !hideEwm" class="xcx_box">
+      <div v-if="websiteInfo && websiteInfo.weixinXcx && !hideEwm" class="xcx_box">
         <div class="ewm_box">
-          <img class="ewm_img" :src="webInfo.weixinXcx" alt="">
+          <img class="ewm_img" :src="websiteInfo.weixinXcx" alt="">
           <p>关注小程序</p>
           <p>学习更便捷</p>
         </div>
       </div>
     </div>
-    <!-- <div class="iconfont right_item show_gzh" v-if="webInfo.weixin">
+    <!-- <div class="iconfont right_item show_gzh" v-if="websiteInfo.weixin">
       &#xe63e;
       <div class="wx_gzh">
         <div class="xcx_title">官方微信</div>
-        <img class="show_img" :src="webInfo.weixin" alt="">
+        <img class="show_img" :src="websiteInfo.weixin" alt="">
       </div>
     </div> -->
-    <div v-if="webInfo && webInfo.isShowService" class="iconfont right_item show_kefu" @mouseenter="showKefu" @mouseleave="hideKefu">
+    <div v-if="websiteInfo && websiteInfo.isShowService" class="iconfont right_item show_kefu" @mouseenter="showKefu" @mouseleave="hideKefu">
       &#xe635;
       <div v-if="isKefu" :class="{kefu: true}">
-        <a v-if="webInfo.service1" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service1 + '&site=qq&menu=yes'" target="_blank">
-          客服：{{ webInfo.service1 }}
+        <a v-if="websiteInfo.service1" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + websiteInfo.service1 + '&site=qq&menu=yes'" target="_blank">
+          客服：{{ websiteInfo.service1 }}
           <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
         </a>
-        <a v-if="webInfo.service2" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service2 + '&site=qq&menu=yes'" target="_blank">
-          客服：{{ webInfo.service2 }}
+        <a v-if="websiteInfo.service2" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + websiteInfo.service2 + '&site=qq&menu=yes'" target="_blank">
+          客服：{{ websiteInfo.service2 }}
           <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
         </a>
-        <a v-if="webInfo.service3" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service3 + '&site=qq&menu=yes'" target="_blank">
-          客服：{{ webInfo.service3 }}
+        <a v-if="websiteInfo.service3" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + websiteInfo.service3 + '&site=qq&menu=yes'" target="_blank">
+          客服：{{ websiteInfo.service3 }}
           <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
         </a>
-        <a v-if="webInfo.service4" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service4 + '&site=qq&menu=yes'" target="_blank">
-          客服：{{ webInfo.service4 }}
+        <a v-if="websiteInfo.service4" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + websiteInfo.service4 + '&site=qq&menu=yes'" target="_blank">
+          客服：{{ websiteInfo.service4 }}
           <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
         </a>
-        <a v-if="webInfo.service5" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + webInfo.service5 + '&site=qq&menu=yes'" target="_blank">
-          客服：{{ webInfo.service5 }}
+        <a v-if="websiteInfo.service5" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + websiteInfo.service5 + '&site=qq&menu=yes'" target="_blank">
+          客服：{{ websiteInfo.service5 }}
           <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
         </a>
       </div>
@@ -53,7 +53,7 @@
 export default {
   data() {
     return {
-      webInfo: '',
+      websiteInfo: '',
       isKefu: false,
       hideEwm: true
     }
@@ -69,7 +69,7 @@ export default {
     }
   },
   mounted() {
-    this.webInfo = this.$store.state.webInfo
+    this.websiteInfo = this.$store.state.websiteInfo
     if (this.$route.path !== '/' && this.$route.path !== '/index') {
       this.hideEwm = true
     }
@@ -92,119 +92,135 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss">
-  .right_window {
+.right_window {
+  width: 50px;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 999;
+  // transform: translateY(-50%);
+  // bottom: 20px;
+  .right_item {
+    margin: 1px 0;
     width: 50px;
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    z-index: 999;
-    // transform: translateY(-50%);
-    // bottom: 20px;
-    .right_item {
-      margin: 1px 0;
-      width: 50px;
-      height: 50px;
-      line-height: 50px;
-      text-align: center;
-      background: #ddd;
-      color: #fff;
-      font-size: 26px;
-      &:hover {
-        cursor: pointer;
-        background: #107bc5;
-      }
-    }
-    .xcx_box {
-      position: absolute;
-      z-index: 20;
-      left: -150px;
-      // top: 10px;
-      bottom: 100px;
-      border-radius: 6px;
-      width: 140px;
-      height: 190px;
-      background: rgba(57, 143, 242, 1);
-      padding: 4px;
-      .ewm_box {
-        width: 130px;
-        height: 180px;
-        padding: 6px;
-        background: rgba(16, 123, 197, 1);
-        position: relative;
-      }
-      .ewm_img {
-        width: 120px;
-        height: 120px;
-      }
-      p {
-        font-size: 14px;
-        color: #fff;
-        text-align: center;
-        height: 20px;
-        line-height: 20px;
-        transform: translateY(-6px);
-      }
-    }
-    .wx_xcx, .wx_gzh, .kefu {
-      position: absolute;
-      padding: 0 10px;
-      width: 140px;
-      left: -170px;
-      // top: 10px;
-      bottom: 50px;
-      display: none;
-      background: #fff;
-      .show_img {
-        width: 140px;
-        height: 140px;
-      }
-    }
-    .kefu {
-      color: #333;
-      display: block;
-      font-size: 14px;
-      width: 190px;
-      left: -180px;
-      background: none;
-      margin-right: 10px;
-      border-radius: 6px;
-      a {
-        background: #fff;
-        display: block;
-        margin-right: 10px;
-        font-size: 12px;
-        &:hover {
-          color: #107ec4;
-          text-decoration: none;
-        }
-      }
-      &.top50 {
-        top: 50px;
-      }
-      &.top100 {
-        top: 100px;
-      }
-    }
-  }
-  .show_xcx {
-    &:hover .wx_xcx {
-      display: block;
-    }
-  }
-  .show_gzh {
-    &:hover .wx_gzh {
-      display: block;
-    }
-  }
-  .qq_img {
-    position: relative;
-    top: 5px;
-  }
-  .xcx_title {
+    height: 50px;
+    line-height: 50px;
     text-align: center;
-    font-size: 12px;
-    color: #333;
-    height: 30px;
-    padding-bottom: 15px;
+    background: #ddd;
+    color: #fff;
+    font-size: 26px;
+
+    &:hover {
+      cursor: pointer;
+      background: #107bc5;
+    }
   }
+
+  .xcx_box {
+    position: absolute;
+    z-index: 20;
+    left: -150px;
+    // top: 10px;
+    bottom: 100px;
+    border-radius: 6px;
+    width: 140px;
+    height: 190px;
+    background: rgba(57, 143, 242, 1);
+    padding: 4px;
+
+    .ewm_box {
+      width: 130px;
+      height: 180px;
+      padding: 6px;
+      background: rgba(16, 123, 197, 1);
+      position: relative;
+    }
+
+    .ewm_img {
+      width: 120px;
+      height: 120px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #fff;
+      text-align: center;
+      height: 20px;
+      line-height: 20px;
+      transform: translateY(-6px);
+    }
+  }
+
+  .wx_xcx, .wx_gzh, .kefu {
+    position: absolute;
+    padding: 0 10px;
+    width: 140px;
+    left: -170px;
+    // top: 10px;
+    bottom: 50px;
+    display: none;
+    background: #fff;
+
+    .show_img {
+      width: 140px;
+      height: 140px;
+    }
+  }
+
+  .kefu {
+    color: #333;
+    display: block;
+    font-size: 14px;
+    width: 190px;
+    left: -180px;
+    background: none;
+    margin-right: 10px;
+    border-radius: 6px;
+
+    a {
+      background: #fff;
+      display: block;
+      margin-right: 10px;
+      font-size: 12px;
+
+      &:hover {
+        color: #107ec4;
+        text-decoration: none;
+      }
+    }
+
+    &.top50 {
+      top: 50px;
+    }
+
+    &.top100 {
+      top: 100px;
+    }
+  }
+}
+
+.show_xcx {
+  &:hover .wx_xcx {
+    display: block;
+  }
+}
+
+.show_gzh {
+  &:hover .wx_gzh {
+    display: block;
+  }
+}
+
+.qq_img {
+  position: relative;
+  top: 5px;
+}
+
+.xcx_title {
+  text-align: center;
+  font-size: 12px;
+  color: #333;
+  height: 30px;
+  padding-bottom: 15px;
+}
 </style>

@@ -27,8 +27,9 @@ import YFooter from '~/components/common/Footer'
 import YHeaderList from '~/components/HeaderList'
 import DPage from '~/components/Page'
 import RightTap from '~/components/common/RightTap'
-import { courseList, courseClass } from '~/api/course.js'
+import { courseClass, courseList } from '~/api/course.js'
 import { courseChange } from '~/utils/commonfun.js'
+
 export default {
   components: {
     YHeader,
@@ -41,7 +42,7 @@ export default {
     const dataObj = {}
     const clientNo = context.store.state.clientData.no
     dataObj.clientNo = clientNo
-    dataObj.webInfo = context.store.state.webInfo
+    dataObj.websiteInfo = context.store.state.websiteInfo
     const categoryId1 = context.query.categoryno1 || ''
     const categoryId2 = context.query.categoryno2 || ''
     const categoryId3 = context.query.categoryno3 || ''
@@ -96,12 +97,12 @@ export default {
       const allData = await Promise.all([courseList(obj), courseClass(classObj)])
       // 课程列表
       const courseData = allData[0]
-      if (courseData.data.data.list.length > 0) {
-        pageObj = courseData.data.data
+      if (courseData.data.list.length > 0) {
+        pageObj = courseData.data
       }
       // 分类
       const classData = await allData[1]
-      const classList = classData.data.data.courseCategoryList || []
+      const classList = classData.data.courseCategoryList || []
       dataObj.obj = obj
       dataObj.pageObj = pageObj
       dataObj.classList = classList
@@ -126,12 +127,12 @@ export default {
         {
           hid: 'keywords',
           name: 'keywords',
-          content: this.$store.state.webInfo.websiteKeyword
+          content: this.$store.state.websiteInfo.websiteKeyword
         },
         {
           hid: 'description',
           name: 'description',
-          content: this.$store.state.webInfo.websiteDesc
+          content: this.$store.state.websiteInfo.websiteDesc
         }
       ]
     }
@@ -143,7 +144,7 @@ export default {
     }
   },
   mounted() {
-    if (this.webInfo && this.webInfo.isEnableVip) {
+    if (this.websiteInfo && this.websiteInfo.isEnableVip) {
       this.openVip = true
     }
     courseChange(this)
@@ -193,26 +194,31 @@ export default {
   .course_content {
     background: rgb(245, 245, 245);
     padding: 30px 0 10px 0;
+
     ul {
       width: 1200px;
       margin: 0 auto;
     }
+
     li {
       float: left;
       border-radius: 6px;
       background: #fff;
       margin: 0px 20px 20px 0px;
+
       &:nth-child(4n) {
         margin-right: 0px;
       }
     }
   }
+
   .course_info {
     display: block;
     width: 285px;
     height: 240px;
     border-radius: 6px;
     position: relative;
+
     &:hover {
       text-decoration: none;
       color: #000;
@@ -220,10 +226,12 @@ export default {
       transform: translateY(-2px);
       transition: all .3s;
     }
+
     .img_box {
       position: relative;
       width: 285px;
       height: 140px;
+
       .qizi {
         background: url(../assets/image/activity/qizi.png) no-repeat center;
         position: absolute;
@@ -236,18 +244,21 @@ export default {
         font-size: 14px;
         text-align: center;
       }
+
       .course_img {
         width: 285px;
         height: 140px;
         border-radius: 6px 6px 0 0;
       }
     }
+
     p {
       font-size: 16px;
       margin-top: 5px;
       padding: 0 10px;
       word-break: break-all;
     }
+
     .price_box {
       font-size: 16px;
       position: absolute;

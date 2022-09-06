@@ -4,44 +4,43 @@
 //   fetchIdsByType
 // } from '../api'
 import { getUserInfo } from '../api/user'
-import { serviceInfo, aboutList, getNav } from '~/api/main'
+import { navList, websiteInfo } from '~/api/main'
 import LRU from 'lru-cache'
+
 const CACHED = new LRU()
 const ttl = 10 * 60 * 1000 // 缓存时间
 
 export default {
   async nuxtServerInit({ dispatch }) {
-    await dispatch('GET_ABOUT')
+    // await dispatch('GET_ABOUT')
     await dispatch('GET_NAV')
-    await dispatch('GET_WEBINFO')
+    await dispatch('GET_WEBSITE')
   },
-  GET_ABOUT(store) { // 获取关联信息
-    const now = new Date()
-    if (CACHED.has('aboutList')) {
-      const data = CACHED.get('aboutList')
-      const result = JSON.parse(data)
-      // console.log(' 缓存命中1')
-      // console.log(data)
-      if (now.getTime() - result.time < ttl - 10000) {
-        // 确保不超出缓存时间
-        store.state.aboutList = result
-        return Promise.resolve(data)
-      }
-    }
-    return new Promise((resolve, reject) => {
-      aboutList().then(res => {
-        if (res.data.code === 200) {
-          const now = new Date()
-          const data = { time: now.getTime(), list: res.data.data.websiteNavList }
-          store.state.aboutList = data
-          CACHED.set('aboutList', JSON.stringify(data), ttl)
-        }
-        resolve(res.data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
+  // GET_ABOUT(store) { // 获取关联信息
+  //   const now = new Date()
+  //   if (CACHED.has('aboutList')) {
+  //     const data = CACHED.get('aboutList')
+  //     const result = JSON.parse(data)
+  //     if (now.getTime() - result.time < ttl - 10000) {
+  //       // 确保不超出缓存时间
+  //       store.state.aboutList = result
+  //       return Promise.resolve(data)
+  //     }
+  //   }
+  //   return new Promise((resolve, reject) => {
+  //     aboutList().then(res => {
+  //       if (res.code === 200) {
+  //         const now = new Date()
+  //         const data = { time: now.getTime(), list: res.data.websiteNavList }
+  //         store.state.aboutList = data
+  //         CACHED.set('aboutList', JSON.stringify(data), ttl)
+  //       }
+  //       resolve(res.data)
+  //     }).catch(error => {
+  //       reject(error)
+  //     })
+  //   })
+  // },
   GET_NAV(store) { // 获取导航信息
     const now = new Date()
     if (CACHED.has('navList')) {
@@ -56,11 +55,11 @@ export default {
       }
     }
     return new Promise((resolve, reject) => {
-      getNav().then(res => {
-        if (res.data.code === 200) {
-          res.data.data.time = now.getTime()
-          store.state.navList = res.data.data
-          CACHED.set('navList', JSON.stringify(res.data.data), ttl)
+      navList().then(res => {
+        if (res.code === 200) {
+          res.data.time = now.getTime()
+          store.state.navList = res.data
+          CACHED.set('navList', JSON.stringify(res.data), ttl)
         }
         resolve(res.data)
       }).catch(error => {
@@ -68,25 +67,22 @@ export default {
       })
     })
   },
-  GET_WEBINFO(store) { // 获取网站信息
+  GET_WEBSITE(store) { // 获取网站信息
     const now = new Date()
-    if (CACHED.has('webInfo')) {
-      const data = CACHED.get('webInfo')
+    if (CACHED.has('websiteInfo')) {
+      const data = CACHED.get('websiteInfo')
       const result = JSON.parse(data)
-      // console.log(' 缓存命中3')
-      // console.log(result)
       if (now.getTime() - result.time < ttl - 10000) {
-        // 确保不超出缓存时间
-        store.state.webInfo = result
+        store.state.websiteInfo = result
         return Promise.resolve(data)
       }
     }
     return new Promise((resolve, reject) => {
-      serviceInfo({ moduleId: 3 }).then(res => {
-        if (res.data.code === 200) {
-          res.data.data.time = now.getTime()
-          store.state.webInfo = res.data.data
-          CACHED.set('webInfo', JSON.stringify(res.data.data), ttl)
+      websiteInfo().then(res => {
+        if (res.code === 200) {
+          res.data.time = now.getTime()
+          store.state.websiteInfo = res.data
+          CACHED.set('websiteInfo', JSON.stringify(res.data), ttl)
         }
         resolve(res.data)
       }).catch(error => {
@@ -98,13 +94,12 @@ export default {
     // console.log('获取用户信息')
     getUserInfo({ orgNo: store.state.clientData.no })
       .then(res => {
-      // console.log(res)
-        if (res.data.code === 200) {
-          store.commit('SET_USER', res.data.data)
+        if (res.code === 200) {
+          store.commit('SET_USER', res.data)
           if (cb) {
             cb(store)
           }
-        } else if (res.data.code > 300 && res.data.code < 400) {
+        } else if (res.code > 300 && res.code < 400) {
           store.commit('SIGN_OUT')
         }
       })

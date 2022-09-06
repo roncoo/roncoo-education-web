@@ -1,15 +1,16 @@
-import { serviceInfo, getNav } from '~/api/main'
+import { navList, websiteInfo } from '~/api/main'
+
 export default function({ route, req, res, store, next }) {
   const now = new Date()
   // console.log(route)
-  if (!store.state.webInfo || now.getTime() - store.state.webInfo.time > 300000) {
+  if (!store.state.websiteInfo || now.getTime() - store.state.websiteInfo.time > 300000) {
     // 获取站点信息
-    serviceInfo({ moduleId: 3 }).then(res => {
+    websiteInfo({ moduleId: 3 }).then(res => {
       // console.log(res.data)
       console.log('res.data==============')
-      if (res.data.code === 200) {
-        res.data.data.time = now.getTime()
-        store.commit('SET_ITEMS', { key: 'webInfo', value: res.data.data })
+      if (res.code === 200) {
+        res.data.time = now.getTime()
+        store.commit('SET_ITEMS', { key: 'websiteInfo', value: res.data })
       } else {
         console.log(res.data)
       }
@@ -19,12 +20,12 @@ export default function({ route, req, res, store, next }) {
   }
   if (!store.state.navList || now.getTime() - store.state.navList.time > 500000) {
     // 获取导航信息
-    getNav().then(res => {
+    navList().then(res => {
       // console.log(res.data)
       // console.log('nav==============')
-      if (res.data.code === 200) {
-        res.data.data.time = now.getTime()
-        store.commit('SET_ITEMS', { key: 'navList', value: res.data.data })
+      if (res.code === 200) {
+        res.data.time = now.getTime()
+        store.commit('SET_ITEMS', { key: 'navList', value: res.data })
       } else {
         console.log(res.data)
       }
@@ -37,9 +38,9 @@ export default function({ route, req, res, store, next }) {
   //   aboutList().then(res => {
   //       // console.log(res.data)
   //       // console.log('about=================')
-  //     if (res.data.code  == 200) {
-  //       res.data.data.time = now.getTime();
-  //       store.commit('SET_ITEMS', {key: 'aboutList', value: {time: now.getTime(), list: res.data.data.websiteNavList}});
+  //     if (res.code  == 200) {
+  //       res.data.time = now.getTime();
+  //       store.commit('SET_ITEMS', {key: 'aboutList', value: {time: now.getTime(), list: res.data.websiteNavList}});
   //     } else{
   //       console.log(res.data)
   //     }

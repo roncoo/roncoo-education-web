@@ -24,7 +24,7 @@
         <li :class="{now: fourNow == 3}" @click="changeFour(3)"><a href="javascript:">全部</a></li>
         <li :class="{now: fourNow == 2}" @click="changeFour(2)"><a href="javascript:">付费</a></li>
         <li :class="{now: fourNow == 1}" @click="changeFour(1)"><a href="javascript:">免费</a></li>
-        <li v-if="webInfo && webInfo.isEnableVip" :class="{now: fourNow == 4}" @click="changeFour(4)"><a href="javascript:">SVIP免费</a></li>
+        <li v-if="websiteInfo && websiteInfo.isEnableVip" :class="{now: fourNow == 4}" @click="changeFour(4)"><a href="javascript:">SVIP免费</a></li>
       </ul>
     </div>
     <div v-if="courseType === 'live'" class="list_content">
@@ -38,6 +38,7 @@
 </template>
 <script>
 import { courseClass } from '~/api/course.js'
+
 export default {
   props: {
     fourNow: {
@@ -57,7 +58,7 @@ export default {
   },
   data() {
     return {
-      webInfo: this.$store.state.webInfo,
+      websiteInfo: this.$store.state.websiteInfo,
       twoList: [],
       threeList: [],
       oneNow: 0,
@@ -204,51 +205,59 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
-  .header_list {
-    border-top: 1px solid rgb(215, 215, 215);
-    background: #fff;
-    .list_content {
-      width: 1200px;
-      margin: 0 auto;
-      height: 73px;
-      border-bottom: 1px solid rgb(215, 215, 215);
-      position: relative;
-      &:last-child {
-        border-bottom: none;
-      }
-      span {
-        position: absolute;
-        display: inline-block;
-        font-size: 14px;
-        font-weight: bold;
-        height: 26px;
-        line-height: 26px;
-        top: 23px;
-      }
+.header_list {
+  border-top: 1px solid rgb(215, 215, 215);
+  background: #fff;
+
+  .list_content {
+    width: 1200px;
+    margin: 0 auto;
+    height: 73px;
+    border-bottom: 1px solid rgb(215, 215, 215);
+    position: relative;
+
+    &:last-child {
+      border-bottom: none;
     }
-  }
-  .content_ul {
-    display: inline-block;
-    // margin-left: 60px;
-    margin-top: 23px;
-    li {
-      float: left;
+
+    span {
+      position: absolute;
+      display: inline-block;
       font-size: 14px;
+      font-weight: bold;
       height: 26px;
       line-height: 26px;
-      padding: 0 6px;
-      border-radius: 6px;
-      margin: 0 6px;
-      a:hover {
-        color: red;
-        text-decoration: none;
-      }
-      &.now {
-        background: rgb(51, 51, 51);
-        a {
-          color: #fff;
-        }
+      top: 23px;
+    }
+  }
+}
+
+.content_ul {
+  display: inline-block;
+  // margin-left: 60px;
+  margin-top: 23px;
+
+  li {
+    float: left;
+    font-size: 14px;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 6px;
+    border-radius: 6px;
+    margin: 0 6px;
+
+    a:hover {
+      color: red;
+      text-decoration: none;
+    }
+
+    &.now {
+      background: rgb(51, 51, 51);
+
+      a {
+        color: #fff;
       }
     }
   }
+}
 </style>

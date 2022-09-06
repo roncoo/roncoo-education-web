@@ -51,8 +51,12 @@
               <img v-else src="../assets/image/friend.jpg" alt="">
             </div>
             <ul class="btn_box clearfix">
-              <li><nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link></li>
-              <li><nuxt-link :to="{name: 'account-study'}">学习记录</nuxt-link></li>
+              <li>
+                <nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link>
+              </li>
+              <li>
+                <nuxt-link :to="{name: 'account-study'}">学习记录</nuxt-link>
+              </li>
             </ul>
             <div>
               <a href="javascript:" class="out_btn" @click="signOut">退出登录</a>
@@ -85,13 +89,14 @@
 <script>
 import YHeader from '~/components/common/Header'
 import YButton from '~/components/common/CodeButton'
-import { userLogin, register } from '~/api/user.js'
+import { register, userLogin } from '~/api/user.js'
+
 export default {
   data() {
     return {
       tab: this.$route.query.tab || 1,
       tabp: this.$route.query.tab || 1,
-      webInfo: this.$store.state.webInfo,
+      websiteInfo: this.$store.state.websiteInfo,
       clientData: this.$store.state.clientData,
       subState: false, // 提交状态
       xieyi: false,
@@ -124,12 +129,12 @@ export default {
         {
           hid: 'keywords',
           name: 'keywords',
-          content: this.webInfo.websiteKeyword
+          content: this.websiteInfo.websiteKeyword
         },
         {
           hid: 'description',
           name: 'description',
-          content: this.webInfo.websiteDesc
+          content: this.websiteInfo.websiteDesc
         }
       ]
     }
@@ -174,8 +179,8 @@ export default {
       userLogin(this.obj).then(res => {
         this.subState = false
         this.$nuxt.$loading.finish()
-        if (res.data.code === 200) {
-          this.$store.commit('SET_TOKEN', res.data.data.token)
+        if (res.code === 200) {
+          this.$store.commit('SET_TOKEN', res.data.token)
           this.$store.commit('GET_TEMPORARYURL')
           this.$store.dispatch('GET_USERINFO', store => {
             this.userInfo = this.$store.state.userInfo
@@ -190,7 +195,8 @@ export default {
         this.$msgBox({
           content: '登录失败,请稍后再试',
           isShowCancelBtn: false
-        }).catch(() => {})
+        }).catch(() => {
+        })
       })
       return false
     },
@@ -201,19 +207,19 @@ export default {
       let s;
       (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = s[1]
         : (s = ua.match(/msie ([\d]+)/)) ? Sys.ie = s[1]
-        : (s = ua.match(/edge\/([\d]+)/)) ? Sys.edge = s[1]
-          : (s = ua.match(/firefox\/([\d]+)/)) ? Sys.firefox = s[1]
-            : (s = ua.match(/(?:opera|opr).([\d]+)/)) ? Sys.opera = s[1] :
-              (s = ua.match(/chrome\/([\d]+)/)) ? Sys.chrome = s[1] :
-                (s = ua.match(/version\/([\d]+).*safari/)) ? Sys.safari = s[1] : 0;
+          : (s = ua.match(/edge\/([\d]+)/)) ? Sys.edge = s[1]
+            : (s = ua.match(/firefox\/([\d]+)/)) ? Sys.firefox = s[1]
+              : (s = ua.match(/(?:opera|opr).([\d]+)/)) ? Sys.opera = s[1] :
+                (s = ua.match(/chrome\/([\d]+)/)) ? Sys.chrome = s[1] :
+                  (s = ua.match(/version\/([\d]+).*safari/)) ? Sys.safari = s[1] : 0;
       // 根据关系进行判断
-      if (Sys.ie) return { name: 'IE', version: Sys.ie };
-      if (Sys.edge) return { name: 'EDGE:', version: Sys.edge };
-      if (Sys.firefox) return { name: 'Firefox:', version: Sys.firefox };
-      if (Sys.chrome) return { name: 'Chrome:', version: Sys.chrome };
-      if (Sys.opera) return { name: 'Opera:', version: Sys.opera };
-      if (Sys.safari) return { name: 'Safari:', version: Sys.safari };
-      return { name: 'Unkonwn', version: '0.0.0' };
+      if (Sys.ie) return {name: 'IE', version: Sys.ie};
+      if (Sys.edge) return {name: 'EDGE:', version: Sys.edge};
+      if (Sys.firefox) return {name: 'Firefox:', version: Sys.firefox};
+      if (Sys.chrome) return {name: 'Chrome:', version: Sys.chrome};
+      if (Sys.opera) return {name: 'Opera:', version: Sys.opera};
+      if (Sys.safari) return {name: 'Safari:', version: Sys.safari};
+      return {name: 'Unkonwn', version: '0.0.0'};
     },
     // 获取系统信息
     getOsInfo: function () {
@@ -254,7 +260,7 @@ export default {
       } else {
         name = 'Unknown';
       }
-      return { name, version };
+      return {name, version};
     },
     // 注册
     regSubmit: function (e) {
@@ -266,35 +272,40 @@ export default {
         this.$msgBox({
           content: '请输入正确手机',
           isShowCancelBtn: false
-        }).catch(() => {})
+        }).catch(() => {
+        })
         return false;
       }
       if (!this.pobj.code || this.pobj.code.length !== 6) {
         this.$msgBox({
           content: '请输入正确的手机验证码',
           isShowCancelBtn: false
-        }).catch(() => {})
+        }).catch(() => {
+        })
         return false;
       }
       if (this.pobj.password.length < 6 || this.pobj.password.length > 16) {
         this.$msgBox({
           content: '请输入6-16位的登录密码,区分大小写,不可有空格',
           isShowCancelBtn: false
-        }).catch(() => {})
+        }).catch(() => {
+        })
         return false;
       }
       if (this.pobj.password !== this.pobj.repassword) {
         this.$msgBox({
           content: '两次输入密码不一致',
           isShowCancelBtn: false
-        }).catch(() => {})
+        }).catch(() => {
+        })
         return false;
       }
       if (!this.pobj.check) {
         this.$msgBox({
           content: '请先阅读并同意用户协议',
           isShowCancelBtn: false
-        }).catch(() => {})
+        }).catch(() => {
+        })
         return false;
       }
       // console.log(this.clientData)
@@ -308,7 +319,7 @@ export default {
       register(this.pobj).then(res => {
         this.$nuxt.$loading.finish();
         this.subState = false;
-        if (res.data.code === 200) {
+        if (res.code === 200) {
           this.$msgBox({
             content: '注册成功！',
             confirmBtnText: '立即登录',
@@ -329,7 +340,8 @@ export default {
           this.$msgBox({
             content: res.data.msg,
             isShowCancelBtn: false
-          }).catch(() => {})
+          }).catch(() => {
+          })
         }
       }).catch(() => {
         this.$nuxt.$loading.finish();
@@ -337,16 +349,17 @@ export default {
         this.$msgBox({
           content: '系统繁忙，请稍后重试',
           isShowCancelBtn: false
-        }).catch(() => {})
+        }).catch(() => {
+        })
       })
     }
   },
-  mounted () {
-    if (this.webInfo) {
-      this.service = this.webInfo
+  mounted() {
+    if (this.websiteInfo) {
+      this.service = this.websiteInfo
     }
     this.$axios.get('http://gateway.doityun.com/ip/info').then(res => {
-      this.ipInfo = res.data.data
+      this.ipInfo = res.data
     })
     // this.GET_TEMPORARYURL();
     this.obj.clientId = 1;
@@ -373,19 +386,23 @@ export default {
     //width: 1200px;
     margin: 0 auto;
     background: url(../assets/image/login_bg.jpg) no-repeat center center;
+
     .center_box {
       width: 1200px;
       margin: 0 auto;
       position: relative;
     }
   }
+
   .login {
     background: rgb(0, 153, 255);
+
     .login_header {
       width: 1200px;
       margin: 0 auto;
       height: 132px;
       position: relative;
+
       span {
         position: absolute;
         height: 28px;
@@ -399,6 +416,7 @@ export default {
       }
     }
   }
+
   .login_logo {
     img {
       width: 186px;
@@ -406,6 +424,7 @@ export default {
       margin-top: 32px;
     }
   }
+
   .login_body {
     img {
       width: 186px;
@@ -413,6 +432,7 @@ export default {
       display: block;
       margin: 0 auto;
     }
+
     p {
       text-align: center;
       font-size: 14px;
@@ -420,6 +440,7 @@ export default {
       margin-top: 30px;
     }
   }
+
   .login_form {
     width: 380px;
     position: absolute;
@@ -428,9 +449,11 @@ export default {
     border-radius: 6px;
     transition: all 0.8s;
     transform: perspective(600px);
+
     &.rotate {
       transform: rotateY(-180deg);
     }
+
     .login_title {
       height: 95px;
       line-height: 95px;
@@ -439,16 +462,19 @@ export default {
       color: #333;
       background: #fff;
       border-radius: 6px 6px 0 0;
+
       &.is_login {
         padding-left: 0px;
         text-align: center;
       }
     }
   }
+
   .form_body {
     background: #fff;
     padding: 0 30px 20px;
     border-radius: 0 0 6px 6px;
+
     input[type='text'], input[type='password'], input[type='button'], input[type='submit'] {
       width: 310px;
       height: 46px;
@@ -457,6 +483,7 @@ export default {
       border-radius: 6px;
       font-size: 14px;
       border-color: rgb(230, 230, 230);
+
       &.btn {
         background: rgb(213, 20, 35);
         width: 320px;
@@ -467,15 +494,18 @@ export default {
         margin-bottom: 20px;
       }
     }
+
     .error_msg {
       width: 310px;
       color: #D51423;
       font-size: 12px;
     }
+
     .next_auto {
       font-size: 14px;
       color: #333;
     }
+
     .is_go {
       float: right;
       color: #0099FF;
@@ -484,13 +514,16 @@ export default {
       font-size: 14px;
       display: inline-block;
       padding: 0 10px;
+
       &:hover {
         text-decoration: none;
       }
     }
   }
+
   .phone_yzm {
     position: relative;
+
     .phone {
       padding-right: 100px;
       width: 210px;
@@ -502,6 +535,7 @@ export default {
       margin-top: 20px;
     }
   }
+
   .yzm_btn {
     width: 100px;
     height: 46px;
@@ -515,8 +549,10 @@ export default {
     cursor: pointer;
     border: none;
   }
+
   .login_footer {
     padding-bottom: 30px;
+
     p {
       text-align: center;
       font-size: 12px;
@@ -524,14 +560,17 @@ export default {
       margin-top: 20px;
     }
   }
+
   .check {
     width: 14px;
     height: 14px;
     position: relative;
     top: -1px;
   }
+
   .img_box {
     height: 70px;
+
     img {
       width: 70px;
       height: 70px;
@@ -540,15 +579,18 @@ export default {
       margin: 0 auto;
     }
   }
+
   .hellow_text {
     text-align: center;
     font-size: 14px;
     padding: 20px 0;
     border-bottom: 1px solid #ccc;
   }
+
   .btn_box {
     border-bottom: 1px solid #ccc;
     padding-bottom: 20px;
+
     li {
       float: left;
       width: 140px;
@@ -556,10 +598,12 @@ export default {
       line-height: 30px;
       margin: 20px 10px 0;
       border-radius: 6px;
+
       a {
         display: block;
         background: rgb(245, 245, 245);
         border-radius: 6px;
+
         &:hover {
           color: #fff;
           text-decoration: none;
@@ -568,6 +612,7 @@ export default {
       }
     }
   }
+
   .out_btn {
     display: inline-block;
     margin: 10px 0 0 100px;
@@ -576,22 +621,26 @@ export default {
     width: 120px;
     line-height: 30px;
     text-align: center;
+
     &:hover {
       text-decoration: none;
     }
   }
+
   .prn_icon {
     width: 16px;
     height: 16px;
     position: relative;
     top: 3px;
   }
+
   .tabs {
     height: 60px;
     line-height: 60px;
     background: #fff;
-    border-radius: 8px 8px 0 0 ;
+    border-radius: 8px 8px 0 0;
     border-bottom: 1px solid rgb(230, 230, 230);
+
     .tab {
       font-size: 18px;
       width: 50%;
@@ -599,18 +648,22 @@ export default {
       cursor: pointer;
       line-height: 60px;
     }
+
     span {
       display: inline-block;
       height: 60px;
     }
+
     .on {
       border-bottom: 2px solid #D51423;
       color: #D51423;
     }
   }
+
   .r180 {
     transform: rotateY(-180deg);
   }
+
   .xieyi {
     position: fixed;
     top: 0;
@@ -619,6 +672,7 @@ export default {
     bottom: 0;
     background: rgba(0, 0, 0, 0.3);
     z-index: 3;
+
     .xieyi_content {
       width: 900px;
       height: 500px;
@@ -627,17 +681,20 @@ export default {
       background: #fff;
       position: relative;
     }
+
     .xieyi_title {
       color: #333;
       font-size: 18px;
       line-height: 70px;
       text-align: center;
     }
+
     .xieyi_body {
       height: 350px;
       overflow-y: auto;
       padding: 0 20px;
     }
+
     .xieyi_btn {
       position: absolute;
       bottom: 10px;

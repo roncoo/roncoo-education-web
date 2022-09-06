@@ -36,8 +36,12 @@
                 <td v-if="item.auditStatus === 1" class="c_green">审核通过</td>
                 <td v-else-if="item.auditStatus === 2" class="c_red">审核不通过</td>
                 <td v-else class="c_blue">待审核</td>
-                <td v-if="item.isPutaway"><button class="gray_btn" @click="putaWay(item)">课程下架</button></td>
-                <td v-else><button class="orange_btn" @click="putaWay(item)">课程上架</button></td>
+                <td v-if="item.isPutaway">
+                  <button class="gray_btn" @click="putaWay(item)">课程下架</button>
+                </td>
+                <td v-else>
+                  <button class="orange_btn" @click="putaWay(item)">课程上架</button>
+                </td>
                 <td class="operate">
                   <span>
                     <router-link :to="'/account/teacher/period?no=' +item.id" class="text_link">章节管理</router-link>
@@ -67,6 +71,7 @@ import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DPage from '~/components/Page'
 import { lecturerCourseList, coursePutaway, deleteCourse } from '~/api/account/course.js'
+
 export default {
   components: {
     YHeader,
@@ -97,8 +102,8 @@ export default {
     }
   },
   computed: {
-    webInfo() {
-      return this.$store.state.webInfo
+    websiteInfo() {
+      return this.$store.state.websiteInfo
     }
   },
   mounted() {
@@ -132,7 +137,8 @@ export default {
               this.$msgBox({
                 content: result.msg,
                 isShowCancelBtn: false
-              }).catch(() => {})
+              }).catch(() => {
+              })
             }
           }
         }).catch(() => {
@@ -177,7 +183,8 @@ export default {
               this.$msgBox({
                 content: result.msg,
                 isShowCancelBtn: false
-              }).catch(() => {})
+              }).catch(() => {
+              })
             }
           }
         }).catch(msg => {
@@ -228,18 +235,21 @@ export default {
 </script>
 <style lang="scss" rel="stylesheet/scss">
 @import '~/assets/css/account.scss';
-  .course_table{
-    .name{
-      width: 400px;
-      .txt{
-        width: 190px;
-        padding-top: 12px;
-        font-size: 14px;
-      }
-    }
-    .icon{
-      width: 175px;
-      vertical-align: middle;
+
+.course_table {
+  .name {
+    width: 400px;
+
+    .txt {
+      width: 190px;
+      padding-top: 12px;
+      font-size: 14px;
     }
   }
+
+  .icon {
+    width: 175px;
+    vertical-align: middle;
+  }
+}
 </style>

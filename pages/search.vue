@@ -39,6 +39,7 @@ import YFooter from '~/components/common/Footer'
 import RightTap from '~/components/common/RightTap'
 import { getSearchCourseList } from '~/api/course'
 import DPage from '~/components/Page'
+
 export default {
   name: 'Search',
   components: {
@@ -63,15 +64,15 @@ export default {
         totalCount: 0
       }
     }
-    dataObj.webInfo = context.store.state.webInfo
+    dataObj.websiteInfo = context.store.state.websiteInfo
     try {
       dataObj.map.courseName = context.query.search
       const res = await getSearchCourseList(dataObj.map, dataObj.page.pageCurrent, dataObj.page.pageSize)
-      if (res.data.code === 200) {
-        dataObj.opts.list = res.data.data.list || []
-        dataObj.page.pageCurrent = res.data.data.pageCurrent || 1
-        dataObj.page.totalPage = res.data.data.totalPage || 1
-        dataObj.page.totalCount = res.data.data.totalCount || 0
+      if (res.code === 200) {
+        dataObj.opts.list = res.data.list || []
+        dataObj.page.pageCurrent = res.data.pageCurrent || 1
+        dataObj.page.totalPage = res.data.totalPage || 1
+        dataObj.page.totalCount = res.data.totalCount || 0
         return dataObj
       } else {
         // return dataObj
@@ -98,12 +99,12 @@ export default {
         {
           hid: 'keywords',
           name: 'keywords',
-          content: this.$store.state.webInfo.websiteKeyword
+          content: this.$store.state.websiteInfo.websiteKeyword
         },
         {
           hid: 'description',
           name: 'description',
-          content: this.$store.state.webInfo.websiteDesc
+          content: this.$store.state.websiteInfo.websiteDesc
         }
       ]
     }
@@ -114,7 +115,7 @@ export default {
     }
   },
   mounted() {
-    if (this.webInfo && this.webInfo.isEnableVip) {
+    if (this.websiteInfo && this.websiteInfo.isEnableVip) {
       this.openVip = true
     }
   },
@@ -131,11 +132,11 @@ export default {
       this.ctrl.loading = true
       getSearchCourseList(this.map, this.page.pageCurrent, this.page.pageSize).then(res => {
         this.ctrl.loading = false
-        if (res.data.code === 200) {
-          this.opts.list = res.data.data.list || []
-          this.page.pageCurrent = res.data.data.pageCurrent
-          this.page.totalPage = res.data.data.totalPage || 1
-          this.page.totalCount = res.data.data.totalCount
+        if (res.code === 200) {
+          this.opts.list = res.data.list || []
+          this.page.pageCurrent = res.data.pageCurrent
+          this.page.totalPage = res.data.totalPage || 1
+          this.page.totalCount = res.data.totalCount
         } else {
           this.opts.list = []
           this.page.pageCurrent = 1
@@ -155,33 +156,38 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.search_page{
+.search_page {
   min-height: 100vh;
 }
-@keyframes bganimation{
-  0%{
+
+@keyframes bganimation {
+  0% {
     background-position: 0% 50%;
   }
-  50%{
+  50% {
     background-position: 100% 50%;
   }
-  100%{
+  100% {
     background-position: 0% 50%;
   }
 }
-.search_input{
+
+.search_input {
   padding: 33px 0;
-  background-image: linear-gradient(125deg,#F44336,#E91E63,#9C27B0,#3F51B5,#2196F3);
+  background-image: linear-gradient(125deg, #F44336, #E91E63, #9C27B0, #3F51B5, #2196F3);
   animation: bganimation 15s infinite;
-  .search_box_content{
+
+  .search_box_content {
     width: 607px;
     margin: 0 auto;
   }
-  .form{
+
+  .form {
     width: 100%;
 
     position: relative;
-    .iconfont{
+
+    .iconfont {
       position: absolute;
       left: 10px;
       top: 2px;
@@ -191,7 +197,8 @@ export default {
       color: #999;
       font-weight: 700;
     }
-    .search_box_input{
+
+    .search_box_input {
       width: 505px;
       padding-left: 40px;
       height: 44px;
@@ -201,7 +208,8 @@ export default {
       font-size: 13px;
       color: #333;
     }
-    .search_btn{
+
+    .search_btn {
       width: 96px;
       height: 44px;
       background-color: #47a6ee;
@@ -217,12 +225,14 @@ export default {
     }
   }
 }
+
 .course_info {
   display: block;
   width: 285px;
   height: 240px;
   border-radius: 6px;
   position: relative;
+
   &:hover {
     text-decoration: none;
     color: #000;
@@ -230,10 +240,12 @@ export default {
     transform: translateY(-2px);
     transition: all .3s;
   }
+
   .img_box {
     position: relative;
     width: 285px;
     height: 140px;
+
     .qizi {
       background: url(../assets/image/activity/qizi.png) no-repeat center;
       position: absolute;
@@ -246,18 +258,21 @@ export default {
       font-size: 14px;
       text-align: center;
     }
+
     .course_img {
       width: 285px;
       height: 140px;
       border-radius: 6px 6px 0 0;
     }
   }
+
   p {
     font-size: 16px;
     margin-top: 5px;
     padding: 0 10px;
     word-break: break-all;
   }
+
   .price_box {
     font-size: 16px;
     position: absolute;
@@ -266,25 +281,30 @@ export default {
     color: red;
   }
 }
-.search_content{
+
+.search_content {
   background: rgb(245, 245, 245);
   padding: 30px 0 10px 0;
   min-height: calc(100vh - 130px - 120px - 380px - 1px);
+
   ul {
     width: 1200px;
     margin: 0 auto;
   }
+
   li {
     float: left;
     border-radius: 6px;
     background: #fff;
     margin: 0px 20px 20px 0px;
+
     &:nth-child(4n) {
       margin-right: 0px;
     }
   }
 }
-.no_data{
+
+.no_data {
   text-align: center;
   width: 1200px;
   font-size: 20px;

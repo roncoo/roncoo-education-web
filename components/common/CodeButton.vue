@@ -35,7 +35,7 @@ export default {
         clientId: this.$store.state.clientData.id,
         mobile: this.mobile
       }).then(res => {
-        if (res.data.code === 200) {
+        if (res.code === 200) {
           this.timeOut()
         } else {
           this.$msgBox({

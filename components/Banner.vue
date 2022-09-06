@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      webInfo: this.$store.state.webInfo,
+      websiteInfo: this.$store.state.websiteInfo,
       num: 0,
       interval: null
     }
@@ -66,12 +66,14 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.banner{
+.banner {
   position: relative;
-  ul{
+
+  ul {
     position: relative;
   }
-  .item{
+
+  .item {
     opacity: 0;
     height: 100%;
     background-position: center center;
@@ -82,17 +84,20 @@ export default {
     bottom: 0;
     z-index: 9;
     transition: all 1s;
-    &.on{
+
+    &.on {
       opacity: 1;
       z-index: 10;
     }
-    a{
+
+    a {
       width: 100%;
       height: 100%;
       display: block;
     }
   }
-  .page_dots{
+
+  .page_dots {
     position: absolute;
     bottom: 20px;
     right: 50%;
@@ -100,13 +105,15 @@ export default {
     text-align: center;
     height: 0;
     z-index: 11;
+
     &.old {
       left: 0;
       right: 0;
       margin-right: 0;
       bottom: 30px;
     }
-    .dots{
+
+    .dots {
       display: inline-block;
       height: 8px;
       background: rgba(255, 255, 255, 0.3);
@@ -115,12 +122,14 @@ export default {
       font-size: 14px;
       margin: 0 4px;
       width: 30px;
+
       &.old_dot {
         line-height: 30px;
         height: 30px;
         margin: 0 1px;
       }
-      &.on{
+
+      &.on {
         background-color: rgba(255, 255, 255, 0.8);
         color: #333;
       }

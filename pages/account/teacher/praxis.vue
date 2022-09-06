@@ -176,12 +176,12 @@ export default {
       }
       updatePraxis(data).then(res => {
         this.solidBtn = false
-        if (res.data.code === 200) {
+        if (res.code === 200) {
           this.obj.docName = ''
           this.obj.docUrl = ''
           this.docUrl = ''
         } else {
-          if (res.data.code > 300 && res.data.code < 400) {
+          if (res.code > 300 && res.code < 400) {
             this.$msgBox({
               content: '登录异常，请重新登录',
               isShowCancelBtn: false

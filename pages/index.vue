@@ -14,7 +14,7 @@
         </div>
         <div class="zone_body">
           <ul class="clearfix course_list">
-            <li v-for="(that, int) in item.zoneCourseList" :key="int">
+            <li v-for="(that, int) in item.zoneListList" :key="int">
               <nuxt-link target="_blank" :to="{ name: 'view-id', params: { id: that.id } }">
                 <div class="img_box">
                   <img :src="that.courseLogo" alt="">
@@ -43,7 +43,7 @@
                 </span>
               </nuxt-link>
             </li>
-            <li v-for="thatGroup in item.zoneCourseCombinaRefList" :key="thatGroup.id">
+            <li v-for="thatGroup in item.zoneListCombinaRefList" :key="thatGroup.id">
               <nuxt-link target="_blank" :to="{ name: 'liveAndBunch', params: { id: thatGroup.id } }">
                 <div class="img_box">
                   <img :src="thatGroup.courseLogo" alt="">
@@ -55,7 +55,7 @@
             </li>
           </ul>
           <ul class="test_list clearfix">
-            <li v-for="(resource, num) in item.zoneCourseLibList" :key="resource.id" :class="{ test_option: true, right_0: num % 2 == 1 }">
+            <li v-for="(resource, num) in item.zoneListLibList" :key="resource.id" :class="{ test_option: true, right_0: num % 2 == 1 }">
               <nuxt-link target="_blank" :to="{ name: 'libraryDetail', params: { id: resource.id } }"><i class="iconfont">&#xe6be;</i>{{ resource.courseName }}</nuxt-link>
             </li>
           </ul>
@@ -78,7 +78,7 @@ import YHeader from '~/components/common/Header'
 import YBanner from '~/components/Banner'
 import YFooter from '~/components/common/Footer'
 import RightTap from '~/components/common/RightTap'
-import { advList, indexClass, zoneCourse } from '~/api/main.js'
+import { carouselList, categoryList, zoneList } from '~/api/main.js'
 
 export default {
   components: {
@@ -91,33 +91,33 @@ export default {
     try {
       const dataObj = {}
       // 轮播图
-      const { data } = await advList({ platShow: 0 })
-      // 轮播图上的分类
-      const blockData = await indexClass()
-      // 推荐课程
-      const zonedata = await zoneCourse({ zoneLocation: 0 })
-      // 活动标
-      const zoneList = zonedata.data.data.list || []
-      const courseNoList = []
-      zoneList.forEach((item) => {
-        for (const that in item) {
-          if (
-            item[that] &&
-            typeof item[that] === 'object' &&
-            item[that].length &&
-            that !== 'zoneCourseLibList' &&
-            that !== 'zoneResourceInfoList'
-          ) {
-            item[that].forEach((course) => {
-              // console.log(course)
-              courseNoList.push(course.courseNo)
-            })
-          }
-        }
-      })
-      dataObj.advData = data.data.advList || [] // 轮播图
-      dataObj.zoneData = zonedata.data.data.list || [] // 课程专区
-      dataObj.classList = blockData.data.data.courseCategoryList || [] // 轮播分类
+      const { carouselData } = await carouselList()
+      // 分类
+      const categoryData = await categoryList()
+      // 分区
+      const zoneData = await zoneList({})
+      // // 活动标
+      // const zoneList = zoneData.data || []
+      // const courseNoList = []
+      // zoneList.forEach((item) => {
+      //   for (const that in item) {
+      //     if (
+      //       item[that] &&
+      //       typeof item[that] === 'object' &&
+      //       item[that].length &&
+      //       that !== 'zoneListLibList' &&
+      //       that !== 'zoneResourceInfoList'
+      //     ) {
+      //       item[that].forEach((course) => {
+      //         // console.log(course)
+      //         courseNoList.push(course.courseNo)
+      //       })
+      //     }
+      //   }
+      // })
+      dataObj.advData = carouselData.data || [] // 轮播图
+      dataObj.classList = categoryData.data || [] // 分类
+      dataObj.zoneData = zoneData.data || [] // 专区
       return dataObj
     } catch (e) {
       context.error({ message: 'User not found', statusCode: 404 })
@@ -126,7 +126,7 @@ export default {
   data() {
     return {
       isvideoAlert: false,
-      webInfo: this.$store.state.webInfo,
+      websiteInfo: this.$store.state.websiteInfo,
       clientNo: this.$store.state.clientData.no,
       openVip: false,
       advData: this.$store.state.advData
@@ -139,18 +139,18 @@ export default {
         {
           hid: 'keywords',
           name: 'keywords',
-          content: this.$store.state.webInfo.websiteKeyword
+          content: this.$store.state.websiteInfo.websiteKeyword
         },
         {
           hid: 'description',
           name: 'description',
-          content: this.$store.state.webInfo.websiteDesc
+          content: this.$store.state.websiteInfo.websiteDesc
         }
       ]
     }
   },
   mounted() {
-    if (this.webInfo && this.webInfo.isEnableVip) {
+    if (this.websiteInfo && this.websiteInfo.isEnableVip) {
       this.openVip = true
     }
     // this.$store.dispatch('REDIRECT_LOGIN', 301)

@@ -40,7 +40,8 @@ import YDisplay from '~/components/course/Display'
 import YFooter from '~/components/common/Footer'
 import YSyllabus from '~/components/course/Syllabus'
 import YWatchVideo from '~/components/course/WatchVideo'
-import { courseDetail, userCourseDetail, chapterSign } from '~/api/course.js'
+import { chapterSign, courseDetail, userCourseDetail } from '~/api/course.js'
+
 export default {
   components: {
     YFooter,
@@ -59,8 +60,8 @@ export default {
       if (tk) {
         const { data } = await userCourseDetail({ courseId: context.params.id }, tk)
         if (data.code === 200) {
-          result.courseInfo = data.data
-          result.teacherInfo = data.data.lecturer
+          result.courseInfo = data
+          result.teacherInfo = data.lecturer
           result.isbuy = false
           result.isLogin = false
         } else if (data.code >= 300 && data.code <= 400) {
@@ -72,8 +73,8 @@ export default {
       } else {
         const { data } = await courseDetail({ courseId: context.params.id })
         if (data.code === 200) {
-          result.courseInfo = data.data
-          result.teacherInfo = data.data.lecturer
+          result.courseInfo = data
+          result.teacherInfo = data.lecturer
           result.isbuy = false
           result.isLogin = false
         } else {
@@ -156,38 +157,46 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss">
-.course_detail{
+.course_detail {
   .detail_info {
     margin: 20px auto 60px;
     width: 1200px;
   }
+
   .layout_left {
     width: 920px;
     float: left;
+
     .info_body {
       margin-bottom: 30px;
     }
   }
-  .course_tab{
+
+  .course_tab {
     padding-left: 30px;
     background: #fff;
     border-radius: 8px;
     margin-bottom: 20px;
+
     li {
       float: left;
       height: 66px;
       line-height: 66px;
       margin-right: 80px;
+
       &.on {
         border-bottom: 2px solid #D51423;
+
         a {
           color: #D51423;
         }
       }
+
       a {
         color: #000;
         font-size: 14px;
         font-weight: 700;
+
         &:hover {
           text-decoration: none;
           color: #D51423;
@@ -195,11 +204,13 @@ export default {
       }
     }
   }
-  .content_info{
+
+  .content_info {
     padding: 30px;
     background: #fff;
     border-radius: 8px;
     min-height: 400px;
+
     .title {
       border-left: 3px solid #000;
       padding-left: 12px;
@@ -208,22 +219,26 @@ export default {
       font-weight: 700;
       margin-bottom: 25px;
     }
-    .introduce{
+
+    .introduce {
       font-size: 14px;
       line-height: 30px;
       color: #333;
       padding-left: 8px;
     }
   }
-  .layout_right{
+
+  .layout_right {
     width: 260px;
     float: right;
   }
+
   .teacher_info {
     background: #fff;
     border-radius: 8px;
     position: relative;
     min-height: 180px;
+
     .head {
       display: block;
       line-height: 60px;
@@ -233,6 +248,7 @@ export default {
       color: #333;
       border-bottom: 1px solid rgb(228, 228, 228);
     }
+
     .teacher_phone {
       width: 46px;
       height: 46px;
@@ -242,20 +258,23 @@ export default {
       line-height: 46px;
       font-size: 13px;
       color: #999;
-      float:left;
+      float: left;
       margin: 0px 10px 0 10px;
+
       img {
         width: 46px;
         height: 46px;
         border-radius: 50%;
       }
     }
+
     .teacher_msg_right {
       width: 235px;
       float: right;
       margin: 12px 15px 12px 12px;
       line-height: 20px;
     }
+
     .teacher_name {
       font-size: 14px;
       font-weight: 700;

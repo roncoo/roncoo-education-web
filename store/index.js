@@ -8,7 +8,7 @@ const createStore = () => {
     state: () => ({
       temporaryUrl: '', // 临时url
       count: false,
-      webInfo: null, // 站点信息
+      websiteInfo: null, // 站点信息
       tokenInfo: '', // token信息
       aboutList: null, // about列表
       navList: { time: 0, list: [] }, // 导航信息

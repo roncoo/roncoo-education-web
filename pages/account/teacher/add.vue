@@ -96,7 +96,8 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DUpload from '~/components/account/Upload'
-import { infiniteCate, saveCourseInfo, courseDetail, courseUpdate } from '~/api/account/course.js'
+import { courseDetail, courseUpdate, infiniteCate, saveCourseInfo } from '~/api/account/course.js'
+
 export default {
   components: {
     YHeader,
@@ -144,8 +145,8 @@ export default {
     // 课程分类数据
     infiniteCate().then(res => {
       // console.log(res.data)
-      if (res.data.code === 200) {
-        this.cate1 = res.data.data.courseCategoryList
+      if (res.code === 200) {
+        this.cate1 = res.data.courseCategoryList
         if (this.obj.categoryId1) {
           this.changeCate1()
         }
@@ -262,7 +263,8 @@ export default {
               this.$msgBox({
                 content: res.msg,
                 isShowCancelBtn: false
-              }).catch(() => {})
+              }).catch(() => {
+              })
             }
           }
         }).catch(() => {
@@ -348,8 +350,8 @@ export default {
       this.load = true
       courseDetail({ id: this.$route.query.no }).then(res => {
         this.load = false
-        if (res.data.code === 200) {
-          const courseData = res.data.data
+        if (res.code === 200) {
+          const courseData = res.data
           this.editor2.txt.html(courseData.introduce)
           this.obj = courseData
           if (this.cate1.length) {
@@ -369,7 +371,8 @@ export default {
             this.$msgBox({
               content: res.msg,
               isShowCancelBtn: false
-            }).catch(() => {})
+            }).catch(() => {
+            })
           }
         }
       }).catch(() => {
@@ -385,76 +388,87 @@ export default {
 </script>
 <style lang="scss" rel="stylesheet/scss">
 @import '~/assets/css/account.scss';
-  .step_panel{
-    overflow: hidden;
-    background-color: #eee;
-    .step{
-      float: left;
-      width: 33.33333%;
-      text-align: center;
-      height: 50px;
-      line-height: 50px;
-      color: #333;
-      font-size: 14px;
-      position: relative;
-      &:after{
-        content: "";
-        display: block;
-        position: absolute;
-        right: -12px;
-        top: -5px;
-        z-index: 1;
-        width: 60px;
-        height: 60px;
-        box-shadow: 1px 1px 0 #fff;
-        transform:rotate(-45deg);
-      }
-      &.on{
-        color: #fff;
+
+.step_panel {
+  overflow: hidden;
+  background-color: #eee;
+
+  .step {
+    float: left;
+    width: 33.33333%;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    color: #333;
+    font-size: 14px;
+    position: relative;
+
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      right: -12px;
+      top: -5px;
+      z-index: 1;
+      width: 60px;
+      height: 60px;
+      box-shadow: 1px 1px 0 #fff;
+      transform: rotate(-45deg);
+    }
+
+    &.on {
+      color: #fff;
+      background-color: #ec7e00;
+
+      &:after {
         background-color: #ec7e00;
-        &:after{
-          background-color: #ec7e00;
-        }
       }
     }
   }
-  .course_period{
-    label{
-      margin-right: 8px;
-      color: #333;
-    }
-    .form_input{
-      height: 34px;
-      border: 1px solid #e7e7e7;
-      width: 278px;
-      text-indent: 1em;
-    }
-    .form_input_min{
-      text-indent: 1em;
-      width: 130px;
-      height: 34px;
-      margin-right: 10px;
-      border: 1px solid #e7e7e7;
+}
+
+.course_period {
+  label {
+    margin-right: 8px;
+    color: #333;
+  }
+
+  .form_input {
+    height: 34px;
+    border: 1px solid #e7e7e7;
+    width: 278px;
+    text-indent: 1em;
+  }
+
+  .form_input_min {
+    text-indent: 1em;
+    width: 130px;
+    height: 34px;
+    margin-right: 10px;
+    border: 1px solid #e7e7e7;
+  }
+}
+
+.upload_ctl {
+  .preview {
+    width: 200px;
+    height: 120px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    text-align: center;
+    margin-bottom: 10px;
+
+    i {
+      line-height: 120px;
+      font-size: 80px;
+      color: #ddd;
     }
   }
-  .upload_ctl{
-    .preview{
-      width: 200px;
-      height: 120px;
-      overflow: hidden;
-      background-color: #f5f5f5;
-      text-align: center;
-      margin-bottom: 10px;
-      i{
-        line-height: 120px;
-        font-size: 80px;
-        color: #ddd;
-      }
-    }
+}
+
+.ac_ctl {
+  .item_ac_op {
+    line-height: 30px;
   }
-  .ac_ctl{
-    .item_ac_op{
-      line-height: 30px;
-    }
-  }
+}
 </style>

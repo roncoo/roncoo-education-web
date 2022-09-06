@@ -5,11 +5,14 @@
         <div class="register_header">
           <div class="register_logo">
             <nuxt-link :to="{name: 'index'}">
-              <img v-if="webInfo && webInfo.logoImg" :src="webInfo.logoImg" alt="">
+              <img v-if="websiteInfo && websiteInfo.logoImg" :src="websiteInfo.logoImg" alt="">
             </nuxt-link>
           </div>
           <p>
-            已有账号，<nuxt-link :to="{name: 'login'}">立即登陆</nuxt-link><span /><nuxt-link :to="{name: 'index'}">返回首页</nuxt-link>
+            已有账号，
+            <nuxt-link :to="{name: 'login'}">立即登陆</nuxt-link>
+            <span />
+            <nuxt-link :to="{name: 'index'}">返回首页</nuxt-link>
           </p>
         </div>
         <div class="register_content">
@@ -67,6 +70,7 @@
 <script>
 import YButton from '~/components/common/CodeButton'
 import { updatePassword } from '~/api/account/user.js'
+
 export default {
   metaInfo() {
     return {
@@ -88,13 +92,13 @@ export default {
         newPassword: '',
         confirmPassword: ''
       },
-      webInfo: this.$store.state.webInfo,
+      websiteInfo: this.$store.state.websiteInfo,
       service: {}
     }
   },
   mounted() {
-    if (this.webInfo) {
-      this.service = this.webInfo
+    if (this.websiteInfo) {
+      this.service = this.websiteInfo
     }
   },
   methods: {
@@ -146,7 +150,8 @@ export default {
       this.$msgBox({
         content: msg,
         isShowCancelBtn: false
-      }).catch(() => {})
+      }).catch(() => {
+      })
     },
     resetPsw(e) {
       e.preventDefault()
@@ -185,7 +190,8 @@ export default {
           this.$msgBox({
             content: result.msg,
             isShowCancelBtn: false
-          }).catch(() => {})
+          }).catch(() => {
+          })
         }
       }).catch(() => {
         this.showMsg('系统繁忙，请稍后重试')
@@ -199,39 +205,48 @@ export default {
   .register {
     background: rgb(247, 247, 247);
     padding-bottom: 30px;
+
     .register_body {
       width: 900px;
       margin: 0 auto 30px;
     }
+
     .footer_text {
       text-align: center;
       font-size: 12px;
       color: #999;
       padding: 10px 0;
     }
+
     .register_header {
       height: 112px;
       padding-top: 30px;
       position: relative;
+
       .register_logo {
         position: absolute;
         top: 60px;
+
         img {
           height: 52px;
         }
       }
+
       p {
         font-size: 14px;
         text-align: right;
         height: 18px;
         line-height: 18px;
         margin-top: 48px;
+
         a {
           color: #0099FF;
+
           &:hover {
             text-decoration: none;
           }
         }
+
         span {
           display: inline-block;
           width: 1px;
@@ -243,11 +258,13 @@ export default {
         }
       }
     }
+
     .register_content {
       border-radius: 8px;
       background: #fff;
       min-height: 600px;
       margin-top: 20px;
+
       .register_title {
         border-radius: 8px 8px 0 0;
         height: 80px;
@@ -258,22 +275,26 @@ export default {
         color: #333;
       }
     }
+
     .m_center {
       width: 390px;
       margin: 30px auto;
     }
   }
+
   .prn_icon {
     width: 16px;
     height: 16px;
     position: relative;
     top: 3px;
   }
-  .form_group{
+
+  .form_group {
     width: 432px;
     margin: 20px auto 0;
     font-size: 14px;
-    .label{
+
+    .label {
       text-align: right;
       float: left;
       display: block;
@@ -281,10 +302,12 @@ export default {
       line-height: 36px;
       color: #333;
     }
-    .form_ctl{
+
+    .form_ctl {
       margin-left: 12px;
       float: left;
       position: relative;
+
       input {
         width: 250px;
         height: 46px;
@@ -292,11 +315,13 @@ export default {
         border-radius: 6px;
         font-size: 14px;
         margin-top: -5px;
+
         &.reset_yzm {
           width: 310px;
           padding-right: 110px;
         }
       }
+
       .submit_btn {
         width: 250px;
         background: rgb(213, 20, 35);
@@ -304,6 +329,7 @@ export default {
         color: #fff;
         cursor: pointer;
       }
+
       .yzm_btn {
         width: 100px;
         height: 46px;
@@ -317,19 +343,23 @@ export default {
         color: #fff;
         cursor: pointer;
         border: none;
+
         &:disabled {
           background: rgb(204, 204, 204);
         }
       }
+
       .err {
         color: rgb(213, 20, 35);
       }
     }
-    .text{
+
+    .text {
       color: #333;
       line-height: 36px;
     }
-    &:after{
+
+    &:after {
       content: '';
       display: block;
       clear: both;

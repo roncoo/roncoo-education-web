@@ -9,7 +9,7 @@ export default {
   head() {
     return {
       link: [
-        { hid: 'icon', rel: 'icon', type: 'image/x-icon', href: this.$store.state.webInfo.logoIco }
+        { hid: 'icon', rel: 'icon', type: 'image/x-icon', href: this.$store.state.websiteInfo.websiteIcon }
       ]
     }
   },
@@ -43,7 +43,7 @@ export default {
 <style>
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;

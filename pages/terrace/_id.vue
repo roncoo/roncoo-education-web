@@ -19,7 +19,7 @@
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/TerraceSide'
-import { aboutInfo } from '~/api/main.js'
+// import { aboutInfo } from '~/api/main.js'
 export default {
   components: {
     YHeader,
@@ -31,22 +31,14 @@ export default {
     return /^\d+$/.test(params.id)
   },
   async asyncData(context) {
-    const { data } = await aboutInfo({ navId: context.params.id })
-    if (data.code === 200) {
-      return {
-        artTitle: data.data.artTitle,
-        artDesc: data.data.artDesc
-      }
-    } else {
-      return {
-        artTitle: '',
-        artDesc: ''
-      }
+    return {
+      artTitle: '',
+      artDesc: ''
     }
   },
   data() {
     return {
-      webInfo: this.$store.state.webInfo,
+      websiteInfo: this.$store.state.websiteInfo,
       navId: '',
       artTitle: '',
       artDesc: ''
@@ -58,11 +50,11 @@ export default {
       meta: [
         {
           name: 'keywords',
-          content: this.webInfo.websiteKeyword
+          content: this.websiteInfo.websiteKeyword
         },
         {
           name: 'description',
-          content: this.webInfo.websiteDesc
+          content: this.websiteInfo.websiteDesc
         }
       ]
     }
@@ -78,29 +70,32 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
-  .person_body {
-    width: 1200px;
-    margin: 30px auto 0;
-    min-height: 1000px;
-  }
-  .person_content {
-    width: 1012px;
-    float: right;
-    background: #fff;
-    border-radius: 6px;
-    .person_title {
-      font-size: 14px;
-      font-weight: 700;
-      color: #333;
-      text-align: center;
-      line-height: 100px;
-    }
-  }
-  .person_info {
-    padding: 0px 50px 50px;
-    min-height: 400px;
+.person_body {
+  width: 1200px;
+  margin: 30px auto 0;
+  min-height: 1000px;
+}
+
+.person_content {
+  width: 1012px;
+  float: right;
+  background: #fff;
+  border-radius: 6px;
+
+  .person_title {
     font-size: 14px;
+    font-weight: 700;
     color: #333;
-    line-height: 28px;
+    text-align: center;
+    line-height: 100px;
   }
+}
+
+.person_info {
+  padding: 0px 50px 50px;
+  min-height: 400px;
+  font-size: 14px;
+  color: #333;
+  line-height: 28px;
+}
 </style>

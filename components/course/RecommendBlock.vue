@@ -22,7 +22,7 @@
           <p v-if="item.isFree" class="course_price course_text c_red">免费</p>
           <div v-else class="course_price course_text c_red">
             ￥{{ item.orgPrice }}
-            <p v-if="webInfo && webInfo.isEnableVip && item.fabPrice != item.orgPrice" class="c_gold font_12 mgt3">SVIP:{{ item.fabPrice ? '￥' + item.fabPrice : '免费' }}</p>
+            <p v-if="websiteInfo && websiteInfo.isEnableVip && item.fabPrice != item.orgPrice" class="c_gold font_12 mgt3">SVIP:{{ item.fabPrice ? '￥' + item.fabPrice : '免费' }}</p>
           </div>
         </div>
       </div>
@@ -31,6 +31,7 @@
 </template>
 <script>
 import { recommendCourse } from '~/api/course.js'
+
 export default {
   props: {
     categoryNo: {
@@ -67,7 +68,8 @@ export default {
           this.$msgBox({
             content: res.msg,
             isShowCancelBtn: false
-          }).catch(() => {})
+          }).catch(() => {
+          })
         }
       }).catch(() => {
         console.log('推荐课程')
@@ -90,53 +92,63 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .recommend_box {
-    color: #333;
-    background: #fff;
-    margin-top: 30px;
-    border-radius: 8px;
-    font-size: 14px;
-    padding-bottom: 20px;
-    .header {
-      padding-left: 20px;
-      line-height: 60px;
-      border-bottom: 1px solid #e4e4e4;
-    }
-    .course_item {
-      padding: 20px 20px 0;
-    }
-    .inline_box {
-      position: relative;
-      display: inline-block;
-    }
-    .img_box {
-      width: 120px;
-      height: 60px;
-    }
-    .course_img {
-      width: 100%;
-      height: 100%;
-      border-radius: 6px;
-    }
-    .course_info {
-      height: 60px;
-    }
-    .course_text {
-      width: 100px;
-      position: absolute;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .course_name {
-      top: 0;
-      &:hover {
-        color: #D51423;
-        text-decoration: none;
-      }
-    }
-    .course_price {
-      bottom: 0;
+.recommend_box {
+  color: #333;
+  background: #fff;
+  margin-top: 30px;
+  border-radius: 8px;
+  font-size: 14px;
+  padding-bottom: 20px;
+
+  .header {
+    padding-left: 20px;
+    line-height: 60px;
+    border-bottom: 1px solid #e4e4e4;
+  }
+
+  .course_item {
+    padding: 20px 20px 0;
+  }
+
+  .inline_box {
+    position: relative;
+    display: inline-block;
+  }
+
+  .img_box {
+    width: 120px;
+    height: 60px;
+  }
+
+  .course_img {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+  }
+
+  .course_info {
+    height: 60px;
+  }
+
+  .course_text {
+    width: 100px;
+    position: absolute;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .course_name {
+    top: 0;
+
+    &:hover {
+      color: #D51423;
+      text-decoration: none;
     }
   }
+
+  .course_price {
+    bottom: 0;
+  }
+}
 </style>
