@@ -60,8 +60,9 @@ export default {
   },
   mounted() {
     linkList().then(res => {
-      if (res.code === 200) {
-        this.friendList = res.data.websiteLinkList
+      console.log(res)
+      if (res) {
+        this.friendList = res
       } else {
         console.log('友情链接获取失败！')
       }

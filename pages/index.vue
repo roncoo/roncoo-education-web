@@ -25,7 +25,7 @@
                   <span v-if="openVip && that.courseDiscount != that.courseOriginal" class="font_12 padl_10">SVIP:{{ that.courseDiscount ? "￥" + that.courseDiscount.toFixed(2) : "免费" }}</span></span>
               </nuxt-link>
             </li>
-            <li v-for="thatLive in item.liveCourseList" :key="thatLive.id">
+            <li v-for="thatLive in item.courseList" :key="thatLive.id">
               <nuxt-link target="_blank" :to="{ name: 'live-id', params: { id: thatLive.id } }">
                 <div class="img_box">
                   <img :src="thatLive.courseLogo" alt="">
@@ -34,23 +34,13 @@
                     <p v-if="thatLive.endTime" style="font-size: 12px"> 有效期至：{{ thatLive.endTime }} </p>
                   </div>
                 </div>
-                <p>{{ thatLive.courseName }}（直播）</p>
+                <p>{{ thatLive.courseName }}</p>
                 <span v-if="thatLive.isFree" class="price_box">免费</span>
                 <span v-else class="price_box">￥{{ thatLive.courseOriginal.toFixed(2) }}
                   <span v-if="openVip && thatLive.courseDiscount != thatLive.courseOriginal" class="font_12 padl_10">
                     SVIP:{{ thatLive.courseDiscount ? "￥" + thatLive.courseDiscount.toFixed(2) : "免费" }}
                   </span>
                 </span>
-              </nuxt-link>
-            </li>
-            <li v-for="thatGroup in item.zoneListCombinaRefList" :key="thatGroup.id">
-              <nuxt-link target="_blank" :to="{ name: 'liveAndBunch', params: { id: thatGroup.id } }">
-                <div class="img_box">
-                  <img :src="thatGroup.courseLogo" alt="">
-                </div>
-                <p>{{ thatGroup.courseName }} (录播+直播)</p>
-                <span v-if="thatGroup.isFree" class="price_box">免费</span>
-                <span v-else class="price_box">￥{{ thatGroup.courseOriginal.toFixed(2) }}<span v-if=" openVip && thatGroup.courseDiscount != thatGroup.courseOriginal" class="font_12 padl_10">SVIP:{{ thatGroup.courseDiscount ? "￥" + thatGroup.courseDiscount.toFixed(2) : "免费" }}</span></span>
               </nuxt-link>
             </li>
           </ul>
@@ -128,6 +118,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.zoneData)
     if (this.websiteInfo && this.websiteInfo.isEnableVip) {
       this.openVip = true
     }
