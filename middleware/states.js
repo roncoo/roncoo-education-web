@@ -5,9 +5,8 @@ export default function({ route, req, res, store, next }) {
   // console.log(route)
   if (!store.state.websiteInfo || now.getTime() - store.state.websiteInfo.time > 300000) {
     // 获取站点信息
-    websiteInfo({ moduleId: 3 }).then(res => {
+    websiteInfo().then(res => {
       // console.log(res.data)
-      console.log('res.data==============')
       if (res.code === 200) {
         res.data.time = now.getTime()
         store.commit('SET_ITEMS', { key: 'websiteInfo', value: res.data })
@@ -22,7 +21,6 @@ export default function({ route, req, res, store, next }) {
     // 获取导航信息
     navList().then(res => {
       // console.log(res.data)
-      // console.log('nav==============')
       if (res.code === 200) {
         res.data.time = now.getTime()
         store.commit('SET_ITEMS', { key: 'navList', value: res.data })

@@ -33,42 +33,15 @@ const createHttp = (token) => {
   })
 
   http.interceptors.response.use(function(response) {
+    console.log(response)
     if (response.code === 200) {
       // console.log(response.data)
       return Promise.resolve(response.data)
     } else {
       console.warn(JSON.stringify(response.data))
-      try {
-        const d = JSON.parse(response.config.data || response.config.params || {})
-        if (d._No_dispose) {
-          return Promise.resolve(response.data)
-        }
-      } catch (error) {
-        console.error(error)
-      }
-      if (process.client) {
-        try {
-          const d = JSON.parse(response.config.data || response.config.params || {})
-          if (d.isShowErrTip !== false) {
-            // 过滤同时多个接口报token错误 会出现多个提示bug
-            const title = localStorage.getItem('___errmsg')
-            const time = localStorage.getItem('___errmsgTime')
-            const newtime = (new Date()).getTime()
-            if (title !== response.data.msg || (newtime - time) > 2000) {
-              localStorage.setItem('___errmsg', response.data.msg)
-              localStorage.setItem('___errmsgTime', newtime)
-            }
-            return Promise.reject(response.data)
-          } else {
-            return Promise.resolve(response.data)
-          }
-        } catch (error) {
-          console.error(response.data)
-          return Promise.resolve(response.data)
-        }
-      } else {
-        return Promise.resolve(response.data)
-      }
+
+      console.error(response.data)
+      return Promise.resolve(response.data)
     }
   }, function(error) {
     if (process.client) {
