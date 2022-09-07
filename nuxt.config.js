@@ -29,7 +29,12 @@ export default {
   ],
   router: {
     middleware: ['checkuser'],
-    extendRoutes() {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'custom',
+        path: '*',
+        component: resolve(__dirname, 'pages/index.vue')
+      })
     }
   },
   plugins: [
@@ -58,7 +63,7 @@ export default {
     postcss: null,
     parallel: true,
     transpile: [/^element-ui/],
-    extractCSS: { allChunks: true },
+    extractCSS: { ignoreOrder: true },
     extend(config, ctx) {
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
