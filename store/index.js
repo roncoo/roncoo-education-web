@@ -6,15 +6,11 @@ import config from '../config'
 const createStore = () => {
   return new Vuex.Store({
     state: () => ({
-      temporaryUrl: '', // 临时url
-      count: false,
-      websiteInfo: null, // 站点信息
+      tokenName: config.CLIENT.tokenName,
+      mainUrl: config.CLIENT.mainUrl,
       tokenInfo: '', // token信息
-      aboutList: null, // about列表
-      navList: { time: 0, list: [] }, // 导航信息
-      clientData: config.CLIENT, // 机构信息
-      activityData: null, // 课程活动信息
-      changeEwm: 1 // 隐藏小程序二维码
+      websiteInfo: null, // 站点信息
+      temporaryUrl: '' // 临时url
     }),
     mutations: mutations,
     actions: actions

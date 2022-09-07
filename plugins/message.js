@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import msgboxVue from '../components/Alert.vue'
+import msgboxVue from '../components/common/Alert.vue'
 
 const MessageBoxInstance = Vue.extend(msgboxVue)
 let currentMsg

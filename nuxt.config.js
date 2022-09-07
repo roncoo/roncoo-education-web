@@ -24,11 +24,13 @@ export default {
     ]
   },
   css: [
+    'element-ui/lib/theme-chalk/index.css',
     '@/assets/css/main.scss'
   ],
   router: {
     middleware: ['checkuser'],
-    extendRoutes() {}
+    extendRoutes() {
+    }
   },
   plugins: [
     '~/plugins/message.js',

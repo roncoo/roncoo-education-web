@@ -38,7 +38,7 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import RightTap from '~/components/common/RightTap'
 import { getSearchCourseList } from '~/api/course'
-import DPage from '~/components/Page'
+import DPage from '~/components/common/Page'
 
 export default {
   name: 'Search',
@@ -94,7 +94,7 @@ export default {
   },
   head() {
     return {
-      title: this.$store.state.clientData.name,
+      title: this.$store.state.websiteInfo.websiteName,
       meta: [
         {
           hid: 'keywords',

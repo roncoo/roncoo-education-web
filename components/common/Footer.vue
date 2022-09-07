@@ -5,7 +5,7 @@
         <ul>
           <li class="m_header">{{ item.navName }}</li>
           <li class="m_row" />
-          <li v-for="(that, num) in item.websiteNavList" :key="num"><a :href="clientData.mainUrl+'/terrace/'+that.id">{{ that.navName }}</a></li>
+          <li v-for="(that, num) in item.websiteNavList" :key="num"><a :href="mainUrl+'/terrace/'+that.id">{{ that.navName }}</a></li>
         </ul>
       </div>
       <div v-show="service" class="m_right">

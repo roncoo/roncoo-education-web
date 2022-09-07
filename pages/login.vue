@@ -14,9 +14,9 @@
           </div>
           <div v-if="tabp == 1" class="form_body">
             <form action="" @submit="loginSubmit">
-              <input v-model="obj.mobile" type="text" placeholder="请输入手机号或邮箱">
+              <input v-model="loginObj.mobile" type="text" placeholder="请输入手机号或邮箱">
               <div class="error_msg">{{ errTip1 }}</div>
-              <input v-model="obj.password" type="password" placeholder="6-20位密码，可用数字/字母/符号组合">
+              <input v-model="loginObj.password" type="password" placeholder="6-20位密码，可用数字/字母/符号组合">
               <div class="error_msg">{{ errTip2 }}</div>
               <input v-if="subState" type="submit" disabled="disabled" value="登录中···" class="btn">
               <input v-else type="submit" value="登录" class="btn">
@@ -27,15 +27,15 @@
           </div>
           <div v-if="tabp == 2" class="form_body r180">
             <form action="" @submit="regSubmit">
-              <input v-model="pobj.mobile" type="text" placeholder="请输入手机号">
+              <input v-model="registerObj.mobile" type="text" placeholder="请输入手机号">
               <div class="phone_yzm">
-                <input v-model="pobj.code" type="text" name="code" placeholder="请输入手机验证码" class="phone" maxlength="6">
-                <y-button :mobile="pobj.mobile" />
+                <input v-model="registerObj.code" type="text" name="code" placeholder="请输入手机验证码" class="phone" maxlength="6">
+                <y-button :mobile="registerObj.mobile" />
               </div>
-              <input v-model="pobj.password" type="password" placeholder="6-20位密码，可用数字/字母/符号组合">
-              <input v-model="pobj.repassword" type="password" placeholder="确认密码">
+              <input v-model="registerObj.mobilePwd" type="password" placeholder="6-20位密码，可用数字/字母/符号组合">
+              <input v-model="registerObj.repassword" type="password" placeholder="确认密码">
               <div class="mgt20 font_14">
-                <input id="tonyi" v-model="pobj.check" type="checkbox">
+                <input id="tonyi" v-model="registerObj.check" type="checkbox">
                 <label for="tonyi">我已经阅读并同意</label><a href="jvascript:" class="c_blue" @click="xieyi = true">《用户协议》</a>
               </div>
               <input v-if="subState" type="submit" disabled="disabled" value="提交中···" class="btn">
@@ -68,20 +68,20 @@
     <div v-if="xieyi" class="xieyi" @click.self="xieyi = false">
       <div class="xieyi_content">
         <div class="xieyi_title">用户协议</div>
-        <div v-if="service && service.userAgreement" class="xieyi_body" v-html="service.userAgreement" />
+        <div v-if="websiteInfo && websiteInfo.userAgreement" class="xieyi_body" v-html="websiteInfo.userAgreement" />
         <input type="button" class="xieyi_btn" value="确定" @click="xieyi = false">
       </div>
     </div>
     <div class="login_footer">
       <p>
-        <span v-html="service.copyright" />
+        <span v-html="websiteInfo.copyright" />
       </p>
       <p>
         <a href="http://www.doityun.com/" target="_blank" class="lingke_link">IT云提供计算服务</a>
-        <span v-if="service.icp">&nbsp;|&nbsp;</span>
-        <a href="http://www.miitbeian.gov.cn/" class="lingke_link" target="_blank">{{ service.icp }}</a>
-        <span v-if="service.prn">&nbsp;|&nbsp;</span>
-        <a v-if="service.prn" :href="'http://www.beian.gov.cn/portal/index'" target="_blank" class="lingke_link"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ service.prn }}</a>
+        <span v-if="websiteInfo.icp">&nbsp;|&nbsp;</span>
+        <a href="http://www.miitbeian.gov.cn/" class="lingke_link" target="_blank">{{ websiteInfo.icp }}</a>
+        <span v-if="websiteInfo.prn">&nbsp;|&nbsp;</span>
+        <a v-if="websiteInfo.prn" :href="'http://www.beian.gov.cn/portal/index'" target="_blank" class="lingke_link"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ websiteInfo.prn }}</a>
       </p>
     </div>
   </div>
@@ -89,7 +89,7 @@
 <script>
 import YHeader from '~/components/common/Header'
 import YButton from '~/components/common/CodeButton'
-import { register, userLogin } from '~/api/user.js'
+import { register, userLogin } from '@/api/login.js'
 
 export default {
   data() {
@@ -97,26 +97,19 @@ export default {
       tab: this.$route.query.tab || 1,
       tabp: this.$route.query.tab || 1,
       websiteInfo: this.$store.state.websiteInfo,
-      clientData: this.$store.state.clientData,
+      userInfo: this.$store.state.userInfo,
       subState: false, // 提交状态
-      xieyi: false,
-      service: {},
+      xieyi: false, // 用户协议
       errTip1: '',
       errTip2: '',
-      userInfo: this.$store.state.userInfo,
-      ipInfo: {},
-      obj: {
-        agent: '登录',
-        clientId: this.$store.state.clientData.id,
-        cookie: 'cookie',
-        ip: '127.0.0.0',
+      loginObj: {
         mobile: '',
         password: ''
       },
-      pobj: {
+      registerObj: {
         mobile: '',
         code: '',
-        password: '',
+        mobilePwd: '',
         repassword: '',
         check: false
       }
@@ -124,12 +117,12 @@ export default {
   },
   head() {
     return {
-      title: this.clientData.name + '-用户登录',
+      title: this.websiteInfo.websiteName + '-用户登录',
       meta: [
         {
           hid: 'keywords',
           name: 'keywords',
-          content: this.websiteInfo.websiteKeyword
+          content: this.websiteInfo.websiteName
         },
         {
           hid: 'description',
@@ -140,7 +133,6 @@ export default {
     }
   },
   methods: {
-    // ...mapMutations(['RECORD_TOKEN', 'INIT_USERINFO', 'SIGN_OUT', 'RECORD_USERINFO', 'GET_TEMPORARYURL']),
     signOut() {
       // this.SIGN_OUT();
       this.$store.commit('SIGN_OUT')
@@ -160,43 +152,32 @@ export default {
       }
       this.errTip1 = ''
       this.errTip2 = ''
-      if (!(/^1[3|4|5|8|7][0-9]\d{4,8}$/.test(this.obj.mobile.trim())) && !(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/).test(this.obj.mobile.trim())) {
+      if (!(/^1\d{10}$/.test(this.loginObj.mobile.trim())) && !(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/).test(this.loginObj.mobile.trim())) {
         this.errTip1 = '请输入正确手机号或者邮箱'
         return false
       }
-      if (this.obj.password.length < 6) {
+      if (this.loginObj.password.length < 6) {
         this.errTip2 = '请输入正确的账号或密码'
         return false
       }
-      this.obj.clientId = this.clientData.id
-      this.obj.city = this.ipInfo.city
-      this.obj.province = this.ipInfo.pro
-      this.obj.loginIp = this.ipInfo.ip
-      this.obj.os = this.getOsInfo().version
-      this.obj.browser = this.getBrowserInfo().name + this.getBrowserInfo().version
+      this.loginObj.os = this.getOsInfo().version
+      this.loginObj.browser = this.getBrowserInfo().name + this.getBrowserInfo().version
       this.$nuxt.$loading.start()
       this.subState = true
-      userLogin(this.obj).then(res => {
+      userLogin(this.loginObj).then(res => {
         this.subState = false
         this.$nuxt.$loading.finish()
-        if (res.code === 200) {
-          this.$store.commit('SET_TOKEN', res.data.token)
-          this.$store.commit('GET_TEMPORARYURL')
-          this.$store.dispatch('GET_USERINFO', store => {
-            this.userInfo = this.$store.state.userInfo
-            window.location.href = this.$store.state.temporaryUrl
-          })
-        } else {
-          this.errTip2 = res.data.msg
-        }
-      }).catch(() => {
-        this.subState = false
-        this.$nuxt.$loading.finish()
-        this.$msgBox({
-          content: '登录失败,请稍后再试',
-          isShowCancelBtn: false
-        }).catch(() => {
+        this.$store.commit('SET_TOKEN', res.token)
+        this.$store.commit('GET_TEMPORARYURL')
+        console.log(123)
+        this.$store.dispatch('GET_USERINFO', store => {
+          this.userInfo = this.$store.state.userInfo
+          window.location.href = this.$store.state.temporaryUrl
         })
+      }).catch((error) => {
+        console.log(error)
+        this.subState = false
+        this.$nuxt.$loading.finish()
       })
       return false
     },
@@ -268,7 +249,7 @@ export default {
       if (this.subState) {
         return false;
       }
-      if (!(/^1[3|4|5|8|7][0-9]\d{4,8}$/.test(this.pobj.mobile.trim())) || this.pobj.mobile.trim().length !== 11) {
+      if (!(/^1\d{10}$/.test(this.registerObj.mobile.trim())) || this.registerObj.mobile.trim().length !== 11) {
         this.$msgBox({
           content: '请输入正确手机',
           isShowCancelBtn: false
@@ -276,7 +257,7 @@ export default {
         })
         return false;
       }
-      if (!this.pobj.code || this.pobj.code.length !== 6) {
+      if (!this.registerObj.code || this.registerObj.code.length !== 6) {
         this.$msgBox({
           content: '请输入正确的手机验证码',
           isShowCancelBtn: false
@@ -284,7 +265,7 @@ export default {
         })
         return false;
       }
-      if (this.pobj.password.length < 6 || this.pobj.password.length > 16) {
+      if (this.registerObj.mobilePwd.length < 6 || this.registerObj.mobilePwd.length > 16) {
         this.$msgBox({
           content: '请输入6-16位的登录密码,区分大小写,不可有空格',
           isShowCancelBtn: false
@@ -292,7 +273,7 @@ export default {
         })
         return false;
       }
-      if (this.pobj.password !== this.pobj.repassword) {
+      if (this.registerObj.mobilePwd !== this.registerObj.repassword) {
         this.$msgBox({
           content: '两次输入密码不一致',
           isShowCancelBtn: false
@@ -300,7 +281,7 @@ export default {
         })
         return false;
       }
-      if (!this.pobj.check) {
+      if (!this.registerObj.check) {
         this.$msgBox({
           content: '请先阅读并同意用户协议',
           isShowCancelBtn: false
@@ -308,63 +289,40 @@ export default {
         })
         return false;
       }
-      // console.log(this.clientData)
-      this.pobj.agent = '12';
-      this.pobj.clientId = this.clientData.id;
-      this.pobj.cookie = '12';
-      this.pobj.ip = '12';
-      // console.log(this.pobj)
       this.$nuxt.$loading.start();
       this.subState = true;
-      register(this.pobj).then(res => {
+      register(this.registerObj).then(res => {
         this.$nuxt.$loading.finish();
         this.subState = false;
-        if (res.code === 200) {
-          this.$msgBox({
-            content: '注册成功！',
-            confirmBtnText: '立即登录',
-            isShowCancelBtn: false
-          }).then(() => {
-            this.changetab(1)
-          }).catch(() => {
-            this.changetab(1)
-          })
-          this.pobj = {
-            mobile: '',
-            code: '',
-            password: '',
-            repassword: '',
-            check: false
-          }
-        } else {
-          this.$msgBox({
-            content: res.data.msg,
-            isShowCancelBtn: false
-          }).catch(() => {
-          })
+        this.$msgBox({
+          content: '注册成功！',
+          confirmBtnText: '立即登录',
+          isShowCancelBtn: false
+        }).then(() => {
+          this.changetab(1)
+        }).catch(() => {
+          this.changetab(1)
+        })
+        this.registerObj = {
+          mobile: '',
+          code: '',
+          mobilePwd: '',
+          repassword: '',
+          check: false
         }
       }).catch(() => {
         this.$nuxt.$loading.finish();
         this.subState = false;
-        this.$msgBox({
-          content: '系统繁忙，请稍后重试',
-          isShowCancelBtn: false
-        }).catch(() => {
-        })
       })
     }
   },
   mounted() {
-    if (this.websiteInfo) {
-      this.service = this.websiteInfo
-    }
-    this.obj.clientId = 1;
     if (this.$route.query.t === 'login') {
       this.$store.commit('SIGN_OUT');
       this.userInfo = '';
       this.errTip1 = '未登录或登录超时,请重新登录';
     } else if (this.$route.query.t) {
-      window.location.href = this.clientData.mainUrl + '/index'
+      window.location.href = this.mainUrl + '/index'
     }
   },
   components: {

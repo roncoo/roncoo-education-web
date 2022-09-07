@@ -71,7 +71,7 @@ export default {
     return {
       search: '',
       websiteInfo: this.$store.state.websiteInfo,
-      mainUrl: this.$store.state.clientData.mainUrl,
+      mainUrl: this.$store.state.mainUrl,
       userInfo: '',
       name: '',
       isTeacher: false,

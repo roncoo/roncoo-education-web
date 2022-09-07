@@ -10,9 +10,9 @@
         <div class="icon iconfont c_green minIcon">&#xe69f;<span class="c_333">订单支付成功!</span></div>
         <!-- <div class="tip">支付成功</div> -->
         <div class="center mgt20">
-          <a v-if="data.courseCategory == 1" :href="clientData.mainUrl + '/view/'+data.courseId" class="solid_btn">立即学习</a>
-          <a v-else-if="data.courseCategory == 2" :href="clientData.mainUrl + '/live/detail/'+data.courseId" class="solid_btn">立即学习</a>
-          <a v-else-if="data.courseCategory == 3" :href="clientData.mainUrl + '/live/bunch/'+data.courseId" class="solid_btn">立即学习</a>
+          <a v-if="data.courseCategory == 1" :href="mainUrl + '/view/'+data.courseId" class="solid_btn">立即学习</a>
+          <a v-else-if="data.courseCategory == 2" :href="mainUrl + '/live/detail/'+data.courseId" class="solid_btn">立即学习</a>
+          <a v-else-if="data.courseCategory == 3" :href="mainUrl + '/live/bunch/'+data.courseId" class="solid_btn">立即学习</a>
           <a v-else class="solid_btn" href="javascript:" @click="reload">确定</a>
         </div>
         <div v-if="websiteInfo && websiteInfo.weixinXcx" class="ewm_img">

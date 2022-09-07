@@ -2,7 +2,8 @@
   <button class="yzm_btn" type="button" :disabled="disabled" @click="getCode">{{ txt }}</button>
 </template>
 <script>
-import { getMobileCode } from '~/api/user.js'
+import { getMobileCode } from '@/api/login.js'
+
 export default {
   props: {
     mobile: {
@@ -64,18 +65,19 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  button{
-    line-height: 33px;
-    padding: 0;
-    width: 100px;
-    background-color: #107bc5;
-    border: 1px solid #0f75bb;
-    color: #fff;
-    border-radius: 3px;
-    &:disabled{
-      background-color: #ccc;
-      border-color: #ddd;
-      color: #aaa;
-    }
+button {
+  line-height: 33px;
+  padding: 0;
+  width: 100px;
+  background-color: #107bc5;
+  border: 1px solid #0f75bb;
+  color: #fff;
+  border-radius: 3px;
+
+  &:disabled {
+    background-color: #ccc;
+    border-color: #ddd;
+    color: #aaa;
   }
+}
 </style>

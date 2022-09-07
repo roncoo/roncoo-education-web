@@ -29,11 +29,8 @@
               </div>
             </div>
             <div class="view_teacher">
-              <span class="text_b">讲师:</span>{{ courseInfo.lecturer.lecturerName }}
+              <span class="text_b">讲师:</span>{{ teacherInfo }}
             </div>
-            <!-- <div class="view_teacher mgt20" v-else>
-              <span class="text_b">有效期:</span>永久
-            </div> -->
             <div class="view_teacher mgt20">
               <span class="text_b">购买人数:</span>{{ courseInfo.countBuy }} 人
             </div>
@@ -54,7 +51,7 @@
 </template>
 <script>
 import YHeader from '../common/Header'
-import DPay from '~/components/PayModal'
+import DPay from '~/components/common/PayModal'
 
 export default {
   components: {
@@ -63,6 +60,10 @@ export default {
   },
   props: {
     courseInfo: {
+      type: Object,
+      default: null
+    },
+    teacherInfo: {
       type: Object,
       default: null
     }

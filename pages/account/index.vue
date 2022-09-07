@@ -112,9 +112,10 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DUpload from '~/components/account/Upload'
-import { getUserInfo } from '~/api/user.js'
+import { getUserInfo } from '@/api/login.js'
 import { updateUserEducationInf } from '~/api/account/user.js'
 import { myHttp } from '~/utils/myhttp.js'
+
 export default {
   components: {
     YHeader,
@@ -171,10 +172,14 @@ export default {
       myHttp.call(this, {
         method: updateUserEducationInf,
         params: this.obj,
-        confirm: () => { window.location.reload() },
-        cancel: () => { window.location.reload() }
+        confirm: () => {
+          window.location.reload()
+        },
+        cancel: () => {
+          window.location.reload()
+        }
       }).then(res => {
-        this.$store.commit('SET_USER', res.data)
+        this.$store.commit('SET_USER', res)
         this.$msgBox({
           content: '修改成功',
           isShowCancelBtn: false
@@ -192,19 +197,21 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
-  @import '~/assets/css/account.scss';
-  .upload_ctl{
-    .preview{
-      width: 100px;
-      height: 100px;
-      background-color: #f5f5f5;
-      text-align: center;
-      margin-bottom: 10px;
-      i{
-        line-height: 120px;
-        font-size: 80px;
-        color: #ddd;
-      }
+@import '~/assets/css/account.scss';
+
+.upload_ctl {
+  .preview {
+    width: 100px;
+    height: 100px;
+    background-color: #f5f5f5;
+    text-align: center;
+    margin-bottom: 10px;
+
+    i {
+      line-height: 120px;
+      font-size: 80px;
+      color: #ddd;
     }
   }
+}
 </style>

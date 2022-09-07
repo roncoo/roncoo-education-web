@@ -1,17 +1,17 @@
 <template>
   <div class="courselist_page">
     <y-header />
-    <y-header-list :class-list="classList" :four-now="free" :course-type="'course'" />
+    <y-header-list :class-list="classList" />
     <div class="course_content">
       <ul class="clearfix">
         <li v-for="(item, index) in pageObj.list" :key="index">
-          <nuxt-link target="_blank" :to="{name: 'view-id', params: {id: item.id}}" class="course_info">
+          <nuxt-link target="_blank" :to="{name: 'course-id', params: {id: item.id}}" class="course_info">
             <div class="img_box">
               <img class="course_img" :src="item.courseLogo" alt="">
             </div>
             <p>{{ item.courseName }}</p>
-            <span v-if="item.isFree" class="price_box">免费</span>
-            <span v-else class="price_box">￥{{ item.courseOriginal.toFixed(2) }}<span v-if="openVip && item.courseOriginal !== item.courseDiscount" class="font_12 padl_10">SVIP:{{ item.courseDiscount ? '￥' + item.courseDiscount.toFixed(2) : '免费' }}</span></span>
+            <span v-if="item.coursePrice === 0" class="price_box">免费</span>
+            <span v-else class="price_box">￥{{ item.coursePrice }}</span>
           </nuxt-link>
         </li>
       </ul>
@@ -24,10 +24,11 @@
 <script>
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
-import YHeaderList from '~/components/list/HeaderList'
-import DPage from '~/components/Page'
+import YHeaderList from '~/components/course/HeaderList'
+import DPage from '~/components/common/Page'
 import RightTap from '~/components/common/RightTap'
-import { courseClass, courseList } from '~/api/course.js'
+import { courseList } from '~/api/course.js'
+import { categoryList } from '~/api/main.js'
 import { courseChange } from '~/utils/commonfun.js'
 
 export default {
@@ -40,73 +41,18 @@ export default {
   },
   async asyncData(context) {
     const dataObj = {}
-    const clientNo = context.store.state.clientData.no
-    dataObj.clientNo = clientNo
     dataObj.websiteInfo = context.store.state.websiteInfo
-    const categoryId1 = context.query.categoryno1 || ''
-    const categoryId2 = context.query.categoryno2 || ''
-    const categoryId3 = context.query.categoryno3 || ''
-    let isFree = ''
-    let free = 3
-    let isVipFree = ''
-    if (context.query.four) {
-      const four = context.query.four
-      if (parseInt(four) === 3) {
-        isFree = ''
-        isVipFree = ''
-        free = 3
-      } else if (parseInt(four) === 2) {
-        isFree = 0
-        isVipFree = ''
-        free = 2
-      } else if (parseInt(four) === 1) {
-        isFree = 1
-        isVipFree = ''
-        free = 1
-      } else if (parseInt(four) === 4) {
-        isVipFree = 1
-        isFree = ''
-        free = 4
-      }
-    } else {
-      isFree = ''
-      free = 3
-    }
     const obj = {
-      categoryId1,
-      categoryId2,
-      categoryId3,
-      orgNo: clientNo,
       pageCurrent: 1,
-      pageSize: 20,
-      isFree,
-      isVipFree
-    }
-    let pageObj = {
-      list: [],
-      pageCurrent: '',
-      pageSize: '',
-      totalCount: '',
-      totalPage: ''
-    }
-    const classObj = {
-      categoryType: 5,
-      orgNo: clientNo
+      pageSize: 20
     }
     try {
-      const allData = await Promise.all([courseList(obj), courseClass(classObj)])
-      // 课程列表
-      const courseData = allData[0]
-      if (courseData.data.list.length > 0) {
-        pageObj = courseData.data
-      }
+      const allData = await Promise.all([courseList(obj), categoryList()])
+      // 课程分页
+      dataObj.pageObj = allData[0]
       // 分类
-      const classData = await allData[1]
-      const classList = classData.data.courseCategoryList || []
+      dataObj.classList = await allData[1]
       dataObj.obj = obj
-      dataObj.pageObj = pageObj
-      dataObj.classList = classList
-      dataObj.free = free
       return dataObj
     } catch (e) {
       context.error({ message: 'Data not found', statusCode: 404 })
@@ -122,7 +68,7 @@ export default {
   },
   head() {
     return {
-      title: this.$store.state.clientData.name,
+      title: this.$store.state.websiteInfo.websiteName,
       meta: [
         {
           hid: 'keywords',

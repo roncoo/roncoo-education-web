@@ -38,9 +38,10 @@
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
-import DPage from '~/components/Page'
+import DPage from '~/components/common/Page'
 import { studyList } from '~/api/account/user.js'
 import { myHttp } from '~/utils/myhttp.js'
+
 export default {
   components: {
     YHeader,
@@ -88,5 +89,5 @@ export default {
 }
 </script>
 <style lang="scss">
-  @import '~/assets/css/account.scss';
+@import '~/assets/css/account.scss';
 </style>

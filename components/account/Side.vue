@@ -35,7 +35,7 @@
 </template>
 <script>
 import bq from 'bq-static'
-import { getUserInfo } from '~/api/user.js'
+import { getUserInfo } from '@/api/login.js'
 
 export default {
   props: {

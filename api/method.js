@@ -1,12 +1,11 @@
 import * as axios from 'axios'
+import { Message } from 'element-ui'
 import cookie from '../utils/cookies'
 import config from '../config'
 
 const createHttp = (token) => {
   const options = {}
-  const head = {
-    orgno: config.CLIENT.no
-  }
+  const head = {}
   if (process.server) {
     if (token) {
       head.token = token
@@ -34,7 +33,30 @@ const createHttp = (token) => {
     if (res.code === 200) {
       return Promise.resolve(res.data)
     } else {
-      return Promise.resolve(res.data)
+      if (process.client) {
+        try {
+          const d = JSON.parse(response.config.data || response.config.params || {})
+          if (d.isShowErrTip !== false) {
+            // 过滤同时多个接口报token错误 会出现多个提示bug
+            const title = localStorage.getItem('___errmsg')
+            const time = localStorage.getItem('___errmsgTime')
+            const newtime = (new Date()).getTime()
+            if (title !== response.data.msg || (newtime - time) > 2000) {
+              localStorage.setItem('___errmsg', response.data.msg)
+              localStorage.setItem('___errmsgTime', newtime)
+              Message.error(response.data.msg)
+            }
+            return Promise.reject(response.data)
+          } else {
+            return Promise.resolve(response.data)
+          }
+        } catch (error) {
+          console.error(response.data)
+          return Promise.resolve(response.data)
+        }
+      } else {
+        return Promise.resolve(response.data)
+      }
     }
   }, function(error) {
     if (process.client) {

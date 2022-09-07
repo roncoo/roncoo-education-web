@@ -15,7 +15,7 @@
         <div class="zone_body">
           <ul class="clearfix course_list">
             <li v-for="(that, int) in item.courseList" :key="int">
-              <nuxt-link target="_blank" :to="{ name: 'view-id', params: { id: that.id } }">
+              <nuxt-link target="_blank" :to="{ name: 'course-id', params: { id: that.id } }">
                 <div class="img_box">
                   <img :src="that.courseLogo" alt="">
                 </div>
@@ -34,7 +34,7 @@
 </template>
 <script>
 import YHeader from '~/components/common/Header'
-import YBanner from '~/components/index/Banner'
+import YBanner from '~/components/common/Banner'
 import YFooter from '~/components/common/Footer'
 import RightTap from '~/components/common/RightTap'
 import { carouselList, categoryList, zoneList } from '~/api/main.js'
@@ -68,7 +68,7 @@ export default {
   },
   head() {
     return {
-      title: this.$store.state.clientData.name,
+      title: this.$store.state.websiteInfo.websiteName,
       meta: [
         {
           hid: 'keywords',

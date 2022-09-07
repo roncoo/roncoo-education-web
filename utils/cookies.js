@@ -1,5 +1,6 @@
 import VueCookie from 'vue-cookie'
-import store from '../store/'
+import config from '@/config'
+
 export default {
   // 获取服务端cookie
   getInServer: function(req) {
@@ -13,22 +14,18 @@ export default {
   // 获取客户端cookie
   getInClient: function(key) {
     // let clent = store().state.clientData;
-    // console.log(clent)
     const tokenInfo = VueCookie.get(key)
     return tokenInfo
   },
   // 获取客户端cookie
   setInClient: function({ key, val }) {
-    const clent = store().state.clientData
-    VueCookie.set(key, val, { expires: 1, domain: clent.domain })
+    VueCookie.set(key, val, { expires: 1, domain: config.CLIENT.domain })
     // Cookie.set(key, val, {expires: 1, domain: clent.domain})
   },
   // 删除客户端cookie
   delInClient: function(key) {
     // fix logout bug
-    const clent = store().state.clientData
-    // console.log(clent)
-    VueCookie.delete(key, { domain: clent.domain })
+    VueCookie.delete(key, { domain: config.CLIENT.domain })
     // Cookie.remove(key)
   }
 }

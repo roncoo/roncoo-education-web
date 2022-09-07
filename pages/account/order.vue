@@ -60,9 +60,10 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DPaymodal from '~/components/account/PayModal'
-import { orderList, orderClose } from '~/api/account/course.js'
-import DPage from '~/components/Page'
+import { orderClose, orderList } from '~/api/account/course.js'
+import DPage from '~/components/common/Page'
 import { myHttp } from '~/utils/myhttp.js'
+
 export default {
   components: {
     YHeader,
@@ -148,108 +149,128 @@ export default {
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
 @import '~/assets/css/account.scss';
-  .person_info {
-    padding: 25px;
-    min-height: 400px;
+
+.person_info {
+  padding: 25px;
+  min-height: 400px;
+}
+
+.order_content {
+  border-bottom: 2px solid rgba(245, 245, 245, 1);
+  margin-top: 20px;
+  position: relative;
+
+  &:first-child {
+    margin-top: 0;
   }
-  .order_content {
-    border-bottom: 2px solid rgba(245, 245, 245, 1);
-    margin-top: 20px;
-    position: relative;
-    &:first-child {
-      margin-top: 0;
-    }
+}
+
+.order_title {
+  line-height: 36px;
+  padding-left: 20px;
+  background: rgba(245, 245, 245, 1);
+  font-size: 14px;
+  color: #999;
+
+  .order_type {
+    margin-right: 10px;
+    color: #0099FF;
   }
-  .order_title {
-    line-height: 36px;
-    padding-left: 20px;
-    background: rgba(245, 245, 245, 1);
+
+  .time {
+    margin-left: 30px;
+  }
+}
+
+.order_body {
+  margin: 15px 0;
+}
+
+.body_left {
+  padding: 0 20px;
+  float: left;
+  // position: relative;
+  .img_box {
+    width: 120px;
+    height: 59px;
+    display: inline-block;
+  }
+
+  img {
+    width: 120px;
+    height: 59px;
+  }
+
+  p {
+    // position: absolute;
+    width: 336px;
+    white-space: inherit;
+    margin-left: 10px;
+    // left: 160px;
     font-size: 14px;
     color: #999;
-    .order_type {
-      margin-right: 10px;
+  }
+}
+
+.body_right {
+  float: right;
+
+  li {
+    float: left;
+    height: 59px;
+    width: 100px;
+    text-align: center;
+    border-left: 2px solid rgba(245, 245, 245, 1);
+    font-size: 14px;
+    color: #999;
+
+    &.alipay {
       color: #0099FF;
     }
-    .time {
-      margin-left: 30px;
+
+    &.money {
+      color: #D51423;
     }
-  }
-  .order_body {
-    margin: 15px 0;
-  }
-  .body_left {
-    padding: 0 20px;
-    float: left;
-    // position: relative;
-    .img_box {
-      width: 120px;
-      height: 59px;
-      display: inline-block;
-    }
-    img {
-      width: 120px;
-      height: 59px;
-    }
-    p {
-      // position: absolute;
-      width: 336px;
-      white-space: inherit;
-      margin-left: 10px;
-      // left: 160px;
-      font-size: 14px;
-      color: #999;
-    }
-  }
-  .body_right {
-    float: right;
-    li {
-      float: left;
-      height: 59px;
-      width: 100px;
+
+    .cancel {
+      display: block;
       text-align: center;
-      border-left: 2px solid rgba(245, 245, 245, 1);
-      font-size: 14px;
+      margin-top: 5px;
       color: #999;
-      &.alipay {
-        color: #0099FF;
-      }
-      &.money {
+
+      &:hover {
         color: #D51423;
       }
-      .cancel {
-        display: block;
-        text-align: center;
-        margin-top: 5px;
-        color: #999;
-        &:hover {
-          color: #D51423;
-        }
+    }
+
+    .go_btn {
+      display: block;
+      width: 76px;
+      height: 30px;
+      margin-left: 10px;
+      line-height: 30px;
+      background: #fff;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      color: #999;
+      border: 1px solid #999;
+
+      &.go_pay {
+        border-color: orange;
+        color: orange;
       }
-      .go_btn {
-        display: block;
-        width: 76px;
-        height: 30px;
-        margin-left: 10px;
-        line-height: 30px;
-        background: #fff;
-        border-radius: 6px;
-        font-size: 14px;
-        cursor: pointer;
-        color: #999;
-        border: 1px solid #999;
-        &.go_pay {
-          border-color: orange;
-          color: orange;
-        }
-        &:hover {
-          color: #D51423;
-          border-color: #D51423;
-        }
+
+      &:hover {
+        color: #D51423;
+        border-color: #D51423;
       }
     }
   }
-  .page {
-     margin-bottom: 20px;
-     margin-top: 10px;
-  }
+}
+
+.page {
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
 </style>

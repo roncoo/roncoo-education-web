@@ -37,7 +37,7 @@
   </div>
 </template>
 <script>
-import { courseClass } from '~/api/course.js'
+import { categoryList } from '~/api/main.js'
 
 export default {
   props: {
@@ -157,13 +157,10 @@ export default {
       }
     },
     getCourseClass() {
-      courseClass({
-        categoryType: 5,
-        orgNo: this.clientData.no
-      }).then(res => {
-        if (res.code === 200 && res.data.list.length > 0) {
+      categoryList().then(res => {
+        if (res) {
           // eslint-disable-next-line
-          this.classList = res.data.list
+          this.classList = res
           this.getNextClass()
         } else {
           // eslint-disable-next-line

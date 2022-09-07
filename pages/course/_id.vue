@@ -1,7 +1,7 @@
 <template>
   <div class="course_detail">
     <y-watch-video v-if="courseInfo.isPay" ref="watchVideo" :course-info="courseInfo" :now-no="nowPeriodNo" @playfunc="videoPlay" />
-    <y-display v-else ref="watchVideo" :course-info="courseInfo" />
+    <y-display v-else ref="watchVideo" :course-info="courseInfo" :teacher-nfo="teacherInfo" />
     <div class=" detail_info detail_box clearfix">
       <div class="layout_left">
         <ul class="course_tab clearfix">
@@ -21,12 +21,12 @@
           <span class="head">讲师简介</span>
           <div class="teacher_msg">
             <div class="teacher_msg_right">
-              <img v-if="teacherInfo.headImgUrl" class="teacher_phone" :src="teacherInfo.headImgUrl" alt="">
-              <img v-else class="teacher_phone" src="~/assets/image/friend.jpg" alt="">
+              <!--              <img v-if="teacherInfo.lecturerHead" class="teacher_phone" :src="teacherInfo.lecturerHead" alt="">-->
+              <img class="teacher_phone" src="~/assets/image/friend.jpg" alt="">
               <div class="teacher_name">
-                {{ teacherInfo.lecturerName }}
+                {{ teacherInfo }}
               </div>
-              <div class="info_box" v-html="teacherInfo.introduce" />
+              <div class="info_box" v-html="teacherInfo" />
             </div>
           </div>
         </div>
@@ -40,7 +40,7 @@ import YDisplay from '~/components/course/Display'
 import YFooter from '~/components/common/Footer'
 import YSyllabus from '~/components/course/Syllabus'
 import YWatchVideo from '~/components/course/WatchVideo'
-import { chapterSign, courseDetail, userCourseDetail } from '~/api/course.js'
+import { chapterSign, courseDetail } from '~/api/course.js'
 
 export default {
   components: {
@@ -54,36 +54,17 @@ export default {
     return /^\d+$/.test(params.id)
   },
   async asyncData(context) {
-    const tk = context.store.state.tokenInfo
     try {
       const result = {}
-      if (tk) {
-        const { data } = await userCourseDetail({ courseId: context.params.id }, tk)
-        if (data.code === 200) {
-          result.courseInfo = data
-          result.teacherInfo = data.lecturer
-          result.isbuy = false
-          result.isLogin = false
-        } else if (data.code >= 300 && data.code <= 400) {
-          // context.redirect('login');
-          context.store.dispatch('REDIRECT_LOGIN')
-        } else {
-          result.courseInfo = null
-        }
-      } else {
-        const { data } = await courseDetail({ courseId: context.params.id })
-        if (data.code === 200) {
-          result.courseInfo = data
-          result.teacherInfo = data.lecturer
-          result.isbuy = false
-          result.isLogin = false
-        } else {
-          result.courseInfo = null
-        }
+      const courseData = await courseDetail({ courseId: context.params.id })
+      result.courseInfo = courseData
+      if (courseData.lecturerResp) {
+        result.teacherInfo = courseData.lecturerResp
       }
       return result
     } catch (e) {
-      context.error({ message: 'User not found', statusCode: 404 })
+      console.error('222')
+      context.error({ message: 'Data not found', statusCode: 404 })
     }
   },
   data() {
