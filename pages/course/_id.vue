@@ -1,19 +1,18 @@
 <template>
   <div class="course_detail">
-    <y-watch-video v-if="courseInfo.isPay" ref="watchVideo" :course-info="courseInfo" :now-no="nowPeriodNo" @playfunc="videoPlay" />
-    <y-display v-else ref="watchVideo" :course-info="courseInfo" :teacher-nfo="teacherInfo" />
+    <y-study v-if="courseInfo.isPay" ref="watchVideo" :course-info="courseInfo" :play-vid="playVid" @playfunc="videoPlay" />
+    <y-detail v-else ref="watchVideo" :course-info="courseInfo" :teacher-info="teacherInfo" />
     <div class=" detail_info detail_box clearfix">
       <div class="layout_left">
         <ul class="course_tab clearfix">
           <li :class="{on: tab == 'info'}"><a href="javascript:" @click="tab = 'info'">课程介绍</a></li>
-          <li :class="{on: tab == 'big'}"><a href="javascript:" @click="tab = 'big'">录播课程</a></li>
+          <li :class="{on: tab == 'big'}"><a href="javascript:" @click="tab = 'big'">课程目录</a></li>
         </ul>
         <div v-if="tab == 'info'" class="content_info">
           <div class="introduce" v-html="courseInfo.introduce" />
-          <y-syllabus :list="courseInfo.chapterList" :now-no="nowPeriodNo" @playfunc="videoPlay" />
         </div>
         <div v-if="tab == 'big'" class="content_info">
-          <y-syllabus :list="courseInfo.chapterList" :now-no="nowPeriodNo" @playfunc="videoPlay" />
+          <y-catalog :list="courseInfo.chapterRespList" :play-vid="playVid" @playfunc="videoPlay" />
         </div>
       </div>
       <div class="layout_right">
@@ -21,12 +20,10 @@
           <span class="head">讲师简介</span>
           <div class="teacher_msg">
             <div class="teacher_msg_right">
-              <!--              <img v-if="teacherInfo.lecturerHead" class="teacher_phone" :src="teacherInfo.lecturerHead" alt="">-->
-              <img class="teacher_phone" src="~/assets/image/friend.jpg" alt="">
-              <div class="teacher_name">
-                {{ teacherInfo }}
-              </div>
-              <div class="info_box" v-html="teacherInfo" />
+              <img v-if="teacherInfo.lecturerHead" class="teacher_phone" :src="teacherInfo.lecturerHead" alt="">
+              <img v-else class="teacher_phone" src="~/assets/image/friend.jpg" alt="">
+              <div class="teacher_name">{{ teacherInfo.lecturerName }}</div>
+              <div class="info_box" v-html="teacherInfo.introduce" />
             </div>
           </div>
         </div>
@@ -36,18 +33,18 @@
   </div>
 </template>
 <script>
-import YDisplay from '~/components/course/Display'
+import YDetail from '@/components/course/Detail'
 import YFooter from '~/components/common/Footer'
-import YSyllabus from '~/components/course/Syllabus'
-import YWatchVideo from '~/components/course/WatchVideo'
+import YCatalog from '@/components/course/Catalog'
+import YStudy from '@/components/course/Study'
 import { chapterSign, courseDetail } from '~/api/course.js'
 
 export default {
   components: {
     YFooter,
-    YDisplay,
-    YSyllabus,
-    YWatchVideo
+    YDetail,
+    YCatalog,
+    YStudy
   },
   validate({ params }) {
     // 必须是number类型
@@ -63,19 +60,18 @@ export default {
       }
       return result
     } catch (e) {
-      console.error('222')
       context.error({ message: 'Data not found', statusCode: 404 })
     }
   },
   data() {
     return {
       tab: 'info',
-      nowPeriodNo: '' // 当前播放章节
+      playVid: '' // 当前播放章节
     }
   },
   head() {
     return {
-      title: '课程详情'
+      title: this.courseInfo.courseName
     }
   },
   mounted() {
@@ -84,7 +80,7 @@ export default {
     videoPlay(data) {
       if (this.courseInfo.isPay || data.isFree) {
         window.scrollTo(0, 0)
-        this.nowPeriodNo = data.id
+        this.playVid = data.id
         chapterSign({
           ip: 'string',
           periodId: data.id,

@@ -52,8 +52,9 @@
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
-import YButton from '~/components/common/CodeButton'
+import YButton from '@/components/common/Code'
 import { updatePassword } from '~/api/account/user.js'
+
 export default {
   components: {
     YHeader,
@@ -83,7 +84,8 @@ export default {
       this.$msgBox({
         content: msg,
         isShowCancelBtn: false
-      }).catch(() => {})
+      }).catch(() => {
+      })
     },
     regSubmit: function(e) {
       e.preventDefault()
@@ -127,7 +129,8 @@ export default {
             this.$msgBox({
               content: result.msg,
               isShowCancelBtn: false
-            }).catch(() => {})
+            }).catch(() => {
+            })
           }
         }
       }).catch(msg => {

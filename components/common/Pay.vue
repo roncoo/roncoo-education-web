@@ -7,8 +7,8 @@
         <a href="javascript:" class="close iconfont" @click="close()">&#xe616;</a>
       </div>
       <div class="modal_body">
-        <div v-if="orderInfo.payType === 2" class="tip">支付宝支付 {{ courseData.courseOriginal.toFixed(2) }}元</div>
-        <div v-else class="tip">微信支付 {{ courseData.courseOriginal.toFixed(2) }}元</div>
+        <div v-if="orderInfo.payType === 2" class="tip">支付宝支付 {{ courseData.coursePrice.toFixed(2) }}元</div>
+        <div v-else class="tip">微信支付 {{ courseData.coursePrice.toFixed(2) }}元</div>
         <div id="qrcode" class="code">
           <canvas id="canvas" />
         </div>
@@ -40,7 +40,7 @@
                 <div class="name">{{ courseData.courseName }}</div>
               </div>
             </td>
-            <td class="c_orange">¥{{ courseData.courseOriginal.toFixed(2) }}</td>
+            <td class="c_orange">¥{{ courseData.coursePrice.toFixed(2) }}</td>
           </tr>
         </table>
         <div class="remark">
@@ -96,7 +96,7 @@
   </div>
 </template>
 <script>
-import { orderSave, orderInfo } from '~/api/order.js'
+import { orderInfo, orderSave } from '~/api/order.js'
 import QRCode from 'qrcode'
 
 export default {

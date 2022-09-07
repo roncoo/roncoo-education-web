@@ -36,7 +36,7 @@
 import YHeader from '~/components/common/Header'
 import YBanner from '~/components/common/Banner'
 import YFooter from '~/components/common/Footer'
-import RightTap from '~/components/common/RightTap'
+import RightTap from '@/components/common/Top'
 import { carouselList, categoryList, zoneList } from '~/api/main.js'
 
 export default {

@@ -24,9 +24,9 @@
 <script>
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
-import YHeaderList from '~/components/course/HeaderList'
+import YHeaderList from '@/components/course/Choose'
 import DPage from '~/components/common/Page'
-import RightTap from '~/components/common/RightTap'
+import RightTap from '@/components/common/Top'
 import { courseList } from '~/api/course.js'
 import { categoryList } from '~/api/main.js'
 import { courseChange } from '~/utils/commonfun.js'

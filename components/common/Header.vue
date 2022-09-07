@@ -3,12 +3,8 @@
     <div v-show="!hideTop" class="h_top">
       <div class="h_top_body">
         <ul v-show="userInfo" class="top_list clearfix">
-          <li><a :href="mainUrl+'/recruit'">讲师招募</a></li>
-          <li v-show="isTeacher">
-            <nuxt-link :to="{name: 'account-teacher-course'}">课程管理</nuxt-link>
-          </li>
           <li class="s_left">
-            <nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link>
+            <nuxt-link :to="{name: 'account-course'}">我的课程</nuxt-link>
           </li>
           <li class="s_left">
             <nuxt-link :to="{name: 'account'}">{{ userInfo.mobile }}</nuxt-link>
@@ -73,8 +69,6 @@ export default {
       websiteInfo: this.$store.state.websiteInfo,
       mainUrl: this.$store.state.mainUrl,
       userInfo: '',
-      name: '',
-      isTeacher: false,
       navList: this.$store.state.navList,
       isNow: ''
     }
@@ -84,12 +78,6 @@ export default {
     this.search = this.searchText
     this.isNow = this.$route.path
     this.userInfo = this.$store.state.userInfo
-    if (this.$store.state.tokenInfo && this.userInfo) {
-      this.name = this.userInfo.mobile
-      if (this.userInfo.userType === 2 || this.userInfo.userType === 4) {
-        this.isTeacher = true
-      }
-    }
   },
   methods: {
     handleSearch() {

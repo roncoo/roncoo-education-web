@@ -88,7 +88,7 @@
 </template>
 <script>
 import YHeader from '~/components/common/Header'
-import YButton from '~/components/common/CodeButton'
+import YButton from '@/components/common/Code'
 import { register, userLogin } from '@/api/login.js'
 
 export default {

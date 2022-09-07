@@ -18,18 +18,16 @@
         <div class="clearfix">
           <div class="video_box">
             <div id="player" ref="videobox" class="detail_view" :style="'background-image:url('+courseInfo.courseLogo+')'" />
-            <!-- <span class="iconfont close_video" @click="stopVideo">&#xe616;</span> -->
           </div>
           <div class="view_info">
             <p>{{ courseInfo.courseName }}</p>
             <div class="view_price">
               <div>
-                价格:<span v-if="!courseInfo.isFree">￥{{ courseInfo.courseOriginal ? courseInfo.courseOriginal.toFixed(2) : '0.00' }}</span>
-                <span v-else>免费</span>
+                价格:<span v-if="courseInfo.coursePrice === 0">免费</span> <span v-else>￥{{ courseInfo.coursePrice ? courseInfo.coursePrice.toFixed(2) : '0.00' }}</span>
               </div>
             </div>
             <div class="view_teacher">
-              <span class="text_b">讲师:</span>{{ teacherInfo }}
+              <span class="text_b">讲师:</span>{{ teacherInfo.lecturerName }}
             </div>
             <div class="view_teacher mgt20">
               <span class="text_b">购买人数:</span>{{ courseInfo.countBuy }} 人
@@ -41,7 +39,6 @@
               <button v-if="courseInfo.isFree && !isLogin" class="buy_btn" @click="goLogin">登录观看</button>
               <button v-else id="buyBtn" class="buy_btn" @click="buyCourse">立即购买</button>
             </div>
-            <!-- <a :class="{collect_btn: true, share: true, c_red: isShare}" href="javascript:"><span class="iconfont">&#xe610;</span>&nbsp;分享</a> -->
           </div>
         </div>
       </div>
@@ -51,7 +48,7 @@
 </template>
 <script>
 import YHeader from '../common/Header'
-import DPay from '~/components/common/PayModal'
+import DPay from '@/components/common/Pay'
 
 export default {
   components: {

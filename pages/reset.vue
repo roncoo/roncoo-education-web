@@ -68,7 +68,7 @@
   </div>
 </template>
 <script>
-import YButton from '~/components/common/CodeButton'
+import YButton from '@/components/common/Code'
 import { updatePassword } from '~/api/account/user.js'
 
 export default {

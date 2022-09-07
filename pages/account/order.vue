@@ -60,7 +60,7 @@ import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import YSide from '~/components/account/Side'
 import DPaymodal from '~/components/account/PayModal'
-import { orderClose, orderList } from '~/api/account/course.js'
+import { orderPage } from '~/api/account.js'
 import DPage from '~/components/common/Page'
 import { myHttp } from '~/utils/myhttp.js'
 
@@ -117,7 +117,7 @@ export default {
     getOrderList() {
       this.obj.lecturerUserNo = this.$store.state.userInfo.userNo
       myHttp.call(this, {
-        method: orderList,
+        method: orderPage,
         params: this.obj
       }).then(res => {
         this.pageObj = res.data
@@ -129,24 +129,25 @@ export default {
       })
     },
     closeOrder(orderNo) {
-      myHttp.call(this, {
-        method: orderClose,
-        params: { orderNo }
-      }).then(res => {
-        this.$msgBox({
-          content: '取消成功',
-          isShowCancelBtn: false,
-          edit: false
-        }).then(async(val) => {
-          this.getOrderList()
-        }).catch(() => {
-          this.getOrderList()
-        })
-      })
+      // myHttp.call(this, {
+      //   method: orderClose,
+      //   params: { orderNo }
+      // }).then(res => {
+      //   this.$msgBox({
+      //     content: '取消成功',
+      //     isShowCancelBtn: false,
+      //     edit: false
+      //   }).then(async(val) => {
+      //     this.getOrderList()
+      //   }).catch(() => {
+      //     this.getOrderList()
+      //   })
+      // })
     }
   }
 }
 </script>
+
 <style lang="scss" rel="stylesheet/scss" scoped>
 @import '~/assets/css/account.scss';
 

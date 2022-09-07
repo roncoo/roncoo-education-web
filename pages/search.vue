@@ -36,7 +36,7 @@
 <script>
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
-import RightTap from '~/components/common/RightTap'
+import RightTap from '@/components/common/Top'
 import { getSearchCourseList } from '~/api/course'
 import DPage from '~/components/common/Page'
 
