@@ -15,6 +15,7 @@
 <script>
 import { chapterSign } from '@/api/course.js'
 import { mapState } from 'vuex'
+
 export default {
   props: {
     data: {
@@ -31,7 +32,7 @@ export default {
     ...mapState(['clientData', 'userInfo'])
   },
   methods: {
-    videoPlay (vid){
+    videoPlay(vid) {
       console.log(this.data)
       let vobj = {
         userNo: this.userInfo.userNo,
@@ -56,12 +57,12 @@ export default {
         }
       })
     },
-    play (data) {
+    play(data) {
       console.log(data)
       let box = this.$refs.playerbox;
       if (this.player) {
         this.player.changeVid({
-          vid:data.vid,
+          vid: data.vid,
           playsafe: data.token,
           ts: data.ts,
           sign: data.sign,
@@ -69,25 +70,25 @@ export default {
         });
       } else {
         this.player = polyvObject('#player').videoPlayer({
-            'width': box.offsetWidth,
-            'height': box.offsetHeight,
-            'forceH5': true,
-            'code': data.code,
-            'playsafe': data.token,
-            'ts': data.ts,
-            'sign': data.sign,
-            'vid': data.vid
+          'width': box.offsetWidth,
+          'height': box.offsetHeight,
+          'forceH5': true,
+          'code': data.code,
+          'playsafe': data.token,
+          'ts': data.ts,
+          'sign': data.sign,
+          'vid': data.vid
         });
       }
     },
-    close () {
+    close() {
       this.$emit('hidefun', event);
     },
   }
 }
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
-.mask{
+.mask {
   position: fixed;
   left: 0;
   top: 0;
@@ -96,7 +97,8 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 }
-.video_content{
+
+.video_content {
   position: fixed;
   z-index: 999;
   top: 10%;
@@ -109,34 +111,40 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.modal_head{
+
+.modal_head {
   line-height: 46px;
   background-color: #f9f9f9;
   text-align: right;
   padding: 0 20px;
-  .close{
+
+  .close {
     font-size: 14px;
   }
 }
-.modal_body{
-  height: 460px;
+
+.modal_body {
   flex: 1;
   overflow: auto;
   position: relative;
-  .img{
+
+  .img {
     padding: 30px;
   }
-  .more{
+
+  .more {
     margin: 0 30px;
     border-top: 1px solid #ddd;
-    a{
+
+    a {
       color: #106af6;
       display: inline-block;
       margin-bottom: 8px;
       margin-right: 8px;
       text-decoration: underline;
     }
-    .text{
+
+    .text {
       line-height: 30px;
     }
   }

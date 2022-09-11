@@ -96,7 +96,7 @@
   </div>
 </template>
 <script>
-import { orderInfo, orderSave } from '~/api/order.js'
+import { createOrder, orderInfo } from '@/api/order.js'
 import QRCode from 'qrcode'
 
 export default {
@@ -123,7 +123,7 @@ export default {
       order: {
         channelType: 1,
         courseId: 0,
-        payType: 1,
+        payType: 2,
         remarkCus: ''
       },
       orderInfo: null,
@@ -163,24 +163,15 @@ export default {
     submit() {
       const that = this
       that.btntext = '正在提交...'
-      orderSave(that.order).then(res => {
-        res = res.data
+      createOrder(that.order).then(res => {
         that.btntext = '下一步'
-        if (res.code === 200) {
+        if (res) {
           that.payStep = 1
-          that.orderInfo = res.data
+          that.orderInfo = res
           this.ocl = setTimeout(function() {
-            that.qrcode(res.data.payMessage)
+            that.qrcode(res.payMessage)
           }, 100)
-          that.getOrderInfo(res.data.orderNo)
-        } else if (res.code >= 300 && res.code < 400) {
-          this.$msgBox({
-            content: res.msg,
-            isShowCancelBtn: false
-          }).then(() => {
-            this.$store.dispatch('REDIRECT_LOGIN')
-          }).catch(() => {
-          })
+          that.getOrderInfo(res.orderNo)
         } else {
           this.$msgBox({
             content: res.msg,

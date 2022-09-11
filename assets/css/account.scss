@@ -1,59 +1,71 @@
 
-.account_cont{
+.account_cont {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.main_cont{
+
+.main_cont {
   min-height: 300px;
   padding: 20px;
 }
-.main_box{
+
+.main_box {
   float: right;
   width: 1010px;
   color: #999;
   background-color: #fff;
   border-radius: 8px;
 }
+
 .notdata {
   padding: 60px 0;
   text-align: center;
   font-size: 20px;
+
   i {
     font-size: 30px;
     margin-right: 10px;
   }
 }
-.tabs{
+
+.tabs {
   border-bottom: 1px solid #f5f5f5;
   height: 48px;
-  .tab{
+
+  .tab {
     display: inline-block;
     text-align: center;
     line-height: 46px;
     width: 136px;
     cursor: pointer;
   }
-  .on{
+
+  .on {
     color: #D51423;
     border-bottom: 2px solid #D51423;
   }
-  .solid_btn{
+
+  .solid_btn {
     margin: 5px 10px;
   }
 }
-.crumb{
+
+.crumb {
   background-color: #f8f8f8;
-  a{
+
+  a {
     width: 136px;
     text-align: center;
     display: inline-block;
     line-height: 36px;
   }
-  .on{
+
+  .on {
     color: #D51423;
   }
 }
-.solid_btn{
+
+.solid_btn {
   display: inline-block;
   line-height: 34px;
   height: 34px;
@@ -63,15 +75,18 @@
   color: #fff;
   border: 1px solid #D51423;
   text-align: center;
-  &:hover{
-    background-color:#ea1425;
+
+  &:hover {
+    background-color: #ea1425;
     color: #fff;
   }
-  &:disabled{
+
+  &:disabled {
     background-color: #bbb;
     border-color: #aaa;
     color: #888;
   }
+
   &.go_live {
     width: 280px;
     border-radius: 6px;
@@ -82,7 +97,8 @@
     font-size: 14px;
   }
 }
-.hollow_btn{
+
+.hollow_btn {
   display: inline-block;
   text-align: center;
   line-height: 34px;
@@ -91,25 +107,30 @@
   border-radius: 3px;
   color: #D51423;
   border: 1px solid #D51423;
-  &:hover{
+
+  &:hover {
     background-color: #D51423;
     color: #fff;
   }
 }
+
 .no_live {
   text-align: center;
   color: #999;
   font-size: 14px;
   margin-top: 20px;
 }
+
 .nolive_img {
   width: 130px;
   display: block;
   margin: 50px auto 0;
 }
+
 .suc_box {
   width: 240px;
   margin: 50px auto 0;
+
   .suc_img {
     width: 60px;
     height: 60px;
@@ -118,33 +139,40 @@
   }
 }
 
-.table{
+.table {
   width: 100%;
-  th{
+
+  th {
     line-height: 36px;
     color: #333;
     background-color: #f8f8f8;
   }
-  td{
+
+  td {
     vertical-align: middle;
     padding: 10px;
     text-align: center;
     border-bottom: 1px solid #f8f8f8;
-    &.name{
+
+    &.name {
       text-align: left;
     }
   }
-  .operate{
+
+  .operate {
     vertical-align: middle;
-    .text_link{
+
+    .text_link {
       line-height: 18px;
       color: #107ec4;
-      &:hover{
+
+      &:hover {
         text-decoration: underline;
       }
     }
   }
-  .gray_btn{
+
+  .gray_btn {
     display: inline-block;
     color: #999;
     padding: 3px 8px;
@@ -152,20 +180,25 @@
     background-color: #fff;
     border-radius: 3px;
     position: relative;
+
     &.width30 {
       width: 30px;
     }
+
     &.width45 {
       width: 45px;
     }
+
     &.width50 {
       width: 50px;
     }
-    &:hover{
+
+    &:hover {
       color: #D51423;
       border-color: #D51423;
     }
-    .num{
+
+    .num {
       display: none;
       position: absolute;
       right: -10px;
@@ -175,35 +208,42 @@
       padding: 1px 5px 2px;
       border-radius: 50%;
     }
-    &.on{
+
+    &.on {
       border-color: #D51423;
       color: #D51423;
-      .num{
+
+      .num {
         display: block;
       }
     }
   }
-  .orange_btn{
+
+  .orange_btn {
     display: inline-block;
     color: #D51423;
     padding: 3px 8px;
     border: 1px solid #D51423;
     background-color: #fff;
     border-radius: 3px;
+
     &.width50 {
       width: 50px;
     }
-    &:hover{
+
+    &:hover {
       background-color: #D51423;
       color: #fff;
     }
   }
 }
-.form{
+
+.form {
   //min-height: 550px;
-  .form_group{
+  .form_group {
     margin-bottom: 20px;
-    .label{
+
+    .label {
       text-align: right;
       float: left;
       display: block;
@@ -211,63 +251,75 @@
       line-height: 36px;
       color: #333;
     }
-    .form_ctl{
+
+    .form_ctl {
       margin-left: 12px;
       float: left;
       width: 700px;
       position: relative;
       z-index: 9;
     }
-    .text{
+
+    .text {
       color: #333;
       line-height: 36px;
     }
-    &:after{
+
+    &:after {
       content: '';
       display: block;
       clear: both;
     }
-    textarea{
+
+    textarea {
       padding: 10px;
     }
   }
-  .form_ctl_radio{
+
+  .form_ctl_radio {
     line-height: 36px;
-    label{
+
+    label {
       margin-right: 12px;
       color: #333;
     }
   }
-  .form_input{
+
+  .form_input {
     height: 34px;
     border: 1px solid #e7e7e8;
     width: 278px;
     text-indent: 1em;
-    &.disabled,&:disabled{
+
+    &.disabled, &:disabled {
       background-color: #efefef;
     }
   }
-  .form_input_min{
+
+  .form_input_min {
     text-indent: 1em;
     width: 130px;
     height: 34px;
     margin-right: 10px;
     border: 1px solid #e7e7e7;
   }
-  .upload_ctl{
-    .img_box{
+
+  .upload_ctl {
+    .img_box {
       width: 120px;
       height: 120px;
       background-color: #f5f5f5;
       text-align: center;
       margin-bottom: 10px;
-      i{
+
+      i {
         line-height: 120px;
         font-size: 80px;
         color: #ddd;
       }
     }
-    .upload_btn{
+
+    .upload_btn {
       width: 80px;
       height: 22px;
       border: 1px solid #ccc;
@@ -275,12 +327,14 @@
       border-radius: 3px;
       color: #999;
     }
-    .tip{
+
+    .tip {
       margin-top: 10px;
       color: #999;
     }
   }
-  .submit_btn{
+
+  .submit_btn {
     display: inline-block;
     text-align: center;
     height: 34px;
@@ -290,7 +344,8 @@
     width: 278px;
     color: #fff;
     border-radius: 3px;
-    &:disabled{
+
+    &:disabled {
       background-color: #eee;
       border-color: #ddd;
       color: #aaa;
@@ -299,7 +354,7 @@
 }
 
 /*modal*/
-.mask{
+.mask {
   position: fixed;
   left: 0;
   top: 0;
@@ -308,7 +363,8 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 }
-.modal_panel{
+
+.modal_panel {
   position: fixed;
   z-index: 999;
   top: 10%;
@@ -319,17 +375,19 @@
   border-radius: 8px;
   overflow: hidden;
 }
-.modal_head{
+
+.modal_head {
   line-height: 46px;
   background-color: #f9f9f9;
   text-align: right;
   padding: 0 20px;
   border-bottom: 1px solid #e7e7eb;
-  .close{
+
+  .close {
     font-size: 14px;
   }
 }
-.modal_body{
-  height: 460px;
+
+.modal_body {
   overflow: auto;
 }
