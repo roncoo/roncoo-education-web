@@ -1,7 +1,7 @@
 <template>
   <div class="courselist_page">
     <y-header />
-    <y-header-list :class-list="classList" />
+    <y-header-list :class-list="categoryList" />
     <div class="course_content">
       <ul class="clearfix">
         <li v-for="(item, index) in pageObj.list" :key="index">
@@ -51,7 +51,7 @@ export default {
       // 课程分页
       dataObj.pageObj = allData[0]
       // 分类
-      dataObj.classList = await allData[1]
+      dataObj.categoryList = await allData[1]
       dataObj.obj = obj
       return dataObj
     } catch (e) {
@@ -60,10 +60,8 @@ export default {
   },
   data() {
     return {
-      openVip: false,
-      free: '',
-      activityList: [],
-      classList: []
+      free: '', // 免费
+      categoryList: []
     }
   },
   head() {

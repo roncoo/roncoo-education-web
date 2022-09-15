@@ -1,6 +1,6 @@
 <template>
   <div class="course_detail">
-    <y-study v-if="courseInfo.isPay" ref="watchVideo" :course-info="courseInfo" :play-vid="playVid" @playfunc="videoPlay" />
+    <y-study v-if="courseInfo.allowStudy" ref="watchVideo" :course-info="courseInfo" @playfunc="videoPlay" />
     <y-detail v-else ref="watchVideo" :course-info="courseInfo" :teacher-info="teacherInfo" />
     <div class=" detail_info detail_box clearfix">
       <div class="layout_left">
@@ -12,7 +12,7 @@
           <div class="introduce" v-html="courseInfo.introduce" />
         </div>
         <div v-if="tab == 'big'" class="content_info">
-          <y-catalog :list="courseInfo.chapterRespList" :play-vid="playVid" @playfunc="videoPlay" />
+          <y-catalog :list="courseInfo.chapterRespList" @playfunc="videoPlay" />
         </div>
       </div>
       <div class="layout_right">
@@ -37,7 +37,8 @@ import YDetail from '@/components/course/Detail'
 import YFooter from '~/components/common/Footer'
 import YCatalog from '@/components/course/Catalog'
 import YStudy from '@/components/course/Study'
-import { chapterSign, courseDetail } from '~/api/course.js'
+import cookies from '@/utils/cookies'
+import { courseDetail, playSign, userCourseDetail } from '~/api/course.js'
 
 export default {
   components: {
@@ -53,13 +54,25 @@ export default {
   async asyncData(context) {
     try {
       const result = {}
-      const courseData = await courseDetail({ courseId: context.params.id })
-      result.courseInfo = courseData
-      if (courseData.lecturerResp) {
-        result.teacherInfo = courseData.lecturerResp
+      const token = cookies.getInServerToken(context.req)
+      if (token) {
+        // 登录
+        const courseData = await userCourseDetail({ courseId: context.params.id }, token)
+        result.courseInfo = courseData
+        if (courseData.lecturerResp) {
+          result.teacherInfo = courseData.lecturerResp
+        }
+      } else {
+        // 没登录
+        const courseData = await courseDetail({ courseId: context.params.id })
+        result.courseInfo = courseData
+        if (courseData.lecturerResp) {
+          result.teacherInfo = courseData.lecturerResp
+        }
       }
       return result
     } catch (e) {
+      console.error(e)
       context.error({ message: 'Data not found', statusCode: 404 })
     }
   },
@@ -75,29 +88,16 @@ export default {
     }
   },
   mounted() {
+    if (this.courseInfo.allowStudy) {
+      this.tab = 'big'
+    }
   },
   methods: {
     videoPlay(data) {
-      if (this.courseInfo.isPay || data.isFree) {
+      if (this.courseInfo.allowStudy) {
         window.scrollTo(0, 0)
-        this.playVid = data.id
-        chapterSign({
-          ip: 'string',
-          periodId: data.id,
-          videoVid: data.videoVid
-        }).then(res => {
-          res = res.data
-          this.isResetVideo = false
-          if (res.code === 200) {
-            this.play(Object.assign({ vid: data.videoVid }, res.data))
-          } else if (res.code === 402) {
-            this.$msgBox({
-              content: '购买后才可以观看',
-              isShowCancelBtn: false
-            })
-          }
-        }).catch(() => {
-          this.isResetVideo = false
+        playSign({ periodId: data.id, clientIp: '172.0.0.1' }).then(resp => {
+          this.play(resp)
         })
       } else {
         this.$msgBox({

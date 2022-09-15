@@ -5,17 +5,14 @@
         <router-link :to="{name: 'index'}">
           <li class="return_btn"><img class="return_img" src="~/assets/image/return.svg" alt=""></li>
         </router-link>
-        <li class="vider_title">
-          {{ courseInfo.courseName }}
-        </li>
+        <li class="vider_title"> {{ courseInfo.courseName }}</li>
       </ul>
       <ul class="header_right clearfix">
         <li>
-          <nuxt-link :to="{name: 'account-order'}" class="left_col">我的订单</nuxt-link>
+          <nuxt-link :to="{name: 'account-course'}" class="left_col">我的课程</nuxt-link>
         </li>
         <li>
-          <nuxt-link :to="{name: 'account'}" :class="{left_col: true, c_gold: isVip}">{{ userInfo.mobile }}</nuxt-link>
-          <img v-if="isVip" src="~/assets/image/vip_icon.png" alt="" class="vip_icon" @click="goVip">
+          <nuxt-link :to="{name: 'account'}" class="left_col">{{ userInfo.mobile }}</nuxt-link>
         </li>
       </ul>
     </div>
@@ -28,7 +25,7 @@
         <div class="video_info">
           <a href="javascript:" :class="{on: cateType == 1}" @click="changeTab(1)">
             <i class="iconfont">&#xe908;</i>
-            <p>章节</p>
+            <p>目录</p>
           </a>
           <a href="javascript:" :class="{on: cateType == 2}" @click="changeTab(2)">
             <i class="iconfont">&#xe602;</i>
@@ -37,20 +34,19 @@
         </div>
         <div class="cate_panel">
           <div v-if="cateType == 1">
-            <dl v-for="(one, index) in courseInfo.chapterList" :key="index">
+            <dl v-for="(one, index) in courseInfo.chapterRespList" :key="index">
               <dt>第{{ index + 1 }}章：{{ one.chapterName }}</dt>
-              <dd v-for="(two, num) in one.periodList" :key="num" :class="{on : playVid == two.id}" @click="videoPlay(two)"><i class="iconfont">&#xe690;</i><span>第{{ num + 1 }}讲：</span>{{ two.periodName }}
-                <span v-if="!two.videoVid" class="no_video2">(未更新)</span>
+              <dd v-for="(two, num) in one.periodRespList" :key="num" :class="{on : playVid == two.id}" @click="playVideo(two)"><i class="iconfont">&#xe690;</i><span>第{{ num + 1 }}节：</span>{{ two.periodName }}
+                <span v-if="two.resourceResp && two.resourceResp.videoStatus === 1" class="no_video2">(未更新)</span>
                 <span v-if="two.isFree" class="c_blue">(免费)</span>
               </dd>
             </dl>
           </div>
           <div v-if="cateType == 2">
-            <dl v-for="(one, index) in courseInfo.chapterList" :key="index">
+            <dl v-for="(one, index) in courseInfo.chapterRespList" :key="index">
               <dt>{{ one.chapterName }}</dt>
-              <!-- eslint-disable-next-line  -->
-              <dd v-for="(two, num) in one.periodList" v-if="two.isDoc" :key="num">
-                <a href="javascript:" @click="noDown"><i class="iconfont">&#xe602;</i>{{ two.docName }}</a>
+              <dd v-for="(two, num) in one.periodRespList" :key="num">
+                <a href="javascript:" @click="downFile"><i class="iconfont">&#xe602;</i>{{ two.periodName }}</a>
               </dd>
             </dl>
           </div>
@@ -60,26 +56,24 @@
   </div>
 </template>
 <script>
+
 export default {
   props: {
     courseInfo: {
       type: Object,
       default: null
-    },
-    playVid: {
-      type: String,
-      default: ''
     }
   },
   data() {
     return {
-      isVip: false,
       showTop: false,
       cateType: 0,
+      tokenInfo: '',
       userInfo: ''
     }
   },
   mounted() {
+    this.tokenInfo = this.$store.state.tokenInfo
     this.userInfo = this.$store.state.userInfo
   },
   methods: {
@@ -90,35 +84,21 @@ export default {
         this.cateType = int
       }
     },
-    goVip() {
-      this.$router.push({ name: 'vip' })
-    },
     // 下载附件
-    noDown(item) {
-      if (!this.$store.state.tokenInfo) {
+    downFile(item) {
+      // TODO
+    },
+    playVideo(data) {
+      if (!this.tokenInfo) {
         this.$msgBox({
-          content: '登录后才可以下载'
+          content: '请先登录'
         }).then(res => {
           this.$store.dispatch('REDIRECT_LOGIN')
         }).catch(() => {
         })
         return false
       }
-      if (!item.isFree) {
-        this.$msgBox({
-          content: '购买后才可以下载',
-          isShowCancelBtn: false
-        }).then(() => {
-          // this.openOrder()
-        }).catch(() => {
-        })
-        return false
-      }
-      window.location.href = item.docUrl
-    },
-    videoPlay(data) {
-      console.log(data)
-      if (!data.videoVid) {
+      if (data.resourceResp && data.resourceResp.videoStatus === 1) {
         this.$msgBox({
           content: '该视频未更新',
           isShowCancelBtn: false
@@ -312,11 +292,11 @@ export default {
   position: absolute;
   z-index: 11;
   top: 0;
-  right: -202px;
+  right: -350px;
   background-color: #000;
   height: 595px;
-  width: 210px;
-  padding: 20px 30px;
+  width: 400px;
+  padding: 20px;
   overflow: auto;
   transition: all .5s;
   z-index: 40;
@@ -328,6 +308,10 @@ export default {
   &::-webkit-scrollbar-thumb {
     border-radius: 4px;
     background: rgba(255, 255, 255, 0.4);
+  }
+
+  dl {
+    margin-bottom: 10px;
   }
 
   dt {

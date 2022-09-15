@@ -11,6 +11,6 @@ export const continueOrder = (params = {}) => {
 }
 
 // 订单信息
-export const orderInfo = (params = {}) => {
-  return http().post('/user/auth/order/info/view', params)
+export const orderInfoView = (orderNo) => {
+  return http().get('/user/auth/order/info/view?orderNo=' + orderNo)
 }

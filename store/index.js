@@ -9,8 +9,8 @@ const createStore = () => {
       tokenName: config.CLIENT.tokenName,
       mainUrl: config.CLIENT.mainUrl,
       tokenInfo: '', // token信息
-      websiteInfo: null, // 站点信息
-      temporaryUrl: '' // 临时url
+      temporaryUrl: '', // 临时url
+      websiteInfo: null // 站点信息
     }),
     mutations: mutations,
     actions: actions

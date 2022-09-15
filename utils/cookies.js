@@ -11,6 +11,9 @@ export default {
     })
     return service_cookie
   },
+  getInServerToken: function(req) {
+    return this.getInServer(req)[config.CLIENT.tokenName] || ''
+  },
   // 获取客户端cookie
   getInClient: function(key) {
     // let clent = store().state.clientData;

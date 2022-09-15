@@ -34,7 +34,7 @@
             <th>课程价格</th>
           </tr>
           <tr>
-            <td width="300">
+            <td>
               <div class="" style="width:320px;">
                 <div v-if="courseData.courseLogo" class="img"><img :src="courseData.courseLogo" alt=""></div>
                 <div class="name">{{ courseData.courseName }}</div>
@@ -96,7 +96,7 @@
   </div>
 </template>
 <script>
-import { createOrder, orderInfo } from '@/api/order.js'
+import { createOrder, orderInfoView } from '@/api/order.js'
 import QRCode from 'qrcode'
 
 export default {
@@ -132,7 +132,6 @@ export default {
     }
   },
   mounted() {
-    // this.qrcode('weixin://wxpay/bizpayurl?pr=GlkCzqF');
     this.order.courseId = this.data.course.id
     this.courseData = this.data.course
   },
@@ -187,32 +186,30 @@ export default {
         that.btntext = '重新提交'
       })
     },
-    getOrderInfo(no) {
+    getOrderInfo(orderNo) {
       const that = this
       if (this.checkPay) {
         return false
       }
-      orderInfo({ orderNo: no }).then(res => {
-        res = res.data
-        if (res.data.orderStatus === 1) {
+      orderInfoView(orderNo).then(res => {
+        if (res.orderStatus === 1) {
+          // 待支付
           setTimeout(function() {
-            that.getOrderInfo(no)
+            that.getOrderInfo(orderNo)
           }, 1000)
-        } else if (res.data.orderStatus === 2) {
-          if (that.order.courseType === 3) {
-            this.close()
-            this.$msgBox({
-              content: '购买成功',
-              isShowCancelBtn: false
-            }).then(res => {
-              window.location.reload()
-            }).catch(() => {
-              window.location.reload()
-            })
-          } else {
-            that.payStep = 2
-          }
+        } else if (res.orderStatus === 2) {
+          // 支付成功
+          this.close()
+          this.$msgBox({
+            content: '购买成功',
+            isShowCancelBtn: false
+          }).then(res => {
+            window.location.reload()
+          }).catch(() => {
+            window.location.reload()
+          })
         } else {
+          // 支付失败
           that.payStep = 3
         }
       })

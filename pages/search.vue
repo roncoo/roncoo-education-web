@@ -37,7 +37,7 @@
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
 import RightTap from '@/components/common/Top'
-import { getSearchCourseList } from '~/api/course'
+import { searchCourseList } from '~/api/course'
 import DPage from '~/components/common/Page'
 
 export default {
@@ -67,7 +67,7 @@ export default {
     dataObj.websiteInfo = context.store.state.websiteInfo
     try {
       dataObj.map.courseName = context.query.search
-      const res = await getSearchCourseList(dataObj.map, dataObj.page.pageCurrent, dataObj.page.pageSize)
+      const res = await searchCourseList(dataObj.map, dataObj.page.pageCurrent, dataObj.page.pageSize)
       if (res.code === 200) {
         dataObj.opts.list = res.data.list || []
         dataObj.page.pageCurrent = res.data.pageCurrent || 1
@@ -130,7 +130,7 @@ export default {
     },
     getList() {
       this.ctrl.loading = true
-      getSearchCourseList(this.map, this.page.pageCurrent, this.page.pageSize).then(res => {
+      searchCourseList(this.map, this.page.pageCurrent, this.page.pageSize).then(res => {
         this.ctrl.loading = false
         if (res.code === 200) {
           this.opts.list = res.data.list || []

@@ -19,7 +19,7 @@ export default {
   SET_TOKEN: (state, token) => {
     state.tokenInfo = token
     // 此处必须加path，否则在某些浏览器无法通过js移除
-    document.cookie = 'OSTK=' + token + '; path=/'
+    document.cookie = state.tokenName + '=' + token + '; path=/'
     cookie.setInClient({ key: state.tokenName, val: token })
     // setStore('tokenInfo', info.info)
   },
@@ -28,7 +28,7 @@ export default {
     state.tokenInfo = ''
     state.userInfo = ''
     // 移除document.cookie
-    document.cookie = 'OSTK=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'
+    document.cookie = state.tokenName + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'
     cookie.delInClient(state.tokenName)
     removeStore('OcUserInfo')
   },

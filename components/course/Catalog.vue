@@ -6,21 +6,22 @@
         <span>第{{ index + 1 }}章&nbsp;&nbsp;</span>{{ one.chapterName }}
       </div>
       <div v-for="(two, num) in one.periodRespList" :key="num" class="period_info">
-        <div class="period_top" :class="{on : nowNo == two.id}" @click="videoPlay(two)">
+        <div class="period_top" :class="{on : currentTag == two.id}" @click="playVideo(two)">
           <div class="period_video" :class="{no_v: !two.videoVid}" />
           <span class="period_num">第{{ num + 1 }}讲</span>
-          <span v-if="!two.videoVid" class="no_video">(未更新)</span>
+          <span v-if="two.resourceResp && two.resourceResp.videoStatus === 1" class="no_video">(未更新)</span>
           <span v-if="two.isFree" class="c_blue">(免费)</span>
           {{ two.periodName }}
-          <span v-if="two.videoVid" class="video_time fr">{{ two.videoLength }}分钟</span>
+          <span v-if="two.resourceResp && two.resourceResp.videoStatus === 2" class="video_time fr">{{ two.resourceResp.videoLength }}分钟</span>
         </div>
-        <a v-if="two.isDoc" href="javascript:" @click="noDown(two)">下载课件</a>
+        <a v-if="two.isDoc" href="javascript:" @click="downFile(two)">下载课件</a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   props: {
     list: {
@@ -29,53 +30,37 @@ export default {
         return []
       }
     },
-    nowNo: {
+    currentTag: {
       type: String,
       default: ''
     }
   },
   data() {
-    return {}
+    return {
+      tokenInfo: ''
+    }
+  },
+  mounted() {
+    this.tokenInfo = this.$store.state.tokenInfo
   },
   methods: {
-    noDown(item) {
-      console.log(item)
-      if (!this.$store.state.tokenInfo) {
-        this.$msgBox({
-          content: '登录后才可以下载'
-        }).then(res => {
-          this.$store.dispatch('REDIRECT_LOGIN')
-        }).catch(() => {
-        })
-        return false
-      }
-      if (!item.isFree) {
-        this.$msgBox({
-          content: '购买后才可以下载',
-          isShowCancelBtn: false
-        }).then(() => {
-          // this.openOrder()
-        }).catch(() => {
-        })
-        return false
-      }
-      window.location.href = item.docUrl
+    downFile(item) {
+      // TODO
     },
-    videoPlay(data) {
-      console.log(data)
-      if (!data.videoVid) {
-        this.$msgBox({
-          content: '该视频未更新',
-          isShowCancelBtn: false
-        }).catch(() => {
-        })
-        return false
-      }
-      if (!this.$store.state.tokenInfo) {
+    playVideo(data) {
+      if (!this.tokenInfo) {
         this.$msgBox({
           content: '请先登录'
         }).then(res => {
           this.$store.dispatch('REDIRECT_LOGIN')
+        }).catch(() => {
+        })
+        return false
+      }
+      if (data.resourceResp && data.resourceResp.videoStatus === 1) {
+        this.$msgBox({
+          content: '该视频未更新',
+          isShowCancelBtn: false
         }).catch(() => {
         })
         return false
