@@ -151,8 +151,21 @@
   td {
     vertical-align: middle;
     padding: 10px;
-    text-align: center;
+    text-align: left;
     border-bottom: 1px solid #f8f8f8;
+
+    img {
+      float: left;
+    }
+
+    div {
+      margin-left: 20px;
+      float: left;
+
+      .title {
+        font-size: 16px;
+      }
+    }
 
     &.name {
       text-align: left;
@@ -390,4 +403,23 @@
 
 .modal_body {
   overflow: auto;
+}
+
+.go_btn {
+  display: block;
+  width: 100px;
+  height: 40px;
+  margin-left: 10px;
+  line-height: 40px;
+  background: #f00;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #fff;
+  border: 1px solid #999;
+  text-align: center;
+
+  &:hover {
+    color: #fff;
+  }
 }

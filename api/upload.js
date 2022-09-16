@@ -1,10 +1,14 @@
-import * as axios from 'axios'
+import http from './method.js'
+
+// 上传图片
+export const uploadPic = (params = {}, cb) => {
+  return createUpload('/system/auth/upload/pic', params, cb)
+}
 
 const createUpload = (url, params = {}, cb) => {
   const config = {
     onUploadProgress: progressEvent => {
       var complete = (progressEvent.loaded / progressEvent.total * 100 | 0)
-      // console.log(complete)
       if (cb) {
         cb(complete)
       }
@@ -15,22 +19,10 @@ const createUpload = (url, params = {}, cb) => {
     timeout: 1000 * 60 * 30
   }
   return new Promise((resolve, reject) => {
-    axios.post(url, params, config).then(res => {
-      resolve(res.data)
+    http().post(url, params, config).then(res => {
+      resolve(res)
     }).catch(error => {
       reject(error)
     })
   })
-}
-// 上传图片
-export const uploadPic = (params = {}, cb) => {
-  return createUpload('/course/api/upload/pic', params, cb)
-}
-// 上传文档
-export const uploadDoc = (params = {}, cb) => {
-  return createUpload('/course/api/upload/doc', params, cb)
-}
-// 上传视频
-export const uploadResVideo = (params = {}, cb) => {
-  return createUpload('/course/api/upload/video', params, cb)
 }

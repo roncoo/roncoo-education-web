@@ -9,9 +9,6 @@
         <li :class="{on: type == 'wddd'}">
           <router-link :to="{name: 'account-order'}">我的订单</router-link>
         </li>
-        <li :class="{on: type == 'xgmm'}">
-          <router-link :to="{name: 'account-reset'}">修改密码</router-link>
-        </li>
         <li :class="{on: type == 'grxx'}">
           <router-link :to="{name: 'account'}">个人信息</router-link>
         </li>

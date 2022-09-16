@@ -1,4 +1,4 @@
-import { getUserInfo } from '../api/login'
+import { getUserInfo } from '../api/user.js'
 import { navList, websiteInfo } from '~/api/main'
 
 export default {

@@ -5,25 +5,27 @@
       <y-side :type="'xxjl'" />
       <div class="main_box">
         <ul class="tabs clearfix">
-          <a class="tab on">学习记录</a>
+          <a class="tab on">课程列表</a>
         </ul>
         <div class="main_cont">
           <div v-if="notdata" class="notdata">
             <i class="iconfont">&#xe6be;</i>暂时没有数据
           </div>
           <table v-else class="course_table table">
-            <thead>
-              <tr>
-                <th>课程名称</th>
-                <th>学习内容</th>
-                <th>学习时间</th>
-              </tr>
-            </thead>
             <tbody>
               <tr v-for="(item, index) in pageObj.list" :key="item.periodName + index">
-                <td>{{ item.courseName }}</td>
-                <td class="name">{{ item.periodName }}</td>
-                <td>{{ item.gmtCreate }}</td>
+                <td>
+                  <img :src="item.courseResp.courseLogo" :alt="item.courseResp.courseName" :height="80">
+                  <div>
+                    <div v-if="item.courseResp.isFree === 1">免费课</div>
+                    <div class="title">{{ item.courseResp.courseName }}</div>
+                    <br><br><br><br>
+                    <div>学习进度：10%</div>
+                  </div>
+                </td>
+                <td style="float: right;margin-top: 10px">
+                  <nuxt-link target="_blank" :to="{name: 'course-id', params: {id: item.courseResp.id}}" class="go_btn">继续学习</nuxt-link>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -35,12 +37,11 @@
   </div>
 </template>
 <script>
+import YSide from '~/components/account/Side'
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
-import YSide from '~/components/account/Side'
 import DPage from '~/components/common/Page'
-import { studyList } from '~/api/account/user.js'
-import { myHttp } from '~/utils/myhttp.js'
+import { userCoursePage } from '@/api/user.js'
 
 export default {
   components: {
@@ -53,12 +54,7 @@ export default {
     return {
       notdata: true,
       pageCurrent: 1,
-      pageObj: {
-        pageCurrent: '',
-        pageSize: '',
-        totalCount: '',
-        totalPage: ''
-      }
+      pageObj: {}
     }
   },
   mounted() {
@@ -70,19 +66,9 @@ export default {
       this.getStudyList()
     },
     getStudyList() {
-      myHttp.call(this, {
-        method: studyList,
-        params: {
-          pageCurrent: this.pageCurrent,
-          pageSize: 20
-        }
-      }).then(res => {
-        this.pageObj = res.data
-        if (!res.data.list.length) {
-          this.notdata = true
-        } else {
-          this.notdata = false
-        }
+      userCoursePage({ pageCurrent: this.pageCurrent, pageSize: 20 }).then(res => {
+        this.notdata = false
+        this.pageObj = res
       })
     }
   }

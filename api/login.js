@@ -12,16 +12,7 @@ export const getMobileCode = (params) => {
 export const register = (params = {}) => {
   return http().post('/user/api/users/register', params)
 }
-// 用户信息
-export const getUserInfo = () => {
-  return http().get('/user/auth/users/view')
-}
-
-// 课程详情
-export const userCourseDetail = (params = {}) => {
-  return http().post('/course/auth/course/audit/view', params)
-}
-// 申请讲师
-export const teacherEnter = (params = {}) => {
-  return http().post('/user/auth/lecturer/audit/save', params)
+// 修改密码
+export const updatePassword = (params = {}) => {
+  return http().post('/user/api/users/password', params)
 }

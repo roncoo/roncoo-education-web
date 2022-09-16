@@ -64,19 +64,10 @@
         <a href="javascript:" class="close iconfont" @click="close()">&#xe616;</a>
       </div>
       <div class="modal_body">
-        <div class="icon iconfont c_green minIcon">&#xe69f;<span class="c_333 font_14">订单支付成功!</span></div>
-        <!-- <div class="tip">支付成功</div> -->
+        <div class="icon iconfont c_green minIcon">&#xe69f;<span class="c_333 font_14">订单支付成功</span></div>
         <div class="center border_b">
-          <a v-if="courseData.courseCategory == 1" class="solid_btn order_btn" :href="'/view/'+courseData.id">立即学习</a>
-          <a v-else-if="courseData.courseCategory == 2" class="solid_btn order_btn" :href="'/live/detail/'+courseData.id">立即学习</a>
-          <a v-else-if="courseData.courseCategory == 3" class="solid_btn order_btn" :href="'/live/bunch/'+courseData.id">立即学习</a>
-          <a v-else class="solid_btn order_btn" href="javascript:" @click="reload">确定</a>
+          <a class="solid_btn order_btn" :href="'/course/'+courseData.courseId">立即学习</a>
           <a class="solid_btn order_btn" target="_blank" href="/account/order">查看订单</a>
-        </div>
-        <div v-if="websiteInfo && websiteInfo.weixinXcx" class="ewm_img">
-          <img :src="websiteInfo.weixinXcx" alt="">
-          <p class="mgt10">微信扫码关注小程序</p>
-          <p>学习更便捷</p>
         </div>
       </div>
     </div>
@@ -96,7 +87,7 @@
   </div>
 </template>
 <script>
-import { createOrder, orderInfoView } from '@/api/order.js'
+import { createOrder, orderInfoView } from '@/api/course.js'
 import QRCode from 'qrcode'
 
 export default {

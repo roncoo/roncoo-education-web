@@ -20,29 +20,27 @@
             </div>
             <div class="order_body clearfix">
               <div class="body_left clearfix">
-                <div v-if="item.courseLogo" class="img_box fl">
-                  <img :src="item.courseLogo" alt="">
-                </div>
-                <p class="fl">
-                  {{ item.courseName }}
-                </p>
+                <nuxt-link target="_blank" :to="{name: 'course-id', params: {id: item.courseId}}">
+                  <div v-if="item.courseLogo" class="img_box fl">
+                    <img :src="item.courseLogo" :alt="item.courseName">
+                  </div>
+                  <p class="fl">
+                    {{ item.courseName }}<br><br>
+                    原价：<span style="text-decoration-line: line-through; margin-right: 20px">￥{{ item.rulingPrice }}</span>实付：￥{{ item.coursePrice }}
+                  </p>
+                </nuxt-link>
               </div>
               <ul class="body_right clearfix">
-                <li class="money">￥{{ item.pricePaid }}</li>
-                <li v-if="item.payType == 1">微信支付</li>
-                <li v-if="item.payType == 2">支付宝支付</li>
-                <li v-if="item.orderStatus == 1" class="alipay">等待支付</li>
-                <li v-if="item.orderStatus == 2" class="alipay">已支付</li>
-                <li v-if="item.orderStatus == 3" class="alipay">支付失败</li>
-                <li v-if="item.orderStatus == 4" class="alipay">已关闭</li>
-                <li v-if="item.orderStatus == 5" class="alipay">已退款</li>
-                <li v-if="item.orderStatus == 6" class="alipay">已解绑</li>
-                <li v-if="item.orderStatus == 2">
-                  <nuxt-link :to="{name: 'view-id', params: {id: item.courseId}}" class="go_btn">进入学习</nuxt-link>
+                <li>
+                  <br>
+                  <span v-if="item.orderStatus == 1">待支付</span>
+                  <span v-if="item.orderStatus == 2"><nuxt-link :to="{name: 'course-id', params: {id: item.courseId}}" class="go_btn">马上学习</nuxt-link></span>
+                  <span v-if="item.orderStatus == 3">支付失败</span>
+                  <span v-if="item.orderStatus == 4">已关闭</span>
                 </li>
-                <li v-else-if="item.orderStatus == 1 || item.orderStatus == 3">
-                  <a href="javascript:" class="go_btn go_pay" @click="pay(item)">继续支付</a>
-                  <a href="javascript:" class="cancel" @click="closeOrder(item.orderNo)">取消支付</a>
+                <li v-if="item.orderStatus == 1 || item.orderStatus == 3">
+                  <a href="javascript:" class="go_btn go_pay" @click="continuePay(item)">继续支付</a>
+                  <a href="javascript:" class="cancel" @click="closeOrder(item.orderNo)">关闭订单</a>
                 </li>
               </ul>
             </div>
@@ -56,13 +54,12 @@
   </div>
 </template>
 <script>
+import YSide from '~/components/account/Side'
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
-import YSide from '~/components/account/Side'
-import DPaymodal from '~/components/account/PayModal'
-import { orderPage } from '~/api/account.js'
+import DPaymodal from '@/components/common/PayOrder'
+import { cancelOrder, orderPage } from '@/api/user.js'
 import DPage from '~/components/common/Page'
-import { myHttp } from '~/utils/myhttp.js'
 
 export default {
   components: {
@@ -93,20 +90,24 @@ export default {
   },
   mounted() {
     this.obj = {
-      orderStatus: 0,
+      orderStatus: '',
       pageCurrent: 1,
       pageSize: 10
     }
     this.getOrderList()
   },
   methods: {
-    pay(item) {
+    continuePay(item) {
       this.payData = item
       this.showPay = true
     },
     clicktab(int) {
       this.num = int
-      this.obj.orderStatus = int
+      if (int === 0) {
+        this.obj.orderStatus = ''
+      } else {
+        this.obj.orderStatus = int
+      }
       this.obj.pageCurrent = 1
       this.getOrderList()
     },
@@ -115,34 +116,23 @@ export default {
       this.getOrderList()
     },
     getOrderList() {
-      this.obj.lecturerUserNo = this.$store.state.userInfo.userNo
-      myHttp.call(this, {
-        method: orderPage,
-        params: this.obj
-      }).then(res => {
-        this.pageObj = res.data
-        if (res.data.list.length > 0) {
-          this.notdata = false
-        } else {
-          this.notdata = true
-        }
+      orderPage(this.obj).then(res => {
+        this.notdata = false
+        this.pageObj = res
       })
     },
     closeOrder(orderNo) {
-      // myHttp.call(this, {
-      //   method: orderClose,
-      //   params: { orderNo }
-      // }).then(res => {
-      //   this.$msgBox({
-      //     content: '取消成功',
-      //     isShowCancelBtn: false,
-      //     edit: false
-      //   }).then(async(val) => {
-      //     this.getOrderList()
-      //   }).catch(() => {
-      //     this.getOrderList()
-      //   })
-      // })
+      cancelOrder({ orderNo: orderNo }).then(res => {
+        this.$msgBox({
+          content: '关闭成功',
+          isShowCancelBtn: false,
+          edit: false
+        }).then(async(val) => {
+          this.getOrderList()
+        }).catch(() => {
+          this.getOrderList()
+        })
+      })
     }
   }
 }

@@ -36,7 +36,8 @@ export const myHttp = function({ method, params = {}, confirm, cancel }) {
       this.$msgBox({
         content: '系统繁忙，请稍后重试',
         isShowCancelBtn: false
-      }).catch(() => {})
+      }).catch(() => {
+      })
       reject(error)
     })
   })

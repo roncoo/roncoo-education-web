@@ -7,18 +7,9 @@
         <a href="javascript:" class="close iconfont" @click="close">&#xe616;</a>
       </div>
       <div v-if="payStep === 2" class="modal_body payrun h180">
-        <div class="icon iconfont c_green minIcon">&#xe69f;<span class="c_333">订单支付成功!</span></div>
-        <!-- <div class="tip">支付成功</div> -->
+        <div class="icon iconfont c_green minIcon">&#xe69f;<span class="c_333">订单支付成功</span></div>
         <div class="center mgt20">
-          <a v-if="data.courseCategory == 1" :href="mainUrl + '/view/'+data.courseId" class="solid_btn">立即学习</a>
-          <a v-else-if="data.courseCategory == 2" :href="mainUrl + '/live/detail/'+data.courseId" class="solid_btn">立即学习</a>
-          <a v-else-if="data.courseCategory == 3" :href="mainUrl + '/live/bunch/'+data.courseId" class="solid_btn">立即学习</a>
-          <a v-else class="solid_btn" href="javascript:" @click="reload">确定</a>
-        </div>
-        <div v-if="websiteInfo && websiteInfo.weixinXcx" class="ewm_img">
-          <img :src="websiteInfo.weixinXcx" alt="">
-          <p class="mgt10">微信扫码关注小程序</p>
-          <p>学习更便捷</p>
+          <a :href="'/course/'+data.courseId" class="solid_btn">立即学习</a>
         </div>
       </div>
       <div v-else-if="payStep === 3" class="modal_body payrun">
@@ -35,8 +26,8 @@
           <input id="payType1" v-model="payType" type="radio" name="payType" value="1">
           <label for="payType1" class="pay pay_weixin" @click="changePay(1)" />
         </div>
-        <div v-if="payType === 2" class="tip">支付宝支付 {{ data.pricePaid }}元</div>
-        <div v-else class="tip">微信支付 {{ data.pricePaid }}元</div>
+        <div v-if="payType === 2" class="tip">支付宝支付 {{ data.coursePrice }}元</div>
+        <div v-else class="tip">微信支付 {{ data.coursePrice }}元</div>
         <div class="code">
           <canvas id="canvas" />
           <div v-if="load" class="create_tip">正在生成...</div>
@@ -48,7 +39,8 @@
   </div>
 </template>
 <script>
-import { continuePay, orderInfo } from '~/api/account/course.js'
+import { continuePay } from '~/api/user.js'
+import { orderInfoView } from '~/api/course.js'
 import QRCode from 'qrcode'
 
 export default {
@@ -82,33 +74,11 @@ export default {
         orderNo: this.data.orderNo,
         payType: pt
       }).then(res => {
-        const result = res.data
-        if (result.code === 200) {
-          this.payType = result.data.payType
-          this.qrcode(result.data.payMessage)
-          this.getOrderInfo(result.data.orderNo)
-        } else {
-          if (result.code >= 300 && result.code < 400) {
-            this.$msgBox({
-              content: '登录超时，请重新登陆',
-              isShowCancelBtn: false
-            }).then(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            }).catch(() => {
-              this.$store.dispatch('REDIRECT_LOGIN', result.code)
-            })
-          } else {
-            this.$msgBox({
-              content: result.msg,
-              isShowCancelBtn: false
-            }).then(() => {
-              this.$emit('hidefun', event)
-            }).catch(() => {
-            })
-          }
-        }
+        this.payType = res.payType
+        this.qrcode(res.payMessage)
+        this.getOrderInfo(res.orderNo)
       }).catch(msg => {
-        this.getOrder(this.data.payType)
+        console.error('系统范围')
       })
     },
     resetPay() {
@@ -118,8 +88,8 @@ export default {
     qrcode(url) {
       const that = this
       QRCode.toCanvas(document.getElementById('canvas'), url, {
-        width: 180,
-        height: 180
+        width: 178,
+        height: 178
       }, function(error) {
         if (error) console.error(error)
         that.load = false
@@ -130,13 +100,12 @@ export default {
     },
     getOrderInfo(no) {
       const that = this
-      orderInfo({ orderNo: no }).then(res => {
-        const result = res.data
-        if (result.data.orderStatus === 1) {
+      orderInfoView(no).then(res => {
+        if (res.orderStatus === 1) {
           setTimeout(function() {
             that.getOrderInfo(no)
           }, 1000)
-        } else if (result.data.orderStatus === 2) {
+        } else if (res.orderStatus === 2) {
           that.payStep = 2
         } else {
           that.payStep = 3

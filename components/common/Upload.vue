@@ -1,23 +1,19 @@
 <template>
   <div class="upload_com">
-    <div v-if="ov == 1" class="progress"><div class="entity" :style="{width: jd + '%'}">{{ tip }}</div></div>
+    <div v-if="ov == 1" class="progress">
+      <div class="entity" :style="{width: jd + '%'}">{{ tip }}</div>
+    </div>
     <button v-else class="solid_btn" type="button" @click="upimg">{{ btntxt }}</button>
     <div v-if="ov == 2 && !upOk" class="tip">{{ tip }}</div>
     <input :id="docId" name="file" style="display: none;" type="file" :accept="accept" multiple="multiple" @change="update">
   </div>
 </template>
 <script>
-import { uploadPic, uploadDoc } from '~/api/upload.js'
+import { uploadPic } from '~/api/upload.js'
 import { mapState } from 'vuex'
+
 export default {
   props: {
-    isresource: {
-      type: Boolean,
-      default: false
-    },
-    isTiku: {
-      type: Boolean
-    },
     accept: {
       type: String,
       default: ''
@@ -63,31 +59,20 @@ export default {
     update(e) {
       const file = e.target.files[0]
       const that = this
-      let uploadType = uploadPic
-      let typeFile = 'picFile'
-      /* eslint-disable no-undef */
       const param = new FormData()
-      if (this.isresource) {
-        uploadType = uploadDoc
-        typeFile = 'docFile'
-      }
-      param.append(typeFile, file, file.name)
+      param.append('picFile', file, file.name)
       // console.log(param)
-      uploadType(param, function(int) {
+      uploadPic(param, function(int) {
         that.jd = int
         that.ov = 1
         that.tip = '上传中...'
       }).then(res => {
         e.target.value = ''
         that.ov = 2
-        if (res.code === 200) {
-          e.target.value = ''
-          that.tip = '上传成功'
-          that.jd = 100
-          that.$emit('rtnUrl', { name: file.name, url: res.data })
-        } else {
-          that.tip = res.msg
-        }
+        e.target.value = ''
+        that.tip = '上传成功'
+        that.jd = 100
+        that.$emit('rtnUrl', { name: file.name, url: res })
       }).catch(() => {
         that.ov = 2
         that.tip = '上传失败'
@@ -107,7 +92,7 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
-.progress{
+.progress {
   display: inline-block;
   line-height: 34px;
   height: 34px;
@@ -118,13 +103,15 @@ export default {
   text-align: center;
   box-shadow: 0 0 4px #a2a2a2 inset;
   overflow: hidden;
-  .entity{
+
+  .entity {
     height: 100%;
     background-color: #0c0;
     border-radius: 6px;
   }
 }
-.tip{
+
+.tip {
   display: inline-block;
 }
 </style>
