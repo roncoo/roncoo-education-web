@@ -7,16 +7,16 @@
         <span class="arrow" />
       </li>
     </ul>
-    <!--    <div class="big_block clearfix" :style="'width:' + width + 'px;'">
-          <div class="list_items fl clearfix">
-            <div v-for="(item, index) in twoList" :key="index" class="list_item clearfix">
-              <nuxt-link :to="{name: 'list', query: {categoryId, categoryno2: item.id}}" :class="{class_header: true, has_three: item.threeList.length, fl: true}">{{ item.categoryName }}</nuxt-link>
-              <div class="fl three_box">
-                <nuxt-link v-for="(that, num) in item.threeList" :key="num" :to="{name: 'list', query: {categoryId, categoryno2: item.id, categoryno3: that.id}}" class="three_link">{{ that.categoryName }}</nuxt-link>
-              </div>
-            </div>
+    <div class="big_block clearfix" :style="'width:' + width + 'px;'">
+      <div v-for="(item, index) in list" :key="index" class="list_items fl clearfix">
+        <div v-for="(item1, index1) in item.list" :key="index1" class="list_item clearfix">
+          <nuxt-link :to="{name: 'list', query: {categoryId: item1.id}}" :class="{class_header: true, fl: true}">{{ item1.categoryName }}</nuxt-link>
+          <div class="fl three_box">
+            <nuxt-link v-for="(item2, index2) in item1.list" :key="index2" :to="{name: 'list', query: {categoryId: item2.id}}" class="three_link">{{ item2.categoryName }}</nuxt-link>
           </div>
-        </div>-->
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -37,7 +37,8 @@ export default {
   },
   data() {
     return {
-      width: 0
+      width: 0,
+      categoryId: ''
     }
   },
   mounted() {
@@ -52,16 +53,8 @@ export default {
       this.categoryId = ''
     },
     // 跳转详情页
-    goDetail(id, type) {
-      let name = ''
-      if (type === 1) {
-        name = 'courselDetail'
-      } else if (type === 2) {
-        name = 'liveDetail'
-      } else if (type === 3) {
-        name = 'liveAndBunch'
-      }
-      this.$router.push({ name, params: { id }})
+    goCourseView(id, type) {
+      this.$router.push({ path: '/course/' + id })
     }
   }
 }

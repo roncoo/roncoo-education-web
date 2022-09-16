@@ -29,7 +29,8 @@ export default {
   },
   data() {
     return {
-      fiveNow: '',
+      oneNow: '',
+      fourNow: '',
       categoryObj: {
         categoryId: '',
         isFree: ''

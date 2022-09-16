@@ -20,7 +20,7 @@
                   <img :src="that.courseLogo" alt="">
                 </div>
                 <p>{{ that.courseName }}</p>
-                <span v-if="that.coursePrice" class="price_box">免费</span>
+                <span v-if="that.coursePrice === 0" class="price_box">免费</span>
                 <span v-else class="price_box">￥{{ that.coursePrice }}</span>
               </nuxt-link>
             </li>

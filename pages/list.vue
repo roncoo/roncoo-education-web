@@ -100,18 +100,9 @@ export default {
       this.$nuxt.$loading.start()
       courseList(this.obj).then(res => {
         this.$nuxt.$loading.finish()
-        const result = res.data
-        if (result.code === 200) {
-          if (result.data.list.length > 0) {
-            this.pageObj = result.data
-          } else {
-            this.pageObj = {}
-          }
+        if (res) {
+          this.pageObj = res
         } else {
-          this.$msgBox({
-            content: result.msg,
-            isShowCancelBtn: false
-          })
           this.pageObj = {}
         }
       }).catch(() => {
