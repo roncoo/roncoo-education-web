@@ -13,13 +13,13 @@
     <div class="search_content">
       <ul v-if="opts.list && opts.list.length > 0" class="clearfix">
         <li v-for="(item, index) in opts.list" :key="index">
-          <nuxt-link target="_blank" :to="{name: 'view-id', params: {id: item.id}}" class="course_info">
+          <nuxt-link target="_blank" :to="{name: 'course-id', params: {id: item.id}}" class="course_info">
             <div class="img_box">
               <img class="course_img" :src="item.courseLogo" alt="">
             </div>
             <p v-html="item.courseName" />
-            <span v-if="item.isFree" class="price_box">免费</span>
-            <span v-else class="price_box">￥{{ item.courseOriginal.toFixed(2) }}<span v-if="openVip && item.courseOriginal !== item.courseDiscount" class="font_12 padl_10">SVIP:{{ item.courseDiscount ? '￥' + item.courseDiscount.toFixed(2) : '免费' }}</span></span>
+            <span v-if="item.coursePrice === 0" class="price_box">免费</span>
+            <span v-else class="price_box">￥{{ item.coursePrice }}</span>
           </nuxt-link>
         </li>
       </ul>
@@ -68,18 +68,13 @@ export default {
     try {
       dataObj.map.courseName = context.query.search
       const res = await courseList(dataObj.map, dataObj.page.pageCurrent, dataObj.page.pageSize)
-      if (res.code === 200) {
-        dataObj.opts.list = res.data.list || []
-        dataObj.page.pageCurrent = res.data.pageCurrent || 1
-        dataObj.page.totalPage = res.data.totalPage || 1
-        dataObj.page.totalCount = res.data.totalCount || 0
-        return dataObj
-      } else {
-        // return dataObj
-        context.error({ message: res.data.msg, statusCode: 404 })
-      }
+      dataObj.opts.list = res.list || []
+      dataObj.page.pageCurrent = res.pageCurrent || 1
+      dataObj.page.totalPage = res.totalPage || 1
+      dataObj.page.totalCount = res.totalCount || 0
+      return dataObj
     } catch (e) {
-      context.error({ message: 'User not found', statusCode: 404 })
+      context.error({ message: 'Data not found', statusCode: 404 })
     }
   },
   data() {
@@ -132,17 +127,10 @@ export default {
       this.ctrl.loading = true
       courseList(this.map, this.page.pageCurrent, this.page.pageSize).then(res => {
         this.ctrl.loading = false
-        if (res.code === 200) {
-          this.opts.list = res.data.list || []
-          this.page.pageCurrent = res.data.pageCurrent
-          this.page.totalPage = res.data.totalPage || 1
-          this.page.totalCount = res.data.totalCount
-        } else {
-          this.opts.list = []
-          this.page.pageCurrent = 1
-          this.page.totalPage = 1
-          this.page.totalCount = 0
-        }
+        this.opts.list = res.list || []
+        this.page.pageCurrent = res.pageCurrent
+        this.page.totalPage = res.totalPage || 1
+        this.page.totalCount = res.totalCount
       }).catch(() => {
         this.ctrl.loading = false
         this.opts.list = []
