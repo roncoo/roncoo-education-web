@@ -1,7 +1,7 @@
 <template>
   <div class="index_page">
     <y-header :active="'index'" />
-    <y-banner :data="advData" :height="366" :category-list="classList" />
+    <y-banner :data="carouselData" :height="366" :category-list="categoryData" />
     <div v-for="(item, index) in zoneData" :key="index" class="i_content">
       <div class="i_zone">
         <div class="zone_header">
@@ -50,9 +50,10 @@ export default {
     try {
       const dataObj = {}
       // 轮播图
-      dataObj.advData = await carouselList()
+      dataObj.carouselData = await carouselList()
       // 分类
-      dataObj.classList = await categoryList()
+      dataObj.categoryData = await categoryList()
+      console.log('categoryData', dataObj.categoryData)
       // 分区
       dataObj.zoneData = await zoneList({})
       return dataObj
@@ -62,8 +63,7 @@ export default {
   },
   data() {
     return {
-      websiteInfo: this.$store.state.websiteInfo,
-      advData: this.$store.state.advData
+      websiteInfo: this.$store.state.websiteInfo
     }
   },
   head() {

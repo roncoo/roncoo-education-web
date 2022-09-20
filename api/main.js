@@ -18,7 +18,7 @@ export const navList = () => {
 }
 // 首页轮播图
 export const carouselList = () => {
-  return http().get('/system/api/website/adv/list')
+  return http().get('/system/api/website/carousel/list')
 }
 // 友情链接
 export const linkList = () => {

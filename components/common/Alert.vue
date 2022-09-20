@@ -1,4 +1,3 @@
-// /src/components/MessageBox/index.vue
 <template>
   <div v-show="isShowMessageBox" class="message-box">
     <div class="mask" @click="cancel" />
@@ -26,7 +25,7 @@ export default {
     },
     content: {
       type: String,
-      default: '这是弹框内容'
+      default: '内容'
     },
     isShowInput: {
       type: Boolean,
@@ -101,45 +100,51 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .message-box{
-    position: relative;
-    top: 50%;
-    left: 50%;
-    z-index: 10009;
-  }
-  .message-content{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    z-index: 999;
-    width: 470px;
-    margin-left: -235px;
-    margin-top: -140px;
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    .title{
-      line-height: 45px;
-      padding: 0 20px;
-      background-color: #f9f9f9;
-      font-size: 16px;
-      .close{
-        float: right;
-      }
-    }
-    .content{
-      text-align: center;
-      padding:24px 20px 12px;
-      font-size: 16px;
+.message-box {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  z-index: 10009;
+}
+
+.message-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 999;
+  width: 470px;
+  margin-left: -235px;
+  margin-top: -140px;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .title {
+    line-height: 45px;
+    padding: 0 20px;
+    background-color: #f9f9f9;
+    font-size: 16px;
+
+    .close {
+      float: right;
     }
   }
-  .btn-group{
-    padding: 12px;
+
+  .content {
     text-align: center;
-    .btn-default{
-      background-color: #eee;
-      border-color: #ddd;
-      color: #666;
-    }
+    padding: 24px 20px 12px;
+    font-size: 16px;
   }
+}
+
+.btn-group {
+  padding: 12px;
+  text-align: center;
+
+  .btn-default {
+    background-color: #eee;
+    border-color: #ddd;
+    color: #666;
+  }
+}
 </style>

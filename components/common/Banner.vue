@@ -1,8 +1,8 @@
 <template>
   <div class="banner">
     <ul :style="'height:'+ height+ 'px;'" @mouseout="mout" @mouseover="mover">
-      <li v-for="(item, index) in data" :key="index" class="item" :style="'background-image: url('+item.advImg+');'" :class="{on:index === num}">
-        <a :href="item.advUrl" :title="item.advTitle" :target="item.advTarget" />
+      <li v-for="(item, index) in data" :key="index" class="item" :style="'background-image: url('+item.carouselImg+');'" :class="{on:index === num}">
+        <a :href="item.carouselUrl" :title="item.carouselTitle" :target="item.carouselTarget" />
       </li>
     </ul>
     <ul class="page_dots">
