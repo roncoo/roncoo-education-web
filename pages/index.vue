@@ -53,7 +53,6 @@ export default {
       dataObj.carouselData = await carouselList()
       // 分类
       dataObj.categoryData = await categoryList()
-      console.log('categoryData', dataObj.categoryData)
       // 分区
       dataObj.zoneData = await zoneList({})
       return dataObj
