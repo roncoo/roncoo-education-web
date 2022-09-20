@@ -37,11 +37,10 @@ export default {
   },
   data() {
     return {
-      tokenInfo: ''
+      tokenInfo: this.$store.state.tokenInfo
     }
   },
   mounted() {
-    this.tokenInfo = this.$store.state.tokenInfo
   },
   methods: {
     downFile(item) {

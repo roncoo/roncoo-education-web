@@ -17,8 +17,8 @@
                 <td>
                   <img :src="item.courseResp.courseLogo" :alt="item.courseResp.courseName" :height="80">
                   <div>
-                    <div v-if="item.courseResp.isFree === 1">免费课</div>
                     <div class="title">{{ item.courseResp.courseName }}</div>
+                    <div v-if="item.courseResp.isFree === 1" style="margin: 0">【免费课】</div>
                     <br><br><br><br>
                     <div>学习进度：10%</div>
                   </div>
