@@ -3,7 +3,6 @@
 </template>
 <script>
 import { getMobileCode } from '@/api/login.js'
-
 export default {
   props: {
     mobile: {
@@ -33,7 +32,6 @@ export default {
       this.$emit('cb', event)
       // 获取验证码
       getMobileCode({
-        clientId: this.$store.state.clientData.id,
         mobile: this.mobile
       }).then(res => {
         if (res.code === 200) {

@@ -49,7 +49,6 @@ export default {
       // TODO
     },
     playVideo(data) {
-      console.log('token', this.tokenInfo)
       if (!this.tokenInfo) {
         this.$msgBox({
           content: '请先登录'

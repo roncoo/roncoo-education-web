@@ -63,7 +63,7 @@ export default {
     postcss: null,
     parallel: true,
     transpile: [/^element-ui/],
-    extractCSS: { ignoreOrder: true },
+    extractCSS: process.env.NODE_ENV === 'production' ? { ignoreOrder: true } : false,
     extend(config, ctx) {
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
