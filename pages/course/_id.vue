@@ -38,7 +38,7 @@ import YFooter from '~/components/common/Footer'
 import YCatalog from '@/components/course/Catalog'
 import YStudy from '@/components/course/Study'
 import cookies from '@/utils/cookies'
-import { courseDetail, playSign, userCourseDetail } from '~/api/course.js'
+import { courseDetail, playSign, studyProgress, userCourseDetail } from '~/api/course.js'
 
 export default {
   components: {
@@ -79,7 +79,8 @@ export default {
   data() {
     return {
       tab: 'info',
-      playVid: '' // 当前播放章节
+      playVid: '', // 当前播放章节
+      userStudy: {} // 进度
     }
   },
   head() {
@@ -91,13 +92,26 @@ export default {
     if (this.courseInfo.allowStudy) {
       this.tab = 'big'
     }
+
+    window.s2j_onVideoPause = (vid) => {
+      console.log('暂停')
+      clearInterval(this.progressInterval)
+    }
+
+    window.s2j_onVideoPlay = (vid) => {
+      console.log('播放')
+      // 记录进度
+      this.progressInterval = setInterval(() => {
+        this.studyRecord()
+      }, 3000)
+    }
   },
   methods: {
     videoPlay(data) {
       if (this.courseInfo.allowStudy) {
         window.scrollTo(0, 0)
-        playSign({ periodId: data.id, clientIp: '172.0.0.1' }).then(resp => {
-          this.play(resp)
+        playSign({ periodId: data.id, clientIp: '172.0.0.1' }).then(res => {
+          this.play(res)
         })
       } else {
         this.$msgBox({
@@ -129,6 +143,34 @@ export default {
           'vid': data.vid
         })
       }
+
+      this.userStudy.studyId = data.studyId
+      this.userStudy.resourceId = data.resourceId
+    },
+    // 记录进度
+    studyRecord() {
+      this.userStudy.totalDuration = this.getDuration()
+      this.userStudy.currentDuration = this.getCurrentTime()
+      studyProgress(this.userStudy).then(res => {
+        if (res === 'OK') {
+          // 完成，暂停同步
+          clearInterval(this.progressInterval)
+        }
+      })
+    },
+    // 获取视频当前播放时长
+    getCurrentTime() {
+      if (this.player && this.player.j2s_getCurrentTime) {
+        return this.player.j2s_getCurrentTime()
+      }
+      return 0
+    },
+    // 获取视频总时长
+    getDuration() {
+      if (this.player && this.player.j2s_getDuration) {
+        return this.player.j2s_getDuration()
+      }
+      return 0
     }
   }
 }

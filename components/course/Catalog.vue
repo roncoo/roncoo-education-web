@@ -41,18 +41,20 @@ export default {
     }
   },
   mounted() {
+    console.log('token', this.$store.state.tokenInfo)
+    this.tokenInfo = this.$store.state.tokenInfo
   },
   methods: {
     downFile(item) {
       // TODO
     },
     playVideo(data) {
+      console.log('token', this.tokenInfo)
       if (!this.tokenInfo) {
         this.$msgBox({
           content: '请先登录'
         }).then(res => {
           this.$store.dispatch('REDIRECT_LOGIN')
-        }).catch(() => {
         })
         return false
       }
@@ -60,7 +62,6 @@ export default {
         this.$msgBox({
           content: '该视频未更新',
           isShowCancelBtn: false
-        }).catch(() => {
         })
         return false
       }
@@ -130,7 +131,7 @@ export default {
 }
 
 .period_top {
-  width: 627px;
+  //width: 627px;
   padding-left: 20px;
   height: 46px;
   line-height: 46px;
@@ -142,7 +143,7 @@ export default {
 
   .video_time {
     position: absolute;
-    right: 0;
+    right: 10px;
   }
 
   .period_num {

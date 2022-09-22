@@ -169,7 +169,6 @@ export default {
         this.$nuxt.$loading.finish()
         this.$store.commit('SET_TOKEN', res.token)
         this.$store.commit('GET_TEMPORARYURL')
-        console.log(123)
         this.$store.dispatch('GET_USERINFO', store => {
           this.userInfo = this.$store.state.userInfo
           window.location.href = this.$store.state.temporaryUrl

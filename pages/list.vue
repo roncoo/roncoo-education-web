@@ -1,7 +1,7 @@
 <template>
   <div class="courselist_page">
     <y-header />
-    <y-header-list :class-list="categoryList" />
+    <y-choose :class-list="categoryList" />
     <div class="course_content">
       <ul class="clearfix">
         <li v-for="(item, index) in pageObj.list" :key="index">
@@ -18,15 +18,15 @@
       <d-page v-if="pageObj.totalPage > 1" :page="pageObj" @btnClick="getPage" />
     </div>
     <y-footer />
-    <right-tap />
+    <y-tap />
   </div>
 </template>
 <script>
 import YHeader from '~/components/common/Header'
 import YFooter from '~/components/common/Footer'
-import YHeaderList from '@/components/course/Choose'
+import YChoose from '@/components/common/Choose'
 import DPage from '~/components/common/Page'
-import RightTap from '@/components/common/Top'
+import YTap from '@/components/common/Top'
 import { courseList } from '~/api/course.js'
 import { categoryList } from '~/api/main.js'
 import { courseChange } from '~/utils/commonfun.js'
@@ -35,9 +35,9 @@ export default {
   components: {
     YHeader,
     YFooter,
-    YHeaderList,
+    YChoose,
     DPage,
-    RightTap
+    YTap
   },
   async asyncData(context) {
     const dataObj = {}

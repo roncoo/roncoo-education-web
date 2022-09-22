@@ -20,6 +20,11 @@ export const playSign = (params = {}, token) => {
   return http(token).post('/course/auth/course/sign', params)
 }
 
+// 同步学习进度
+export const studyProgress = (params = {}) => {
+  return http().post('/course/api/user/study/progress', params)
+}
+
 // 创建订单
 export const createOrder = (params = {}) => {
   return http().post('/user/auth/order/pay/create', params)
@@ -29,3 +34,4 @@ export const createOrder = (params = {}) => {
 export const orderInfoView = (orderNo) => {
   return http().get('/user/auth/order/info/view?orderNo=' + orderNo)
 }
+

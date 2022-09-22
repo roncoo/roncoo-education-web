@@ -13,24 +13,16 @@ export default {
     } else {
       state.userInfo = ''
       removeStore('OcUserInfo')
+      removeStore('tokenInfo')
     }
   },
   // 记录token
   SET_TOKEN: (state, token) => {
-    state.tokenInfo = token
     // 此处必须加path，否则在某些浏览器无法通过js移除
     document.cookie = state.tokenName + '=' + token + '; path=/'
     cookie.setInClient({ key: state.tokenName, val: token })
-    // setStore('tokenInfo', info.info)
-  },
-  // 退出登录
-  SIGN_OUT: (state) => {
-    state.tokenInfo = ''
-    state.userInfo = ''
-    // 移除document.cookie
-    document.cookie = state.tokenName + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'
-    cookie.delInClient(state.tokenName)
-    removeStore('OcUserInfo')
+    state.tokenInfo = token
+    setStore('tokenInfo', token)
   },
   // 记录用户信息
   SET_USER: (state, data) => {
@@ -38,7 +30,6 @@ export default {
     state.userInfo = data
     setStore('OcUserInfo', data)
   },
-
   // 记录当前url
   SET_TEMPORARYURL: (state, data) => {
     const uri = window.location.href
@@ -56,7 +47,16 @@ export default {
     const cook = cookie.getInServer(req)
     state.tokenInfo = cook[state.tokenName]
   },
-
+  // 退出登录
+  SIGN_OUT: (state) => {
+    state.tokenInfo = ''
+    state.userInfo = ''
+    // 移除document.cookie
+    document.cookie = state.tokenName + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'
+    cookie.delInClient(state.tokenName)
+    removeStore('OcUserInfo')
+    removeStore('tokenInfo')
+  },
   SET_ITEMS: (state, { key, value }) => {
     state[key] = value
   }

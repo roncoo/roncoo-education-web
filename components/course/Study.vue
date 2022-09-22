@@ -62,6 +62,10 @@ export default {
     courseInfo: {
       type: Object,
       default: null
+    },
+    playVid: {
+      type: String,
+      default: null
     }
   },
   data() {
