@@ -67,7 +67,7 @@ export default {
         return false
       }
 
-      this.$emit('playfunc', data)
+      this.$emit('playfunc', data.id)
     }
   }
 }

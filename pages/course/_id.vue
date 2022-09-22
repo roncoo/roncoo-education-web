@@ -93,6 +93,13 @@ export default {
       this.tab = 'big'
     }
 
+    if (this.courseInfo.allowStudy) {
+      // 可以播放，自动获取最后学习的课程
+      playSign({ courseId: this.courseInfo.id, clientIp: '172.0.0.1' }).then(res => {
+        this.play(res)
+      })
+    }
+
     window.s2j_onVideoPause = (vid) => {
       console.log('暂停')
       clearInterval(this.progressInterval)
@@ -107,10 +114,10 @@ export default {
     }
   },
   methods: {
-    videoPlay(data) {
+    videoPlay(periodId) {
       if (this.courseInfo.allowStudy) {
         window.scrollTo(0, 0)
-        playSign({ periodId: data.id, clientIp: '172.0.0.1' }).then(res => {
+        playSign({ periodId: periodId, clientIp: '172.0.0.1' }).then(res => {
           this.play(res)
         })
       } else {
@@ -140,7 +147,8 @@ export default {
           'playsafe': data.token,
           'ts': data.ts,
           'sign': data.sign,
-          'vid': data.vid
+          'vid': data.vid,
+          autoplay: true
         })
       }
 
