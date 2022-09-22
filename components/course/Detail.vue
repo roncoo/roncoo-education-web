@@ -23,7 +23,7 @@
             <p>{{ courseInfo.courseName }}</p>
             <div class="view_price">
               <div>
-                价格:<span v-if="courseInfo.coursePrice === 0">免费</span> <span v-else>￥{{ courseInfo.coursePrice ? courseInfo.coursePrice.toFixed(2) : '0.00' }}</span>
+                价格:<span v-if="courseInfo.coursePrice === 0">免费</span> <span v-else>￥{{ courseInfo.coursePrice }} <b style="text-decoration-line: line-through;font-size: 18px">￥{{ courseInfo.rulingPrice }}</b></span>
               </div>
             </div>
             <div class="view_teacher">

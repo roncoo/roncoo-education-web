@@ -21,7 +21,7 @@
                 </div>
                 <p>{{ that.courseName }}</p>
                 <span v-if="that.coursePrice === 0" class="price_box">免费</span>
-                <span v-else class="price_box">￥{{ that.coursePrice }}</span>
+                <span v-else class="price_box">￥{{ that.coursePrice }} <span style="text-decoration-line: line-through;font-size: 12px">￥{{ that.rulingPrice }}</span></span>
               </nuxt-link>
             </li>
           </ul>
