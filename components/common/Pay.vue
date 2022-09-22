@@ -27,25 +27,24 @@
         <a href="javascript:" class="close iconfont" @click="close()">&#xe616;</a>
       </div>
       <div v-if="courseData" class="modal_body">
-
         <table class="table">
           <tr>
-            <th>课程名称</th>
+            <th>课程信息</th>
             <th>课程价格</th>
           </tr>
           <tr>
             <td>
-              <div class="" style="width:320px;">
+              <div class="" style="width:300px;">
                 <div v-if="courseData.courseLogo" class="img"><img :src="courseData.courseLogo" alt=""></div>
                 <div class="name">{{ courseData.courseName }}</div>
               </div>
             </td>
-            <td class="c_orange">¥{{ courseData.coursePrice.toFixed(2) }}</td>
+            <td class="c_orange">¥{{ courseData.coursePrice }}</td>
           </tr>
         </table>
         <div class="remark">
           <label>备注:</label>
-          <input v-model="order.remarkCus" type="text" placeholder="请输入你需要的备注!">
+          <input v-model="order.remarkCus" type="text" placeholder="请输入你需要的备注">
         </div>
         <div class="pay_type">
           <input id="payType2" v-model="order.payType" type="radio" name="payType" value="2">
@@ -308,7 +307,7 @@ export default {
   left: 50%;
   top: 20%;
   z-index: 999;
-  width: 480px;
+  width: 482px;
   margin-left: -240px;
   background-color: #fff;
   border-radius: 8px;
