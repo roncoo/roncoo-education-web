@@ -8,7 +8,7 @@ export default {
     port: 3001 // default: 3001
   },
   head: {
-    title: 'roncoo-education-web',
+    title: '首页',
     htmlAttrs: {
       lang: 'zh-g'
     },

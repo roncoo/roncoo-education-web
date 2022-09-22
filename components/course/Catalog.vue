@@ -41,8 +41,6 @@ export default {
     }
   },
   mounted() {
-    console.log('token', this.$store.state.tokenInfo)
-    this.tokenInfo = this.$store.state.tokenInfo
   },
   methods: {
     downFile(item) {

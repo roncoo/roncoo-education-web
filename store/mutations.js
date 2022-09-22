@@ -19,7 +19,6 @@ export default {
   // 记录token
   SET_TOKEN: (state, token) => {
     // 此处必须加path，否则在某些浏览器无法通过js移除
-    console.log('SET_TOKEN', token)
     cookie.setInClient({ key: state.tokenName, val: token })
     state.tokenInfo = token
     setStore('tokenInfo', token)

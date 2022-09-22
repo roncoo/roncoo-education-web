@@ -115,7 +115,7 @@ export default {
         })
       } else {
         this.$msgBox({
-          content: '购买后才可以播放',
+          content: '购买后才可以学习',
           isShowCancelBtn: false
         })
         return false
