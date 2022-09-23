@@ -3,7 +3,7 @@
     <div class="menu_panel">
       <h3 class="title"><i class="iconfont">&#xe60a;</i>个人资料</h3>
       <ul class="menus">
-        <li :class="{on: type == 'xxjl'}">
+        <li :class="{on: type == 'wdkc'}">
           <router-link :to="{name: 'account-course'}">我的课程</router-link>
         </li>
         <li :class="{on: type == 'wddd'}">
@@ -23,7 +23,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'xxjl'
+      default: 'wdkc'
     }
   },
   data() {

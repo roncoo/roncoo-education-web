@@ -2,7 +2,7 @@
   <div>
     <y-header />
     <div class="person_body container account_cont clearfix">
-      <y-side :type="'xxjl'" />
+      <y-side :type="'wdkc'" />
       <div class="main_box">
         <ul class="tabs clearfix">
           <a class="tab on">课程列表</a>
@@ -14,7 +14,7 @@
           <table v-else class="course_table table">
             <tbody>
               <tr v-for="(item, index) in pageObj.list" :key="item.periodName + index">
-                <td>
+                <td v-if="item.courseResp">
                   <img :src="item.courseResp.courseLogo" :alt="item.courseResp.courseName" :height="80">
                   <div>
                     <div class="title">{{ item.courseResp.courseName }}</div>
@@ -25,7 +25,7 @@
                     <div>总进度：{{ item.courseProgress }}%</div>
                   </div>
                 </td>
-                <td style="float: right;margin-top: 10px">
+                <td v-if="item.courseResp" style="float: right;margin-top: 10px">
                   <nuxt-link target="_blank" :to="{name: 'course-id', params: {id: item.courseResp.id}}" class="go_btn">继续学习</nuxt-link>
                 </td>
               </tr>

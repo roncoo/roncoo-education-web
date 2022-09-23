@@ -2,7 +2,7 @@
   <div class="">
     <y-header />
     <div class="container account_cont clearfix">
-      <y-side />
+      <y-side :type="'grxx'" />
       <div class="main_box">
         <ul class="tabs clearfix">
           <a class="tab on">基础信息</a>
