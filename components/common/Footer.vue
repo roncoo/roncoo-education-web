@@ -1,32 +1,5 @@
 <template>
   <div class="i_footer">
-    <div v-show="list && list.length" class="footer_content clearfix">
-      <div v-for="(item, index) in list" :key="index" class="footer_msg">
-        <ul>
-          <li class="m_header">{{ item.navName }}</li>
-          <li class="m_row" />
-          <li v-for="(that, num) in item.websiteNavList" :key="num"><a :href="mainUrl+'/terrace/'+that.id">{{ that.navName }}</a></li>
-        </ul>
-      </div>
-      <div v-show="service" class="m_right">
-        <div class="footer_msg">
-          <ul>
-            <li class="m_header">官方微信</li>
-            <li>
-              <img :src="service.weixin" alt="">
-            </li>
-          </ul>
-        </div>
-        <div v-show="service.weibo" class="footer_msg">
-          <ul>
-            <li class="m_header">官方微博</li>
-            <li>
-              <img :src="service.weibo" alt="">
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
     <div v-show="friendLinkList && friendLinkList.length" class="friend_link">
       <ul class="clearfix">
         <li class="link_one">友情链接:</li>
@@ -34,14 +7,14 @@
       </ul>
     </div>
     <div v-show="service" class="copyright">
-      <span v-html="service.copyright" />
+      <span v-html="service.websiteCopyright" />
     </div>
     <div class="icp_num">
       <a href="http://www.doityun.com/" target="_blank" class="lingke_link">IT云提供计算服务</a>
       <span v-if="service.icp">&nbsp;|&nbsp;</span>
-      <a href="http://www.miitbeian.gov.cn/" target="_blank" class="lingke_link">{{ service.icp }}</a>
-      <span v-if="service.prn">&nbsp;|&nbsp;</span>
-      <a v-if="service.prn" :href="'http://www.beian.gov.cn/portal/index'" target="_blank" class="lingke_link"><img src="~/assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ service.prn }}</a>
+      <a href="http://www.miitbeian.gov.cn/" target="_blank" class="lingke_link">{{ service.websiteIcp }}</a>
+      <span v-if="service.websitePrn">&nbsp;|&nbsp;</span>
+      <a v-if="service.websitePrn" :href="'http://www.beian.gov.cn/portal/index'" target="_blank" class="lingke_link"><img src="~/assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ service.websitePrn }}</a>
     </div>
   </div>
 </template>
@@ -72,7 +45,7 @@ export default {
 <style lang="scss" rel="stylesheet/scss">
 .i_footer {
   background: rgb(51, 51, 51);
-  padding-top: 60px;
+  padding-top: 10px;
 
   .footer_content {
     width: 1200px;

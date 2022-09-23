@@ -1,47 +1,10 @@
 <template>
   <div class="right_window">
-    <div v-if="websiteInfo && websiteInfo.weixinXcx" class="iconfont right_item show_xcx" @click.stop="hideEwm = false" @mouseout="hideEwm=true" @mouseenter="hideEwm = false">
-      &#xe619;
-      <!-- <div class="wx_xcx">
-        <div class="xcx_title">微信小程序</div>
-        <img class="show_img" :src="websiteInfo.weixinXcx" alt="">
-      </div> -->
-      <div v-if="websiteInfo && websiteInfo.weixinXcx && !hideEwm" class="xcx_box">
-        <div class="ewm_box">
-          <img class="ewm_img" :src="websiteInfo.weixinXcx" alt="">
-          <p>关注小程序</p>
-          <p>学习更便捷</p>
-        </div>
-      </div>
-    </div>
-    <!-- <div class="iconfont right_item show_gzh" v-if="websiteInfo.weixin">
-      &#xe63e;
-      <div class="wx_gzh">
-        <div class="xcx_title">官方微信</div>
-        <img class="show_img" :src="websiteInfo.weixin" alt="">
-      </div>
-    </div> -->
-    <div v-if="websiteInfo && websiteInfo.isShowService" class="iconfont right_item show_kefu" @mouseenter="showKefu" @mouseleave="hideKefu">
+    <div class="iconfont right_item show_kefu" @mouseenter="showKefu" @mouseleave="hideKefu">
       &#xe635;
       <div v-if="isKefu" :class="{kefu: true}">
-        <a v-if="websiteInfo.service1" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + websiteInfo.service1 + '&site=qq&menu=yes'" target="_blank">
-          客服：{{ websiteInfo.service1 }}
-          <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
-        </a>
-        <a v-if="websiteInfo.service2" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + websiteInfo.service2 + '&site=qq&menu=yes'" target="_blank">
-          客服：{{ websiteInfo.service2 }}
-          <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
-        </a>
-        <a v-if="websiteInfo.service3" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + websiteInfo.service3 + '&site=qq&menu=yes'" target="_blank">
-          客服：{{ websiteInfo.service3 }}
-          <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
-        </a>
-        <a v-if="websiteInfo.service4" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + websiteInfo.service4 + '&site=qq&menu=yes'" target="_blank">
-          客服：{{ websiteInfo.service4 }}
-          <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
-        </a>
-        <a v-if="websiteInfo.service5" :href="'http://wpa.qq.com/msgrd?y=3&uin=' + websiteInfo.service5 + '&site=qq&menu=yes'" target="_blank">
-          客服：{{ websiteInfo.service5 }}
+        <a :href="'http://wpa.qq.com/msgrd?y=3&uin=297115770&site=qq&menu=yes'" target="_blank">
+          客服：297115770
           <img src="http://wpa.qq.com/pa?p=2:297115770:52" class="qq_img" alt="">
         </a>
       </div>
@@ -54,31 +17,16 @@ export default {
   data() {
     return {
       websiteInfo: '',
-      isKefu: false,
-      hideEwm: true
-    }
-  },
-  computed: {
-    changeEwm() {
-      return this.$store.state.changeEwm
-    }
-  },
-  watch: {
-    changeEwm() {
-      this.hideEwm = true
+      isKefu: false
     }
   },
   mounted() {
     this.websiteInfo = this.$store.state.websiteInfo
-    if (this.$route.path !== '/' && this.$route.path !== '/index') {
-      this.hideEwm = true
-    }
   },
   methods: {
     // 显示客服列表
     showKefu() {
       this.isKefu = true
-      this.hideEwm = true
     },
     // 隐藏客服列表
     hideKefu() {

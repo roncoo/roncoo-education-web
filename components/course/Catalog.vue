@@ -12,7 +12,8 @@
           <span v-if="two.resourceResp && two.resourceResp.videoStatus === 1" class="no_video">(未更新)</span>
           <span v-if="two.isFree" class="c_blue">(免费)</span>
           {{ two.periodName }}
-          <span v-if="two.resourceResp && two.resourceResp.videoStatus === 2" class="video_time fr">{{ formatDuring(two.resourceResp.videoLength * 1000) }}</span>
+          <span v-if="two.resourceResp && two.resourceResp.videoStatus === 2">{{ formatDuring(two.resourceResp.videoLength * 1000) }}</span>
+          <span v-if="two.periodProgress" class="video_time fr">{{ two.periodProgress }}%</span>
         </div>
         <a v-if="two.isDoc" href="javascript:" @click="downFile(two)">下载课件</a>
       </div>

@@ -3,15 +3,15 @@
   <div class="header_list">
     <div class="list_content">
       <ul class="content_ul clearfix">
-        <li @click="changeOne([], -1, '')"><a href="javascript:">全部</a></li>
-        <li v-for="(item, index) in classList" :key="index" :class="{now: oneNow == item.id}" @click="changeOne(item.list, index, item.id)"><a href="javascript:">{{ item.categoryName }}</a></li>
+        <li :class="{now: categoryId == 0}" @click="changeOne({id:0}, 0)"><a href="javascript:">全部</a></li>
+        <li v-for="(item, index) in classList" :key="index" :class="{now: categoryId == item.id}" @click="changeOne(item, currentId)"><a href="javascript:">{{ item.categoryName }}</a></li>
       </ul>
     </div>
     <div class="list_content">
       <ul class="content_ul clearfix">
-        <li :class="{now: fourNow == 3}" @click="changeFour(3)"><a href="javascript:">全部</a></li>
-        <li :class="{now: fourNow == 2}" @click="changeFour(2)"><a href="javascript:">付费</a></li>
-        <li :class="{now: fourNow == 1}" @click="changeFour(1)"><a href="javascript:">免费</a></li>
+        <li :class="{now: isFree == -1}" @click="changeFree(-1)"><a href="javascript:">全部</a></li>
+        <li :class="{now: isFree == 0}" @click="changeFree(0)"><a href="javascript:">付费</a></li>
+        <li :class="{now: isFree == 1}" @click="changeFree(1)"><a href="javascript:">免费</a></li>
       </ul>
     </div>
   </div>
@@ -25,123 +25,34 @@ export default {
       default() {
         return []
       }
+    },
+    currentId: {
+      type: String,
+      default() {
+        return ''
+      }
     }
   },
   data() {
     return {
-      oneNow: '',
-      fourNow: '',
-      categoryObj: {
-        categoryId: '',
-        isFree: ''
-      }
+      categoryId: 0,
+      isFree: -1
     }
   },
   mounted() {
-    if (this.$route.query.categoryno1 || this.$route.query.categoryno1 === '') {
-      this.categoryObj.categoryNo1 = this.$route.query.categoryno1
-    }
-    if (this.$route.query.categoryno2 || this.$route.query.categoryno2 === '') {
-      this.categoryObj.categoryNo2 = this.$route.query.categoryno2
-    }
-    if (this.$route.query.categoryno3 || this.$route.query.categoryno3 === '') {
-      this.categoryObj.categoryNo3 = this.$route.query.categoryno3
-    }
-    if (this.$route.query.four) {
-      this.fourNow1 = this.$route.query.four
-    }
-    if (this.$route.query.courseCategory) {
-      this.fiveNow = this.$route.query.courseCategory
-    } else {
-      this.fiveNow = ''
-    }
-    this.getNextClass()
+    // this.categoryId = currentId
   },
   methods: {
-    changeOne(twoList, oneNow, categoryNo1) {
-      if (categoryNo1) {
-        this.oneNow = categoryNo1
-      } else {
-        this.oneNow = 0
-      }
-      if (twoList) {
-        this.twoList = twoList
-      } else {
-        this.twoList = []
-      }
-      this.categoryObj.categoryNo2 = ''
-      this.categoryObj.categoryNo3 = ''
-      this.twoNow = 0
-      this.threeNow = 0
-      this.threeList = []
-      this.categoryObj.categoryNo1 = categoryNo1
+    changeOne(data, currentId) {
+      this.categoryId = data.id
       this.goCourseList()
     },
-    changeTwo(threeList, twoNow, categoryNo2) {
-      if (categoryNo2) {
-        this.twoNow = categoryNo2
-      } else {
-        this.twoNow = 0
-      }
-      if (threeList) {
-        this.threeList = threeList
-      } else {
-        this.threeList = []
-      }
-      this.categoryObj.categoryNo3 = ''
-      this.threeNow = 0
-      this.categoryObj.categoryNo2 = categoryNo2
-      this.goCourseList()
-    },
-    changeThree(threeNow, categoryNo3) {
-      if (categoryNo3) {
-        this.threeNow = categoryNo3
-      } else {
-        this.threeNow = 0
-      }
-      this.categoryObj.categoryNo3 = categoryNo3
-      this.goCourseList()
-    },
-    changeFour(fourNow) {
-      this.fourNow1 = fourNow
-      this.goCourseList()
-    },
-    changeFive(fiveNow) {
-      this.fiveNow = fiveNow
+    changeFree(index) {
+      this.isFree = index
       this.goCourseList()
     },
     goCourseList() {
-      // const that = this
-      const category = this.categoryObj
-      this.$router.push({ name: 'list', query: { categoryId: category.id, four: this.fourNow1 }})
-    },
-    getNextClass() {
-      if (this.$route.query.categoryno1) {
-        for (let i = 0; i < this.classList.length; i++) {
-          if (this.classList[i].id === this.$route.query.categoryno1) {
-            this.oneNow = this.$route.query.categoryno1
-            if (this.classList[i].twoList) {
-              this.twoList = this.classList[i].twoList
-              this.getThreeClass()
-            }
-          }
-        }
-      }
-    },
-    getThreeClass() {
-      if (this.$route.query.categoryno2) {
-        for (let i = 0; i < this.twoList.length; i++) {
-          if (this.twoList[i].id === this.$route.query.categoryno2) {
-            this.twoNow = this.$route.query.categoryno2
-            if (this.twoList[i].threeList) {
-              this.threeList = this.twoList[i].threeList
-              if (this.$route.query.categoryno3) {
-                this.threeNow = this.$route.query.categoryno3
-              }
-            }
-          }
-        }
-      }
+      // this.$router.push({ name: 'list', query: { categoryId: this.categoryId, isFree: this.isFree }})
     }
   }
 }

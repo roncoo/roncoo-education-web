@@ -65,12 +65,12 @@ export default {
   },
   data() {
     return {
+      isNow: '',
       search: '',
+      userInfo: '',
       websiteInfo: this.$store.state.websiteInfo,
       mainUrl: this.$store.state.mainUrl,
-      userInfo: '',
-      navList: this.$store.state.navList,
-      isNow: ''
+      navList: this.$store.state.navList
     }
   },
   mounted() {

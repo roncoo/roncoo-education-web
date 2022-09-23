@@ -1,7 +1,7 @@
 <template>
   <div class="courselist_page">
     <y-header />
-    <y-choose :class-list="categoryList" />
+    <y-choose :class-list="categoryList" :current-id="obj.categoryId" />
     <div class="course_content">
       <ul class="clearfix">
         <li v-for="(item, index) in pageObj.list" :key="index">
@@ -60,7 +60,7 @@ export default {
   },
   data() {
     return {
-      free: '', // 免费
+      categoryId: '', // 当前分类ID
       categoryList: []
     }
   },
@@ -88,25 +88,21 @@ export default {
     }
   },
   mounted() {
-    courseChange(this)
-    if (this.$route.query.free) {
-      this.obj.isFree = 1
-      this.free = 1
-    }
+    // courseChange(this)
     // this.getCourse()
   },
   methods: {
     getCourse() {
-      this.$nuxt.$loading.start()
+      // this.$nuxt.$loading.start()
       courseList(this.obj).then(res => {
-        this.$nuxt.$loading.finish()
+        // this.$nuxt.$loading.finish()
         if (res) {
           this.pageObj = res
         } else {
           this.pageObj = {}
         }
       }).catch(() => {
-        this.$nuxt.$loading.finish()
+        // this.$nuxt.$loading.finish()
         this.$msgBox({
           content: '数据加载失败，请稍后重试',
           isShowCancelBtn: false
