@@ -6,7 +6,7 @@
         <span>第{{ index + 1 }}章&nbsp;&nbsp;</span>{{ one.chapterName }}
       </div>
       <div v-for="(two, num) in one.periodRespList" :key="num" class="period_info">
-        <div class="period_top" :class="{on : currentTag == two.id}" @click="playVideo(two)">
+        <div class="period_top" :class="{on : playPeriod == two.id}" @click="playVideo(two)">
           <div class="period_video" :class="{no_v: !two.videoVid}" />
           <span class="period_num">第{{ num + 1 }}讲</span>
           <span v-if="two.resourceResp && two.resourceResp.videoStatus === 1" class="no_video">(未更新)</span>
@@ -31,7 +31,7 @@ export default {
         return []
       }
     },
-    currentTag: {
+    playPeriod: {
       type: String,
       default: ''
     }

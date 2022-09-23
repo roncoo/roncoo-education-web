@@ -36,7 +36,7 @@
           <div v-if="cateType == 1">
             <dl v-for="(one, index) in courseInfo.chapterRespList" :key="index">
               <dt>第{{ index + 1 }}章：{{ one.chapterName }}</dt>
-              <dd v-for="(two, num) in one.periodRespList" :key="num" :class="{on : playVid == two.id}" @click="playVideo(two)"><i class="iconfont">&#xe690;</i><span>第{{ num + 1 }}节：</span>{{ two.periodName }}
+              <dd v-for="(two, num) in one.periodRespList" :key="num" :class="{on : playPeriod == two.id}" @click="playVideo(two)"><i class="iconfont">&#xe690;</i><span>第{{ num + 1 }}节：</span>{{ two.periodName }}
                 <span v-if="two.resourceResp && two.resourceResp.videoStatus === 1" class="no_video2">(未更新)</span>
                 <span v-if="two.isFree" class="c_blue">(免费)</span>
               </dd>
@@ -63,7 +63,7 @@ export default {
       type: Object,
       default: null
     },
-    playVid: {
+    playPeriod: {
       type: String,
       default: null
     }

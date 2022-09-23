@@ -22,7 +22,7 @@
                     <br><br>
                     <div v-if="item.periodName">学习至：{{ item.periodName }}（{{ item.periodProgress }}%）</div>
                     <br><br>
-                    <div>总进度：100%</div>
+                    <div>总进度：{{ item.courseProgress }}%</div>
                   </div>
                 </td>
                 <td style="float: right;margin-top: 10px">

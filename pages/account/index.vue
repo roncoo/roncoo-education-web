@@ -24,7 +24,7 @@
             <div class="form_group">
               <div class="label">年龄:</div>
               <div class="form_ctl">
-                <input v-model="obj.userAge" type="text" class="form_input" placeholder="请输入昵称">
+                <input v-model="obj.userAge" type="number" class="form_input" placeholder="请输入年龄">
               </div>
             </div>
             <div class="form_group">

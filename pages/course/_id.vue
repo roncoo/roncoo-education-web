@@ -1,6 +1,6 @@
 <template>
   <div class="course_detail">
-    <y-study v-if="courseInfo.allowStudy" ref="watchVideo" :course-info="courseInfo" @playfunc="videoPlay" />
+    <y-study v-if="courseInfo.allowStudy" ref="watchVideo" :course-info="courseInfo" :play-period="playPeriod" @playfunc="videoPlay" />
     <y-detail v-else ref="watchVideo" :course-info="courseInfo" :teacher-info="teacherInfo" />
     <div class=" detail_info detail_box clearfix">
       <div class="layout_left">
@@ -12,7 +12,7 @@
           <div class="introduce" v-html="courseInfo.introduce" />
         </div>
         <div v-if="tab == 'big'" class="content_info">
-          <y-catalog :list="courseInfo.chapterRespList" @playfunc="videoPlay" />
+          <y-catalog :list="courseInfo.chapterRespList" :play-period="playPeriod" @playfunc="videoPlay" />
         </div>
       </div>
       <div class="layout_right">
@@ -79,7 +79,7 @@ export default {
   data() {
     return {
       tab: 'info',
-      playVid: '', // 当前播放章节
+      playPeriod: '', // 当前播放课时
       userStudy: {} // 进度
     }
   },
@@ -96,21 +96,27 @@ export default {
     if (this.courseInfo.allowStudy) {
       // 可以播放，自动获取最后学习的课程
       playSign({ courseId: this.courseInfo.id, clientIp: '172.0.0.1' }).then(res => {
+        this.playPeriod = res.periodId
         this.play(res)
       })
     }
 
     window.s2j_onVideoPause = (vid) => {
-      console.log('暂停')
+      // 暂停
       clearInterval(this.progressInterval)
     }
 
     window.s2j_onVideoPlay = (vid) => {
-      console.log('播放')
-      // 记录进度
+      // 播放
       this.progressInterval = setInterval(() => {
         this.studyRecord()
       }, 3000)
+    }
+
+    window.s2j_onPlayOver = (vid) => {
+      // 播放完成
+      clearInterval(this.progressInterval)
+      this.studyRecord()
     }
   },
   methods: {
@@ -118,6 +124,7 @@ export default {
       if (this.courseInfo.allowStudy) {
         window.scrollTo(0, 0)
         playSign({ periodId: periodId, clientIp: '172.0.0.1' }).then(res => {
+          this.playPeriod = res.periodId
           this.play(res)
         })
       } else {
@@ -132,10 +139,13 @@ export default {
       const box = this.$refs.watchVideo.$refs.videobox
       if (this.player) {
         this.player.changeVid({
-          vid: data.vid,
-          playsafe: data.token,
-          ts: data.ts,
-          sign: data.sign,
+          'forceH5': true,
+          'code': data.code,
+          'playsafe': data.token,
+          'ts': data.ts,
+          'sign': data.sign,
+          'vid': data.vid,
+          'watchStartTime': data.startTime,
           autoplay: true
         })
       } else {
@@ -148,6 +158,7 @@ export default {
           'ts': data.ts,
           'sign': data.sign,
           'vid': data.vid,
+          'watchStartTime': data.startTime,
           autoplay: true
         })
       }
