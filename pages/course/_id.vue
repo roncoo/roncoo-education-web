@@ -23,6 +23,7 @@
               <img v-if="teacherInfo.lecturerHead" class="teacher_phone" :src="teacherInfo.lecturerHead" alt="">
               <img v-else class="teacher_phone" src="~/assets/image/friend.jpg" alt="">
               <div class="teacher_name">{{ teacherInfo.lecturerName }}</div>
+              <div class="teacher_position">{{ teacherInfo.lecturerPosition }}</div>
               <div class="info_box" v-html="teacherInfo.introduce" />
             </div>
           </div>
@@ -288,8 +289,8 @@ export default {
     }
 
     .teacher_phone {
-      width: 46px;
-      height: 46px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       background: rgb(228, 228, 228);
       text-align: center;
@@ -314,10 +315,16 @@ export default {
     }
 
     .teacher_name {
-      font-size: 14px;
+      font-size: 18px;
       font-weight: 700;
       color: #333;
-      margin-bottom: 10px;
+      margin: 5px 0;
+    }
+
+    .teacher_position {
+      font-size: 12px;
+      color: #333;
+      margin-bottom: 5px;
     }
   }
 }
