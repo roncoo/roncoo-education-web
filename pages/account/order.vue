@@ -88,6 +88,11 @@ export default {
       }
     }
   },
+  head() {
+    return {
+      title: '我的订单-' + this.$store.state.websiteInfo.websiteName
+    }
+  },
   mounted() {
     this.obj = {
       orderStatus: '',

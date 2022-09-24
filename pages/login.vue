@@ -124,7 +124,7 @@ export default {
   },
   head() {
     return {
-      title: this.websiteInfo.websiteName + '-用户登录',
+      title: '用户登录-' + this.websiteInfo.websiteName,
       meta: [
         {
           hid: 'keywords',

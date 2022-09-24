@@ -66,11 +66,6 @@ import YBottom from '@/components/common/Bottom'
 import { updatePassword } from '~/api/login.js'
 
 export default {
-  metaInfo() {
-    return {
-      title: '修改密码'
-    }
-  },
   components: {
     YButton,
     YBottom
@@ -89,6 +84,11 @@ export default {
       },
       websiteInfo: this.$store.state.websiteInfo,
       service: {}
+    }
+  },
+  head() {
+    return {
+      title: '修改密码-' + this.$store.state.websiteInfo.websiteName
     }
   },
   mounted() {

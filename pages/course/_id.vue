@@ -85,7 +85,7 @@ export default {
   },
   head() {
     return {
-      title: this.courseInfo.courseName
+      title: this.courseInfo.courseName + '-' + this.$store.state.websiteInfo.websiteName
     }
   },
   mounted() {

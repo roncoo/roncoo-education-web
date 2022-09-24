@@ -128,6 +128,11 @@ export default {
       obj: {}
     }
   },
+  head() {
+    return {
+      title: '个人信息-' + this.$store.state.websiteInfo.websiteName
+    }
+  },
   mounted() {
     this.userInfo()
   },

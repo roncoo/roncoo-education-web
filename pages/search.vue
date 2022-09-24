@@ -89,7 +89,7 @@ export default {
   },
   head() {
     return {
-      title: this.$store.state.websiteInfo.websiteName,
+      title: '搜索页面-' + this.$store.state.websiteInfo.websiteName,
       meta: [
         {
           hid: 'keywords',

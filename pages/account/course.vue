@@ -59,6 +59,11 @@ export default {
       pageObj: {}
     }
   },
+  head() {
+    return {
+      title: '我的课程-' + this.$store.state.websiteInfo.websiteName
+    }
+  },
   mounted() {
     this.getStudyList()
   },

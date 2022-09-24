@@ -66,7 +66,7 @@ export default {
   },
   head() {
     return {
-      title: this.$store.state.websiteInfo.websiteName,
+      title: '课程中心-' + this.$store.state.websiteInfo.websiteName,
       meta: [
         {
           hid: 'keywords',
