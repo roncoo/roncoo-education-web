@@ -50,21 +50,21 @@
       </div>
     </div>
     <d-paymodal v-if="showPay" class="" :data="payData" @hidefun="showPay = false" />
-    <y-footer />
+    <bottom />
   </div>
 </template>
 <script>
 import YSide from '~/components/account/Side'
 import YHeader from '~/components/common/Header'
-import YFooter from '~/components/common/Footer'
-import DPaymodal from '@/components/common/PayOrder'
+import DPaymodal from '@/components/common/Order'
 import { cancelOrder, orderPage } from '@/api/user.js'
 import DPage from '~/components/common/Page'
+import Bottom from '@/components/common/Bottom'
 
 export default {
   components: {
+    Bottom,
     YHeader,
-    YFooter,
     YSide,
     DPage,
     DPaymodal

@@ -17,24 +17,24 @@
       </ul>
       <d-page v-if="pageObj.totalPage > 1" :page="pageObj" @btnClick="getPage" />
     </div>
-    <y-footer />
+    <bottom />
     <y-tap />
   </div>
 </template>
 <script>
 import YHeader from '~/components/common/Header'
-import YFooter from '~/components/common/Footer'
 import YChoose from '@/components/common/Choose'
 import DPage from '~/components/common/Page'
 import YTap from '@/components/common/Top'
 import { courseList } from '~/api/course.js'
 import { categoryList } from '~/api/main.js'
 import { courseChange } from '~/utils/commonfun.js'
+import Bottom from '@/components/common/Bottom'
 
 export default {
   components: {
+    Bottom,
     YHeader,
-    YFooter,
     YChoose,
     DPage,
     YTap

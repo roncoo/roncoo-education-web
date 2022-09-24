@@ -5,7 +5,7 @@
         <div class="register_header">
           <div class="register_logo">
             <nuxt-link :to="{name: 'index'}">
-              <img v-if="websiteInfo && websiteInfo.logoImg" :src="websiteInfo.logoImg" alt="">
+              <img v-if="websiteInfo && websiteInfo.websiteLogo" :src="websiteInfo.websiteLogo" alt="">
             </nuxt-link>
           </div>
           <p>
@@ -56,19 +56,13 @@
           </form>
         </div>
       </div>
-      <p class="footer_text">
-        <span v-if="service.copyright" v-html="service.copyright" />
-        <span v-if="service.icp">&nbsp;|&nbsp;</span>
-        <a href="http://www.miitbeian.gov.cn/" target="_blank">{{ service.icp }}</a>
-        <span v-if="service.prn">&nbsp;|&nbsp;</span>
-        <a v-if="service.prn" :href="'http://www.beian.gov.cn/portal/index'" target="_blank"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ service.prn }}</a>
-      </p>
-      <a href="http://www.doityun.com/" target="_blank" class="lingke_link">IT云提供计算服务</a>
+      <y-bottom />
     </div>
   </div>
 </template>
 <script>
 import YButton from '@/components/common/Code'
+import YBottom from '@/components/common/Bottom'
 import { updatePassword } from '~/api/login.js'
 
 export default {
@@ -78,7 +72,8 @@ export default {
     }
   },
   components: {
-    YButton
+    YButton,
+    YBottom
   },
   data() {
     return {
@@ -262,7 +257,7 @@ export default {
     .register_content {
       border-radius: 8px;
       background: #fff;
-      min-height: 600px;
+      min-height: 500px;
       margin-top: 20px;
 
       .register_title {
@@ -363,6 +358,17 @@ export default {
       content: '';
       display: block;
       clear: both;
+    }
+  }
+
+  .login_footer {
+    padding-bottom: 30px;
+
+    p {
+      text-align: center;
+      font-size: 12px;
+      color: #1E1E1E;
+      margin-top: 20px;
     }
   }
 }

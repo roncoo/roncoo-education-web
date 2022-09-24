@@ -176,6 +176,7 @@ a {
     background: #fff;
     font-size: 14px;
     font-weight: 700;
+    line-height: 30px;
 
     &.has_three {
       overflow: hidden;

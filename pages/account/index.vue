@@ -103,20 +103,20 @@
         </div>
       </div>
     </div>
-    <y-footer />
+    <bottom />
   </div>
 </template>
 <script>
 import YSide from '~/components/account/Side'
 import YHeader from '~/components/common/Header'
-import YFooter from '~/components/common/Footer'
 import DUpload from '~/components/common/Upload'
 import { getUserInfo, usersUpdata } from '@/api/user.js'
+import Bottom from '@/components/common/Bottom'
 
 export default {
   components: {
+    Bottom,
     YHeader,
-    YFooter,
     YSide,
     DUpload
   },

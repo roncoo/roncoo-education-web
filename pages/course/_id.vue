@@ -29,20 +29,20 @@
         </div>
       </div>
     </div>
-    <y-footer />
+    <bottom />
   </div>
 </template>
 <script>
 import YDetail from '@/components/course/Detail'
-import YFooter from '~/components/common/Footer'
 import YCatalog from '@/components/course/Catalog'
 import YStudy from '@/components/course/Study'
 import cookies from '@/utils/cookies'
 import { courseDetail, playSign, studyProgress, userCourseDetail } from '~/api/course.js'
+import Bottom from '@/components/common/Bottom'
 
 export default {
   components: {
-    YFooter,
+    Bottom,
     YDetail,
     YCatalog,
     YStudy

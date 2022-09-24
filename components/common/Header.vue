@@ -165,7 +165,7 @@ export default {
 .h_nav {
   width: 1200px;
   margin: 0 auto;
-  height: 110px;
+  height: 100px;
   position: relative;
 
   .go_index {

@@ -21,9 +21,8 @@
               <input v-if="subState" type="submit" disabled="disabled" value="登录中···" class="btn">
               <input v-else type="submit" value="登录" class="btn">
             </form>
-            <input type="checkbox" class="check"><span class="next_auto">下次自动登录</span>
             <nuxt-link class="is_go" :to="{name: 'reset'}">忘记密码</nuxt-link>
-            <div style="margin-top: 20px;">讲师账号：13800138001 密码：123qwe</div>
+            <div style="margin-top: 20px;">注册即可体验</div>
           </div>
           <div v-if="tabp == 2" class="form_body r180">
             <form action="" @submit="regSubmit">
@@ -68,30 +67,38 @@
     <div v-if="xieyi" class="xieyi" @click.self="xieyi = false">
       <div class="xieyi_content">
         <div class="xieyi_title">用户协议</div>
-        <div v-if="websiteInfo && websiteInfo.userAgreement" class="xieyi_body" v-html="websiteInfo.userAgreement" />
+        <div v-if="websiteInfo && websiteInfo.websiteUserAgreement" class="xieyi_body" v-html="websiteInfo.websiteUserAgreement" />
         <input type="button" class="xieyi_btn" value="确定" @click="xieyi = false">
       </div>
     </div>
-    <div class="login_footer">
-      <p>
-        <span v-html="websiteInfo.copyright" />
-      </p>
-      <p>
-        <a href="http://www.doityun.com/" target="_blank" class="lingke_link">IT云提供计算服务</a>
-        <span v-if="websiteInfo.icp">&nbsp;|&nbsp;</span>
-        <a href="http://www.miitbeian.gov.cn/" class="lingke_link" target="_blank">{{ websiteInfo.icp }}</a>
-        <span v-if="websiteInfo.prn">&nbsp;|&nbsp;</span>
-        <a v-if="websiteInfo.prn" :href="'http://www.beian.gov.cn/portal/index'" target="_blank" class="lingke_link"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ websiteInfo.prn }}</a>
-      </p>
-    </div>
+    <!--    <div class="login_footer">
+          <p>
+            <span v-html="websiteInfo.websiteCopyright" />
+          </p>
+          <p>
+            <a href="http://www.doityun.com/" target="_blank" class="lingke_link">IT云提供计算服务</a>
+            <span v-if="websiteInfo.websiteIcp">&nbsp;|&nbsp;</span>
+            <a href="http://www.miitbeian.gov.cn/" class="lingke_link" target="_blank">{{ websiteInfo.websiteIcp }}</a>
+            <span v-if="websiteInfo.websitePrn">&nbsp;|&nbsp;</span>
+            <a v-if="websiteInfo.websitePrn" :href="'http://www.beian.gov.cn/portal/index'" target="_blank" class="lingke_link"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ websiteInfo.websitePrn }}</a>
+          </p>
+        </div>-->
+    <y-bottom />
   </div>
 </template>
 <script>
 import YHeader from '~/components/common/Header'
 import YButton from '@/components/common/Code'
+import YBottom from '@/components/common/Bottom'
 import { register, userLogin } from '@/api/login.js'
 
 export default {
+
+  components: {
+    YHeader,
+    YButton,
+    YBottom
+  },
   data() {
     return {
       tab: this.$route.query.tab || 1,
@@ -323,10 +330,6 @@ export default {
     } else if (this.$route.query.t) {
       window.location.href = this.mainUrl + '/index'
     }
-  },
-  components: {
-    YHeader,
-    YButton
   }
 }
 </script>
@@ -510,13 +513,6 @@ export default {
       color: #1E1E1E;
       margin-top: 20px;
     }
-  }
-
-  .check {
-    width: 14px;
-    height: 14px;
-    position: relative;
-    top: -1px;
   }
 
   .img_box {
