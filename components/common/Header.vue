@@ -203,7 +203,7 @@ export default {
     float: left;
     height: 110px;
     line-height: 110px;
-    font-size: 16px;
+    font-size: 18px;
     padding: 0 15px;
 
     .active {

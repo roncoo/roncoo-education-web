@@ -22,7 +22,7 @@ export const cancelOrder = (params = {}) => {
 
 // 用户信息修改
 export const usersUpdata = (params = {}) => {
-  return http().post('/user/auth/users/update', params)
+  return http().post('/user/auth/users/edit', params)
 }
 
 // 用户信息

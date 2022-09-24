@@ -97,7 +97,7 @@ export default {
       // 可以播放，自动获取最后学习的课程
       playSign({ courseId: this.courseInfo.id, clientIp: '172.0.0.1' }).then(res => {
         this.playPeriod = res.periodId
-        this.play(res)
+        this.play(res, false)
       })
     }
 
@@ -125,7 +125,7 @@ export default {
         window.scrollTo(0, 0)
         playSign({ periodId: periodId, clientIp: '172.0.0.1' }).then(res => {
           this.playPeriod = res.periodId
-          this.play(res)
+          this.play(res, true)
         })
       } else {
         this.$msgBox({
@@ -135,7 +135,7 @@ export default {
         return false
       }
     },
-    play(data) {
+    play(data, autoplay) {
       const box = this.$refs.watchVideo.$refs.videobox
       if (this.player) {
         this.player.changeVid({
@@ -146,7 +146,7 @@ export default {
           'sign': data.sign,
           'vid': data.vid,
           'watchStartTime': data.startTime,
-          autoplay: true
+          autoplay: autoplay
         })
       } else {
         this.player = window.polyvObject('#player').videoPlayer({
@@ -159,7 +159,7 @@ export default {
           'sign': data.sign,
           'vid': data.vid,
           'watchStartTime': data.startTime,
-          autoplay: true
+          autoplay: autoplay
         })
       }
 
