@@ -75,7 +75,7 @@ a {
 }
 
 .left_block {
-  width: 180px;
+  width: 200px;
   font-size: 14px;
   height: 100%;
   background: rgba(0, 0, 0, 0.67843137254902);
@@ -101,7 +101,7 @@ a {
     border-right: 1px solid #ccc;
     transform: rotate(45deg);
     position: absolute;
-    right: 10px;
+    right: 20px;
     top: 50%;
     margin-top: -3px;
   }

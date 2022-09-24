@@ -30,7 +30,7 @@ export default {
 </script>
 <style lang="scss" rel="stylesheet/scss">
 .i_footer {
-  background: #666;
+  background: rgb(51, 51, 51);
   padding-top: 10px;
 
   .friend_link {

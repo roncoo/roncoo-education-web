@@ -1,29 +1,12 @@
 <template>
   <div class="h_header">
-    <div v-show="!hideTop" class="h_top">
-      <div class="h_top_body">
-        <ul v-show="userInfo" class="top_list clearfix">
-          <li class="s_left">
-            <nuxt-link :to="{name: 'account-course'}">我的课程</nuxt-link>
-          </li>
-          <li class="s_left">
-            <nuxt-link :to="{name: 'account'}">{{ userInfo.mobile }}</nuxt-link>
-          </li>
-          <li><a href="javascript:" @click="signOut">退出</a></li>
-        </ul>
-        <ul v-show="!userInfo" class="top_list clearfix">
-          <li class="s_left"><a href="javascript:" @click="login">登录</a></li>
-          <li><a href="javascript:" @click="register">注册</a></li>
-        </ul>
-      </div>
-    </div>
     <div class="h_nav">
       <div class="h_logo">
         <a :href="mainUrl">
           <img v-if="websiteInfo" :src="websiteInfo.websiteLogo" alt="">
         </a>
       </div>
-      <ul v-show="!hideTop && navList" class="h_nav_ul clearfix">
+      <ul v-show="navList" class="h_nav_ul clearfix">
         <li v-for="(item, index) in navList" :key="index">
           <a :class="{active: isNow === item.navUrl}" :href="item.navUrl" :target="item.target">{{ item.navTitle }}</a>
         </li>
@@ -36,7 +19,19 @@
           <input v-model="search" type="text" class="search_input" placeholder="请输入搜索内容" @keydown.enter.stop="handleSearch">
         </div>
       </div>
-      <nuxt-link v-show="hideTop" :to="{name: 'index'}" class="go_index font_14 c_blue">返回首页</nuxt-link>
+      <ul v-show="userInfo" class="top_list">
+        <li>
+          <nuxt-link :to="{name: 'account-course'}">我的课程</nuxt-link>
+        </li>
+        <li>
+          <nuxt-link :to="{name: 'account'}">{{ userInfo.mobile }}</nuxt-link>
+        </li>
+        <li><a href="javascript:" @click="signOut">退出</a></li>
+      </ul>
+      <ul v-if="!hideTop" v-show="!userInfo" class="top_list ">
+        <li class=""><a href="javascript:" @click="login">登录</a></li>
+        <li><a href="javascript:" @click="register">注册</a></li>
+      </ul>
     </div>
   </div>
 </template>
@@ -107,47 +102,21 @@ export default {
   background: #fff;
 }
 
-.h_top {
-  background: rgb(51, 51, 51);
-
-  .h_top_body {
-    width: 1200px;
-    height: 30px;
-    margin: 0px auto;
-  }
-}
-
 .top_list {
   float: right;
 
   li {
     float: left;
-    color: #ccc;
-    font-size: 12px;
-    margin-top: 9px;
-    padding: 0px 10px 0px 0px;
+    font-size: 18px;
+    margin-top: 25px;
+    padding: 0px 20px 0px 0px;
     position: relative;
 
-    img {
-      width: 14px;
-      height: 13px;
-      position: absolute;
-      left: -20px;
-    }
-
-    .vip_icon {
-      position: relative;
-      left: 0;
-      top: 1px;
-      cursor: pointer;
-    }
-
     a {
-      color: #ccc;
 
       &:hover {
         text-decoration: none;
-        color: #fff;
+        color: red;
       }
 
       &.c_gold {
@@ -165,7 +134,7 @@ export default {
 .h_nav {
   width: 1200px;
   margin: 0 auto;
-  height: 100px;
+  height: 70px;
   position: relative;
 
   .go_index {
@@ -178,18 +147,18 @@ export default {
 .h_logo {
   display: inline-block;
   position: absolute;
-  top: 25px;
+  top: 15px;
   // left: 20px;
   img {
-    height: 52px;
+    height: 42px;
   }
 }
 
 .search_box {
   display: inline-block;
   position: relative;
-  top: -50px;
-  right: -100px;
+  top: -32px;
+  right: -40px;
   width: 200px;
   height: 40px;
   margin: 13px 0 0;
@@ -197,12 +166,12 @@ export default {
 
 .h_nav_ul {
   display: inline-block;
-  margin-left: 280px;
+  margin-left: 220px;
 
   li {
     float: left;
-    height: 110px;
-    line-height: 110px;
+    height: 70px;
+    line-height: 70px;
     font-size: 18px;
     padding: 0 15px;
 
