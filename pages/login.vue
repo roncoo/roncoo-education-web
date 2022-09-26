@@ -39,6 +39,7 @@
               </div>
               <input v-if="subState" type="submit" disabled="disabled" value="提交中···" class="btn">
               <input v-else type="submit" value="注册" class="btn">
+              <div style="margin-top: -10px;">方便体验：888888为万能验证码</div>
             </form>
           </div>
         </div>
@@ -46,7 +47,7 @@
           <div class="login_title is_login">领课教育系统（开源版）</div>
           <div class="form_body">
             <div class="img_box">
-              <img v-if="userInfo.headImgUrl" :src="userInfo.headImgUrl" alt="">
+              <img v-if="userInfo.userHead" :src="userInfo.userHead" alt="">
               <img v-else src="../assets/image/friend.jpg" alt="">
             </div>
             <ul class="btn_box clearfix">
@@ -169,9 +170,12 @@ export default {
           window.location.href = this.$store.state.temporaryUrl
         })
       }).catch((error) => {
-        console.log(error)
         this.subState = false
         this.$nuxt.$loading.finish()
+        this.$msgBox({
+          content: error.msg,
+          isShowCancelBtn: false
+        })
       })
       return false
     },

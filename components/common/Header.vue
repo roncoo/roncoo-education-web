@@ -25,7 +25,8 @@
             <nuxt-link :to="{name: 'account-course'}">我的课程</nuxt-link>
           </li>
           <li class="img_user" @mouseenter="showMenu" @mouseleave="hideMenu">
-            <img :src="userInfo.userHead" :alt="userInfo.mobile">
+            <img v-if="userInfo.userHead" :src="userInfo.userHead" :alt="userInfo.mobile">
+            <img v-else src="../../assets/image/friend.jpg" alt="">
             <div v-show="menuShow" class="user_info">
               <ul class="u_info">
                 <li>

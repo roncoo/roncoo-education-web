@@ -36,14 +36,14 @@
             <div class="form_group">
               <div class="label">新密码:</div>
               <div class="form_ctl">
-                <input v-model="obj.newPassword" type="password" name="password" @change="enter">
+                <input v-model="obj.mobilePwd" type="password" name="mobilePwd" @change="enter">
                 <p v-show="errTip2" class="err">{{ errTip2 }}</p>
               </div>
             </div>
             <div class="form_group">
               <div class="label">重复密码:</div>
               <div class="form_ctl">
-                <input v-model="obj.confirmPassword" type="password" name="repassword" @change="enter">
+                <input v-model="obj.repassword" type="password" name="repassword" @change="enter">
                 <p v-show="errTip3" class="err">{{ errTip3 }}</p>
               </div>
             </div>
@@ -79,22 +79,19 @@ export default {
       obj: {
         mobile: '',
         code: '',
-        newPassword: '',
-        confirmPassword: ''
+        mobilePwd: '',
+        repassword: ''
       },
-      websiteInfo: this.$store.state.websiteInfo,
-      service: {}
+      websiteInfo: this.$store.state.websiteInfo
     }
   },
   head() {
     return {
-      title: '修改密码-' + this.$store.state.websiteInfo.websiteName
+      title: '修改密码-' + this.websiteInfo.websiteName
     }
   },
   mounted() {
-    if (this.websiteInfo) {
-      this.service = this.websiteInfo
-    }
+
   },
   methods: {
     goLogin() {
@@ -110,15 +107,15 @@ export default {
         } else {
           this.errTip1 = false
         }
-      } else if (name === 'password') {
-        if (this.obj.newPassword.length < 6 || this.obj.newPassword.length > 16) {
+      } else if (name === 'mobilePwd') {
+        if (this.obj.mobilePwd.length < 6 || this.obj.mobilePwd.length > 16) {
           this.errTip2 = '请输入6-16位的登录密码,区分大小写,不可有空格'
           return false
         } else {
           this.errTip2 = false
         }
       } else if (name === 'repassword') {
-        if (this.obj.newPassword !== this.obj.confirmPassword) {
+        if (this.obj.mobilePwd !== this.obj.repassword) {
           this.errTip3 = '两次输入密码不一致'
           return false
         } else {
@@ -158,38 +155,25 @@ export default {
         this.showMsg('请输入正确的验证码')
         return
       }
-      if (this.obj.newPassword.length < 6 || this.obj.newPassword.length > 16) {
+      if (this.obj.mobilePwd.length < 6 || this.obj.mobilePwd.length > 16) {
         this.showMsg('请输入6-16位的登录密码,区分大小写,不可有空格')
         return
       }
-      if (this.obj.newPassword !== this.obj.confirmPassword) {
+      if (this.obj.mobilePwd !== this.obj.repassword) {
         this.showMsg('两次输入密码不一致')
         return
       }
-      this.obj.clientId = this.$store.state.clientData.id
-      console.log(this.obj)
       updatePassword(this.obj).then(res => {
-        const result = res.data
-        if (result.code === 200) {
-          this.$msgBox({
-            content: '修改成功',
-            isShowCancelBtn: false
-          }).then(() => {
-            this.$store.commit('SIGN_OUT')
-            this.$router.push({ name: 'login' })
-          }).catch(() => {
-            this.$store.commit('SIGN_OUT')
-            this.$router.push({ name: 'login' })
-          })
-        } else {
-          this.$msgBox({
-            content: result.msg,
-            isShowCancelBtn: false
-          }).catch(() => {
-          })
-        }
-      }).catch(() => {
-        this.showMsg('系统繁忙，请稍后重试')
+        this.$msgBox({
+          content: '修改成功，请重新登录',
+          isShowCancelBtn: false
+        }).then(() => {
+          this.$store.commit('SIGN_OUT')
+          this.$router.push({ name: 'login' })
+        }).catch(() => {
+          this.$store.commit('SIGN_OUT')
+          this.$router.push({ name: 'login' })
+        })
       })
     }
   }
