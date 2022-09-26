@@ -108,7 +108,7 @@ a {
 
   li {
     line-height: 50px;
-    padding: 0 10px;
+    padding: 0 20px;
     position: relative;
     overflow: hidden;
     text-overflow: ellipsis;

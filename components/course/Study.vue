@@ -11,9 +11,11 @@
         <li>
           <nuxt-link :to="{name: 'account-course'}" class="left_col">我的课程</nuxt-link>
         </li>
+        <!--
         <li>
           <nuxt-link :to="{name: 'account'}" class="left_col">{{ userInfo.mobile }}</nuxt-link>
         </li>
+        -->
       </ul>
     </div>
     <div class="video_body">

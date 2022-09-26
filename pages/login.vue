@@ -51,10 +51,10 @@
             </div>
             <ul class="btn_box clearfix">
               <li>
-                <nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link>
+                <nuxt-link :to="{name: 'account-course'}">我的课程</nuxt-link>
               </li>
               <li>
-                <nuxt-link :to="{name: 'account-study'}">学习记录</nuxt-link>
+                <nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link>
               </li>
             </ul>
             <div>
@@ -71,18 +71,6 @@
         <input type="button" class="xieyi_btn" value="确定" @click="xieyi = false">
       </div>
     </div>
-    <!--    <div class="login_footer">
-          <p>
-            <span v-html="websiteInfo.websiteCopyright" />
-          </p>
-          <p>
-            <a href="http://www.doityun.com/" target="_blank" class="lingke_link">IT云提供计算服务</a>
-            <span v-if="websiteInfo.websiteIcp">&nbsp;|&nbsp;</span>
-            <a href="http://www.miitbeian.gov.cn/" class="lingke_link" target="_blank">{{ websiteInfo.websiteIcp }}</a>
-            <span v-if="websiteInfo.websitePrn">&nbsp;|&nbsp;</span>
-            <a v-if="websiteInfo.websitePrn" :href="'http://www.beian.gov.cn/portal/index'" target="_blank" class="lingke_link"><img src="../assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ websiteInfo.websitePrn }}</a>
-          </p>
-        </div>-->
     <y-bottom />
   </div>
 </template>
@@ -536,13 +524,15 @@ export default {
 
   .btn_box {
     border-bottom: 1px solid #ccc;
-    padding-bottom: 20px;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    font-size: 14px;
 
     li {
       float: left;
       width: 140px;
       text-align: center;
-      line-height: 30px;
+      line-height: 40px;
       margin: 20px 10px 0;
       border-radius: 6px;
 
