@@ -30,7 +30,7 @@
               <span class="text_b">讲师:</span>{{ teacherInfo.lecturerName }}
             </div>
             <div class="view_teacher mgt20">
-              <span class="text_b">购买人数:</span>{{ courseInfo.countBuy }} 人
+              <span class="text_b">购买:</span>{{ courseInfo.countBuy }} 人
             </div>
             <div class="foot_box">
               <div class="study_num">
