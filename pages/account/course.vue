@@ -74,8 +74,10 @@ export default {
     },
     getStudyList() {
       userCoursePage({ pageCurrent: this.pageCurrent, pageSize: 20 }).then(res => {
-        this.notdata = false
-        this.pageObj = res
+        if (res.totalCount > 0) {
+          this.notdata = false
+          this.pageObj = res
+        }
       })
     }
   }

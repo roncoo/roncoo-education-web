@@ -122,8 +122,10 @@ export default {
     },
     getOrderList() {
       orderPage(this.obj).then(res => {
-        this.notdata = false
-        this.pageObj = res
+        if (res.totalCount > 0) {
+          this.notdata = false
+          this.pageObj = res
+        }
       })
     },
     closeOrder(orderNo) {
