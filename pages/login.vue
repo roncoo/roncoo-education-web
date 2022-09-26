@@ -304,9 +304,13 @@ export default {
           repassword: '',
           check: false
         }
-      }).catch(() => {
+      }).catch(res => {
         this.$nuxt.$loading.finish();
         this.subState = false;
+        this.$msgBox({
+          content: res.msg,
+          isShowCancelBtn: false
+        })
       })
     }
   },

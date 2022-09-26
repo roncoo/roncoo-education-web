@@ -3,6 +3,7 @@
 </template>
 <script>
 import { getMobileCode } from '@/api/login.js'
+
 export default {
   props: {
     mobile: {
@@ -34,14 +35,15 @@ export default {
       getMobileCode({
         mobile: this.mobile
       }).then(res => {
-        if (res.code === 200) {
-          this.timeOut()
-        } else {
-          this.$msgBox({
-            content: res.data.msg,
-            isShowCancelBtn: false
-          })
-        }
+        this.$msgBox({
+          content: '验证码已发送，5分钟有效',
+          isShowCancelBtn: false
+        })
+      }).catch(res => {
+        this.$msgBox({
+          content: res.msg,
+          isShowCancelBtn: false
+        })
       })
     },
     timeOut() {
