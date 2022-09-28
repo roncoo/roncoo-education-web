@@ -134,16 +134,12 @@ export default {
   }
 
   .i_content {
-    background: rgb(245, 245, 245);
-
-    &:nth-child(2n) {
-      background: rgb(228, 228, 228);
-    }
+    background: #f6f8fb;
 
     .i_zone {
       width: 1200px;
       margin: 0 auto;
-      padding: 50px 0 40px 0;
+      padding: 20px 0;
     }
   }
 

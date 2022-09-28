@@ -271,7 +271,7 @@ export default {
 }
 
 .search_content {
-  background: rgb(245, 245, 245);
+  background: #f6f8fb;
   padding: 30px 0 10px 0;
   min-height: calc(100vh - 130px - 120px - 380px - 1px);
 

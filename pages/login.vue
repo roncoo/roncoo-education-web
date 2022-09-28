@@ -546,7 +546,7 @@ export default {
 
       a {
         display: block;
-        background: rgb(245, 245, 245);
+        background: #f6f8fb;
         border-radius: 6px;
 
         &:hover {

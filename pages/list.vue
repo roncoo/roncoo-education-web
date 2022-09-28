@@ -120,7 +120,7 @@ export default {
 <style lang="scss" rel="stylesheet/scss">
 .courselist_page {
   .course_content {
-    background: rgb(245, 245, 245);
+    background: #f6f8fb;
     padding: 30px 0 10px 0;
 
     ul {

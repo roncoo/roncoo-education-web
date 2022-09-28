@@ -67,7 +67,8 @@ export default {
 <style lang="scss" scoped>
 .banner {
   position: relative;
-
+  width: 1200px;
+  margin: 20px auto;
   ul {
     position: relative;
   }
@@ -83,6 +84,7 @@ export default {
     bottom: 0;
     z-index: 9;
     transition: all 1s;
+    border-radius: 10px;
 
     &.on {
       opacity: 1;
@@ -100,7 +102,7 @@ export default {
     position: absolute;
     bottom: 20px;
     right: 50%;
-    margin-right: -600px;
+    margin-right: -580px;
     text-align: center;
     height: 0;
     z-index: 11;

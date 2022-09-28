@@ -75,6 +75,7 @@ a {
 }
 
 .left_block {
+  border-radius: 10px;
   width: 200px;
   font-size: 14px;
   height: 100%;
@@ -116,7 +117,8 @@ a {
 
     &.active {
       background: rgba(255, 255, 255, 0.9);
-
+      border-radius: 10px 0 0 10px;
+      margin: 0px 8px;
       a {
         color: #D51423;
       }

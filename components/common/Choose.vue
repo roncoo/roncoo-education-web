@@ -60,7 +60,7 @@ export default {
 <style lang="scss" rel="stylesheet/scss" scoped>
 .header_list {
   border-top: 1px solid rgb(215, 215, 215);
-  background: #fff;
+  background: #f6f8fb;
 
   .list_content {
     width: 1200px;
