@@ -47,6 +47,7 @@
           </div>
         </div>
         <div v-else class="login_form">
+          <div style="height: 60px"></div>
           <div class="login_title is_login">领课教育系统（开源版）</div>
           <div class="form_body">
             <div class="img_box">
