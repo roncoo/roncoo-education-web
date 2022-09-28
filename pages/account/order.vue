@@ -34,7 +34,7 @@
                 <li>
                   <br>
                   <span v-if="item.orderStatus == 1">待支付</span>
-                  <span v-if="item.orderStatus == 2"><nuxt-link :to="{name: 'course-id', params: {id: item.courseId}}" class="go_btn">马上学习</nuxt-link></span>
+                  <span v-if="item.orderStatus == 2"><nuxt-link target="_blank" :to="{name: 'course-id', params: {id: item.courseId}}" class="go_btn">马上学习</nuxt-link></span>
                   <span v-if="item.orderStatus == 3">支付失败</span>
                   <span v-if="item.orderStatus == 4">已关闭</span>
                 </li>
