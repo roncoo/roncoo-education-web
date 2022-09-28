@@ -5,7 +5,7 @@ export default {
   mode: 'universal',
   telemetry: false,
   server: {
-    port: 3001 // default: 3001
+    port: 3000 // default: 3000
   },
   head: {
     title: '首页',
