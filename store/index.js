@@ -7,7 +7,6 @@ const createStore = () => {
   return new Vuex.Store({
     state: () => ({
       tokenName: config.CLIENT.tokenName,
-      mainUrl: config.CLIENT.mainUrl,
       tokenInfo: '', // token信息
       temporaryUrl: '', // 临时url
       websiteInfo: null // 站点信息

@@ -3,7 +3,7 @@
     <div class="h_nav_fixed">
       <div class="h_nav">
         <div class="h_logo">
-          <a :href="mainUrl">
+          <a :href="websiteInfo.websiteDomain">
             <img v-if="websiteInfo" :src="websiteInfo.websiteLogo" alt="">
           </a>
         </div>
@@ -82,7 +82,6 @@ export default {
       menuShow: false,
       userInfo: '',
       websiteInfo: this.$store.state.websiteInfo,
-      mainUrl: this.$store.state.mainUrl,
       navList: this.$store.state.navList
     }
   },
