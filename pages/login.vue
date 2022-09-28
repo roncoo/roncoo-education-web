@@ -1,9 +1,12 @@
 <template>
   <div class="login_page">
     <y-header :hide-top="true" :hide-search="true" />
+    <div class="login_body">
     <div class="login_box clearfix">
+     <div class="login_logo"> <img src="../assets/image/login_bg.png" /></div>
       <div class="center_box">
         <div v-if="!(userInfo)" :class="{login_form: true, rotate: tab == 2}">
+          <div v-if="tabp == 1" style="height: 60px"></div>
           <div :class="{tabs: true, clearfix: true, r180: tabp == 2}">
             <div class="fl tab" @click="changetab(1)">
               <span :class="{on: tab == 1}">登录</span>
@@ -39,7 +42,7 @@
               </div>
               <input v-if="subState" type="submit" disabled="disabled" value="提交中···" class="btn">
               <input v-else type="submit" value="注册" class="btn">
-              <div style="margin-top: -10px;">方便体验：888888为万能验证码</div>
+              <div>方便体验：888888为万能验证码</div>
             </form>
           </div>
         </div>
@@ -64,6 +67,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
     <div v-if="xieyi" class="xieyi" @click.self="xieyi = false">
       <div class="xieyi_content">
@@ -330,12 +334,20 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss">
+.login_body{
+  background-color: #2256f7;
+}
 .login_page {
   .login_box {
-    height: 500px;
-    //width: 1200px;
+    height: 520px;
+    width: 1200px;
     margin: 0 auto;
-    background: url(../assets/image/login_bg.jpg) no-repeat center center;
+.login_logo img{
+  width: 500px;
+  height: auto;
+  float: left;
+  margin: 100px 0 0 100px;
+}
 
     .center_box {
       width: 1200px;
