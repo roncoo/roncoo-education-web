@@ -4,11 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nuxt",
-    "lint": "eslint --fix ",
+    "build:testing": "cross-env NODE_ENV=testing  nuxt build",
     "build": "cross-env NODE_ENV=production  nuxt build",
-    "build-online": "cross-env NODE_ENV=production ONLINE=true nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate"
+    "start": "nuxt start"
   },
   "dependencies": {
     "@nuxtjs/proxy": "^2.1.0",
