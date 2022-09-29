@@ -15,7 +15,7 @@ const createHttp = (token) => {
     options.baseURL = '/gateway/'
   }
   if (process.client) {
-    head.token = cookie.getInClient(config.CLIENT.tokenName)
+    head.token = cookie.getInClient(config.tokenName)
   }
   options.headers = head
   const http = axios.create(options)

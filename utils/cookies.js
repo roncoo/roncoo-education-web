@@ -12,23 +12,21 @@ export default {
     return service_cookie
   },
   getInServerToken: function(req) {
-    return this.getInServer(req)[config.CLIENT.tokenName] || ''
+    return this.getInServer(req)[config.tokenName] || ''
   },
   // 获取客户端cookie
   getInClient: function(key) {
-    // let clent = store().state.clientData;
     const tokenInfo = VueCookie.get(key)
     return tokenInfo
   },
   // 获取客户端cookie
   setInClient: function({ key, val }) {
-    VueCookie.set(key, val, { expires: 1, domain: config.CLIENT.domain })
-    // Cookie.set(key, val, {expires: 1, domain: clent.domain})
+    VueCookie.set(key, val, { expires: 1 })
   },
   // 删除客户端cookie
   delInClient: function(key) {
     // fix logout bug
-    VueCookie.delete(key, { domain: config.CLIENT.domain })
+    VueCookie.delete(key, {})
     // Cookie.remove(key)
   }
 }

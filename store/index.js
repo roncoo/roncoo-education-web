@@ -6,7 +6,7 @@ import config from '../config'
 const createStore = () => {
   return new Vuex.Store({
     state: () => ({
-      tokenName: config.CLIENT.tokenName,
+      tokenName: config.tokenName,
       tokenInfo: '', // token信息
       temporaryUrl: '', // 临时url
       websiteInfo: null // 站点信息
