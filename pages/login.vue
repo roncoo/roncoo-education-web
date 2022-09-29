@@ -2,73 +2,73 @@
   <div class="login_page">
     <y-header :hide-top="true" :hide-search="true" />
     <div class="login_body">
-    <div class="login_box clearfix">
-     <div class="login_logo"> <img src="../assets/image/login_bg.png" /></div>
-      <div class="center_box">
-        <div v-if="!(userInfo)" :class="{login_form: true, rotate: tab == 2}">
-          <div v-if="tabp == 1" style="height: 60px"></div>
-          <div :class="{tabs: true, clearfix: true, r180: tabp == 2}">
-            <div class="fl tab" @click="changetab(1)">
-              <span :class="{on: tab == 1}">登录</span>
-            </div>
-            <div class="fl tab" @click="changetab(2)">
-              <span :class="{on: tab == 2}">注册</span>
-            </div>
-          </div>
-          <div v-if="tabp == 1" class="form_body">
-            <form action="" @submit="loginSubmit">
-              <input v-model="loginObj.mobile" type="text" placeholder="请输入手机号或邮箱">
-              <div class="error_msg">{{ errTip1 }}</div>
-              <input v-model="loginObj.password" type="password" placeholder="6-20位密码，可用数字/字母/符号组合">
-              <div class="error_msg">{{ errTip2 }}</div>
-              <input v-if="subState" type="submit" disabled="disabled" value="登录中···" class="btn">
-              <input v-else type="submit" value="登录" class="btn">
-            </form>
-            <nuxt-link class="is_go" :to="{name: 'reset'}">忘记密码</nuxt-link>
-            <div style="margin-top: 20px;">注册即可体验</div>
-          </div>
-          <div v-if="tabp == 2" class="form_body r180">
-            <form action="" @submit="regSubmit">
-              <input v-model="registerObj.mobile" type="text" placeholder="请输入手机号">
-              <div class="phone_yzm">
-                <input v-model="registerObj.code" type="text" name="code" placeholder="请输入手机验证码" class="phone" maxlength="6">
-                <y-button :mobile="registerObj.mobile" />
+      <div class="login_box clearfix">
+        <div class="login_logo"><img src="../assets/image/login_bg.png"></div>
+        <div class="center_box">
+          <div v-if="!(userInfo)" :class="{login_form: true, rotate: tab == 2}">
+            <div v-if="tabp == 1" style="height: 60px" />
+            <div :class="{tabs: true, clearfix: true, r180: tabp == 2}">
+              <div class="fl tab" @click="changetab(1)">
+                <span :class="{on: tab == 1}">登录</span>
               </div>
-              <input v-model="registerObj.mobilePwd" type="password" placeholder="6-20位密码，可用数字/字母/符号组合">
-              <input v-model="registerObj.repassword" type="password" placeholder="确认密码">
-              <div class="mgt20 font_14">
-                <input id="tonyi" v-model="registerObj.check" type="checkbox">
-                <label for="tonyi">我已经阅读并同意</label><a href="jvascript:" class="c_blue" @click="xieyi = true">《用户协议》</a>
+              <div class="fl tab" @click="changetab(2)">
+                <span :class="{on: tab == 2}">注册</span>
               </div>
-              <input v-if="subState" type="submit" disabled="disabled" value="提交中···" class="btn">
-              <input v-else type="submit" value="注册" class="btn">
-              <div>方便体验：888888为万能验证码</div>
-            </form>
-          </div>
-        </div>
-        <div v-else class="login_form">
-          <div style="height: 60px"></div>
-          <div class="login_title is_login">领课教育系统（开源版）</div>
-          <div class="form_body">
-            <div class="img_box">
-              <img v-if="userInfo.userHead" :src="userInfo.userHead" alt="">
-              <img v-else src="../assets/image/friend.jpg" alt="">
             </div>
-            <ul class="btn_box clearfix">
-              <li>
-                <nuxt-link :to="{name: 'account-course'}">我的课程</nuxt-link>
-              </li>
-              <li>
-                <nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link>
-              </li>
-            </ul>
-            <div>
-              <a href="javascript:" class="out_btn" @click="signOut">退出登录</a>
+            <div v-if="tabp == 1" class="form_body">
+              <form action="" @submit="loginSubmit">
+                <input v-model="loginObj.mobile" type="text" placeholder="请输入手机号或邮箱">
+                <div class="error_msg">{{ errTip1 }}</div>
+                <input v-model="loginObj.password" type="password" placeholder="6-20位密码，可用数字/字母/符号组合">
+                <div class="error_msg">{{ errTip2 }}</div>
+                <input v-if="subState" type="submit" disabled="disabled" value="登录中···" class="btn">
+                <input v-else type="submit" value="登录" class="btn">
+              </form>
+              <nuxt-link class="is_go" :to="{name: 'reset'}">忘记密码</nuxt-link>
+              <div style="margin-top: 20px;">注册即可体验</div>
+            </div>
+            <div v-if="tabp == 2" class="form_body r180">
+              <form action="" @submit="regSubmit">
+                <input v-model="registerObj.mobile" type="text" placeholder="请输入手机号">
+                <div class="phone_yzm">
+                  <input v-model="registerObj.code" type="text" name="code" placeholder="请输入手机验证码" class="phone" maxlength="6">
+                  <y-button :mobile="registerObj.mobile" />
+                </div>
+                <input v-model="registerObj.mobilePwd" type="password" placeholder="6-20位密码，可用数字/字母/符号组合">
+                <input v-model="registerObj.repassword" type="password" placeholder="确认密码">
+                <div class="mgt20 font_14">
+                  <input id="tonyi" v-model="registerObj.check" type="checkbox">
+                  <label for="tonyi">我已经阅读并同意</label><a href="jvascript:" class="c_blue" @click="xieyi = true">《用户协议》</a>
+                </div>
+                <input v-if="subState" type="submit" disabled="disabled" value="提交中···" class="btn">
+                <input v-else type="submit" value="注册" class="btn">
+                <div>方便体验：888888为万能验证码</div>
+              </form>
+            </div>
+          </div>
+          <div v-else class="login_form">
+            <div style="height: 60px" />
+            <div class="login_title is_login">领课教育系统（开源版）</div>
+            <div class="form_body">
+              <div class="img_box">
+                <img v-if="userInfo.userHead" :src="userInfo.userHead" alt="">
+                <img v-else src="../assets/image/friend.jpg" alt="">
+              </div>
+              <ul class="btn_box clearfix">
+                <li>
+                  <nuxt-link :to="{name: 'account-course'}">我的课程</nuxt-link>
+                </li>
+                <li>
+                  <nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link>
+                </li>
+              </ul>
+              <div>
+                <a href="javascript:" class="out_btn" @click="signOut">退出登录</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
     <div v-if="xieyi" class="xieyi" @click.self="xieyi = false">
       <div class="xieyi_content">
@@ -335,20 +335,22 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss">
-.login_body{
+.login_body {
   background-color: #2256f7;
 }
+
 .login_page {
   .login_box {
     height: 520px;
     width: 1200px;
     margin: 0 auto;
-.login_logo img{
-  width: 500px;
-  height: auto;
-  float: left;
-  margin: 100px 0 0 100px;
-}
+
+    .login_logo img {
+      width: 500px;
+      height: auto;
+      float: left;
+      margin: 100px 0 0 100px;
+    }
 
     .center_box {
       width: 1200px;
@@ -629,12 +631,12 @@ export default {
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.3);
-    z-index: 3;
+    z-index: 10003;
 
     .xieyi_content {
       width: 900px;
       height: 500px;
-      margin: 50px auto 0;
+      margin: 70px auto 0;
       border-radius: 8px;
       background: #fff;
       position: relative;
