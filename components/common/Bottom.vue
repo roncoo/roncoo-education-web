@@ -9,7 +9,7 @@
         <a href="http://www.miitbeian.gov.cn/" target="_blank" class="lingke_link">{{ service.websiteIcp }}</a>
       </span>
       <span v-if="service.websitePrn">&nbsp;|&nbsp;
-        <a href="'http://www.beian.gov.cn/portal/index'" target="_blank" class="lingke_link"><img src="~/assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ service.websitePrn }}</a>
+        <a :href="'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=' + service.websitePrnNo" target="_blank" class="lingke_link"><img src="~/assets/image/prn_icon.png" class="prn_icon" alt="">&nbsp;{{ service.websitePrn }}</a>
       </span>
     </div>
   </div>
