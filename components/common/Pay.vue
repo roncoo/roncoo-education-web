@@ -105,7 +105,6 @@ export default {
   },
   data() {
     return {
-      isVip: false,
       btntext: '下一步',
       checkPay: false,
       userInfo: this.$store.state.userInfo,
@@ -143,41 +142,34 @@ export default {
         height: 180
       }, function(error) {
         if (error) console.error(error)
-        console.log('success!')
       })
     },
-    startView() {
-
-    },
     submit() {
-      const that = this
-      that.btntext = '正在提交...'
-      createOrder(that.order).then(res => {
-        that.btntext = '下一步'
-        if (res) {
-          that.payStep = 1
-          that.orderInfo = res
-          this.ocl = setTimeout(function() {
-            that.qrcode(res.payMessage)
-          }, 100)
-          that.getOrderInfo(res.orderNo)
-        } else {
-          this.$msgBox({
-            content: res.msg,
-            isShowCancelBtn: false
-          }).catch(() => {
-          })
-        }
-      }).catch(() => {
+      if (this.order.payType !== 2) {
         this.$msgBox({
-          content: '提交失败,请重试',
+          content: '暂不支持微信支付，请重新选择',
           isShowCancelBtn: false
         })
-        that.btntext = '重新提交'
+        return false
+      }
+      this.btntext = '正在提交...'
+      createOrder(this.order).then(res => {
+        this.btntext = '下一步'
+        this.payStep = 1
+        this.orderInfo = res
+        this.ocl = setTimeout(function() {
+          this.qrcode(res.payMessage)
+        }, 100)
+        this.getOrderInfo(res.orderNo)
+      }).catch(() => {
+        this.$msgBox({
+          content: '系统繁忙，请稍后再试',
+          isShowCancelBtn: false
+        })
+        this.btntext = '重新提交'
       })
     },
     getOrderInfo(orderNo) {
-      const that = this
       if (this.checkPay) {
         return false
       }
@@ -185,7 +177,7 @@ export default {
         if (res.orderStatus === 1) {
           // 待支付
           setTimeout(function() {
-            that.getOrderInfo(orderNo)
+            this.getOrderInfo(orderNo)
           }, 1000)
         } else if (res.orderStatus === 2) {
           // 支付成功
@@ -200,7 +192,7 @@ export default {
           })
         } else {
           // 支付失败
-          that.payStep = 3
+          this.payStep = 3
         }
       })
     }

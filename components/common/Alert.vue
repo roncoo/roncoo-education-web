@@ -132,7 +132,7 @@ export default {
 
   .content {
     text-align: center;
-    padding: 24px 20px 12px;
+    padding: 40px 0;
     font-size: 16px;
   }
 }

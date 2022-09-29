@@ -78,7 +78,7 @@ export default {
         this.qrcode(res.payMessage)
         this.getOrderInfo(res.orderNo)
       }).catch(msg => {
-        console.error('系统范围')
+        console.error('系统繁忙')
       })
     },
     resetPay() {
