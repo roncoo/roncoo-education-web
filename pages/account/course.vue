@@ -20,7 +20,7 @@
                     <div class="title">{{ item.courseResp.courseName }}</div>
                     <div v-if="item.courseResp.isFree === 1" style="margin: 0">【免费课】</div>
                     <br><br>
-                    <div v-if="item.periodName">学习至：{{ item.periodName }}（{{ item.periodProgress }}%）</div>
+                    <div v-if="item.periodName">学习至：{{ item.periodName }}（{{ item.periodProgress }}%）| {{ item.periodTime }}</div>
                     <br><br>
                     <div>总进度：{{ item.courseProgress?item.courseProgress:0 }}%</div>
                   </div>
