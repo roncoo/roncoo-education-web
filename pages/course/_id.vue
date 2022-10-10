@@ -19,7 +19,7 @@
         <div class="teacher_info clearfix">
           <span class="head">讲师简介</span>
           <div class="teacher_msg">
-            <div class="teacher_msg_right">
+            <div v-if="teacherInfo" class="teacher_msg_right">
               <img v-if="teacherInfo.lecturerHead" class="teacher_phone" :src="teacherInfo.lecturerHead" alt="">
               <img v-else class="teacher_phone" src="~/assets/image/friend.jpg" alt="">
               <div class="teacher_name">{{ teacherInfo.lecturerName }}</div>
@@ -47,10 +47,6 @@ export default {
     YDetail,
     YCatalog,
     YStudy
-  },
-  validate({ params }) {
-    // 必须是number类型
-    return /^\d+$/.test(params.id)
   },
   async asyncData(context) {
     try {

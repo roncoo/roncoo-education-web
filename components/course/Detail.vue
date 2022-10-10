@@ -26,7 +26,7 @@
                 价格:<span v-if="courseInfo.coursePrice === 0">免费</span> <span v-else>￥{{ courseInfo.coursePrice }} <b style="text-decoration-line: line-through;font-size: 18px">￥{{ courseInfo.rulingPrice }}</b></span>
               </div>
             </div>
-            <div class="view_teacher">
+            <div v-if="teacherInfo" class="view_teacher">
               <span class="text_b">讲师:</span>{{ teacherInfo.lecturerName }}
             </div>
             <div class="view_teacher mgt20">

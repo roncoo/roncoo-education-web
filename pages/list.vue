@@ -158,7 +158,7 @@ export default {
     .img_box {
       position: relative;
       width: 285px;
-      height: 140px;
+      height: 158px;
 
       .qizi {
         background: url(../assets/image/activity/qizi.png) no-repeat center;
@@ -175,7 +175,7 @@ export default {
 
       .course_img {
         width: 285px;
-        height: 140px;
+        height: 158px;
         border-radius: 6px 6px 0 0;
       }
     }

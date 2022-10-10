@@ -179,7 +179,7 @@ export default {
     li {
       float: left;
       width: 285px;
-      height: 204px;
+      height: 222px;
       border-radius: 6px;
       margin: 0px 20px 20px 0px;
 
@@ -203,7 +203,7 @@ export default {
 
         .img_box {
           width: 285px;
-          height: 140px;
+          height: 158px;
           position: relative;
 
           .qizi {
@@ -220,7 +220,7 @@ export default {
 
           img {
             width: 285px;
-            height: 140px;
+            height: 158px;
             border-radius: 6px 6px 0 0;
           }
 
