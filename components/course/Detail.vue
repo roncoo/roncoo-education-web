@@ -137,8 +137,8 @@ export default {
 
 .view_info {
   float: right;
-  width: 570px;
-  height: 295px;
+  width: 620px;
+  height: 300px;
   position: relative;
 
   p {
@@ -262,8 +262,8 @@ export default {
 
 .detail_view {
   float: left;
-  width: 600px;
-  height: 295px;
+  width: 540px;
+  height: 300px;
   background: rgb(102, 102, 102);
   background-size: 100%;
 
