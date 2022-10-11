@@ -157,9 +157,9 @@ export default {
         this.btntext = '下一步'
         this.payStep = 1
         this.orderInfo = res
-        this.ocl = setTimeout(function() {
+        this.$nextTick(() => {
           this.qrcode(res.payMessage)
-        }, 100)
+        })
         this.getOrderInfo(res.orderNo)
       }).catch(() => {
         this.$msgBox({
