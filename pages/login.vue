@@ -84,6 +84,7 @@
 import YHeader from '~/components/common/Header'
 import YButton from '@/components/common/Code'
 import YBottom from '@/components/common/Bottom'
+import { getOsInfo, getBrowserInfo } from '@/utils/utils'
 import { register, userLogin } from '@/api/login.js'
 
 export default {
@@ -133,6 +134,15 @@ export default {
       ]
     }
   },
+  mounted() {
+    if (this.$route.query.t === 'login') {
+      this.$store.commit('SIGN_OUT')
+      this.userInfo = ''
+      this.errTip1 = '未登录或登录超时,请重新登录'
+    } else if (this.$route.query.t) {
+      window.location.href = '/index'
+    }
+  },
   methods: {
     signOut() {
       // this.SIGN_OUT();
@@ -161,8 +171,8 @@ export default {
         this.errTip2 = '请输入正确的账号或密码'
         return false
       }
-      this.loginObj.os = this.getOsInfo().version
-      this.loginObj.browser = this.getBrowserInfo().name + this.getBrowserInfo().version
+      this.loginObj.os = getOsInfo().version
+      this.loginObj.browser = getBrowserInfo().name + getBrowserInfo().version
       this.$nuxt.$loading.start()
       this.subState = true
       userLogin(this.loginObj).then(res => {
@@ -184,73 +194,11 @@ export default {
       })
       return false
     },
-    getBrowserInfo: function() {
-      /* eslint-disable */
-      const Sys = {};
-      const ua = navigator.userAgent.toLowerCase();
-      let s;
-      (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = s[1]
-        : (s = ua.match(/msie ([\d]+)/)) ? Sys.ie = s[1]
-          : (s = ua.match(/edge\/([\d]+)/)) ? Sys.edge = s[1]
-            : (s = ua.match(/firefox\/([\d]+)/)) ? Sys.firefox = s[1]
-              : (s = ua.match(/(?:opera|opr).([\d]+)/)) ? Sys.opera = s[1] :
-                (s = ua.match(/chrome\/([\d]+)/)) ? Sys.chrome = s[1] :
-                  (s = ua.match(/version\/([\d]+).*safari/)) ? Sys.safari = s[1] : 0;
-      // 根据关系进行判断
-      if (Sys.ie) return {name: 'IE', version: Sys.ie};
-      if (Sys.edge) return {name: 'EDGE:', version: Sys.edge};
-      if (Sys.firefox) return {name: 'Firefox:', version: Sys.firefox};
-      if (Sys.chrome) return {name: 'Chrome:', version: Sys.chrome};
-      if (Sys.opera) return {name: 'Opera:', version: Sys.opera};
-      if (Sys.safari) return {name: 'Safari:', version: Sys.safari};
-      return {name: 'Unkonwn', version: '0.0.0'};
-    },
-    // 获取系统信息
-    getOsInfo: function () {
-      const userAgent = navigator.userAgent.toLowerCase();
-      let name = 'Unknown';
-      let version = 'Unknown';
-      if (userAgent.indexOf('win') > -1) {
-        name = 'Windows';
-        if (userAgent.indexOf('windows nt 5.0') > -1) {
-          version = 'Windows 2000';
-        } else if (userAgent.indexOf('windows nt 5.1') > -1 || userAgent.indexOf('windows nt 5.2') > -1) {
-          version = 'Windows XP';
-        } else if (userAgent.indexOf('windows nt 6.0') > -1) {
-          version = 'Windows Vista';
-        } else if (userAgent.indexOf('windows nt 6.1') > -1 || userAgent.indexOf('windows 7') > -1) {
-          version = 'Windows 7';
-        } else if (userAgent.indexOf('windows nt 6.2') > -1 || userAgent.indexOf('windows 8') > -1) {
-          version = 'Windows 8';
-        } else if (userAgent.indexOf('windows nt 6.3') > -1) {
-          version = 'Windows 8.1';
-        } else if (userAgent.indexOf('windows nt 6.2') > -1 || userAgent.indexOf('windows nt 10.0') > -1) {
-          version = 'Windows 10';
-        } else {
-          version = 'Unknown';
-        }
-      } else if (userAgent.indexOf('iphone') > -1) {
-        name = 'Iphone';
-      } else if (userAgent.indexOf('mac') > -1) {
-        name = 'Mac';
-      } else if (userAgent.indexOf('x11') > -1 || userAgent.indexOf('unix') > -1 || userAgent.indexOf('sunname') > -1 || userAgent.indexOf('bsd') > -1) {
-        name = 'Unix';
-      } else if (userAgent.indexOf('linux') > -1) {
-        if (userAgent.indexOf('android') > -1) {
-          name = 'Android';
-        } else {
-          name = 'Linux';
-        }
-      } else {
-        name = 'Unknown';
-      }
-      return {name, version};
-    },
     // 注册
-    regSubmit: function (e) {
-      e.preventDefault();
+    regSubmit: function(e) {
+      e.preventDefault()
       if (this.subState) {
-        return false;
+        return false
       }
       if (!(/^1\d{10}$/.test(this.registerObj.mobile.trim())) || this.registerObj.mobile.trim().length !== 11) {
         this.$msgBox({
@@ -258,7 +206,7 @@ export default {
           isShowCancelBtn: false
         }).catch(() => {
         })
-        return false;
+        return false
       }
       if (!this.registerObj.code || this.registerObj.code.length !== 6) {
         this.$msgBox({
@@ -266,7 +214,7 @@ export default {
           isShowCancelBtn: false
         }).catch(() => {
         })
-        return false;
+        return false
       }
       if (this.registerObj.mobilePwd.length < 6 || this.registerObj.mobilePwd.length > 16) {
         this.$msgBox({
@@ -274,7 +222,7 @@ export default {
           isShowCancelBtn: false
         }).catch(() => {
         })
-        return false;
+        return false
       }
       if (this.registerObj.mobilePwd !== this.registerObj.repassword) {
         this.$msgBox({
@@ -282,7 +230,7 @@ export default {
           isShowCancelBtn: false
         }).catch(() => {
         })
-        return false;
+        return false
       }
       if (!this.registerObj.check) {
         this.$msgBox({
@@ -290,13 +238,13 @@ export default {
           isShowCancelBtn: false
         }).catch(() => {
         })
-        return false;
+        return false
       }
-      this.$nuxt.$loading.start();
-      this.subState = true;
+      this.$nuxt.$loading.start()
+      this.subState = true
       register(this.registerObj).then(res => {
-        this.$nuxt.$loading.finish();
-        this.subState = false;
+        this.$nuxt.$loading.finish()
+        this.subState = false
         this.$msgBox({
           content: '注册成功！',
           confirmBtnText: '立即登录',
@@ -314,22 +262,13 @@ export default {
           check: false
         }
       }).catch(res => {
-        this.$nuxt.$loading.finish();
-        this.subState = false;
+        this.$nuxt.$loading.finish()
+        this.subState = false
         this.$msgBox({
           content: res.msg,
           isShowCancelBtn: false
         })
       })
-    }
-  },
-  mounted() {
-    if (this.$route.query.t === 'login') {
-      this.$store.commit('SIGN_OUT');
-      this.userInfo = '';
-      this.errTip1 = '未登录或登录超时,请重新登录';
-    } else if (this.$route.query.t) {
-      window.location.href = '/index'
     }
   }
 }
