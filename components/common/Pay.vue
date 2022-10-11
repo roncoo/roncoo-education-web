@@ -176,7 +176,7 @@ export default {
       orderInfoView(orderNo).then(res => {
         if (res.orderStatus === 1) {
           // 待支付
-          setTimeout(function() {
+          setTimeout(() => {
             this.getOrderInfo(orderNo)
           }, 1000)
         } else if (res.orderStatus === 2) {
