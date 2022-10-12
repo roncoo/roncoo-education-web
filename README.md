@@ -1,5 +1,5 @@
 <div align=center>
-    <img src="logo.jpg" alt="领课教育系统-开源版"/>
+    <img src="images/logo.jpg" alt="领课教育系统-开源版"/>
     <div align=center>    
         <a href="http://spring.io/projects/spring-boot">
             <img src="https://img.shields.io/badge/spring--boot-2.3.5-blue.svg" alt="spring-boot">
@@ -12,11 +12,11 @@
 
 ### 项目介绍
 
-领课教育系统（roncoo-education）是基于领课网络多年的在线教育平台开发和运营经验打造出来的产品，致力于打造一个各行业都适用的分布式在线教育系统。系统采用前后端分离模式，前台采用vue.js为核心框架，后台采用Spring Cloud为核心框架。系统目前主要功能有课程点播功能，支持多家视频云的接入，课程附件管理功能，支持多家存储云的接入，讲师管理功能，支持讲师入驻功能，可以帮助个人或者企业快速搭建一个轻量级的在线教育平台。
+领课教育系统（roncoo-education）是基于领课网络多年的在线教育平台开发和运营经验打造出来的产品，致力于打造一个各行业都适用的分布式在线教育系统。系统采用前后端分离模式，前台采用vue.js为核心框架，后台采用Spring Cloud为核心框架。系统目前主要功能有课程点播功能，支持多家视频云的接入，课程附件管理功能，支持多家存储云的接入，可以帮助个人或者企业快速搭建一个轻量级的在线教育平台。
 
 * 所有使用到的框架或者组件都是基于开源项目，代码保证100%开源。
 * 系统功能通用，无论是个人还是企业都可以利用该系统快速搭建一个属于自己的在线教育平台。
-* 如需商业技术服务支持，可使用 [领课教育系统商业版](https://edu.roncoo.net/)，功能更丰富，架构更健壮，VIP服务，上线快速。
+* 如需商业技术服务支持，可使用 [领课教育系统商业版](https://www.roncoo.net/)，功能更丰富，架构更健壮，VIP服务，上线快速。
 
 ### 前台主要功能介绍
 
@@ -25,8 +25,8 @@
 * 课程详情：课程信息，课程目录，讲师信息、购买、播放等功能
 * 个人中心：我的课程，我的订单，个人信息
 
-  <img src="img/index.jpg" alt="领课教育系统-首页"/>
-  <img src="img/course.jpg" alt="领课教育系统-课程"/>
+  <img src="images/index.jpg" alt="领课教育系统-首页"/>
+  <img src="images/course.jpg" alt="领课教育系统-课程"/>
 
 ### 后台主要功能介绍
 
@@ -41,8 +41,14 @@
 * 支付功能模块：对接官方支付宝、官方微信
 * 其他功能模块：菜单导航功能、友情链接功能等
 
-  <img src="img/admin1.jpg" alt="领课教育系统-首页"/>
-  <img src="img/admin2.jpg" alt="领课教育系统-课程"/>
+  <img src="images/admin1.jpg" alt="领课教育系统-首页"/>
+  <img src="images/admin2.jpg" alt="领课教育系统-课程"/>
+
+### 演示地址
+
+* [前端门户演示地址：https://eduos.roncoo.net/](https://eduos.roncoo.net/)
+* [后台管理演示地址：https://eduos.roncoo.net/admin](https://eduos.roncoo.net/admin/)
+* [项目帮助文档地址：https://eduos.roncoo.net/doc](https://eduos.roncoo.net/doc/)
 
 ---
 
@@ -58,20 +64,9 @@
 
 > roncoo-education-admin是后台管理工程，核心框架：vue-element-admin
 
-### 演示地址
+### 官方交流群（加群即可获取sql脚本）
 
-* [前端门户演示地址：https://eduos.roncoo.net/](https://eduos.roncoo.net/)
-* [后台管理演示地址：https://eduos.roncoo.net/admin](https://eduos.roncoo.net/admin)
-* [项目帮助文档地址：https://eduos.roncoo.net/doc](https://eduos.roncoo.net/doc)
-
-### 官方QQ群（加群免费获取sql脚本）
-
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=BpOlarqoFOUReMfHsinOBDrFJhVln6LO&jump_from=webapi"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="在线教育系统-领课⑪" title="在线教育系统-领课⑪"> 624670981</a> 可加
-
-> QQ群：1028579521(已满)  
-> QQ群：532451240(已满)  QQ群：903738971(已满)   QQ群：74876271 (已满)  
-> QQ群：774890501(已满)  QQ群：702189511(已满)   QQ群：826617734(已满)  
-> QQ群：154407415(已满)  QQ群：284915592(已满)   QQ群：703455569(已满)
+<img src="images/qun.jpg" alt="领课教育系统-官方开源群" width="200"/>
 
 ## 项目推荐
 
