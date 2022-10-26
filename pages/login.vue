@@ -85,7 +85,7 @@ import YHeader from '~/components/common/Header'
 import YButton from '@/components/common/Code'
 import YBottom from '@/components/common/Bottom'
 import { getOsInfo, getBrowserInfo } from '@/utils/utils'
-import { register, userLogin } from '@/api/login.js'
+import { register, userLogin, getIpInfo } from '@/api/login.js'
 
 export default {
 
@@ -104,6 +104,7 @@ export default {
       xieyi: false, // 用户协议
       errTip1: '',
       errTip2: '',
+      ipInfo: {},
       loginObj: {
         mobile: '',
         password: ''
@@ -142,6 +143,11 @@ export default {
     } else if (this.$route.query.t) {
       window.location.href = '/index'
     }
+
+    // this.$axios('get', 'https://gateway.doityun.com/ip/info')
+    getIpInfo().then(res => {
+      this.ipInfo = res.data.data
+    })
   },
   methods: {
     signOut() {
@@ -171,6 +177,9 @@ export default {
         this.errTip2 = '请输入正确的账号或密码'
         return false
       }
+      this.loginObj.loginIp = this.ipInfo.ip
+      this.loginObj.province = this.ipInfo.pro
+      this.loginObj.city = this.ipInfo.city
       this.loginObj.os = getOsInfo().version
       this.loginObj.browser = getBrowserInfo().name + getBrowserInfo().version
       this.$nuxt.$loading.start()
@@ -242,6 +251,11 @@ export default {
       }
       this.$nuxt.$loading.start()
       this.subState = true
+      this.registerObj.loginIp = this.ipInfo.ip
+      this.registerObj.province = this.ipInfo.pro
+      this.registerObj.city = this.ipInfo.city
+      this.registerObj.os = getOsInfo().version
+      this.registerObj.browser = getBrowserInfo().name + getBrowserInfo().version
       register(this.registerObj).then(res => {
         this.$nuxt.$loading.finish()
         this.subState = false

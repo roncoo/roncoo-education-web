@@ -1,4 +1,5 @@
 import http from './method'
+import * as axios from 'axios'
 
 // 用户登录
 export const userLogin = (params = {}) => {
@@ -15,4 +16,9 @@ export const register = (params = {}) => {
 // 修改密码
 export const updatePassword = (params = {}) => {
   return http().post('/user/api/users/password', params)
+}
+
+// 获取IP
+export const getIpInfo = () => {
+  return axios.get('https://gateway.doityun.com/ip/info')
 }
