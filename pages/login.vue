@@ -42,7 +42,6 @@
                 </div>
                 <input v-if="subState" type="submit" disabled="disabled" value="提交中···" class="btn">
                 <input v-else type="submit" value="注册" class="btn">
-                <div>方便体验：888888为万能验证码</div>
               </form>
             </div>
           </div>
