@@ -183,8 +183,6 @@ export default {
 .register_page {
   .register {
     background: rgb(247, 247, 247);
-    padding-bottom: 30px;
-
     .register_body {
       width: 900px;
       margin: 0 auto 30px;
