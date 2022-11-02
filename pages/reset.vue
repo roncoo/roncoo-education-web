@@ -56,19 +56,19 @@
           </form>
         </div>
       </div>
-      <y-bottom />
+      <!-- <y-bottom /> -->
     </div>
   </div>
 </template>
 <script>
 import YButton from '@/components/common/Code'
-import YBottom from '@/components/common/Bottom'
+// import YBottom from '@/components/common/Bottom'
 import { updatePassword } from '~/api/login.js'
 
 export default {
   components: {
-    YButton,
-    YBottom
+    YButton
+    // YBottom
   },
   data() {
     return {
