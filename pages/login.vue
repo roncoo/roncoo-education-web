@@ -2,7 +2,7 @@
   <div class="login_page">
     <y-header :hide-top="true" :hide-search="true" />
     <div class="login_body">
-      <div class="login_box clearfix">
+      <div class="login_box">
         <div class="login_logo"><img src="../assets/image/login_bg.png"></div>
         <div class="center_box">
           <div v-if="!(userInfo)" :class="{login_form: true, rotate: tab == 2}">
@@ -76,13 +76,13 @@
         <input type="button" class="xieyi_btn" value="确定" @click="xieyi = false">
       </div>
     </div>
-    <y-bottom />
+    <!-- <y-bottom /> -->
   </div>
 </template>
 <script>
 import YHeader from '~/components/common/Header'
 import YButton from '@/components/common/Code'
-import YBottom from '@/components/common/Bottom'
+// import YBottom from '@/components/common/Bottom'
 import { getOsInfo, getBrowserInfo } from '@/utils/utils'
 import { register, userLogin, getIpInfo } from '@/api/login.js'
 
@@ -90,8 +90,8 @@ export default {
 
   components: {
     YHeader,
-    YButton,
-    YBottom
+    YButton
+    // YBottom
   },
   data() {
     return {
@@ -289,25 +289,25 @@ export default {
 <style lang="scss" rel="stylesheet/scss">
 .login_body {
   background-color: #2256f7;
+  height: calc(100vh - 150px);
 }
 
 .login_page {
   .login_box {
-    height: 520px;
-    width: 1200px;
     margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 
     .login_logo img {
       width: 500px;
       height: auto;
-      float: left;
-      margin: 100px 0 0 100px;
     }
 
     .center_box {
-      width: 1200px;
-      margin: 0 auto;
       position: relative;
+      margin: 0 100px;
     }
   }
 
@@ -360,9 +360,6 @@ export default {
 
   .login_form {
     width: 380px;
-    position: absolute;
-    top: 20px;
-    right: 80px;
     border-radius: 6px;
     transition: all 0.8s;
     transform: perspective(600px);

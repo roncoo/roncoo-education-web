@@ -6,16 +6,16 @@
         <li v-for="(item, index) in friendLinkList" :key="index"><a :href="item.linkUrl" :target="item.linkTarget">{{ item.linkName }}</a></li>
       </ul>
     </div>
-    <Bottom />
+    <!-- <Bottom /> -->
   </div>
 </template>
 <script>
 import { linkList } from '~/api/main.js'
-import Bottom from '@/components/common/Bottom'
+// import Bottom from '@/components/common/Bottom'
 
 export default {
   name: 'Footer',
-  components: { Bottom },
+  // components: { Bottom },
   data() {
     return {
       friendLinkList: []

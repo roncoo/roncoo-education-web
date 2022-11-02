@@ -5,7 +5,7 @@
       <div class="search_box_content clearfix">
         <div class="form">
           <span class="iconfont"></span>
-          <input v-model="map.courseName" type="text" class="search_box_input">
+          <input v-model="map.courseName" type="text" class="search_box_input" @keyup.enter="handleSearch">
           <button class="search_btn" @click="handleSearch">搜索</button>
         </div>
       </div>
@@ -28,7 +28,7 @@
       </div>
       <d-page v-if="page.totalPage > 1" :page="page" @btnClick="getPage" />
     </div>
-    <bottom />
+    <!-- <bottom /> -->
     <right-tap />
   </div>
 </template>
@@ -38,12 +38,12 @@ import YHeader from '~/components/common/Header'
 import RightTap from '@/components/common/Top'
 import { courseList } from '~/api/course'
 import DPage from '~/components/common/Page'
-import Bottom from '@/components/common/Bottom'
+// import Bottom from '@/components/common/Bottom'
 
 export default {
   name: 'Search',
   components: {
-    Bottom,
+    // Bottom,
     YHeader,
     DPage,
     RightTap
@@ -144,9 +144,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.search_page {
-  min-height: 100vh;
-}
+// .search_page {
+//   min-height: 100vh;
+// }
 
 @keyframes bganimation {
   0% {

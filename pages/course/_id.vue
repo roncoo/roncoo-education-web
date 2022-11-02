@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-    <bottom />
+    <!-- <bottom /> -->
   </div>
 </template>
 <script>
@@ -39,11 +39,11 @@ import YCatalog from '@/components/course/Catalog'
 import YStudy from '@/components/course/Study'
 import cookies from '@/utils/cookies'
 import { courseDetail, playSign, studyProgress, userCourseDetail } from '~/api/course.js'
-import Bottom from '@/components/common/Bottom'
+// import Bottom from '@/components/common/Bottom'
 
 export default {
   components: {
-    Bottom,
+    // Bottom,
     YDetail,
     YCatalog,
     YStudy

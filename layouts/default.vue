@@ -1,11 +1,16 @@
 <template>
   <div>
-    <nuxt />
+    <div id="app">
+      <nuxt />
+    </div>
+    <bottom />
   </div>
 </template>
 
 <script>
+import Bottom from '@/components/common/Bottom'
 export default {
+  components: { Bottom },
   head() {
     return {
       link: [
@@ -49,7 +54,9 @@ html {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
-
+#app {
+  min-height: calc(100vh - 80px );
+}
 *,
 *:before,
 *:after {

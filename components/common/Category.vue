@@ -10,9 +10,9 @@
     <div class="big_block clearfix" :style="'width:' + width + 'px;'">
       <div class="list_items fl clearfix">
         <div v-for="(item1, index1) in twoList" :key="index1" class="list_item clearfix">
-          <nuxt-link :to="{name: 'list', query: {categoryId: item1.id}}" :class="{class_header: true, fl: true}">{{ item1.categoryName }}</nuxt-link>
+          <nuxt-link :to="{name: 'list', query: {categoryId: categoryId, categoryTwoId: item1.id}}" :class="{class_header: true, fl: true}">{{ item1.categoryName }}</nuxt-link>
           <div class="fl three_box">
-            <nuxt-link v-for="(item2, index2) in item1.list" :key="index2" :to="{name: 'list', query: {categoryId: item2.id}}" class="three_link">{{ item2.categoryName }}</nuxt-link>
+            <nuxt-link v-for="(item2, index2) in item1.list" :key="index2" :to="{name: 'list', query: {categoryId: categoryId, categoryTwoId: item1.id, categoryThreeId: item2.id}}" class="three_link">{{ item2.categoryName }}</nuxt-link>
           </div>
         </div>
       </div>

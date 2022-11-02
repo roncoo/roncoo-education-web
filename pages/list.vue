@@ -17,7 +17,7 @@
       </ul>
       <d-page v-if="pageObj.totalPage > 1" :page="pageObj" @btnClick="getPage" />
     </div>
-    <bottom />
+    <!-- <bottom /> -->
     <y-tap />
   </div>
 </template>
@@ -29,11 +29,11 @@ import YTap from '@/components/common/Top'
 import { courseList } from '~/api/course.js'
 import { categoryList } from '~/api/main.js'
 import { courseChange } from '~/utils/commonfun.js'
-import Bottom from '@/components/common/Bottom'
+// import Bottom from '@/components/common/Bottom'
 
 export default {
   components: {
-    Bottom,
+    // Bottom,
     YHeader,
     YChoose,
     DPage,
@@ -42,17 +42,31 @@ export default {
   async asyncData(context) {
     const dataObj = {}
     dataObj.websiteInfo = context.store.state.websiteInfo
+    let categoryId = ''
+    categoryId = context.query.categoryId || ''
+    if (context.query.categoryTwoId) {
+      categoryId = context.query.categoryTwoId
+    }
+    if (context.query.categoryThreeId) {
+      categoryId = context.query.categoryThreeId
+    }
     const obj = {
       pageCurrent: 1,
-      pageSize: 20
+      pageSize: 20,
+      categoryId
     }
+    console.log('obj', obj)
     try {
       const allData = await Promise.all([courseList(obj), categoryList()])
       // 课程分页
       dataObj.pageObj = allData[0]
+      console.log('pageObj', dataObj.pageObj)
       // 分类
       dataObj.categoryList = await allData[1]
-      dataObj.obj = obj
+      dataObj.obj = {
+        pageCurrent: 1,
+        pageSize: 20
+      }
       return dataObj
     } catch (e) {
       context.error({ message: 'Data not found', statusCode: 404 })
@@ -87,12 +101,18 @@ export default {
       this.getCourse()
     }
   },
-  mounted() {
+  created() {
+    // const path = this.$route.path // 先获取路由路径
+    // this.$router.push(path)
     // courseChange(this)
     // this.getCourse()
+    console.log('categoryList', this.categoryList)
   },
   methods: {
     getCourse() {
+      if (this.obj.categoryId === '') {
+        delete this.obj.categoryId
+      }
       // this.$nuxt.$loading.start()
       courseList(this.obj).then(res => {
         // this.$nuxt.$loading.finish()
