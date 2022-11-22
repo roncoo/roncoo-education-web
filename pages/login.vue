@@ -6,7 +6,7 @@
         <div class="login_logo"><img src="../assets/image/login_bg.png"></div>
         <div class="center_box">
           <div v-if="!(userInfo)" :class="{login_form: true, rotate: tab == 2}">
-            <div v-if="tabp == 1" style="height: 60px" />
+            <div v-if="tabp == 1" style="height: 30px" />
             <div :class="{tabs: true, clearfix: true, r180: tabp == 2}">
               <div class="fl tab" @click="changetab(1)">
                 <span :class="{on: tab == 1}">登录</span>
