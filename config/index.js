@@ -4,8 +4,8 @@ const result = {
 }
 if (process.env.NODE_ENV === 'development') {
   // 开发环境
-  // result.baseUrl = 'http://localhost:8180'
-  result.baseUrl = 'https://dev-os.roncoos.com/gateway'
+  result.baseUrl = 'http://localhost:8180'
+  //result.baseUrl = 'https://dev-os.roncoos.com/gateway'
 } else if (process.env.NODE_ENV === 'testing') {
   // 测试环境
   result.baseUrl = 'http://localhost:8180'
