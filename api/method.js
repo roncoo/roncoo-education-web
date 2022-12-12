@@ -32,41 +32,38 @@ const createHttp = (token) => {
     const res = response.data
     if (res.code === 200) {
       return Promise.resolve(res.data)
-    } else {
-      if (response.data.code >= 300 && response.data.code <= 400) {
-        console.log('request login')
-        if (process.client) { // 客户端请求接口token 过期让他重新登录
-          if (window.location.href.indexOf('/login') === -1 && window.location.href.indexOf('/agreement') === -1) {
-            window.location.href = '/login?t=login'
-          }
-        } else {
-          console.info(JSON.stringify(response.data.data || response.data))
+    }
+    if (response.data.code >= 300 && response.data.code <= 400) {
+      if (process.client) { // 客户端请求接口token 过期让他重新登录
+        if (window.location.href.indexOf('/login') === -1 && window.location.href.indexOf('/agreement') === -1) {
+          window.location.href = '/login'
+          return
         }
       }
-      if (process.client) {
-        try {
-          const d = JSON.parse(response.config.data || response.config.params || {})
-          if (d.isShowErrTip !== false) {
-            // 过滤同时多个接口报token错误 会出现多个提示bug
-            const title = localStorage.getItem('___errmsg')
-            const time = localStorage.getItem('___errmsgTime')
-            const newtime = (new Date()).getTime()
-            if (title !== response.data.msg || (newtime - time) > 2000) {
-              localStorage.setItem('___errmsg', response.data.msg)
-              localStorage.setItem('___errmsgTime', newtime)
-              Message.error(response.data.msg)
-            }
-            return Promise.reject(response.data)
-          } else {
-            return Promise.resolve(response.data)
+    }
+    if (process.client) {
+      try {
+        const d = JSON.parse(response.config.data || response.config.params || {})
+        if (d.isShowErrTip !== false) {
+          // 过滤同时多个接口报token错误 会出现多个提示bug
+          const title = localStorage.getItem('___errmsg')
+          const time = localStorage.getItem('___errmsgTime')
+          const newtime = (new Date()).getTime()
+          if (title !== response.data.msg || (newtime - time) > 2000) {
+            localStorage.setItem('___errmsg', response.data.msg)
+            localStorage.setItem('___errmsgTime', newtime)
+            Message.error(response.data.msg)
           }
-        } catch (error) {
-          console.error(response.data)
+          return Promise.reject(response.data)
+        } else {
           return Promise.resolve(response.data)
         }
-      } else {
+      } catch (error) {
+        console.error(response.data)
         return Promise.resolve(response.data)
       }
+    } else {
+      return Promise.resolve(response.data)
     }
   }, function(error) {
     if (process.client) {
