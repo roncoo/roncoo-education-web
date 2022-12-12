@@ -33,6 +33,16 @@ const createHttp = (token) => {
     if (res.code === 200) {
       return Promise.resolve(res.data)
     } else {
+      if (response.data.code >= 300 && response.data.code <= 400) {
+        console.log('request login')
+        if (process.client) { // 客户端请求接口token 过期让他重新登录
+          if (window.location.href.indexOf('/login') === -1 && window.location.href.indexOf('/agreement') === -1) {
+            window.location.href = '/login?t=login'
+          }
+        } else {
+          console.info(JSON.stringify(response.data.data || response.data))
+        }
+      }
       if (process.client) {
         try {
           const d = JSON.parse(response.config.data || response.config.params || {})
