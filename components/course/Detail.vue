@@ -33,11 +33,18 @@
               <span class="text_b">购买:</span>{{ courseInfo.countBuy }} 人
             </div>
             <div class="foot_box">
-              <div class="study_num">
-                <span class="iconfont mgr10">&#xe60a;</span>{{ courseInfo.countStudy }} 人已学习
-              </div>
               <button v-if="courseInfo.isFree && !isLogin" class="buy_btn" @click="goLogin">登录观看</button>
               <button v-else id="buyBtn" class="buy_btn" @click="buyCourse">立即购买</button>
+              <div class="handle_info_btn">
+                <div class="study_num">
+                  <span class="iconfont mgr10">&#xe60a;</span>{{ courseInfo.countStudy }} 人已学习
+                </div>
+                <div class="handle_info_btn collect_btn" @click="handleCollect">
+                  <img v-if="isCollect" src="@/assets/image/icon_collect_active.svg" alt="">
+                  <img v-else src="@/assets/image/icon_collect.svg" alt="">
+                  收藏
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -49,6 +56,7 @@
 <script>
 import YHeader from '../common/Header'
 import DPay from '@/components/common/Pay'
+import { courseCollectAdd } from '@/api/course.js'
 
 export default {
   components: {
@@ -75,8 +83,31 @@ export default {
     }
   },
   mounted() {
+    this.isCollect = this.courseInfo.courseCollect
   },
   methods: {
+    handleCollect() {
+      if (!this.isLogin) {
+        this.$msgBox({
+          content: '请先登录',
+          isShowCancelBtn: false
+        }).then(() => {
+          this.$store.dispatch('REDIRECT_LOGIN')
+        })
+        return
+      }
+      courseCollectAdd({
+        courseId: this.courseInfo.id
+      }).then(res => {
+        if (res) {
+          this.$msgBox({
+            content: res,
+            isShowCancelBtn: false
+          }).then(() => {})
+          this.isCollect = true
+        }
+      })
+    },
     goLogin() {
       this.$store.dispatch('REDIRECT_LOGIN')
     },
@@ -152,6 +183,9 @@ export default {
     bottom: 0px;
     width: 100%;
     height: 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .buy_btn {
@@ -173,15 +207,22 @@ export default {
       cursor: pointer;
     }
   }
-
+  .handle_info_btn {
+    display: flex;
+    align-items: center;
+    color: #999;
+    font-size: 14px;
+  }
   .study_num {
-    float: right;
     height: 36px;
     line-height: 36px;
     color: #999;
     font-size: 14px;
+    margin-right: 20px;
   }
-
+  .collect_btn {
+    cursor: pointer;
+  }
   .huabei {
     color: #fff;
     font-size: 13px;

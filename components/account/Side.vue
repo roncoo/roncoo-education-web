@@ -6,6 +6,9 @@
         <li :class="{on: type == 'wdkc'}">
           <router-link :to="{name: 'account-course'}">我的课程</router-link>
         </li>
+        <li :class="{on: type == 'wdsc'}">
+          <router-link :to="{name: 'account-collect'}">我的收藏</router-link>
+        </li>
         <li :class="{on: type == 'wddd'}">
           <router-link :to="{name: 'account-order'}">我的订单</router-link>
         </li>

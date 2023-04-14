@@ -7,12 +7,16 @@
         <ul class="course_tab clearfix">
           <li :class="{on: tab == 'info'}"><a href="javascript:" @click="tab = 'info'">课程介绍</a></li>
           <li :class="{on: tab == 'big'}"><a href="javascript:" @click="tab = 'big'">课程目录</a></li>
+          <li :class="{on: tab == 'comment'}"><a href="javascript:" @click="tab = 'comment'">课程评论</a></li>
         </ul>
         <div v-if="tab == 'info'" class="content_info">
           <div class="introduce" v-html="courseInfo.introduce" />
         </div>
         <div v-if="tab == 'big'" class="content_info">
           <y-catalog :list="courseInfo.chapterRespList" :play-period="playPeriod" @playfunc="videoPlay" />
+        </div>
+        <div v-if="tab == 'comment'" class="content_info">
+          <y-comment :id="courseInfo.id" />
         </div>
       </div>
       <div class="layout_right">
@@ -37,6 +41,7 @@
 import YDetail from '@/components/course/Detail'
 import YCatalog from '@/components/course/Catalog'
 import YStudy from '@/components/course/Study'
+import YComment from '@/components/course/Comment'
 import cookies from '@/utils/cookies'
 import { courseDetail, playSign, studyProgress, userCourseDetail } from '~/api/course.js'
 // import Bottom from '@/components/common/Bottom'
@@ -46,7 +51,8 @@ export default {
     // Bottom,
     YDetail,
     YCatalog,
-    YStudy
+    YStudy,
+    YComment
   },
   async asyncData(context) {
     try {
@@ -86,6 +92,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.courseInfo)
     if (this.courseInfo.allowStudy) {
       this.tab = 'big'
     }
@@ -118,9 +125,10 @@ export default {
   },
   methods: {
     videoPlay(periodId) {
+      console.log(this.courseInfo)
       if (this.courseInfo.allowStudy) {
         window.scrollTo(0, 0)
-        playSign({ periodId: periodId, clientIp: '172.0.0.1' }).then(res => {
+        playSign({ periodId: periodId, courseId: this.courseInfo.id, clientIp: '172.0.0.1' }).then(res => {
           this.playPeriod = res.periodId
           this.play(res, true)
         })

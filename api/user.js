@@ -29,3 +29,8 @@ export const usersUpdata = (params = {}) => {
 export const getUserInfo = () => {
   return http().get('/user/auth/users/view')
 }
+
+// 课程收藏列出
+export const userCourseCollectPage = (params = {}) => {
+  return http().post('/course/auth/user/course/collect/page', params)
+}

@@ -35,3 +35,17 @@ export const orderInfoView = (orderNo) => {
   return http().get('/user/auth/order/info/view?orderNo=' + orderNo)
 }
 
+// 课程评论添加
+export const courseCommentAdd = (params = {}) => {
+  return http().post('/course/auth/user/course/comment/add', params)
+}
+
+// 课程评论列出
+export const courseCommentPage = (params = {}) => {
+  return http().post('/course/auth/user/course/comment/page', params)
+}
+
+// 课程收藏添加
+export const courseCollectAdd = (params = {}) => {
+  return http().post('/course/auth/user/course/collect/add', params)
+}
