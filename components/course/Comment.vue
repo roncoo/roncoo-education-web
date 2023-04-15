@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { courseCommentAdd } from '@/api/course.js'
+import { courseCommentPage, courseCommentAdd } from '@/api/course.js'
 import DPage from '~/components/common/Page'
 export default {
   components: {
@@ -68,14 +68,10 @@ export default {
       })
     },
     getCommentList() {
-      if (!this.tokenInfo) {
-        this.$msgBox({
-          content: '请先登录'
-        }).then(res => {
-          this.$store.dispatch('REDIRECT_LOGIN')
-        })
-        return false
-      }
+      courseCommentPage({ courseId: this.id, pageCurrent: this.pageObj.pageCurrent }).then(res => {
+        this.pageObj = res
+        console.info(res)
+      })
     }
   }
 }

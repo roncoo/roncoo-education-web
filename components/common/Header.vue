@@ -33,6 +33,9 @@
                   <nuxt-link :to="{name: 'account-course'}">我的课程</nuxt-link>
                 </li>
                 <li>
+                  <nuxt-link :to="{name: 'account-collect'}">我的收藏</nuxt-link>
+                </li>
+                <li>
                   <nuxt-link :to="{name: 'account-order'}">我的订单</nuxt-link>
                 </li>
                 <li>

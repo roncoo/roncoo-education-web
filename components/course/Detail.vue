@@ -77,7 +77,7 @@ export default {
     return {
       payData: null,
       showPay: false,
-      isCollect: '',
+      isCollect: false,
       activityText: '',
       isLogin: !!this.$store.state.tokenInfo
     }
@@ -99,12 +99,18 @@ export default {
       courseCollectAdd({
         courseId: this.courseInfo.id
       }).then(res => {
-        if (res) {
+        if (res === 'add') {
           this.$msgBox({
-            content: res,
+            content: '收藏成功',
             isShowCancelBtn: false
           }).then(() => {})
           this.isCollect = true
+        } else {
+          this.$msgBox({
+            content: '取消收藏',
+            isShowCancelBtn: false
+          }).then(() => {})
+          this.isCollect = false
         }
       })
     },

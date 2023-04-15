@@ -5,7 +5,7 @@
       <y-side :type="'wdkc'" />
       <div class="main_box">
         <ul class="tabs clearfix">
-          <a class="tab on">课程列表</a>
+          <a class="tab on">我的课程</a>
         </ul>
         <div class="main_cont">
           <div v-if="notdata" class="notdata">

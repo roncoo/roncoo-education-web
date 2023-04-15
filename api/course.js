@@ -10,6 +10,11 @@ export const courseDetail = (params = {}) => {
   return http().post('/course/api/course/view', params)
 }
 
+// 课程评论列出
+export const courseCommentPage = (params = {}) => {
+  return http().post('/course/api/course/comment', params)
+}
+
 // 课程详情(登录后)
 export const userCourseDetail = (params = {}, token) => {
   return http(token).post('/course/auth/course/view', params)
@@ -38,11 +43,6 @@ export const orderInfoView = (orderNo) => {
 // 课程评论添加
 export const courseCommentAdd = (params = {}) => {
   return http().post('/course/auth/user/course/comment/add', params)
-}
-
-// 课程评论列出
-export const courseCommentPage = (params = {}) => {
-  return http().post('/course/auth/user/course/comment/page', params)
 }
 
 // 课程收藏添加
