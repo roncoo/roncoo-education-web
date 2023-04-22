@@ -82,16 +82,13 @@
 <script>
 import YHeader from '~/components/common/Header'
 import YButton from '@/components/common/Code'
-// import YBottom from '@/components/common/Bottom'
 import { getOsInfo, getBrowserInfo } from '@/utils/utils'
-import { register, userLogin, getIpInfo } from '@/api/login.js'
+import { register, userLogin } from '@/api/login.js'
 
 export default {
-
   components: {
     YHeader,
     YButton
-    // YBottom
   },
   data() {
     return {
@@ -138,15 +135,10 @@ export default {
     if (this.$route.query.t === 'login') {
       this.$store.commit('SIGN_OUT')
       this.userInfo = ''
-      this.errTip1 = '未登录或登录超时,请重新登录'
+      this.errTip1 = '未登录或登录超时，请重新登录'
     } else if (this.$route.query.t) {
       window.location.href = '/index'
     }
-
-    // this.$axios('get', 'https://gateway.doityun.com/ip/info')
-    getIpInfo().then(res => {
-      this.ipInfo = res.data.data
-    })
   },
   methods: {
     signOut() {

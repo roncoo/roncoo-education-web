@@ -17,8 +17,3 @@ export const register = (params = {}) => {
 export const updatePassword = (params = {}) => {
   return http().post('/user/api/users/password', params)
 }
-
-// 获取IP
-export const getIpInfo = () => {
-  return axios.get('https://gateway.doityun.com/ip/info')
-}
