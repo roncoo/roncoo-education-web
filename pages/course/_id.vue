@@ -92,7 +92,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.courseInfo)
     if (this.courseInfo.allowStudy) {
       this.tab = 'big'
     }
@@ -125,7 +124,6 @@ export default {
   },
   methods: {
     videoPlay(periodId) {
-      console.log(this.courseInfo)
       if (this.courseInfo.allowStudy) {
         window.scrollTo(0, 0)
         playSign({ periodId: periodId, courseId: this.courseInfo.id, clientIp: '172.0.0.1' }).then(res => {

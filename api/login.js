@@ -1,5 +1,4 @@
 import http from './method'
-import * as axios from 'axios'
 
 // 用户登录
 export const userLogin = (params = {}) => {

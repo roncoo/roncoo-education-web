@@ -51,6 +51,15 @@ export default {
   },
   methods: {
     handleComment() {
+      if (!this.tokenInfo) {
+        this.$msgBox({
+          content: '请先登录',
+          isShowCancelBtn: false
+        }).then(() => {
+          this.$store.dispatch('REDIRECT_LOGIN')
+        })
+        return
+      }
       if (!this.commentText) {
         return
       }
@@ -73,7 +82,6 @@ export default {
     getCommentList() {
       courseCommentPage({ courseId: this.id, pageCurrent: this.pageObj.pageCurrent }).then(res => {
         this.pageObj = res
-        console.info(res)
       })
     }
   }
