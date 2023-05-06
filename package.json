@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nuxt",
-    "build:testing": "cross-env NODE_ENV=testing  nuxt build",
     "build": "cross-env NODE_ENV=production  nuxt build",
     "start": "nuxt start"
   },
