@@ -1,10 +1,10 @@
 {
   "name": "roncoo-education-web",
-  "version": "11.0.0-RELEASE",
+  "version": "12.0.0-RELEASE",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nuxt",
-    "build": "cross-env NODE_ENV=production  nuxt build",
+    "build": "cross-env NODE_ENV=production nuxt build",
     "start": "nuxt start"
   },
   "dependencies": {
