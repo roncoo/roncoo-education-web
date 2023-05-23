@@ -1,6 +1,6 @@
 {
   "name": "roncoo-education-web",
-  "version": "12.0.0-RELEASE",
+  "version": "13.0.0-RELEASE",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nuxt",
