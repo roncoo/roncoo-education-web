@@ -36,9 +36,6 @@
         <directory>${project.basedir}/../config</directory>
       </fileSet>
       <fileSet>
-        <directory>${project.basedir}/../locales</directory>
-      </fileSet>
-      <fileSet>
         <directory>${project.basedir}/../static</directory>
       </fileSet>
     </fileSets>
