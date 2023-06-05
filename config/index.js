@@ -1,5 +1,5 @@
 const result = {
-  baseUrl: 'http://localhost:8180', // 接口地址
+  baseUrl: 'https://eduos.roncoo.net/gateway', // 接口地址
   tokenName: 'OSTK' // cookie名称
 }
 if (process.env.NODE_ENV === 'production') {

@@ -100,7 +100,9 @@ export default {
       // 可以播放，自动获取最后学习的课程
       playSign({ courseId: this.courseInfo.id, clientIp: '172.0.0.1' }).then(res => {
         this.playPeriod = res.periodId
-        this.play(res, false)
+        if (res.periodId) {
+          this.play(res, false)
+        }
       })
     }
 
@@ -128,7 +130,9 @@ export default {
         window.scrollTo(0, 0)
         playSign({ periodId: periodId, courseId: this.courseInfo.id, clientIp: '172.0.0.1' }).then(res => {
           this.playPeriod = res.periodId
-          this.play(res, true)
+          if (res.periodId) {
+            this.play(res, true)
+          }
         })
       } else {
         this.$msgBox({
@@ -140,31 +144,30 @@ export default {
     },
     play(data, autoplay) {
       const box = this.$refs.watchVideo.$refs.videobox
-      if (this.player) {
-        this.player.changeVid({
-          'forceH5': true,
-          'code': data.code,
-          'playsafe': data.token,
-          'ts': data.ts,
-          'sign': data.sign,
-          'vid': data.vid,
-          'watchStartTime': data.startTime,
-          autoplay: autoplay
-        })
-      } else {
-        this.player = window.polyvObject('#player').videoPlayer({
-          'width': box.offsetWidth,
-          'height': box.offsetHeight,
-          'forceH5': true,
-          'code': data.code,
-          'playsafe': data.token,
-          'ts': data.ts,
-          'sign': data.sign,
-          'vid': data.vid,
-          'watchStartTime': data.startTime,
-          autoplay: autoplay
-        })
+      this.player?.destroy()
+      const param = {
+        'width': box.offsetWidth,
+        'height': box.offsetHeight,
+        'forceH5': true,
+        'watchStartTime': data.startTime,
+        autoplay: autoplay
       }
+      if (data.vodPlatform === 2) {
+        const vodPlayConfig = JSON.parse(data.vodPlayConfig)
+        param.code = vodPlayConfig.code
+        param.playsafe = vodPlayConfig.token
+        param.ts = vodPlayConfig.ts
+        param.sign = vodPlayConfig.sign
+        param.vid = vodPlayConfig.vid
+      } else {
+        const vodPlayConfig = JSON.parse(data.vodPlayConfig)
+        if (vodPlayConfig.hdUrl) {
+          param.url = vodPlayConfig.hdUrl
+        } else {
+          param.url = vodPlayConfig.sdUrl
+        }
+      }
+      this.player = window.polyvObject('#player').videoPlayer(param)
 
       this.userStudy.studyId = data.studyId
       this.userStudy.resourceId = data.resourceId
