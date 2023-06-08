@@ -174,7 +174,7 @@ export default {
     },
     // 记录进度
     studyRecord() {
-      this.userStudy.totalDuration = this.getDuration()
+      // this.userStudy.totalDuration = this.getDuration()
       this.userStudy.currentDuration = this.getCurrentTime()
       studyProgress(this.userStudy).then(res => {
         if (res === 'OK') {
