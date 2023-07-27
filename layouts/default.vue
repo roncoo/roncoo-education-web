@@ -35,9 +35,6 @@ export default {
     var sList = document.getElementsByTagName('script')
     var s = sList[sList.length - 1]
     s.parentNode.insertBefore(sc, s)
-    var hm = document.createElement('script')
-    hm.src = 'https://hm.baidu.com/hm.js?d5b2309e95c3b686b3c8ff6f1abbaef1'
-    document.body.insertBefore(hm, s)
   }
 }
 
