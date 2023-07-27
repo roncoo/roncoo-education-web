@@ -18,9 +18,9 @@
     <id>${project.version}</id>
     <includeBaseDirectory>true</includeBaseDirectory>
     <formats>
-      <!--<format>dir</format>-->
-      <!--<format>zip</format>-->
+      <format>dir</format>
       <format>tar.gz</format>
+      <!--<format>zip</format>-->
     </formats>
     <fileSets>
       <fileSet>
@@ -37,6 +37,9 @@
       </fileSet>
       <fileSet>
         <directory>${project.basedir}/../static</directory>
+      </fileSet>
+      <fileSet>
+        <directory>${project.basedir}/../node_modules</directory>
       </fileSet>
     </fileSets>
     <files>
