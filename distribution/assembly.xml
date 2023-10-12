@@ -38,6 +38,9 @@
       <fileSet>
         <directory>${project.basedir}/../static</directory>
       </fileSet>
+      <fileSet>
+        <directory>${project.basedir}/../static</directory>
+      </fileSet>
     </fileSets>
     <files>
         <file>
