@@ -18,9 +18,9 @@
     <id>${project.version}</id>
     <includeBaseDirectory>true</includeBaseDirectory>
     <formats>
-      <!--<format>dir</format>-->
-      <!--<format>zip</format>-->
+      <format>dir</format>
       <format>tar.gz</format>
+      <!--<format>zip</format>-->
     </formats>
     <fileSets>
       <fileSet>
