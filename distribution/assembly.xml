@@ -39,7 +39,7 @@
         <directory>${project.basedir}/../static</directory>
       </fileSet>
       <fileSet>
-        <directory>${project.basedir}/../static</directory>
+        <directory>${project.basedir}/../node_modules</directory>
       </fileSet>
     </fileSets>
     <files>
