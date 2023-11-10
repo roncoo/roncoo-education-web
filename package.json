@@ -10,7 +10,7 @@
   "dependencies": {
     "@nuxtjs/proxy": "^2.1.0",
     "awe-dnd": "^0.3.4",
-    "axios": "^0.21.2",
+    "axios": "^1.6.0",
     "bq-static": "^1.1.6",
     "cross-env": "^5.2.1",
     "element-ui": "^2.15.1",
