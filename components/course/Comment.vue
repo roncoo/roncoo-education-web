@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <d-page v-if="pageObj.totalPage > 1" :page="pageObj" @btnClick="getCommentList" />
+    <d-page v-if="pageObj.totalPage > 1" :page="pageObj" @btnClick="getPage" />
   </div>
 </template>
 
@@ -78,6 +78,11 @@ export default {
           })
         }
       })
+    },
+    getPage(int) {
+      window.scrollTo(0, 0)
+      this.pageObj.pageCurrent = int
+      this.getCommentList()
     },
     getCommentList() {
       courseCommentPage({ courseId: this.id, pageCurrent: this.pageObj.pageCurrent }).then(res => {
