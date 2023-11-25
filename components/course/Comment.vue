@@ -13,9 +13,6 @@
             <div class="course_comment_btn"><div class="course_comment_time">{{ comment.gmtCreate }}</div></div>
           </div>
         </div>
-        <div class="loading_btn">
-          <span class="loading_text">已经到底部，没有更多内容了</span>
-        </div>
       </div>
     </div>
     <d-page v-if="pageObj.totalPage > 1" :page="pageObj" @btnClick="getPage" />
