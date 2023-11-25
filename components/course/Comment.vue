@@ -13,6 +13,9 @@
             <div class="course_comment_btn"><div class="course_comment_time">{{ comment.gmtCreate }}</div></div>
           </div>
         </div>
+        <div v-if="!pageObj.list || pageObj.list.length === 0" class="loading_btn">
+          <span class="loading_text">暂无数据</span>
+        </div>
       </div>
     </div>
     <d-page v-if="pageObj.totalPage > 1" :page="pageObj" @btnClick="getPage" />
