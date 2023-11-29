@@ -40,9 +40,9 @@ const createHttp = (token) => {
             content: '登录超时，请重新登录',
             isShowCancelBtn: false
           }).then(() => {
-            this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            this.$store.dispatch('REDIRECT_LOGIN', response.data.code)
           }).catch(() => {
-            this.$store.dispatch('REDIRECT_LOGIN', result.code)
+            this.$store.dispatch('REDIRECT_LOGIN', response.data.code)
           })
           return
         }
@@ -74,9 +74,9 @@ const createHttp = (token) => {
     }
   }, function(error) {
     if (process.client) {
-      return Promise.reject(error)
+      return Promise.reject(error.response.data)
     } else {
-      console.error(JSON.stringify(error))
+      console.error(JSON.stringify(error.message))
       return Promise.resolve(error.response.data)
     }
   })
