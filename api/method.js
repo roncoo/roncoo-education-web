@@ -36,7 +36,14 @@ const createHttp = (token) => {
     if (response.data.code >= 300 && response.data.code <= 400) {
       if (process.client) { // 客户端请求接口token 过期让他重新登录
         if (window.location.href.indexOf('/login') === -1 && window.location.href.indexOf('/agreement') === -1) {
-          window.location.href = '/login?t=login'
+          this.$msgBox({
+            content: '登录超时，请重新登录',
+            isShowCancelBtn: false
+          }).then(() => {
+            this.$store.dispatch('REDIRECT_LOGIN', result.code)
+          }).catch(() => {
+            this.$store.dispatch('REDIRECT_LOGIN', result.code)
+          })
           return
         }
       }
