@@ -75,7 +75,6 @@ export default {
       }
       return result
     } catch (e) {
-      console.error(e)
       context.error({ message: 'Data not found', statusCode: 404 })
     }
   },

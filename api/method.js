@@ -22,7 +22,6 @@ const createHttp = (token) => {
   http.interceptors.request.use(function(config) {
     return config
   }, function(error) {
-    console.error(error)
     if (process.client) {
       return Promise.reject(error)
     }
@@ -66,7 +65,6 @@ const createHttp = (token) => {
           return Promise.resolve(response.data)
         }
       } catch (error) {
-        console.error(response.data)
         return Promise.resolve(response.data)
       }
     } else {
@@ -76,7 +74,6 @@ const createHttp = (token) => {
     if (process.client) {
       return Promise.reject(error.response.data)
     } else {
-      console.error(JSON.stringify(error.message))
       return Promise.resolve(error.response.data)
     }
   })
