@@ -28,9 +28,8 @@ const createHttp = (token) => {
   })
 
   http.interceptors.response.use(function(response) {
-    const res = response.data
-    if (res.code === 200) {
-      return Promise.resolve(res.data)
+    if (response.data.code === 200) {
+      return Promise.resolve(response.data.data)
     }
     if (response.data.code >= 300 && response.data.code <= 400) {
       if (process.client) { // 客户端请求接口token 过期让他重新登录
