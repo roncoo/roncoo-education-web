@@ -22,26 +22,21 @@ const createHttp = (token) => {
   http.interceptors.request.use(function(config) {
     return config
   }, function(error) {
+    console.error(error)
     if (process.client) {
       return Promise.reject(error)
     }
   })
 
   http.interceptors.response.use(function(response) {
-    if (response.data.code === 200) {
-      return Promise.resolve(response.data.data)
+    const res = response.data
+    if (res.code === 200) {
+      return Promise.resolve(res.data)
     }
     if (response.data.code >= 300 && response.data.code <= 400) {
       if (process.client) { // 客户端请求接口token 过期让他重新登录
         if (window.location.href.indexOf('/login') === -1 && window.location.href.indexOf('/agreement') === -1) {
-          this.$msgBox({
-            content: '登录超时，请重新登录',
-            isShowCancelBtn: false
-          }).then(() => {
-            this.$store.dispatch('REDIRECT_LOGIN', response.data.code)
-          }).catch(() => {
-            this.$store.dispatch('REDIRECT_LOGIN', response.data.code)
-          })
+          this.$store.dispatch('REDIRECT_LOGIN', result.code)
           return
         }
       }
@@ -64,6 +59,7 @@ const createHttp = (token) => {
           return Promise.resolve(response.data)
         }
       } catch (error) {
+        console.error(response.data)
         return Promise.resolve(response.data)
       }
     } else {
@@ -71,8 +67,9 @@ const createHttp = (token) => {
     }
   }, function(error) {
     if (process.client) {
-      return Promise.reject(error.response.data)
+      return Promise.reject(error)
     } else {
+      console.error(JSON.stringify(error))
       return Promise.resolve(error.response.data)
     }
   })
