@@ -2,6 +2,7 @@ import * as axios from 'axios'
 import { Message } from 'element-ui'
 import cookie from '../utils/cookies'
 import config from '../config'
+import store from '@/store'
 
 const createHttp = (token) => {
   const options = {}
@@ -36,7 +37,7 @@ const createHttp = (token) => {
     if (response.data.code >= 300 && response.data.code <= 400) {
       if (process.client) { // 客户端请求接口token 过期让他重新登录
         if (window.location.href.indexOf('/login') === -1 && window.location.href.indexOf('/agreement') === -1) {
-          this.$store.dispatch('REDIRECT_LOGIN', result.code)
+          store.dispatch('REDIRECT_LOGIN', result.code)
           return
         }
       }
