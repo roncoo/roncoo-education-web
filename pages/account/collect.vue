@@ -76,6 +76,10 @@ export default {
           this.pageObj = res
           console.log('res', res)
         }
+      }).catch(err => {
+        if (err.code >= 300 && err.code <= 400) {
+          this.$store.dispatch('REDIRECT_LOGIN')
+        }
       })
     }
   }

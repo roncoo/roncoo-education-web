@@ -78,6 +78,10 @@ export default {
           this.notdata = false
           this.pageObj = res
         }
+      }).catch(err => {
+        if (err.code >= 300 && err.code <= 400) {
+          this.$store.dispatch('REDIRECT_LOGIN')
+        }
       })
     }
   }
