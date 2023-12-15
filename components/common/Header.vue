@@ -12,7 +12,7 @@
             <a :class="{active: isNow === item.navUrl}" :href="item.navUrl" :target="item.target">{{ item.navTitle }}</a>
           </li>
         </ul>
-        <div v-show="!hideTop" class="search_box clearfix">
+        <div v-show="!hideTop && !hideSearch" class="search_box clearfix">
           <div class="clearfix">
             <button class="search_btn" @click="handleSearch">
               <span class="iconfont"></span>

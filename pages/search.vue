@@ -1,6 +1,6 @@
 <template>
   <div class="search_page">
-    <y-header :active="'search'" :search-text="$route.query.search" />
+    <y-header :active="'search'" :hide-search="true" :search-text="$route.query.search" />
     <div class="search_input">
       <div class="search_box_content clearfix">
         <div class="form">
