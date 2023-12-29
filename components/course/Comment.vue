@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { Message } from 'element-ui'
 import { courseCommentPage, courseCommentAdd } from '@/api/course.js'
 import DPage from '~/components/common/Page'
 export default {
@@ -71,11 +72,7 @@ export default {
         if (res) {
           this.getCommentList()
           this.commentText = ''
-          this.$msgBox({
-            content: res,
-            isShowCancelBtn: false
-          }).catch(() => {
-          })
+          Message.success(res)
         }
       })
     },

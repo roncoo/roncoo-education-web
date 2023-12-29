@@ -151,7 +151,7 @@ export default {
       e.preventDefault()
       usersUpdata(this.obj).then(res => {
         this.$msgBox({
-          content: '修改成功',
+          content: '信息修改成功',
           isShowCancelBtn: false
         }).then(async(val) => {
           window.location.reload()

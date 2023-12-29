@@ -54,10 +54,10 @@
   </div>
 </template>
 <script>
+import { Message } from 'element-ui'
 import YHeader from '../common/Header'
 import DPay from '@/components/common/Pay'
 import { courseCollectAdd } from '@/api/course.js'
-import { Message } from 'element-ui'
 
 export default {
   components: {
