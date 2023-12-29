@@ -111,11 +111,9 @@ import YSide from '~/components/account/Side'
 import YHeader from '~/components/common/Header'
 import DUpload from '~/components/common/Upload'
 import { getUserInfo, usersUpdata } from '@/api/user.js'
-// import Bottom from '@/components/common/Bottom'
 
 export default {
   components: {
-    // Bottom,
     YHeader,
     YSide,
     DUpload

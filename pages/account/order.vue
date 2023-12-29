@@ -59,11 +59,9 @@ import YHeader from '~/components/common/Header'
 import DPaymodal from '@/components/common/Order'
 import { cancelOrder, orderPage } from '@/api/user.js'
 import DPage from '~/components/common/Page'
-// import Bottom from '@/components/common/Bottom'
 
 export default {
   components: {
-    // Bottom,
     YHeader,
     YSide,
     DPage,

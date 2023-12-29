@@ -29,11 +29,9 @@ import YTap from '@/components/common/Top'
 import { courseList } from '~/api/course.js'
 import { categoryList } from '~/api/main.js'
 import { courseChange } from '~/utils/commonfun.js'
-// import Bottom from '@/components/common/Bottom'
 
 export default {
   components: {
-    // Bottom,
     YHeader,
     YChoose,
     DPage,

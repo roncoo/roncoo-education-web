@@ -44,11 +44,9 @@ import YStudy from '@/components/course/Study'
 import YComment from '@/components/course/Comment'
 import cookies from '@/utils/cookies'
 import { courseDetail, playSign, studyProgress, userCourseDetail } from '~/api/course.js'
-// import Bottom from '@/components/common/Bottom'
 
 export default {
   components: {
-    // Bottom,
     YDetail,
     YCatalog,
     YStudy,

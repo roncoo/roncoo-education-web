@@ -57,6 +57,7 @@
 import YHeader from '../common/Header'
 import DPay from '@/components/common/Pay'
 import { courseCollectAdd } from '@/api/course.js'
+import { Message } from 'element-ui'
 
 export default {
   components: {
@@ -100,17 +101,11 @@ export default {
         courseId: this.courseInfo.id
       }).then(res => {
         if (res === 'add') {
-          this.$msgBox({
-            content: '收藏成功',
-            isShowCancelBtn: false
-          }).then(() => {})
           this.isCollect = true
+          Message.success('收藏成功')
         } else {
-          this.$msgBox({
-            content: '取消收藏',
-            isShowCancelBtn: false
-          }).then(() => {})
           this.isCollect = false
+          Message.info('取消收藏')
         }
       })
     },

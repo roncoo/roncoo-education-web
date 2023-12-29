@@ -43,11 +43,9 @@ import YSide from '~/components/account/Side'
 import YHeader from '~/components/common/Header'
 import DPage from '~/components/common/Page'
 import { userCoursePage } from '@/api/user.js'
-// import Bottom from '@/components/common/Bottom'
 
 export default {
   components: {
-    // Bottom,
     YHeader,
     YSide,
     DPage
