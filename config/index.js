@@ -4,7 +4,7 @@ const result = {
 }
 if (process.env.NODE_ENV === 'production') {
   // 生产运行默认读取该配置
-  result.baseUrl = 'http://localhost:8180'
+  result.baseUrl = 'http://localhost/gateway'
 }
 
 export default result
