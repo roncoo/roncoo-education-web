@@ -246,10 +246,10 @@ export default {
         border-radius: 8px 8px 0 0;
         height: 80px;
         line-height: 80px;
-        background: rgb(228, 228, 228);
+        background: #2256f7;
         font-size: 18px;
         text-align: center;
-        color: #333;
+        color: #fff;
       }
     }
 
