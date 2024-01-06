@@ -76,7 +76,7 @@ export default {
       }
     },
     // 过滤日志
-    plugins: process.env.ONLINE === 'true' ? [
+    plugins: process.env.NODE_ENV === 'production' ? [
       new UglifyJsPlugin({
         uglifyOptions: {
           compress: {
