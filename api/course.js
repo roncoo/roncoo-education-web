@@ -1,51 +1,53 @@
-import http from './method.js'
+import { getRequest, postRequest } from '@/utils/request'
 
-// 课程列表(搜索)
-export const courseList = (params = {}) => {
-  return http().post('/course/api/course/search', params)
-}
+export const courseApi = {
+  // 课程列表(搜索)
+  courseList: (params = {}) => {
+    return postRequest('/course/api/course/search', params)
+  },
 
-// 课程详情
-export const courseDetail = (params = {}) => {
-  return http().post('/course/api/course/view', params)
-}
+  // 课程详情
+  courseDetail: (params = {}) => {
+    return postRequest('/course/api/course/view', params)
+  },
 
-// 课程评论列出
-export const courseCommentPage = (params = {}) => {
-  return http().post('/course/api/course/comment', params)
-}
+  // 课程评论列出
+  courseCommentPage: (params = {}) => {
+    return postRequest('/course/api/course/comment', params)
+  },
 
-// 课程详情(登录后)
-export const userCourseDetail = (params = {}, token) => {
-  return http(token).post('/course/auth/course/view', params)
-}
+  // 课程详情(登录后)
+  userCourseDetail: (params = {}) => {
+    return postRequest('/course/auth/course/view', params)
+  },
 
-// 获取播放sign
-export const playSign = (params = {}, token) => {
-  return http(token).post('/course/auth/course/sign', params)
-}
+  // 获取播放sign
+  playSign: (params = {}) => {
+    return postRequest('/course/auth/course/sign', params)
+  },
 
-// 同步学习进度
-export const studyProgress = (params = {}) => {
-  return http().post('/course/api/user/study/progress', params)
-}
+  // 同步学习进度
+  studyProgress: (params = {}) => {
+    return postRequest('/course/api/user/study/progress', params)
+  },
 
-// 创建订单
-export const createOrder = (params = {}) => {
-  return http().post('/user/auth/order/pay/create', params)
-}
+  // 创建订单
+  createOrder: (params = {}) => {
+    return postRequest('/user/auth/order/pay/create', params)
+  },
 
-// 订单信息
-export const orderInfoView = (orderNo) => {
-  return http().get('/user/auth/order/info/view?orderNo=' + orderNo)
-}
+  // 订单信息
+  orderInfoView: (orderNo) => {
+    return getRequest('/user/auth/order/info/view?orderNo=' + orderNo)
+  },
 
-// 课程评论添加
-export const courseCommentAdd = (params = {}) => {
-  return http().post('/course/auth/user/course/comment/add', params)
-}
+  // 课程评论添加
+  courseCommentAdd: (params = {}) => {
+    return postRequest('/course/auth/user/course/comment/add', params)
+  },
 
-// 课程收藏添加
-export const courseCollectAdd = (params = {}) => {
-  return http().post('/course/auth/user/course/collect/add', params)
+  // 课程收藏添加
+  courseCollectAdd: (params = {}) => {
+    return postRequest('/course/auth/user/course/collect/add', params)
+  }
 }

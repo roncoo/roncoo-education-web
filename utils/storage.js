@@ -1,7 +1,7 @@
 /**
  * 存储localStorage
  */
-export const setStore = (name, content) => {
+export function setStore(name, content) {
   if (!name) return
   if (typeof content !== 'string') {
     content = JSON.stringify(content)
@@ -12,42 +12,44 @@ export const setStore = (name, content) => {
 /**
  * 获取localStorage
  */
-export const getStore = name => {
+export function getStore(name) {
   if (!name) return
   return window.localStorage.getItem(name)
 }
 
 /**
- * 删除localStorage
+ *
+ * @param name
+ * @param content
+ * @param expireTime 单位：分
  */
-export const removeStore = name => {
+export function setSessionStorage(name, content, expireTime) {
   if (!name) return
-  window.localStorage.removeItem(name)
-}
-
-/**
- * 存储sessionStorage
- */
-export const setSession = (name, content) => {
-  if (!name) return
-  if (typeof content !== 'string') {
-    content = JSON.stringify(content)
+  let params = JSON.stringify(content)
+  if (expireTime) {
+    expireTime = Date.now() + expireTime * 1000 * 60
+    params = JSON.stringify({ content: content, expireTime: expireTime })
   }
-  window.sessionStorage.setItem(name, content)
+  window.sessionStorage.setItem(name, params)
 }
 
 /**
  * 获取sessionStorage
  */
-export const getSession = name => {
-  if (!name) return
-  return window.sessionStorage.getItem(name)
-}
-
-/**
- * 删除sessionStorage
- */
-export const removeSession = name => {
-  if (!name) return
-  window.localStorage.removeItem(name)
+export function getSessionStorage(name) {
+  if (!name) return null
+  let data = window.sessionStorage.getItem(name)
+  if (!data) return null
+  data = JSON.parse(data)
+  if (data) {
+    if (data.expireTime && data.expireTime > 0) {
+      if (data.expireTime > Date.now()) {
+        return data.content
+      }
+      window.sessionStorage.removeItem(name)
+      return null
+    }
+    return data
+  }
+  return null
 }

@@ -1,28 +1,8 @@
-import http from './method.js'
+import { upload } from '@/utils/request'
 
-// 上传图片
-export const uploadPic = (params = {}, cb) => {
-  return createUpload('/system/auth/upload/pic', params, cb)
-}
-
-const createUpload = (url, params = {}, cb) => {
-  const config = {
-    onUploadProgress: progressEvent => {
-      var complete = (progressEvent.loaded / progressEvent.total * 100 | 0)
-      if (cb) {
-        cb(complete)
-      }
-    },
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    },
-    timeout: 1000 * 60 * 30
+export const uploadApi = {
+  // 上传图片
+  uploadPic: (file) => {
+    return upload('/system/auth/upload/pic', file)
   }
-  return new Promise((resolve, reject) => {
-    http().post(url, params, config).then(res => {
-      resolve(res)
-    }).catch(error => {
-      reject(error)
-    })
-  })
 }

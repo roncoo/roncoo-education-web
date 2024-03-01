@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  font-size: 12px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul, ol {
+  list-style:none;
+  margin:0;
+  padding:0
+}
+.clearfix{
+  clear: both;
+}
+.fr{
+  float: right;
+}

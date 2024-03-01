@@ -1,36 +1,38 @@
-import http from './method.js'
+import { getRequest, postRequest, putRequest } from '@/utils/request'
 
-// 我的课程
-export const userCoursePage = (params = {}) => {
-  return http().post('/course/auth/user/course/page', params)
-}
+export const userApi = {
+  // 我的课程
+  userCoursePage: (params = {}) => {
+    return postRequest('/course/auth/user/course/page', params)
+  },
 
-// 我的订单
-export const orderPage = (params = {}) => {
-  return http().post('/user/auth/order/info/page', params)
-}
+  // 我的订单
+  orderPage: (params = {}) => {
+    return postRequest('/user/auth/order/info/page', params)
+  },
 
-// 继续支付
-export const continuePay = (params = {}) => {
-  return http().post('/user/auth/order/pay/continue', params)
-}
+  // 继续支付
+  continuePay: (params = {}) => {
+    return postRequest('/user/auth/order/pay/continue', params)
+  },
 
-// 取消支付
-export const cancelOrder = (params = {}) => {
-  return http().put('/user/auth/order/pay/cancel', params)
-}
+  // 取消支付
+  cancelOrder: (params = {}) => {
+    return putRequest('/user/auth/order/pay/cancel', params)
+  },
 
-// 用户信息修改
-export const usersUpdata = (params = {}) => {
-  return http().post('/user/auth/users/edit', params)
-}
+  // 用户信息修改
+  usersUpdata: (params = {}) => {
+    return postRequest('/user/auth/users/edit', params)
+  },
 
-// 用户信息
-export const getUserInfo = () => {
-  return http().get('/user/auth/users/view')
-}
+  // 用户信息
+  getUserInfo: () => {
+    return getRequest('/user/auth/users/view')
+  },
 
-// 课程收藏列出
-export const userCourseCollectPage = (params = {}) => {
-  return http().post('/course/auth/user/course/collect/page', params)
+  // 课程收藏列出
+  userCourseCollectPage: (params = {}) => {
+    return postRequest('/course/auth/user/course/collect/page', params)
+  }
 }
