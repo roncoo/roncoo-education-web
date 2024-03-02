@@ -4,6 +4,6 @@
   </NuxtLayout>
 </template>
 <script setup>
-  import ZoneCourse from '~/components/Zone/ZoneCourse.vue'
+  // import ZoneCourse from '~/components/Zone/Course.vue'
 </script>
 <style lang="scss" scoped></style>

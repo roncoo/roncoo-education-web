@@ -9,17 +9,13 @@
   </div>
 </template>
 <script setup>
-  import { useWebsiteStore } from '~/store/modules/website.js'
-
-  const websiteStore = useWebsiteStore()
+  import { indexApi } from '~/api/index.js'
 
   const friendLinkList = ref()
-
-  onBeforeMount(() => {
-    websiteStore.fetchLink()
-  })
   onMounted(() => {
-    friendLinkList.value = websiteStore.getLink
+    indexApi.websiteLink().then((res) => {
+      friendLinkList.value = res
+    })
   })
 </script>
 <style lang="scss" scoped>

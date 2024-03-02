@@ -2,7 +2,7 @@
   <el-header class="h_nav_fixed">
     <div class="h_nav">
       <div class="h_logo">
-        <a href="/"><img v-if="info" :src="info.websiteLogo" alt="" /></a>
+        <a href="/"><img v-if="info" :src="props.info.websiteLogo" alt="" /></a>
       </div>
       <ul v-if="nav" class="h_nav_ul clearfix">
         <li v-for="(item, index) in nav" :key="index">
@@ -24,49 +24,62 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item><nuxt-link :to="{ name: 'account-course' }">我的课程</nuxt-link></el-dropdown-item>
-              <el-dropdown-item><nuxt-link :to="{ name: 'account-collect' }">我的收藏</nuxt-link></el-dropdown-item>
-              <el-dropdown-item><nuxt-link :to="{ name: 'account-order' }">我的订单</nuxt-link></el-dropdown-item>
-              <el-dropdown-item><nuxt-link :to="{ name: 'account' }">个人信息</nuxt-link></el-dropdown-item>
-              <el-dropdown-item @click="handleLogout">安全退出</el-dropdown-item>
+              <el-dropdown-item>
+                <nuxt-link :to="{ name: 'account-course' }"> 我的课程 </nuxt-link>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <nuxt-link :to="{ name: 'account-collect' }"> 我的收藏 </nuxt-link>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <nuxt-link :to="{ name: 'account-order' }"> 我的订单 </nuxt-link>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <nuxt-link :to="{ name: 'account' }"> 个人信息 </nuxt-link>
+              </el-dropdown-item>
+              <el-dropdown-item @click="handleLogout"> 安全退出 </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
       </div>
       <div v-if="!userInfo" class="login">
-        <nuxt-link :to="{ name: 'login' }">登录</nuxt-link>
-        <nuxt-link :to="{ name: 'register' }">注册</nuxt-link>
+        <nuxt-link :to="{ name: 'login' }"> 登录 </nuxt-link>
+        <nuxt-link :to="{ name: 'register' }"> 注册 </nuxt-link>
       </div>
     </div>
   </el-header>
 </template>
 <script setup>
-  import { useWebsiteStore } from '~/store/modules/website.js'
-  import { useUserStore } from '~/store/modules/user.js'
   import { ElMessageBox } from 'element-plus'
+  import { indexApi } from '~/api/index.js'
+  import { userApi } from '~/api/user.js'
+  import { useUserStore } from '~/store/modules/user.js'
 
-  const websiteStore = useWebsiteStore()
   const userStore = useUserStore()
 
-  // 网站信息
-  const info = ref({})
-  // 导航
-  const nav = ref([])
-  // 搜索
-  const search = ref('')
-  // 用户信息
-  const userInfo = ref()
-  const activeUrl = ref('')
-
-  onBeforeMount(() => {
-    websiteStore.fetchInfo()
-    websiteStore.fetchNav()
+  const props = defineProps({
+    info: {
+      type: Object,
+      default: null
+    }
   })
 
+  // 导航
+  const nav = ref([])
+  // 用户信息
+  const userInfo = ref()
+
+  // 搜索
+  const search = ref('')
+  const activeUrl = ref('')
+
   onMounted(() => {
-    info.value = websiteStore.getInfo
-    nav.value = websiteStore.getNav
-    userInfo.value = userStore.getInfo
+    indexApi.websiteNav().then((res) => {
+      nav.value = res
+    })
+
+    userApi.getUserInfo().then((res) => {
+      userInfo.value = res
+    })
   })
 
   // 搜索

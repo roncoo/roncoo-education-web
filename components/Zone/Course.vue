@@ -6,7 +6,7 @@
           <span class="col_block" />
           {{ item.zoneName }}
           <span class="small_text">{{ item.zoneDesc }}</span>
-          <nuxt-link :to="{ name: 'course-list' }" class="fr small_text link_text">更多课程 ></nuxt-link>
+          <nuxt-link :to="{ name: 'course-list' }" class="fr small_text link_text"> 更多课程 > </nuxt-link>
         </div>
       </div>
       <course-list :course-list="item.courseList" />
@@ -15,7 +15,7 @@
 </template>
 <script setup>
   import { indexApi } from '@/api/index.js'
-  import CourseList from '~/components/Course/CourseList.vue'
+  import CourseList from '~/components/Course/List.vue'
 
   const zoneData = ref()
   onMounted(async () => {

@@ -4,6 +4,6 @@
   <common-footer />
 </template>
 <script setup>
-  import CommonFooter from '~/components/Common/CommonFooter.vue'
-  import CommonHeader from '~/components/Common/CommonHeader.vue'
+  import CommonFooter from '~/components/Common/Footer.vue'
+  import CommonHeader from '~/components/Common/Header.vue'
 </script>

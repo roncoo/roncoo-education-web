@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getSessionStorage, setSessionStorage } from '~/utils/storage.js'
+import { getStore, setStore } from '~/utils/storage.js'
 import { indexApi } from '~/api/index.js'
 
 export const useWebsiteStore = defineStore({
@@ -22,28 +22,29 @@ export const useWebsiteStore = defineStore({
   },
   actions: {
     fetchInfo() {
-      this.info = getSessionStorage('websiteInfo')
+      this.info = getStore('websiteInfo')
+      console.log(this.info)
       if (!this.info) {
         indexApi.websiteInfo().then((res) => {
-          setSessionStorage('websiteInfo', res)
+          setStore('websiteInfo', res)
           this.info = res
         })
       }
     },
     fetchNav() {
-      this.nav = getSessionStorage('websiteNav')
+      this.nav = getStore('websiteNav')
       if (!this.nav) {
         indexApi.websiteNav().then((res) => {
-          setSessionStorage('websiteNav', res)
+          setStore('websiteNav', res)
           this.nav = res
         })
       }
     },
     fetchLink() {
-      this.link = getSessionStorage('websiteLink')
+      this.link = getStore('websiteLink')
       if (!this.link) {
         indexApi.websiteLink().then((res) => {
-          setSessionStorage('websiteLink', res)
+          setStore('websiteLink', res)
           this.link = res
         })
       }

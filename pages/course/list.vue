@@ -5,7 +5,7 @@
 </template>
 <script setup>
   import { courseApi } from '~/api/course.js'
-  import CourseList from '~/components/Course/CourseList.vue'
+  import CourseList from '~/components/Course/List.vue'
 
   // 分页条件
   const page = ref({

@@ -18,13 +18,12 @@
   },
   "devDependencies": {
     "@element-plus/nuxt": "^1.0.7",
+    "@nuxt/eslint-config": "^0.2.0",
     "@pinia/nuxt": "^0.5.1",
     "@vueuse/nuxt": "^10.8.0",
-    "eslint": "^8.56.0",
-    "eslint-plugin-vue": "^9.21.1",
+    "eslint": "^8.57.0",
     "prettier": "^3.2.5",
     "sass": "^1.71.1",
-    "typescript": "^5.3.3",
     "vite": "^5.0.12"
   }
 }

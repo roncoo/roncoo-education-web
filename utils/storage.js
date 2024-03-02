@@ -14,7 +14,11 @@ export function setStore(name, content) {
  */
 export function getStore(name) {
   if (!name) return
-  return window.localStorage.getItem(name)
+  try {
+    return JSON.parse(window.localStorage.getItem(name))
+  } catch (e) {
+    return window.localStorage.getItem(name)
+  }
 }
 
 /**
