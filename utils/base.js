@@ -1,4 +1,16 @@
 /**
+ * 判断是否是外部链接
+ * @param path
+ * @returns {boolean}
+ */
+export function isExternalUrl(path) {
+  if (path.indexOf('http') === 0) {
+    return false
+  }
+  return true
+}
+
+/**
  * 格式化时长
  * @param time
  */

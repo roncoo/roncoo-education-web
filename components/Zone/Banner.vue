@@ -1,6 +1,6 @@
 <template>
   <div class="banner">
-    <ul :style="'height:' + height + 'px;'" @mouseout="mout" @mouseover="mover">
+    <ul :style="'height:366px;'" @mouseout="change" @mouseover="mover">
       <li v-for="(item, index) in data" :key="index" class="item" :style="'background-image: url(' + item.carouselImg + ');'" :class="{ on: index === num }">
         <a :href="item.carouselUrl" :title="item.carouselTitle" :target="item.carouselTarget" />
       </li>
@@ -8,59 +8,34 @@
     <ul class="page_dots">
       <span v-for="(item, index) in data" :key="index" class="dots" :class="{ on: index === num }" @mouseenter="num = index" />
     </ul>
-    <y-category :height="height" :list="categoryList" />
+    <zone-category />
   </div>
 </template>
-<script>
-  import YCategory from './Category.vue'
+<script setup>
+  import { indexApi } from '~/api/index.js'
 
-  export default {
-    components: {
-      YCategory
-    },
-    props: {
-      data: {
-        type: [Object, Array],
-        default: null
-      },
-      categoryList: {
-        type: [Object, Array],
-        default() {
-          return []
-        }
-      },
-      height: {
-        type: [String, Number],
-        default: 456
+  // 轮播
+  const data = ref()
+  const num = ref(0)
+
+  onMounted(async () => {
+    data.value = await indexApi.carouselList()
+    change()
+  })
+
+  let interval = null
+  function change() {
+    interval = setInterval(() => {
+      if (num.value + 1 >= data.value.length) {
+        num.value = 0
+      } else {
+        num.value++
       }
-    },
-    data() {
-      return {
-        websiteInfo: this.$store.state.websiteInfo,
-        num: 0,
-        interval: null
-      }
-    },
-    mounted() {
-      this.change()
-    },
-    methods: {
-      change() {
-        this.interval = setInterval(() => {
-          if (this.num + 1 >= this.data.length) {
-            this.num = 0
-          } else {
-            this.num++
-          }
-        }, 3000)
-      },
-      mout() {
-        this.change()
-      },
-      mover() {
-        clearInterval(this.interval)
-      }
-    }
+    }, 3000)
+  }
+
+  function mover() {
+    clearInterval(interval)
   }
 </script>
 <style lang="scss" scoped>

@@ -12,6 +12,16 @@ export function setToken(token) {
   })
 }
 
+export function getToken() {
+  return Cookies.get(TOKEN_KEY)
+}
+
+export function removeToken() {
+  return Cookies.remove(TOKEN_KEY, {
+    expires: 0
+  })
+}
+
 export function setTokenForServer(token, req) {
   const serviceCookie = {}
   req &&
@@ -30,10 +40,6 @@ export function setTokenForServer(token, req) {
   }
 }
 
-export function getToken() {
-  return Cookies.get(TOKEN_KEY)
-}
-
 export function getTokenForServer(req) {
   const serviceCookie = {}
   req &&
@@ -43,10 +49,4 @@ export function getTokenForServer(req) {
       serviceCookie[parts[0].trim()] = decodeURIComponent((parts[1] || '').trim())
     })
   return serviceCookie.get(TOKEN_KEY)
-}
-
-export function removeToken() {
-  return Cookies.remove(TOKEN_KEY, {
-    expires: 0
-  })
 }

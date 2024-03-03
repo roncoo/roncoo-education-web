@@ -5,13 +5,9 @@ import { userApi } from '~/api/user.js'
 export const useUserStore = defineStore({
   id: 'user',
   state: () => ({
-    token: '',
     info: null
   }),
   getters: {
-    getToken() {
-      return this.token
-    },
     getInfo() {
       return this.info
     }
@@ -30,7 +26,6 @@ export const useUserStore = defineStore({
     // logout
     logout() {
       removeToken()
-      this.token = ''
       this.info = null
     }
   }

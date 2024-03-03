@@ -1,7 +1,7 @@
 <template>
   <div class="zone_body">
     <ul>
-      <li v-for="(that, int) in props.courseList" :key="int">
+      <li v-for="(that, int) in props.list" :key="int">
         <nuxt-link target="_blank" :to="{ name: 'course-detail', query: { id: that.id } }">
           <img :src="that.courseLogo" alt="" />
           <p>{{ that.courseName }}</p>
@@ -16,7 +16,7 @@
 </template>
 <script setup>
   const props = defineProps({
-    courseList: {
+    list: {
       type: Array,
       default: () => []
     }

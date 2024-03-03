@@ -1,0 +1,89 @@
+<template>
+  <div class="search_type_list">
+    <div class="tag">
+      <p v-if="index === 0">一级分类：</p>
+      <p v-else-if="index === 1">二级分类：</p>
+      <p v-else-if="index === 2">三级分类：</p>
+      <p v-else-if="index === 3">四级分类：</p>
+      <p v-else-if="index === 4">五级分类：</p>
+      <div class="item_box">
+        <span v-for="(item, index) in menu.list" :key="index" class="search_type_item" :data-id="item.id" :class="{ active: map.key === item.id }" @click="handleClick(item)">
+          {{ item.categoryName }}
+        </span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+  const props = defineProps({
+    menu: {
+      type: Object,
+      default: () => {
+        return { active: '', list: [] }
+      }
+    },
+    index: {
+      type: Number,
+      default: () => {
+        return 0
+      }
+    }
+  })
+
+  const { menu, index } = toRefs(props)
+  const map = reactive({
+    key: menu.value.active
+  })
+
+  const emit = defineEmits(['change'])
+
+  const handleClick = (row) => {
+    if (row.id !== map.key) {
+      map.key = row.id
+      emit('change', index.value, row)
+    }
+  }
+</script>
+
+<style scoped lang="scss">
+  .search_type_list {
+    display: flex;
+    line-height: 31px;
+
+    p {
+      font-weight: bold;
+    }
+    .tag {
+      display: flex;
+      flex-wrap: wrap;
+      .item_box {
+        flex: 1;
+      }
+    }
+
+    & + .search_type_list {
+      margin-top: 14px;
+    }
+
+    .search_type_item {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      color: #333333;
+      cursor: pointer;
+      margin-right: 10px;
+      padding: 5px 8px;
+      &.not_right {
+        margin-right: 0;
+      }
+
+      &.active {
+        color: #3d7fff;
+        font-weight: bold;
+        background: rgba(61, 127, 255, 0.1);
+        border-radius: 5px;
+      }
+    }
+  }
+</style>

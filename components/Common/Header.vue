@@ -2,7 +2,7 @@
   <el-header class="h_nav_fixed">
     <div class="h_nav">
       <div class="h_logo">
-        <a href="/"><img v-if="info" :src="props.info.websiteLogo" alt="" /></a>
+        <a href="/"><img v-if="info" :src="info.websiteLogo" alt="" /></a>
       </div>
       <ul v-if="nav" class="h_nav_ul clearfix">
         <li v-for="(item, index) in nav" :key="index">
@@ -14,7 +14,7 @@
           <button class="search_btn" @click="handleSearch">
             <span class="iconfont"></span>
           </button>
-          <el-input v-model="search" placeholder="请输入搜索内容" @keydown.enter.stop="handleSearch" />
+          <el-input v-model="search" autofocus placeholder="请输入搜索内容" @keydown.enter.stop="handleSearch" />
         </div>
       </div>
       <div v-if="userInfo" class="top_list">
@@ -34,7 +34,7 @@
                 <nuxt-link :to="{ name: 'account-order' }"> 我的订单 </nuxt-link>
               </el-dropdown-item>
               <el-dropdown-item>
-                <nuxt-link :to="{ name: 'account' }"> 个人信息 </nuxt-link>
+                <nuxt-link :to="{ name: 'account-user' }"> 个人信息 </nuxt-link>
               </el-dropdown-item>
               <el-dropdown-item @click="handleLogout"> 安全退出 </el-dropdown-item>
             </el-dropdown-menu>
@@ -53,17 +53,13 @@
   import { indexApi } from '~/api/index.js'
   import { userApi } from '~/api/user.js'
   import { useUserStore } from '~/store/modules/user.js'
+  import { getStorage, setStorage } from '~/utils/storage.js'
 
   const userStore = useUserStore()
 
-  const props = defineProps({
-    info: {
-      type: Object,
-      default: null
-    }
-  })
-
-  // 导航
+  // 网站信息
+  const info = ref({})
+  // 导航信息
   const nav = ref([])
   // 用户信息
   const userInfo = ref()
@@ -73,13 +69,23 @@
   const activeUrl = ref('')
 
   onMounted(() => {
+    info.value = getStorage('WebsiteInfo')
+    if (!info.value) {
+      indexApi.websiteInfo().then((res) => {
+        setStorage('WebsiteInfo', res, 60)
+        info.value = res
+      })
+    }
+
     indexApi.websiteNav().then((res) => {
       nav.value = res
     })
 
-    userApi.getUserInfo().then((res) => {
-      userInfo.value = res
-    })
+    if (getToken()) {
+      userApi.getUserInfo().then((res) => {
+        userInfo.value = res
+      })
+    }
   })
 
   // 搜索
@@ -106,7 +112,7 @@
     left: 0;
     right: 0;
     background: #fff;
-    z-index: 10;
+    z-index: 100;
     height: 70px;
   }
 

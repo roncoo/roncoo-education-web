@@ -1,5 +1,6 @@
 <template>
   <NuxtLayout>
+    <zone-banner />
     <zone-course />
   </NuxtLayout>
 </template>

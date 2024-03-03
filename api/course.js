@@ -1,6 +1,10 @@
 import { getRequest, postRequest } from '@/utils/request'
 
 export const courseApi = {
+  categoryList: () => {
+    return getRequest('/course/api/category/list')
+  },
+
   // 课程列表(搜索)
   courseList: (params = {}) => {
     return postRequest('/course/api/course/search', params)

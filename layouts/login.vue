@@ -1,21 +1,11 @@
 <template>
-  <common-header :info="info" />
+  <common-header />
   <el-main>
     <slot />
   </el-main>
-  <common-footer :info="info" />
+  <common-footer />
 </template>
-<script setup>
-  import { indexApi } from '~/api/index.js'
-
-  // 网站信息
-  const info = ref({})
-  onMounted(() => {
-    indexApi.websiteInfo().then((res) => {
-      info.value = res
-    })
-  })
-</script>
+<script setup></script>
 <style lang="scss" scoped>
   .el-main {
     margin: 70px auto 0;
