@@ -15,7 +15,7 @@ const request = axios.create({
 // request interceptor
 request.interceptors.request.use(
   (config) => {
-    removePending(config, true) // 在一个ajax发送前执行一下取消操作
+    //removePending(config, true) // 在一个ajax发送前执行一下取消操作
 
     let token = null
     if (process.client) {
@@ -47,13 +47,7 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response) => {
     // 在一个ajax响应后再执行一下取消操作，把已经完成的请求从pending中移除
-    removePending(
-      {
-        url: response.config.url,
-        method: response.config.method
-      },
-      false
-    )
+    //removePending({ url: response.config.url, method: response.config.method }, false)
     const res = response.data
     // console.log(res)
     if (res.code && res.code !== 200) {

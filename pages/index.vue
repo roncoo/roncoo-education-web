@@ -1,10 +1,11 @@
 <template>
   <NuxtLayout>
-    <zone-banner />
-    <zone-course />
+    <div class="main">
+      <zone-banner />
+      <zone-course />
+    </div>
+    <common-link />
   </NuxtLayout>
 </template>
-<script setup>
-  // import ZoneCourse from '~/components/Zone/Course.vue'
-</script>
+<script setup></script>
 <style lang="scss" scoped></style>

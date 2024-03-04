@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout name="login">
+  <NuxtLayout>
     <div class="login_body">
       <div class="login_box">
         <div class="login_logo">

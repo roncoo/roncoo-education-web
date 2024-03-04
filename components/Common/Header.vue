@@ -20,7 +20,7 @@
       <div v-if="userInfo" class="top_list">
         <el-dropdown>
           <span class="el-dropdown-link">
-            <img src="../../assets/image/common_friend.jpg" alt="头像" />
+            <img src="../../assets/image/common_head.jpg" alt="头像" />
           </span>
           <template #dropdown>
             <el-dropdown-menu>

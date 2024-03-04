@@ -1,94 +1,72 @@
 <template>
   <NuxtLayout>
-    <course-choose v-for="(category, index) in opts.categoryList" :key="index" :menu="category" :index="index" @change="handleChange" />
-    <course-list :list="page.list" />
+    <div class="main">
+      <course-choose v-for="(category, index) in categoryList" :key="index" :menu="category" :index="index" @change="handleChange" />
+      <course-list :list="page.list" />
+    </div>
   </NuxtLayout>
 </template>
 <script setup>
   import { courseApi } from '~/api/course.js'
+  import useTable from '~/utils/table.js'
+
+  const router = useRouter()
+  const route = useRoute()
 
   // 分类查询
   const categoryList = ref([])
+  const showCate = ref(true)
+  let selectCategory = []
 
-  // 分页条件
-  const page = ref({
-    pageCurrent: 1
-  })
-
-  onMounted(async () => {
-    handlePage()
+  onMounted(() => {
     getCategoryList()
   })
 
-  const opts = reactive({
-    errorNum: 0,
-    lastCategory: [],
-    tableList: [],
-    categoryList: [],
-    SortTypeEnum: [],
-    categoryChild: {},
-    infoTimer: null,
-    style: {
-      height: '525px'
-    }
-  })
-  const ctrl = reactive({
-    tableLoading: false,
-    showCate: true
-  })
-  const router = useRouter()
-  let selectCategory = []
-
-  const getCategoryList = async () => {
-    opts.initCategoryList = await courseApi.categoryList()
-    categoryListInit()
-  }
-  const categoryListInit = () => {
-    selectCategory = []
-    opts.categoryList = []
-    setTimeout(() => {
-      opts.categoryList.push({
-        active: '',
-        list: [{ id: '', categoryName: '全部' }].concat(opts.initCategoryList)
-      })
-    }, 200)
-  }
-
-  const route = useRoute()
-
-  // 分类查询更换
+  // 分类处理
   const handleChange = (index, row) => {
     if (selectCategory[index] !== row.id) {
       selectCategory[index] = row.id
-      if (row.childrenList && row.childrenList.length) {
-        ctrl.showCate = false
-        if (opts.categoryList.length > index + 1) {
-          opts.categoryList.length = index + 1
+      if (row.list && row.list.length) {
+        showCate.value = false
+        if (categoryList.value.length > index + 1) {
+          categoryList.value.length = index + 1
         }
-        opts.categoryList.push({
+        categoryList.value.push({
           active: row.id,
           all: row.id,
-          list: [{ id: row.id, categoryName: '全部' }].concat(row.childrenList)
+          list: [{ id: row.id, categoryName: '全部' }].concat(row.list)
         })
-        ctrl.showCate = true
+        showCate.value = true
       } else {
-        opts.categoryList.length = index + 1
+        categoryList.value.length = index + 1
         selectCategory.length = index + 1
       }
     }
-
     const query = Object.assign({ ...(route.query || {}) }, { categoryId: selectCategory[selectCategory.length - 1] || '' })
     if (!query.categoryId) {
       delete query.categoryId
     }
-    router.push({
-      query
+    router.push({ query })
+  }
+
+  // 分类查询
+  const getCategoryList = async () => {
+    courseApi.categoryList().then((res) => {
+      selectCategory = []
+      setTimeout(() => {
+        categoryList.value.push({
+          active: '',
+          list: [{ id: '', categoryName: '全部' }].concat(res)
+        })
+      }, 200)
     })
   }
 
-  async function handlePage() {
-    const res = await courseApi.courseList(page)
-    page.value = res
-  }
+  // 分页查询
+  const { page } = reactive({
+    ...useTable({
+      page: courseApi.courseList
+    })
+  })
 </script>
 <style lang="scss" scoped></style>
