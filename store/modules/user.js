@@ -5,17 +5,20 @@ import { userApi } from '~/api/user.js'
 export const useUserStore = defineStore({
   id: 'user',
   state: () => ({
-    info: null
+    info: null,
+    historyUrl: ''
   }),
   getters: {
     getInfo() {
       return this.info
+    },
+    getHistoryUrl() {
+      return this.historyUrl
     }
   },
   actions: {
     // 登录操作
     login(token) {
-      this.token = token
       // 获取用户信息
       userApi.getUserInfo().then((res) => {
         this.info = res
@@ -27,6 +30,11 @@ export const useUserStore = defineStore({
     logout() {
       removeToken()
       this.info = null
+    },
+
+    // 保存历史访问路径
+    saveHistoryUrl(url) {
+      this.historyUrl = url
     }
   }
 })

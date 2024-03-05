@@ -43,7 +43,13 @@
     try {
       const res = await loginApi.userLogin(loginForm)
       useUserStore().login(res.token)
-      await router.replace({ path: '/' })
+      const history = getStorage('history')
+      if (history) {
+        window.location.href = history
+        setStorage('history', '')
+      } else {
+        await router.replace({ path: '/' })
+      }
     } catch (error) {
       console.error(error)
     } finally {

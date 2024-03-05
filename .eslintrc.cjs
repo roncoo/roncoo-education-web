@@ -7,7 +7,7 @@ module.exports = {
     'defineNuxtRouteMiddleware': true
   },
   rules: {
+    "space-before-function-paren": 0,
     "vue/no-multiple-template-root":'off',
-    "space-before-function-paren": 0
   }
 }

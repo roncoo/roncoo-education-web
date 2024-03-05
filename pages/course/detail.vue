@@ -33,8 +33,9 @@
             </div>
             <div class="view_teacher mgt20"><span class="text_b">购买:</span>{{ courseInfo.countBuy }} 人</div>
             <div class="foot_box">
-              <button v-if="courseInfo.isFree && !isLogin" class="buy_btn" @click="handleLogin">登录观看</button>
-              <button v-else id="buyBtn" class="buy_btn" @click="handleBuy(courseInfo)">立即购买</button>
+              <button v-if="!isLogin" class="buy_btn" @click="handleLogin">登录观看</button>
+              <button v-if="isLogin && !courseInfo.allowStudy" class="buy_btn" @click="handleBuy(courseInfo)">立即购买</button>
+              <button v-if="isLogin && courseInfo.allowStudy" class="buy_btn" @click="handleStudy">马上学习</button>
               <div class="handle_info_btn">
                 <div class="study_num">{{ courseInfo.countStudy }} 人已学习</div>
                 <div class="handle_info_btn collect_btn" @click="handleCollect">收藏</div>
@@ -88,16 +89,25 @@
 
   const route = useRoute()
 
+  const isLogin = getToken()
   const courseInfo = ref({})
   const teacherInfo = ref({})
 
   onMounted(() => {
-    courseApi.courseDetail({ courseId: route.query.id }).then((res) => {
-      courseInfo.value = res
-      if (res.lecturerResp) {
-        teacherInfo.value = res.lecturerResp
-      }
-    })
+    if (getToken()) {
+      // 已登录
+      courseApi.userCourseDetail({ courseId: route.query.id }).then((res) => {
+        courseInfo.value = res
+      })
+    } else {
+      // 未登录
+      courseApi.courseDetail({ courseId: route.query.id }).then((res) => {
+        courseInfo.value = res
+        if (res.lecturerResp) {
+          teacherInfo.value = res.lecturerResp
+        }
+      })
+    }
   })
 
   const commonPayRef = ref()
@@ -108,18 +118,19 @@
       // 购买
       commonPayRef.value.onOpen(courseInfo)
     } else {
-      ElMessageBox.confirm('请先登录', '提示', { confirmButtonText: '立即登录', cancelButtonText: '取消', type: 'warning' })
-        .then(() => {
-          useRouter().push('/login')
-        })
-        .catch(() => {
-          useRouter().push('/')
-        })
+      ElMessageBox.confirm('请先登录', '提示', { confirmButtonText: '立即登录', cancelButtonText: '取消', type: 'warning' }).then(() => {
+        useRouter().push('/login')
+      })
     }
   }
 
   // 课程收藏
   function handleCollect() {}
+
+  // 学习
+  function handleStudy() {
+    useRouter().push('/course/study?id=' + courseInfo.value.id)
+  }
 
   // 登录
   function handleLogin() {
