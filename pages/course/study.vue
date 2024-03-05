@@ -31,7 +31,7 @@
           <div v-if="cateType == 1">
             <div v-for="(one, index) in courseInfo.chapterRespList" :key="index">
               <div>第{{ index + 1 }}章：{{ one.chapterName }}</div>
-              <div v-for="(two, num) in one.periodRespList" :key="num" :class="{ on: playPeriod == two.id }" @click="playVideo(two)">
+              <div v-for="(two, num) in one.periodRespList" :key="num" :class="{ on: playPeriodId == two.id }" @click="playVideo(two)">
                 <span class="iconfont">&#xe690;</span><span>第{{ num + 1 }}节：</span>{{ two.periodName }}
                 <span v-if="two.resourceResp && two.resourceResp.videoStatus === 1" class="no_video2">(未更新)</span>
                 <span v-if="two.isFree" class="c_blue">(免费)</span>
@@ -53,34 +53,87 @@
 </template>
 <script setup>
   import { courseApi } from '~/api/course.js'
+  import { ElMessage } from 'element-plus'
 
-  const playPeriod = ref()
+  useHead({
+    title: '课程详情',
+    meta: [
+      { hid: 'keywords', name: 'keywords', content: '课程详情' },
+      { hid: 'description', name: 'description', content: '课程详情' }
+    ],
+    script: [{ src: 'https://player.polyv.net/resp/vod-player/latest/player.js' }]
+  })
 
   const route = useRoute()
+
+  const playPeriodId = ref()
   const courseInfo = ref({})
   const cateType = ref(0)
-  function changeTab(int) {
-    cateType.value = int
-  }
+
+  const userStudy = {}
+  let progressInterval = null
+  let myPolyvPlayer = null
+
   // 下载附件
   function downFile(item) {
     // TODO
   }
   function playVideo(data) {}
-  onMounted(() => {
-    courseApi.userCourseDetail({ courseId: route.query.id }).then((res) => {
-      courseInfo.value = res
-    })
 
-    loadPlayerPolyvScript(polyvPlay)
+  onMounted(async () => {
+    // 课程信息
+    const res = await courseApi.userCourseDetail({ courseId: route.query.id })
+    courseInfo.value = res
+
+    const playRes = await courseApi.playSign({ courseId: route.query.id })
+    playPeriodId.value = playRes.periodId
+    userStudy.studyId = playRes.studyId
+
+    // 播放视频
+    handlePolyvPlay(JSON.parse(playRes.vodPlayConfig))
+
+    window.s2j_onVideoPlay = (vid) => {
+      // 播放
+      progressInterval = setInterval(() => {
+        handleStudyRecord()
+      }, 3000)
+    }
+
+    window.s2j_onVideoPause = (vid) => {
+      // 暂停
+      if (progressInterval) {
+        clearInterval(progressInterval)
+      }
+    }
+
+    window.s2j_onPlayOver = (vid) => {
+      // 播放完成
+      clearInterval(progressInterval)
+      handleStudyRecord()
+    }
   })
 
-  function handleBack() {
-    window.history.go(-1)
+  // 记录进度
+  function handleStudyRecord() {
+    userStudy.currentDuration = myPolyvPlayer.j2s_getCurrentTime()
+    courseApi
+      .studyProgress(userStudy)
+      .then((res) => {
+        if (res === 'OK') {
+          // 完成，暂停同步
+          clearInterval(progressInterval)
+        }
+      })
+      .catch((error) => {
+        myPolyvPlayer.j2s_pauseVideo()
+        ElMessageBox.confirm('系统异常将暂停观看，请联系管理员', '提示', { confirmButtonText: '返回', cancelButtonText: '取消', type: 'warning' }).then(() => {
+          handleBack()
+        })
+      })
   }
 
-  const polyvPlay = (params) => {
-    window.polyvPlayer({
+  function handlePolyvPlay(params) {
+    myPolyvPlayer = window.polyvPlayer({
       wrap: '#player',
       autoplay: true,
       hideSwitchPlayer: true,
@@ -90,15 +143,12 @@
     })
   }
 
-  function loadPlayerPolyvScript(callback) {
-    if (!window.polyvPlayer) {
-      const myScript = document.createElement('script')
-      myScript.setAttribute('src', 'https://player.polyv.net/resp/vod-player/latest/player.js')
-      myScript.onload = callback
-      document.body.appendChild(myScript)
-    } else {
-      callback()
-    }
+  function handleBack() {
+    window.history.go(-1)
+  }
+
+  function changeTab(int) {
+    cateType.value = int
   }
 </script>
 <style lang="scss" scoped>

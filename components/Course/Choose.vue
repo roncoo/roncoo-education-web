@@ -49,21 +49,16 @@
 <style scoped lang="scss">
   .search_type_list {
     display: flex;
-    line-height: 31px;
-
+    line-height: 20px;
     p {
       font-weight: bold;
     }
     .tag {
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       .item_box {
         flex: 1;
       }
-    }
-
-    & + .search_type_list {
-      margin-top: 14px;
     }
 
     .search_type_item {

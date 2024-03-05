@@ -5,8 +5,11 @@
         <a href="/"><img v-if="info" :src="info.websiteLogo" alt="" /></a>
       </div>
       <div v-if="nav" class="h_nav_ul clearfix">
-        <div v-for="(item, index) in nav" :key="index" class="nav">
-          <a :class="{ active: activeUrl === item.navUrl }" :href="item.navUrl" :target="item.target">{{ item.navTitle }}</a>
+        <div v-for="(item, index) in nav" :key="index" class="nav_title">
+          <nuxt-link v-if="!isExternalUrl(item.navUrl)" :to="{ path: item.navUrl }">
+            {{ item.navTitle }}
+          </nuxt-link>
+          <a v-else :class="{ active: activeUrl === item.navUrl }" :href="item.navUrl" :target="item.target">{{ item.navTitle }}</a>
         </div>
       </div>
       <div class="search_box clearfix">
@@ -151,7 +154,7 @@
     display: inline-block;
     margin-left: 220px;
 
-    .nav {
+    .nav_title {
       float: left;
       height: 70px;
       line-height: 70px;
@@ -168,7 +171,7 @@
       }
     }
 
-    li:last-child {
+    .nav_title:last-child {
       border-radius: 40px;
       color: #fff;
       border-color: #46c37b;

@@ -4,10 +4,10 @@
  * @returns {boolean}
  */
 export function isExternalUrl(path) {
-  if (path.indexOf('http') === 0) {
-    return false
+  if (path.indexOf('http') != -1) {
+    return true
   }
-  return true
+  return false
 }
 
 /**

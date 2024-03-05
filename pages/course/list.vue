@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout>
     <div class="main">
-      <course-choose v-for="(category, index) in categoryList" :key="index" :menu="category" :index="index" @change="handleChange" />
+      <course-choose v-for="(category, index) in categoryList" :key="category.active" :menu="category" :index="index" @change="handleChange" />
       <course-list :list="page.list" />
       <div v-if="page.totalCount >= 1" class="pagination clearfix">
         <common-pagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
@@ -49,6 +49,7 @@
     if (!query.categoryId) {
       delete query.categoryId
     }
+    console.log(query)
     router.push({ query })
   }
 
@@ -66,10 +67,17 @@
   }
 
   // 分页查询
-  const { page } = reactive({
-    ...useTable({
-      page: courseApi.courseList
-    })
+  const { page, handlePage } = reactive({
+    ...useTable(
+      {
+        page: courseApi.courseList
+      },
+      { categoryId: route.query.categoryId || '' }
+    )
   })
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .main {
+    padding: 10px 0;
+  }
+</style>

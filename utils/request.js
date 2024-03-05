@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getToken, getTokenForServer, removeToken } from '@/utils/cookie.js'
+import { setStorage } from '@/utils/storage.js'
 import config from '@/config/index'
-import { useUserStore } from '~/store/modules/user.js'
 
 // create an axios instance
 const request = axios.create({
@@ -79,7 +79,11 @@ request.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 500) {
-      ElMessage({ message: error.response.data.msg, type: 'error', duration: 5 * 1000 })
+      if (error.config.url.indexOf('/course/api/user/study/progress') != -1) {
+        // 进度保存接口，特殊处理：不进行提示
+      } else {
+        ElMessage({ message: error.response.data.msg, type: 'error', duration: 5 * 1000 })
+      }
       return Promise.reject(error)
     }
     if (error.response && error.response.data && error.response.data.code === 301) {
