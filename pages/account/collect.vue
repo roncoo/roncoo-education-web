@@ -20,7 +20,9 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
+    <div v-if="page.totalCount >= 1" class="pagination">
+      <common-pagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
+    </div>
   </NuxtLayout>
 </template>
 <script setup>

@@ -2,17 +2,19 @@
   <NuxtLayout>
     <div class="detail_content">
       <div class="detail_body">
-        <ul class="detail_header clearfix">
-          <li>
+        <div class="detail_header clearfix">
+          <div class="detail_title">
             <nuxt-link :to="{ path: '/' }"> 首页 </nuxt-link>
             <span>></span>
-          </li>
-          <li>
+          </div>
+          <div class="detail_title">
             <nuxt-link :to="{ name: 'course-list' }"> 课程中心 </nuxt-link>
             <span>></span>
-          </li>
-          <li>{{ courseInfo.courseName }}</li>
-        </ul>
+          </div>
+          <div class="detail_title">
+            {{ courseInfo.courseName }}
+          </div>
+        </div>
         <div class="clearfix">
           <div class="video_box">
             <div id="player" class="detail_view" :style="'background-image:url(' + courseInfo.courseLogo + ')'" />
@@ -149,7 +151,7 @@
   }
 
   .detail_header {
-    li {
+    .detail_title {
       float: left;
       line-height: 57px;
       margin: 0 10px;

@@ -1,21 +1,26 @@
 <template>
   <div v-if="friendLinkList" class="friend">
-    <ul class="friend_link">
-      <li class="link_one">友情链接:</li>
-      <li v-for="(item, index) in friendLinkList" :key="index">
+    <div class="friend_link">
+      <div class="link_one">友情链接:</div>
+      <div v-for="(item, index) in friendLinkList" :key="index">
         <a :href="item.linkUrl" :target="item.linkTarget">{{ item.linkName }}</a>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </template>
 <script setup>
   import { indexApi } from '~/api/index.js'
+  import { getStorage, setStorage } from '~/utils/storage.js'
 
   const friendLinkList = ref()
   onMounted(() => {
-    indexApi.websiteLink().then((res) => {
-      friendLinkList.value = res
-    })
+    friendLinkList.value = getStorage('WebsiteLink')
+    if (!friendLinkList.value) {
+      indexApi.websiteLink().then((res) => {
+        setStorage('WebsiteLink', res, 60)
+        friendLinkList.value = res
+      })
+    }
   })
 </script>
 <style lang="scss" scoped>
@@ -30,7 +35,7 @@
       margin: 0 auto;
       padding: 10px 0 0;
 
-      li {
+      div {
         float: left;
         font-size: 14px;
 

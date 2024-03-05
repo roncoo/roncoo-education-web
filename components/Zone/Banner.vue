@@ -1,13 +1,13 @@
 <template>
   <div class="banner">
-    <ul :style="'height:366px;'" @mouseout="change" @mouseover="mover">
-      <li v-for="(item, index) in data" :key="index" class="item" :style="'background-image: url(' + item.carouselImg + ');'" :class="{ on: index === num }">
+    <div :style="'height:366px;'" @mouseout="change" @mouseover="mover">
+      <div v-for="(item, index) in data" :key="index" class="item" :style="'background-image: url(' + item.carouselImg + ');'" :class="{ on: index === num }">
         <a :href="item.carouselUrl" :title="item.carouselTitle" :target="item.carouselTarget" />
-      </li>
-    </ul>
-    <ul class="page_dots">
+      </div>
+    </div>
+    <div class="page_dots">
       <span v-for="(item, index) in data" :key="index" class="dots" :class="{ on: index === num }" @mouseenter="num = index" />
-    </ul>
+    </div>
     <zone-category />
   </div>
 </template>
@@ -43,9 +43,6 @@
     position: relative;
     width: 1200px;
     margin: 20px auto;
-    ul {
-      position: relative;
-    }
 
     .item {
       opacity: 0;

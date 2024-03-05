@@ -42,7 +42,8 @@
     loading.value = true
     try {
       const res = await loginApi.userLogin(loginForm)
-      useUserStore().login(res.token)
+      setToken(res.token)
+
       const history = getStorage('history')
       if (history) {
         window.location.href = history

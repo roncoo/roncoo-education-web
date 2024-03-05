@@ -1,17 +1,15 @@
 <template>
   <div class="zone_body">
-    <ul>
-      <li v-for="(that, int) in props.list" :key="int">
-        <nuxt-link target="_blank" :to="{ name: 'course-detail', query: { id: that.id } }">
-          <img :src="that.courseLogo" alt="" />
-          <p>{{ that.courseName }}</p>
-          <span v-if="that.coursePrice === 0" class="price_box">免费</span>
-          <span v-else class="price_box">
-            ￥{{ that.coursePrice }} <span style="text-decoration-line: line-through; font-size: 12px">￥{{ that.rulingPrice }}</span>
-          </span>
-        </nuxt-link>
-      </li>
-    </ul>
+    <div v-for="(that, int) in props.list" :key="int">
+      <nuxt-link target="_blank" :to="{ name: 'course-detail', query: { id: that.id } }">
+        <img :src="that.courseLogo" alt="" />
+        <p>{{ that.courseName }}</p>
+        <span v-if="that.coursePrice === 0" class="price_box">免费</span>
+        <span v-else class="price_box">
+          ￥{{ that.coursePrice }} <span style="text-decoration-line: line-through; font-size: 12px">￥{{ that.rulingPrice }}</span>
+        </span>
+      </nuxt-link>
+    </div>
   </div>
 </template>
 <script setup>
@@ -26,7 +24,7 @@
   .zone_body {
     margin-top: 25px;
 
-    li {
+    div {
       float: left;
       width: 285px;
       height: 222px;

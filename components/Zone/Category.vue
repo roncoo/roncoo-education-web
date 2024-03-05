@@ -1,8 +1,8 @@
 <!-- 轮播图上的分类 -->
 <template>
   <div v-if="list.length" class="class_block" @mouseleave="hideWidth">
-    <ul :class="{ left_block: true, show_scroll: list.length > 10 }">
-      <li
+    <div :class="{ left_block: true, show_scroll: list.length > 10 }">
+      <div
         v-for="(item, index) in list"
         :key="index"
         :class="{ active: item.id == categoryId }"
@@ -13,8 +13,8 @@
           {{ item.categoryName }}
         </nuxt-link>
         <span class="arrow" />
-      </li>
-    </ul>
+      </div>
+    </div>
     <div class="big_block clearfix" :style="'width:' + width + 'px;'">
       <div class="list_items fl clearfix">
         <div v-for="(item1, index1) in twoList" :key="index1" class="list_item clearfix">
@@ -110,7 +110,7 @@
       margin-top: -3px;
     }
 
-    li {
+    div {
       line-height: 50px;
       padding: 0 20px;
       position: relative;

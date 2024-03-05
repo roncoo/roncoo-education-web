@@ -3,6 +3,9 @@
     <div class="main">
       <course-choose v-for="(category, index) in categoryList" :key="index" :menu="category" :index="index" @change="handleChange" />
       <course-list :list="page.list" />
+      <div v-if="page.totalCount >= 1" class="pagination clearfix">
+        <common-pagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
+      </div>
     </div>
   </NuxtLayout>
 </template>

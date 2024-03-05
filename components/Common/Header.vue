@@ -4,11 +4,11 @@
       <div class="h_logo">
         <a href="/"><img v-if="info" :src="info.websiteLogo" alt="" /></a>
       </div>
-      <ul v-if="nav" class="h_nav_ul clearfix">
-        <li v-for="(item, index) in nav" :key="index">
+      <div v-if="nav" class="h_nav_ul clearfix">
+        <div v-for="(item, index) in nav" :key="index" class="nav">
           <a :class="{ active: activeUrl === item.navUrl }" :href="item.navUrl" :target="item.target">{{ item.navTitle }}</a>
-        </li>
-      </ul>
+        </div>
+      </div>
       <div class="search_box clearfix">
         <div class="clearfix">
           <button class="search_btn" @click="handleSearch">
@@ -69,6 +69,7 @@
   const activeUrl = ref('')
 
   onMounted(() => {
+    // 站点信息
     info.value = getStorage('WebsiteInfo')
     if (!info.value) {
       indexApi.websiteInfo().then((res) => {
@@ -77,9 +78,14 @@
       })
     }
 
-    indexApi.websiteNav().then((res) => {
-      nav.value = res
-    })
+    // 导航信息
+    nav.value = getStorage('WebsiteNav')
+    if (!nav.value) {
+      indexApi.websiteNav().then((res) => {
+        setStorage('WebsiteNav', res, 60)
+        nav.value = res
+      })
+    }
 
     if (getToken()) {
       userApi.getUserInfo().then((res) => {
@@ -145,7 +151,7 @@
     display: inline-block;
     margin-left: 220px;
 
-    li {
+    .nav {
       float: left;
       height: 70px;
       line-height: 70px;
@@ -180,7 +186,7 @@
   .top_list {
     float: right;
     img {
-      height: 60px;
+      height: 50px;
       border-radius: 50%;
     }
   }

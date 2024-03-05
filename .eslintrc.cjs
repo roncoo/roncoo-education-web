@@ -4,6 +4,7 @@ module.exports = {
   globals: {
     'useNuxtApp': true,
     'navigateTo': true,
+    'defineNuxtPlugin': true,
     'defineNuxtRouteMiddleware': true
   },
   rules: {

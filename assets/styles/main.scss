@@ -3,20 +3,18 @@ body {
   font-size: 12px;
   background-color: #f6f8fb
 }
-
 a {
   text-decoration: none;
   color: inherit;
 }
-
-ul, ol {
-  list-style:none;
-  margin:0;
-  padding:0
-}
 .main{
   width: 1200px;
   margin: 0 auto;
+}
+.pagination{
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
 }
 .clearfix{
   clear: both;

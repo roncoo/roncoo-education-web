@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout name="account">
-    <el-table v-loading="page.loading" :border="false" :data="page.list" border :show-header="false">
+    <el-table v-loading="page.loading" :border="false" :data="page.list" :show-header="false">
       <el-table-column label="课程">
         <template #default="scope">
           <img :src="scope.row.courseResp.courseLogo" :alt="scope.row.courseResp.courseName" class="course-img" />
@@ -14,13 +14,15 @@
 
       <el-table-column :width="200" align="center" label="操作">
         <template #default="scope">
-          <nuxt-link :to="{ name: 'course-detail', query: { id: scope.row.courseResp.id } }" link plain type="primary">
+          <nuxt-link :to="{ name: 'course-study', query: { id: scope.row.courseResp.id } }" link plain type="primary">
             <el-button plain> 继续学习 </el-button>
           </nuxt-link>
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
+    <div v-if="page.totalCount >= 1" class="pagination">
+      <common-pagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
+    </div>
   </NuxtLayout>
 </template>
 <script setup>
