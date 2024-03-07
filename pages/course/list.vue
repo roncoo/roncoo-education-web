@@ -49,7 +49,6 @@
     if (!query.categoryId) {
       delete query.categoryId
     }
-    console.log(query)
     router.push({ query })
   }
 

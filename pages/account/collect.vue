@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout name="account">
-    <el-table v-loading="page.loading" :border="false" :data="page.list" border :show-header="false">
+    <el-table v-loading="page.loading" :border="false" :data="page.list" :show-header="false">
       <el-table-column label="课程">
         <template #default="scope">
           <img :src="scope.row.courseResp.courseLogo" :alt="scope.row.courseResp.courseName" class="course-img" />

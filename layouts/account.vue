@@ -1,6 +1,6 @@
 <template>
   <common-header />
-  <el-container class="main">
+  <el-container class="container-main">
     <el-aside>
       <client-only>
         <el-menu :default-active="defaultActive">
@@ -42,20 +42,32 @@
   ]
 </script>
 <style lang="scss" scoped>
-  .main {
+  .container-main {
     width: 1200px;
     margin: 70px auto 0;
-    padding: 0;
   }
-
   .el-aside {
     width: 200px;
     min-height: calc(100vh - 130px);
-    margin: 0 auto;
+    margin: 20px auto 0;
     text-align: center;
+    ul {
+      border-right: none;
+      padding: 10px;
+      border-radius: 10px;
+      li {
+        margin: 10px;
+      }
+      .is-active {
+        background: rgba(61, 127, 255, 0.1);
+        border-radius: 4px;
+        color: #3d7fff;
+      }
+    }
   }
-
   .el-main {
-    border: none;
+    border-radius: 10px;
+    margin: 20px;
+    background-color: #fff;
   }
 </style>
