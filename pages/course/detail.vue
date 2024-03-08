@@ -331,6 +331,12 @@
       width: 920px;
       float: left;
     }
+    .introduce {
+      font-size: 14px;
+      line-height: 30px;
+      color: #333;
+      padding-left: 8px;
+    }
     .layout_right {
       width: 260px;
       float: right;
@@ -353,13 +359,12 @@
             margin-left: 10px;
           }
           .teacher_name {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
           }
         }
         .info_box {
           clear: both;
-          font-size: 14px;
         }
       }
     }

@@ -45,6 +45,7 @@
   .container-main {
     width: 1200px;
     margin: 70px auto 0;
+    height: calc(100vh - 130px);
   }
   .el-aside {
     width: 200px;

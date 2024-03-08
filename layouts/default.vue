@@ -10,5 +10,7 @@
   .el-main {
     margin: 70px auto 0;
     padding: 0;
+    overflow: auto;
+    height: calc(100vh - 130px);
   }
 </style>

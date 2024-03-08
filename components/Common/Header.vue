@@ -1,52 +1,47 @@
 <template>
-  <el-header class="h_nav_fixed">
-    <div class="h_nav">
-      <div class="h_logo">
+  <el-header>
+    <div class="top">
+      <div v-if="nav" class="top-nav">
         <a href="/"><img v-if="info" :src="info.websiteLogo" alt="" /></a>
-      </div>
-      <div v-if="nav" class="h_nav_ul clearfix">
-        <div v-for="(item, index) in nav" :key="index" class="nav_title">
+        <div v-for="(item, index) in nav" :key="index" class="top-nav-title">
           <nuxt-link v-if="!isExternalUrl(item.navUrl)" :to="{ path: item.navUrl }">
             {{ item.navTitle }}
           </nuxt-link>
           <a v-else :class="{ active: activeUrl === item.navUrl }" :href="item.navUrl" :target="item.target">{{ item.navTitle }}</a>
         </div>
       </div>
-      <div class="search_box clearfix">
-        <div class="clearfix">
-          <button class="search_btn" @click="handleSearch">
-            <span class="iconfont"></span>
-          </button>
-          <el-input v-model="search" autofocus placeholder="请输入搜索内容" @keydown.enter.stop="handleSearch" />
+      <div class="top-search">
+        <el-input v-model="search" autofocus placeholder="请输入搜索内容" @keydown.enter.stop="handleSearch" />
+      </div>
+      <div class="top-user">
+        <div v-if="userInfo">
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              <img src="../../assets/image/common_head.jpg" alt="头像" />
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <nuxt-link :to="{ name: 'account-course' }"> 我的课程 </nuxt-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <nuxt-link :to="{ name: 'account-collect' }"> 我的收藏 </nuxt-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <nuxt-link :to="{ name: 'account-order' }"> 我的订单 </nuxt-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <nuxt-link :to="{ name: 'account-user' }"> 个人信息 </nuxt-link>
+                </el-dropdown-item>
+                <el-dropdown-item @click="handleLogout"> 安全退出 </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
-      </div>
-      <div v-if="userInfo" class="top_list">
-        <el-dropdown>
-          <span class="el-dropdown-link">
-            <img src="../../assets/image/common_head.jpg" alt="头像" />
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item>
-                <nuxt-link :to="{ name: 'account-course' }"> 我的课程 </nuxt-link>
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <nuxt-link :to="{ name: 'account-collect' }"> 我的收藏 </nuxt-link>
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <nuxt-link :to="{ name: 'account-order' }"> 我的订单 </nuxt-link>
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <nuxt-link :to="{ name: 'account-user' }"> 个人信息 </nuxt-link>
-              </el-dropdown-item>
-              <el-dropdown-item @click="handleLogout"> 安全退出 </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </div>
-      <div v-if="!userInfo" class="login">
-        <nuxt-link :to="{ name: 'login' }"> 登录 </nuxt-link>
-        <nuxt-link :to="{ name: 'register' }"> 注册 </nuxt-link>
+        <div v-else>
+          <nuxt-link :to="{ name: 'login' }"> 登录 </nuxt-link>
+          <nuxt-link :to="{ name: 'register' }"> 注册 </nuxt-link>
+        </div>
       </div>
     </div>
   </el-header>
@@ -99,7 +94,7 @@
 
   // 搜索
   function handleSearch() {
-    useRouter().push({ name: 'search', query: { search: search.value } })
+    useRouter().push({ name: 'search', query: { kw: search.value } })
   }
 
   // 退出登录
@@ -115,120 +110,43 @@
   }
 </script>
 <style lang="scss" scoped>
-  .h_nav_fixed {
+  .el-header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     background: #fff;
-    z-index: 100;
+    z-index: 999;
     height: 70px;
+    display: flex;
+    justify-content: center;
   }
 
-  .h_nav {
+  .top {
     width: 1200px;
-    margin: 0 auto;
     height: 70px;
-  }
 
-  .h_logo {
-    display: inline-block;
-    position: absolute;
-    top: 15px;
-    img {
-      height: 40px;
-    }
-  }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-  .search_box {
-    display: inline-block;
-    position: relative;
-    top: -32px;
-    right: -150px;
-    width: 200px;
-    height: 40px;
-    margin: 13px 0 0;
-  }
-
-  .h_nav_ul {
-    display: inline-block;
-    margin-left: 220px;
-
-    .nav_title {
-      float: left;
-      height: 70px;
-      line-height: 70px;
-      font-size: 18px;
-      padding: 0 15px;
-
-      .active {
-        color: red;
-      }
-
-      a:hover {
-        color: red;
-        text-decoration: none;
+    .top-nav {
+      display: flex;
+      align-items: center;
+      .top-nav-title {
+        margin-left: 30px;
+        font-size: 18px;
       }
     }
 
-    .nav_title:last-child {
-      border-radius: 40px;
-      color: #fff;
-      border-color: #46c37b;
-      background-color: #46c37b;
-      height: 40px;
-      line-height: 40px;
-      margin-top: 15px;
-      margin-left: 20px;
-      font-size: 16px;
-      a {
-        color: #fff;
+    .top-user {
+      img {
+        border-radius: 50%;
       }
     }
-  }
-  .top_list {
-    float: right;
+
     img {
       height: 50px;
-      border-radius: 50%;
     }
-  }
-  .search_btn {
-    position: absolute;
-    cursor: pointer;
-    height: 32px;
-    line-height: 32px;
-    background: #fff;
-    border: 0;
-    left: 5px;
-    top: 2px;
-    background: none;
-    width: 35px;
-    font-size: 14px;
-    outline: none;
-
-    .iconfont {
-      font-size: 24px;
-      color: #333;
-    }
-  }
-
-  .clearfix {
-    &:before {
-      content: '';
-      display: table;
-    }
-    &:after {
-      content: '';
-      display: block;
-      height: 0;
-      clear: both;
-      visibility: hidden;
-    }
-  }
-
-  .login {
-    float: right;
-    font-size: 16px;
   }
 </style>

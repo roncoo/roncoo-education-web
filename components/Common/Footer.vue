@@ -37,6 +37,7 @@
 <style lang="scss" scoped>
   .i_bottom {
     background: rgb(51, 51, 51);
+    z-index: 999;
   }
 
   .copyright {
