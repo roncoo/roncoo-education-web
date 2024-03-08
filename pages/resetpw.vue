@@ -2,8 +2,11 @@
   <NuxtLayout>
     <div class="login_body">
       <div class="login_box">
+        <div class="login_logo">
+          <img src="../assets/image/common_login.png" />
+        </div>
         <div class="login_content">
-          <div class="login_title">账号注册</div>
+          <div class="login_title">账号登录</div>
           <div class="login_form">
             <el-form :model="loginForm" @keyup.enter="handleLogin()">
               <el-form-item class="form-group" prop="mobile">
@@ -15,10 +18,10 @@
               <el-button v-loading="loading" class="login-button" type="primary" size="large" @click="handleLogin"> 登 录 </el-button>
             </el-form>
             <div class="login_other">
-              <nuxt-link to="/resetpasswd">
+              <nuxt-link :to="{ name: 'register' }">
                 <div class="login_other_passwd fl">马上注册</div>
               </nuxt-link>
-              <nuxt-link to="/resetpasswd">
+              <nuxt-link :to="{ name: 'resetpw' }">
                 <div class="login_other_passwd fr">忘记密码</div>
               </nuxt-link>
             </div>

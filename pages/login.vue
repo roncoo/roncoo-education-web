@@ -15,14 +15,16 @@
               <el-form-item class="form-group" prop="password">
                 <el-input v-model="loginForm.password" placeholder="密码" type="password" show-password />
               </el-form-item>
+              <div class="login-info">
+                <el-checkbox v-model="loginForm.isAgreement" size="default"> 我已阅读并同意<span class="blue_text" @click="loginForm.visible = true">《用户协议》</span> </el-checkbox>
+                <nuxt-link :to="{ name: 'resetpw' }">
+                  <div class="login-info-reset">忘记密码？</div>
+                </nuxt-link>
+              </div>
               <el-button v-loading="loading" class="login-button" type="primary" size="large" @click="handleLogin"> 登 录 </el-button>
             </el-form>
             <div class="login_other">
-              <nuxt-link to="/resetpasswd">
-                <div class="login_other_passwd fr">忘记密码</div>
-              </nuxt-link>
-
-              <div class="login_other_title">注册即可体验</div>
+              <nuxt-link :to="{ name: 'register' }"> 没有账号，我要注册 </nuxt-link>
             </div>
           </div>
         </div>
@@ -80,12 +82,13 @@
     }
     .login_content {
       float: right;
-      width: 400px;
+      width: 350px;
       background-color: #fff;
       padding: 0 40px;
       border-radius: 10px;
 
       .login_title {
+        color: #2256f6;
         font-size: 24px;
         margin: 20px auto;
         text-align: center;
@@ -98,9 +101,21 @@
         margin: 20px 0;
       }
 
+      .login-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .login-info-reset {
+          color: #2256f6;
+        }
+      }
+
       .login_other {
+        color: #2256f6;
+        font-size: 14px;
         overflow: hidden;
-        margin: 20px 0;
+        text-align: center;
+        margin-bottom: 20px;
       }
     }
   }

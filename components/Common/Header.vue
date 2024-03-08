@@ -4,14 +4,18 @@
       <div v-if="nav" class="top-nav">
         <a href="/"><img v-if="info" :src="info.websiteLogo" alt="" /></a>
         <div v-for="(item, index) in nav" :key="index" class="top-nav-title">
-          <nuxt-link v-if="!isExternalUrl(item.navUrl)" :to="{ path: item.navUrl }">
+          <nuxt-link v-if="!isExternalUrl(item.navUrl)" :to="{ path: item.navUrl }" :class="{ active: activeUrl === item.navUrl }">
             {{ item.navTitle }}
           </nuxt-link>
-          <a v-else :class="{ active: activeUrl === item.navUrl }" :href="item.navUrl" :target="item.target">{{ item.navTitle }}</a>
+          <a v-else :href="item.navUrl" :target="item.target">{{ item.navTitle }}</a>
         </div>
       </div>
       <div class="top-search">
-        <el-input v-model="search" autofocus placeholder="请输入搜索内容" @keydown.enter.stop="handleSearch" />
+        <el-input v-model="search" autofocus placeholder="请输入搜索内容" @keydown.enter.stop="handleSearch">
+          <template #prefix>
+            <img src="~/assets/svg/search.svg" />
+          </template>
+        </el-input>
       </div>
       <div class="top-user">
         <div v-if="userInfo">
@@ -64,7 +68,7 @@
 
   // 搜索
   const search = ref('')
-  const activeUrl = ref('')
+  const activeUrl = ref(useRoute().path)
 
   onMounted(() => {
     // 站点信息
@@ -122,6 +126,10 @@
     justify-content: center;
   }
 
+  .active {
+    color: #46c37b;
+  }
+
   .top {
     width: 1200px;
     height: 70px;
@@ -137,16 +145,38 @@
         margin-left: 30px;
         font-size: 18px;
       }
+
+      .top-nav-title:last-child {
+        border-radius: 10px;
+        color: #fff;
+        border-color: #46c37b;
+        background-color: #46c37b;
+        padding: 8px 10px;
+      }
+    }
+
+    .top-search {
+      .el-input {
+        height: 35px;
+        line-height: 35px;
+      }
+      img {
+        width: 20px;
+      }
     }
 
     .top-user {
       img {
         border-radius: 50%;
       }
+      a {
+        font-size: 16px;
+        margin-left: 10px;
+      }
     }
 
     img {
-      height: 50px;
+      height: 40px;
     }
   }
 </style>
