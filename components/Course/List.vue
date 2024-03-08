@@ -23,6 +23,7 @@
 <style lang="scss" scoped>
   .zone_body {
     margin-top: 25px;
+    min-height: calc(100vh - 330px);
 
     div {
       float: left;
