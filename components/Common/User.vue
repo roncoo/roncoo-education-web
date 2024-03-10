@@ -2,7 +2,8 @@
   <client-only>
     <el-dropdown>
       <span class="el-dropdown-link">
-        <img class="header-image" src="../../assets/image/common_head.jpg" alt="头像" />
+        <img v-if="userInfo" class="header-image" :src="userInfo.userHead" alt="头像" />
+        <img v-else class="header-image" src="../../assets/image/common_head.jpg" alt="头像" />
       </span>
       <template #dropdown>
         <el-dropdown-menu>
@@ -26,8 +27,16 @@
 </template>
 <script setup>
   import { useUserStore } from '~/store/modules/user.js'
-
+  import { userApi } from '~/api/user.js'
   const userStore = useUserStore()
+
+  const userInfo = ref({})
+  onMounted(() => {
+    userApi.getUserInfo().then((res) => {
+      userInfo.value = res
+    })
+  })
+
   // 退出登录
   function handleLogout() {
     ElMessageBox.confirm('确认退出', '退出登录', {

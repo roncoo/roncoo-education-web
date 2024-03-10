@@ -18,7 +18,7 @@
         </el-input>
       </div>
       <div class="top-user">
-        <div v-if="userInfo">
+        <div v-if="loginStatus">
           <common-user />
         </div>
         <div v-else>
@@ -38,8 +38,8 @@
   const info = ref({})
   // 导航信息
   const nav = ref([])
-  // 用户信息
-  const userInfo = ref()
+  //
+  const loginStatus = ref(false)
 
   // 搜索
   const search = ref('')
@@ -65,9 +65,7 @@
     }
 
     if (getToken()) {
-      userApi.getUserInfo().then((res) => {
-        userInfo.value = res
-      })
+      loginStatus.value = true
     }
   })
 
