@@ -19,28 +19,7 @@
       </div>
       <div class="top-user">
         <div v-if="userInfo">
-          <el-dropdown>
-            <span class="el-dropdown-link">
-              <img src="../../assets/image/common_head.jpg" alt="头像" />
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item>
-                  <nuxt-link :to="{ name: 'account-course' }"> 我的课程 </nuxt-link>
-                </el-dropdown-item>
-                <el-dropdown-item>
-                  <nuxt-link :to="{ name: 'account-collect' }"> 我的收藏 </nuxt-link>
-                </el-dropdown-item>
-                <el-dropdown-item>
-                  <nuxt-link :to="{ name: 'account-order' }"> 我的订单 </nuxt-link>
-                </el-dropdown-item>
-                <el-dropdown-item>
-                  <nuxt-link :to="{ name: 'account-user' }"> 个人信息 </nuxt-link>
-                </el-dropdown-item>
-                <el-dropdown-item @click="handleLogout"> 安全退出 </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
+          <common-user />
         </div>
         <div v-else>
           <nuxt-link :to="{ name: 'login' }"> 登录 </nuxt-link>
@@ -51,13 +30,9 @@
   </el-header>
 </template>
 <script setup>
-  import { ElMessageBox } from 'element-plus'
   import { indexApi } from '~/api/index.js'
   import { userApi } from '~/api/user.js'
-  import { useUserStore } from '~/store/modules/user.js'
   import { getStorage, setStorage } from '~/utils/storage.js'
-
-  const userStore = useUserStore()
 
   // 网站信息
   const info = ref({})
@@ -99,18 +74,6 @@
   // 搜索
   function handleSearch() {
     useRouter().push({ name: 'search', query: { kw: search.value } })
-  }
-
-  // 退出登录
-  function handleLogout() {
-    ElMessageBox.confirm('确认退出', '退出登录', {
-      confirmButtonText: '确认',
-      showCancelButton: false,
-      type: 'warning'
-    }).then(() => {
-      userStore.logout()
-      location.reload()
-    })
   }
 </script>
 <style lang="scss" scoped>

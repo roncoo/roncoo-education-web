@@ -3,7 +3,7 @@
     <div class="video-header">
       <div class="header-left">
         <span class="cursor" @click="handleBack">
-          <img src="~/assets/svg/return.svg" alt="return" />
+          <img class="cursor-image" src="~/assets/svg/return.svg" alt="return" />
         </span>
         <nuxt-link :to="{ name: 'course-detail', query: { id: courseInfo.id } }" class="left_col">
           <span class="header-course">
@@ -12,9 +12,7 @@
         </nuxt-link>
       </div>
       <div class="header-right">
-        <nuxt-link :to="{ name: 'account-course' }" class="left_col">
-          <span class="account">我的课程</span>
-        </nuxt-link>
+        <common-user />
       </div>
     </div>
     <div class="video-body">
@@ -169,7 +167,7 @@
     line-height: 66px;
     margin: 0 auto;
     font-size: 18px;
-    img {
+    .cursor-image {
       width: 20px;
     }
     .header-left {
@@ -180,6 +178,8 @@
     }
     .header-right {
       margin-right: 20px;
+      display: flex;
+      align-items: center;
     }
   }
 
