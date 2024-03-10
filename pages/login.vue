@@ -15,9 +15,13 @@
               <el-form-item class="form-group" prop="password">
                 <el-input v-model="loginForm.password" placeholder="密码" type="password" show-password />
               </el-form-item>
+              <el-form-item class="form-group" prop="verCode">
+                <el-input v-model="loginForm.verCode" class="var-input" placeholder="验证码" />
+                <img class="var-img" :src="verImg" @click="getCaptcha" />
+              </el-form-item>
               <div class="login-info">
                 <el-checkbox v-model="loginForm.isAgreement" size="default"> 我已阅读并同意<span class="blue_text" @click="loginForm.visible = true">《用户协议》</span> </el-checkbox>
-                <nuxt-link :to="{ name: 'resetpw' }">
+                <nuxt-link :to="{ name: 'reset' }">
                   <div class="login-info-reset">忘记密码？</div>
                 </nuxt-link>
               </div>
@@ -44,7 +48,37 @@
     mobilePwd: '123456'
   })
 
+  onMounted(() => {
+    getCaptcha()
+  })
+
+  // 获取验证码
+  const verImg = ref()
+  async function getCaptcha() {
+    try {
+      const res = await loginApi.getCodeImg()
+      loginForm.verToken = res.verToken
+      verImg.value = res.img
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   async function handleLogin() {
+    if (!loginForm.password) {
+      ElMessage.warning('请输入密码')
+      return
+    }
+    if (!loginForm.verCode) {
+      ElMessage.warning('请填写验证码')
+      return
+    }
+
+    if (!loginForm.isAgreement) {
+      ElMessage.warning('请阅读并同意用户协议')
+      return
+    }
+
     loading.value = true
     try {
       const res = await loginApi.userLogin(loginForm)
@@ -93,13 +127,6 @@
         margin: 20px auto;
         text-align: center;
       }
-      .el-input {
-        height: 50px;
-      }
-      .el-button {
-        width: 100%;
-        margin: 20px 0;
-      }
 
       .login-info {
         display: flex;
@@ -118,5 +145,20 @@
         margin-bottom: 20px;
       }
     }
+  }
+  .var-input {
+    width: 250px;
+  }
+  .var-img {
+    margin-left: 20px;
+    width: 80px;
+  }
+  .el-input {
+    height: 40px;
+    line-height: 40px;
+  }
+  .el-button {
+    width: 100%;
+    margin: 20px 0;
   }
 </style>

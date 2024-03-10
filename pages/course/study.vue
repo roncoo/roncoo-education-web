@@ -1,8 +1,8 @@
 <template>
-  <div class="detail_video clearfix">
-    <div class="video_header">
-      <div class="header_left">
-        <span class="return_btn" @click="handleBack">
+  <div class="detail-video">
+    <div class="video-header">
+      <div class="header-left">
+        <span class="cursor" @click="handleBack">
           <img src="~/assets/svg/return.svg" alt="return" />
         </span>
         <nuxt-link :to="{ name: 'course-detail', query: { id: courseInfo.id } }" class="left_col">
@@ -11,41 +11,38 @@
           </span>
         </nuxt-link>
       </div>
-      <div class="header_right">
+      <div class="header-right">
         <nuxt-link :to="{ name: 'account-course' }" class="left_col">
           <span class="account">我的课程</span>
         </nuxt-link>
       </div>
     </div>
-    <div class="video_body clearfix">
-      <div class="video_content" :class="{ show_panel: cateType }">
-        <div class="win_box">
-          <div id="player" class="video_win" :style="'background-image:url(' + courseInfo.courseLogo + ')'" />
+    <div class="video-body">
+      <div class="video-content" :class="{ show_panel: cateType }">
+        <div class="player-box">
+          <div id="player" class="player-video" />
         </div>
-        <div class="video_info">
-          <div :class="{ on: cateType == 1 }" @click="changeTab(1)">目录</div>
-          <div :class="{ on: cateType == 2 }" @click="changeTab(2)">课件</div>
-        </div>
-
-        <div class="cate_panel">
-          <div v-if="cateType == 1">
-            <div v-for="(one, index) in courseInfo.chapterRespList" :key="index">
-              <div>第{{ index + 1 }}章：{{ one.chapterName }}</div>
-              <div v-for="(two, num) in one.periodRespList" :key="num" :class="{ on: playPeriodId == two.id }" @click="playVideo(two)">
-                <span class="iconfont">&#xe690;</span><span>第{{ num + 1 }}节：</span>{{ two.periodName }}
-                <span v-if="two.resourceResp && two.resourceResp.videoStatus === 1" class="no_video2">(未更新)</span>
-                <span v-if="two.isFree" class="c_blue">(免费)</span>
+        <div class="video-info">
+          <el-tabs v-model="activeTab" class="video-info-tabs" tab-position="right" @tab-click="handleTabClick">
+            <el-tab-pane label="目录" name="catalog">
+              <div v-for="(one, index) in courseInfo.chapterRespList" :key="index" class="video-info-catalog">
+                <div class="catalog-chapter">第{{ index + 1 }}章：{{ one.chapterName }}</div>
+                <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period" :class="{ on: playPeriodId == two.id }" @click="playVideo(two)">
+                  <span>&nbsp;&nbsp;视频：{{ index + 1 }}-{{ num + 1 }} {{ two.periodName }}</span>
+                  <span v-if="two.resourceResp && two.resourceResp.videoStatus === 1">(未更新)</span>
+                  <span v-if="two.isFree">(免费)</span>
+                </div>
               </div>
-            </div>
-          </div>
-          <div v-if="cateType == 2">
-            <div v-for="(one, index) in courseInfo.chapterRespList" :key="index">
-              <div>{{ one.chapterName }}</div>
-              <div v-for="(two, num) in one.periodRespList" :key="num">
-                <span @click="downFile"><i class="iconfont">&#xe602;</i>{{ two.periodName }}</span>
+            </el-tab-pane>
+            <el-tab-pane label="章节" name="chapter">
+              <div v-for="(one, index) in courseInfo.chapterRespList" :key="index" class="video-info-chapter">
+                <div>{{ one.chapterName }}</div>
+                <div v-for="(two, num) in one.periodRespList" :key="num">
+                  <span>{{ two.periodName }}</span>
+                </div>
               </div>
-            </div>
-          </div>
+            </el-tab-pane>
+          </el-tabs>
         </div>
       </div>
     </div>
@@ -53,7 +50,6 @@
 </template>
 <script setup>
   import { courseApi } from '~/api/course.js'
-  import { ElMessage } from 'element-plus'
 
   useHead({
     title: '课程详情',
@@ -78,7 +74,11 @@
   function downFile(item) {
     // TODO
   }
-  function playVideo(data) {}
+  async function playVideo(data) {
+    const playRes = await courseApi.playSign({ periodId: data.id, courseId: route.query.id })
+    console.log(playRes)
+    handlePolyvPlay(playRes)
+  }
 
   onMounted(async () => {
     // 课程信息
@@ -86,27 +86,24 @@
     courseInfo.value = res
 
     const playRes = await courseApi.playSign({ courseId: route.query.id })
-    playPeriodId.value = playRes.periodId
-    userStudy.studyId = playRes.studyId
-
     // 播放视频
-    handlePolyvPlay(JSON.parse(playRes.vodPlayConfig))
+    await handlePolyvPlay(playRes)
 
-    window.s2j_onVideoPlay = (vid) => {
+    window.s2j_onVideoPlay = () => {
       // 播放
       progressInterval = setInterval(() => {
         handleStudyRecord()
       }, 3000)
     }
 
-    window.s2j_onVideoPause = (vid) => {
+    window.s2j_onVideoPause = () => {
       // 暂停
       if (progressInterval) {
         clearInterval(progressInterval)
       }
     }
 
-    window.s2j_onPlayOver = (vid) => {
+    window.s2j_onPlayOver = () => {
       // 播放完成
       clearInterval(progressInterval)
       handleStudyRecord()
@@ -132,9 +129,16 @@
       })
   }
 
-  function handlePolyvPlay(params) {
+  // 保利威播放
+  function handlePolyvPlay(playRes) {
+    playPeriodId.value = playRes.periodId
+    userStudy.studyId = playRes.studyId
+    const params = JSON.parse(playRes.vodPlayConfig)
+
     myPolyvPlayer = window.polyvPlayer({
       wrap: '#player',
+      height: '100%',
+      width: '100%',
       autoplay: true,
       hideSwitchPlayer: true,
       showLine: 'off',
@@ -147,12 +151,17 @@
     window.history.go(-1)
   }
 
-  function changeTab(int) {
-    cateType.value = int
+  const activeTab = ref(0)
+  function handleTabClick(tab) {
+    if (activeTab.value === tab.props.name) {
+      activeTab.value = 0
+    } else {
+      activeTab.value = tab.props.name
+    }
   }
 </script>
-<style lang="scss" scoped>
-  .video_header {
+<style lang="scss">
+  .video-header {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
@@ -163,68 +172,47 @@
     img {
       width: 20px;
     }
-
-    .header_left {
+    .header-left {
       margin-left: 20px;
       .header-course {
         margin-left: 20px;
       }
     }
-
-    .header_right {
+    .header-right {
       margin-right: 20px;
     }
   }
 
-  .video_body {
-    width: 100%;
-    background: rgb(51, 51, 51);
-    .video_content {
-      overflow: hidden;
-      .win_box {
-        float: left;
-        width: calc(100% - 466px);
-        height: calc(100vh - 66px);
-        .video_win {
-          height: calc(100vh);
-          background-size: 100%;
+  .video-body {
+    background: #000;
+    .video-content {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      .player-box {
+        width: calc(100% - 66px);
+        padding: 20px 20px 0;
+        .player-video {
+          height: calc(100vh - 86px);
         }
       }
-      .video_info {
-        float: right;
-        width: 66px;
-        height: calc(100vh - 66px);
-        background-color: #333;
-        font-size: 18px;
-        margin: 0 auto;
-        text-align: center;
-        div {
-          padding: 20px 0;
-          color: #fff;
+
+      .video-info {
+        background: #fff;
+        .video-info-catalog,
+        .video-info-chapter {
+          width: 400px;
+          padding: 20px;
+        }
+
+        .catalog-chapter {
+          padding: 10px 0;
+          font-size: 14px;
+        }
+        .catalog-chapter-period {
+          padding: 5px 0;
         }
       }
-      .cate_panel {
-        float: right;
-        padding: 20px;
-        background-color: #000;
-        height: calc(100vh - 106px);
-        overflow: auto;
-        transition: all 0.5s;
-        color: #fff;
-      }
     }
-  }
-
-  .show_panel {
-    .cate_panel {
-    }
-  }
-
-  .no_video {
-    color: #999;
-  }
-
-  .no_video2 {
-    color: #eee;
   }
 </style>

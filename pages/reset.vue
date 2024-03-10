@@ -4,28 +4,30 @@
       <div class="login_box">
         <div class="login_content">
           <div class="login_title">
-            <div class="login_title_name">账号注册</div>
-            <div>已有账号，<nuxt-link to="/login"> 立即登录 </nuxt-link></div>
+            <div class="login_title_name">重置密码</div>
+            <div>
+              <nuxt-link to="/login"> 返回账号登录 </nuxt-link>
+            </div>
           </div>
           <div class="login_form">
             <el-form v-loading="loading" :model="loginForm" @keyup.enter="onSubmit">
               <el-form-item prop="mobile">
-                <el-input v-model="loginForm.mobile" placeholder="手机号" autofocus />
+                <el-input v-model="loginForm.mobile" placeholder="用户名" autofocus />
               </el-form-item>
               <el-form-item prop="verificationCode">
-                <el-input v-model="loginForm.code" placeholder="验证码">
+                <el-input v-model="loginForm.verificationCode" placeholder="验证码">
                   <template #suffix>
                     <el-button link @click="getCode"> 获取验证码 </el-button>
                   </template>
                 </el-input>
               </el-form-item>
               <el-form-item prop="loginPwd">
-                <el-input v-model="loginForm.mobilePwd" type="password" show-password placeholder="密码由6-20位大写和小写字母和数字组成" />
+                <el-input v-model="loginForm.loginPwd" type="password" show-password placeholder="密码由6-20位大写和小写字母和数字组成" />
               </el-form-item>
               <el-form-item prop="repeatPwd">
-                <el-input v-model="loginForm.repassword" type="password" show-password placeholder="确认密码" />
+                <el-input v-model="loginForm.repeatPwd" type="password" show-password placeholder="确认密码" />
               </el-form-item>
-              <el-button class="login-button" type="primary" size="large" @click="onSubmit"> 注 册 </el-button>
+              <el-button class="login-button" type="primary" size="large" @click="onSubmit"> 重 置 </el-button>
             </el-form>
           </div>
         </div>
@@ -60,7 +62,7 @@
   async function onSubmit() {
     loading.value = true
     try {
-      const res = await loginApi.register(loginForm)
+      const res = await loginApi.updatePassword(loginForm)
       ElMessage.success(res)
       await router.replace({ path: '/login' })
     } catch (error) {

@@ -1,9 +1,12 @@
-import { postRequest } from '@/utils/request'
+import { postRequest, getRequest } from '@/utils/request'
 
 export const loginApi = {
   // 用户登录
   userLogin: (params = {}) => {
     return postRequest('/user/api/users/login', params)
+  },
+  getCodeImg: () => {
+    return getRequest('/system/api/common/code')
   },
   // 发送注册验证码
   getMobileCode: (params) => {

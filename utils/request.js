@@ -25,8 +25,8 @@ request.interceptors.request.use(
     }
     if (config.url.indexOf('/auth') != -1 && !token) {
       // 登录拦截
-      ElMessageBox.confirm('请先登录', '登录', {
-        confirmButtonText: '登录',
+      ElMessageBox.confirm('请先登录', '提示', {
+        confirmButtonText: '立即登录',
         showCancelButton: false,
         type: 'warning'
       }).then(() => {
