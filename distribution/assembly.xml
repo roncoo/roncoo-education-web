@@ -33,10 +33,10 @@
         <directory>${project.basedir}/../.nuxt</directory>
       </fileSet>
       <fileSet>
-        <directory>${project.basedir}/../config</directory>
+        <directory>${project.basedir}/../.output</directory>
       </fileSet>
       <fileSet>
-        <directory>${project.basedir}/../static</directory>
+        <directory>${project.basedir}/../config</directory>
       </fileSet>
       <fileSet>
         <directory>${project.basedir}/../node_modules</directory>
@@ -47,10 +47,10 @@
             <source>${project.basedir}/../nuxt.config.js</source>
         </file>
         <file>
-          <source>${project.basedir}/../ecosystem.config.js</source>
+            <source>${project.basedir}/../package.json</source>
         </file>
         <file>
-            <source>${project.basedir}/../package.json</source>
+          <source>${project.basedir}/../ecosystem.config.js</source>
         </file>
     </files>
 </assembly>
