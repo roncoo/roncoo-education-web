@@ -44,7 +44,7 @@
     </fileSets>
     <files>
         <file>
-            <source>${project.basedir}/../nuxt.config.js</source>
+            <source>${project.basedir}/../nuxt.config.ts</source>
         </file>
         <file>
             <source>${project.basedir}/../package.json</source>
