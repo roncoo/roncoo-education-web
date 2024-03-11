@@ -74,7 +74,6 @@
   }
   async function playVideo(data) {
     const playRes = await courseApi.playSign({ periodId: data.id, courseId: route.query.id })
-    console.log(playRes)
     handlePolyvPlay(playRes)
   }
 
@@ -131,6 +130,7 @@
   function handlePolyvPlay(playRes) {
     playPeriodId.value = playRes.periodId
     userStudy.studyId = playRes.studyId
+    userStudy.resourceId = playRes.resourceId
     const params = JSON.parse(playRes.vodPlayConfig)
 
     myPolyvPlayer = window.polyvPlayer({
