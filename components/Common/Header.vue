@@ -31,7 +31,6 @@
 </template>
 <script setup>
   import { indexApi } from '~/api/index.js'
-  import { userApi } from '~/api/user.js'
   import { getStorage, setStorage } from '~/utils/storage.js'
 
   // 网站信息
@@ -63,8 +62,8 @@
         nav.value = res
       })
     }
-
-    if (getToken()) {
+    const token = getToken()
+    if (token) {
       loginStatus.value = true
     }
   })

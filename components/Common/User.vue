@@ -2,7 +2,7 @@
   <client-only>
     <el-dropdown>
       <span class="el-dropdown-link">
-        <img v-if="userInfo" class="header-image" :src="userInfo.userHead" alt="头像" />
+        <img v-if="userInfo.userHead" class="header-image" :src="userInfo.userHead" alt="头像" />
         <img v-else class="header-image" src="../../assets/image/common_head.jpg" alt="头像" />
       </span>
       <template #dropdown>
