@@ -10,8 +10,8 @@
           <a v-else :href="item.navUrl" :target="item.target">{{ item.navTitle }}</a>
         </div>
       </div>
-      <div class="top-search">
-        <el-input v-model="search" autofocus placeholder="请输入搜索内容" @keydown.enter.stop="handleSearch">
+      <div v-if="pathUrl != '/search'" class="top-search">
+        <el-input v-model="search" autofocus placeholder="请输入搜索内容" @keyup.enter="handleSearch">
           <template #prefix>
             <img src="~/assets/svg/search.svg" />
           </template>
@@ -41,6 +41,7 @@
   const loginStatus = ref(false)
 
   // 搜索
+  const pathUrl = useRoute().path
   const search = ref('')
   const activeUrl = ref(useRoute().path)
 

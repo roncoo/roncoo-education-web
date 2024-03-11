@@ -1,6 +1,14 @@
 <template>
   <NuxtLayout>
     <div class="main">
+      <div class="search-info">
+        <el-input v-model="kw" class="search-input" placeholder="请输入课程名称" @keyup.enter="handleSearch">
+          <template #suffix>
+            <el-button type="primary" @click="handleSearch"> 搜索 </el-button>
+          </template>
+        </el-input>
+      </div>
+      <div class="search-result">搜索结果：{{ page.totalCount }} 个</div>
       <course-list :list="page.list" />
       <div v-if="page.totalCount >= 1" class="pagination clearfix">
         <common-pagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
@@ -12,70 +20,40 @@
   import { courseApi } from '~/api/course.js'
   import useTable from '~/utils/table.js'
 
-  const router = useRouter()
   const route = useRoute()
+  const router = useRouter()
 
-  // 分类查询
-  const categoryList = ref([])
-  const showCate = ref(true)
-  let selectCategory = []
+  const kw = ref(route.query.kw)
 
-  onMounted(() => {
-    getCategoryList()
-  })
-
-  // 分类处理
-  const handleChange = (index, row) => {
-    if (selectCategory[index] !== row.id) {
-      selectCategory[index] = row.id
-      if (row.list && row.list.length) {
-        showCate.value = false
-        if (categoryList.value.length > index + 1) {
-          categoryList.value.length = index + 1
-        }
-        categoryList.value.push({
-          active: row.id,
-          all: row.id,
-          list: [{ id: row.id, categoryName: '全部' }].concat(row.list)
-        })
-        showCate.value = true
-      } else {
-        categoryList.value.length = index + 1
-        selectCategory.length = index + 1
-      }
+  function handleSearch() {
+    if (kw.value) {
+      router.push({ path: '/search', query: { kw: kw.value } })
+      query.courseName = kw.value
+      handleQuery()
     }
-    const query = Object.assign({ ...(route.query || {}) }, { categoryId: selectCategory[selectCategory.length - 1] || '' })
-    if (!query.categoryId) {
-      delete query.categoryId
-    }
-    router.push({ query })
-  }
-
-  // 分类查询
-  const getCategoryList = async () => {
-    courseApi.categoryList().then((res) => {
-      selectCategory = []
-      setTimeout(() => {
-        categoryList.value.push({
-          active: '',
-          list: [{ id: '', categoryName: '全部' }].concat(res)
-        })
-      }, 200)
-    })
   }
 
   // 分页查询
-  const { page, handlePage } = reactive({
+  const { page, handlePage, query, handleQuery } = reactive({
     ...useTable(
       {
         page: courseApi.courseList
       },
-      { categoryId: route.query.categoryId || '' }
+      { courseName: kw.value || '' }
     )
   })
 </script>
 <style lang="scss" scoped>
   .main {
     padding: 10px 0;
+  }
+
+  .search-info {
+    width: 500px;
+    margin: 0 auto;
+    .search-input {
+      margin: 10px auto;
+      height: 45px;
+    }
   }
 </style>

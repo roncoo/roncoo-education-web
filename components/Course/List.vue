@@ -3,7 +3,7 @@
     <div v-for="(that, int) in props.list" :key="int">
       <nuxt-link target="_blank" :to="{ name: 'course-detail', query: { id: that.id } }">
         <img :src="that.courseLogo" alt="" />
-        <p>{{ that.courseName }}</p>
+        <div v-html="that.courseName" />
         <span v-if="that.coursePrice === 0" class="price_box">免费</span>
         <span v-else class="price_box">
           ￥{{ that.coursePrice }} <span style="text-decoration-line: line-through; font-size: 12px">￥{{ that.rulingPrice }}</span>
@@ -23,6 +23,7 @@
 <style lang="scss" scoped>
   .zone_body {
     margin-top: 25px;
+    overflow: hidden;
     div {
       float: left;
       width: 285px;
@@ -53,7 +54,7 @@
           text-decoration: none;
         }
 
-        p {
+        div {
           font-size: 16px;
           margin-top: 5px;
           padding-left: 10px;
