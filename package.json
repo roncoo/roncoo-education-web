@@ -2,7 +2,7 @@
   "name": "roncoo-education-web",
   "version": "13.0.0-RELEASE",
   "private": true,
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build"
