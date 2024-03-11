@@ -23,10 +23,10 @@
         </div>
         <div class="video-info">
           <el-tabs v-model="activeTab" class="video-info-tabs" tab-position="right" @tab-click="handleTabClick">
-            <el-tab-pane label="目录" name="catalog">
+            <el-tab-pane label="目录" name="catalog ">
               <div v-for="(one, index) in courseInfo.chapterRespList" :key="index" class="video-info-catalog">
                 <div class="catalog-chapter">第{{ index + 1 }}章：{{ one.chapterName }}</div>
-                <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period" :class="{ on: playPeriodId == two.id }" @click="playVideo(two)">
+                <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: playPeriodId == two.id }" @click="playVideo(two)">
                   <span>&nbsp;&nbsp;视频：{{ index + 1 }}-{{ num + 1 }} {{ two.periodName }}</span>
                   <span v-if="two.resourceResp && two.resourceResp.videoStatus === 1">(未更新)</span>
                   <span v-if="two.isFree">(免费)</span>
@@ -108,6 +108,12 @@
     }
   })
 
+  onUnmounted(() => {
+    if (myPolyvPlayer) {
+      myPolyvPlayer.destroy()
+    }
+  })
+
   // 记录进度
   function handleStudyRecord() {
     userStudy.currentDuration = myPolyvPlayer.j2s_getCurrentTime()
@@ -133,6 +139,10 @@
     userStudy.studyId = playRes.studyId
     userStudy.resourceId = playRes.resourceId
     const params = JSON.parse(playRes.vodPlayConfig)
+
+    if (myPolyvPlayer) {
+      myPolyvPlayer.destroy()
+    }
 
     myPolyvPlayer = window.polyvPlayer({
       wrap: '#player',
@@ -212,6 +222,14 @@
         }
         .catalog-chapter-period {
           padding: 5px 0;
+
+          &:hover {
+            color: blue;
+          }
+        }
+
+        .on {
+          color: blue;
         }
       }
     }
