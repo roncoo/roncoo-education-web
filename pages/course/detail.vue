@@ -29,18 +29,17 @@
                 </span>
               </div>
             </div>
-            <div v-if="teacherInfo" class="view_teacher">
-              <span class="text_b">讲师:</span>
-              {{ teacherInfo.lecturerName }}
-            </div>
-            <div class="view_teacher mgt20"><span class="text_b">购买:</span>{{ courseInfo.countBuy }} 人</div>
+            <div v-if="teacherInfo" class="view_info_item"><span class="text_b">讲师:</span>{{ teacherInfo.lecturerName }}（{{ teacherInfo.lecturerPosition }}）</div>
+            <div class="view_info_item"><span class="text_b">购买:</span>{{ courseInfo.countBuy }} 人</div>
+            <div class="view_info_item"><span class="text_b">学习:</span>{{ courseInfo.countStudy }} 人</div>
             <div class="foot_box">
               <button v-if="courseInfo.allowStudy === 1" class="buy_btn" @click="handleStudy">马上学习</button>
               <button v-else-if="courseInfo.isFree === 1" class="buy_btn" @click="handleLogin">登录观看</button>
               <button v-else-if="courseInfo.isFree === 0" class="buy_btn" @click="handleBuy(courseInfo)">立即购买</button>
               <div class="handle_info_btn">
-                <div class="study_num">{{ courseInfo.countStudy }} 人已学习</div>
-                <div class="handle_info_btn collect_btn" @click="handleCollect">收藏</div>
+                <div class="collect_btn">
+                  <course-collect :course-id="courseInfo.id" :collect-status="courseInfo.courseCollect" />
+                </div>
               </div>
             </div>
           </div>
@@ -84,7 +83,7 @@
       </div>
     </div>
 
-    <common-pay ref="commonPayRef" />
+    <common-pay ref="commonPayRef" @refresh="handleCourse" />
   </NuxtLayout>
 </template>
 <script setup>
@@ -92,26 +91,11 @@
   import { setStorage } from '~/utils/storage.js'
 
   const route = useRoute()
-
-  const isLogin = getToken()
   const courseInfo = ref({})
   const teacherInfo = ref({})
 
   onMounted(() => {
-    if (getToken()) {
-      // 已登录
-      courseApi.userCourseDetail({ courseId: route.query.id }).then((res) => {
-        courseInfo.value = res
-      })
-    } else {
-      // 未登录
-      courseApi.courseDetail({ courseId: route.query.id }).then((res) => {
-        courseInfo.value = res
-        if (res.lecturerResp) {
-          teacherInfo.value = res.lecturerResp
-        }
-      })
-    }
+    handleCourse()
   })
 
   const commonPayRef = ref()
@@ -126,6 +110,22 @@
       ElMessageBox.confirm('请先登录', '提示', { confirmButtonText: '立即登录', cancelButtonText: '取消', type: 'warning' }).then(() => {
         useRouter().push('/login')
       })
+    }
+  }
+
+  // 课程详情
+  async function handleCourse() {
+    let res = null
+    if (getToken()) {
+      // 已登录
+      res = await courseApi.userCourseDetail({ courseId: route.query.id })
+    } else {
+      // 未登录
+      res = await courseApi.courseDetail({ courseId: route.query.id })
+    }
+    courseInfo.value = res
+    if (res.lecturerResp) {
+      teacherInfo.value = res.lecturerResp
     }
   }
 
@@ -210,8 +210,6 @@
         line-height: 36px;
         text-align: center;
         font-size: 14px;
-        // position: absolute;
-        // bottom: 0px;
         &:hover {
           text-decoration: none;
           color: #fff;
@@ -223,16 +221,6 @@
         align-items: center;
         color: #999;
         font-size: 14px;
-      }
-      .study_num {
-        height: 36px;
-        line-height: 36px;
-        color: #999;
-        font-size: 14px;
-        margin-right: 20px;
-      }
-      .collect_btn {
-        cursor: pointer;
       }
     }
 
@@ -313,9 +301,10 @@
       }
     }
 
-    .view_teacher {
+    .view_info_item {
       color: rgb(102, 102, 102);
       font-size: 14px;
+      margin-top: 5px;
 
       .text_b {
         margin-right: 20px;

@@ -10,6 +10,7 @@
             {{ courseInfo.courseName }}
           </span>
         </nuxt-link>
+        <course-collect :course-id="courseInfo.id" :collect-status="courseInfo.courseCollect" />
       </div>
       <div class="header-right">
         <common-user />

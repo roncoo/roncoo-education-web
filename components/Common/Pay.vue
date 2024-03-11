@@ -1,57 +1,58 @@
 <template>
-  <el-dialog :append-to-body="true" align-center :model-value="visible" title="收银台" width="500px" :destroy-on-close="true" @close="onClose">
-    <el-form v-if="orderInfo.orderStatus === 0" ref="formRef" :model="orderModel">
-      <div class="course-info">
-        <img :src="courseInfo.courseLogo" width="200px" />
-        <div class="course-info-title">
-          {{ courseInfo.courseName }}
+  <client-only>
+    <el-dialog :append-to-body="true" align-center :model-value="visible" title="收银台" width="500px" :destroy-on-close="true" @close="onClose">
+      <el-form v-if="orderInfo.orderStatus === 0" ref="formRef" :model="orderModel">
+        <div class="course-info">
+          <img :src="courseInfo.courseLogo" width="200px" />
+          <div class="course-info-title">
+            {{ courseInfo.courseName }}
+          </div>
+          <div class="course-info-price">￥{{ courseInfo.coursePrice }}</div>
         </div>
-        <div class="course-info-price">
-          {{ courseInfo.coursePrice }}
+        <el-form-item label="支付方式：" prop="payType">
+          <el-radio-group v-model="orderModel.payType">
+            <el-radio :label="1"> 微信 </el-radio>
+            <el-radio :label="2"> 支付宝 </el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="订单备注：" prop="remark">
+          <el-input v-model="orderModel.remark" maxlength="25" placeholder="若需备注，请在这里输入" show-word-limit />
+        </el-form-item>
+      </el-form>
+
+      <div v-if="orderInfo.orderStatus > 0" class="course-qrcode">
+        <div class="course-qrcode-title">
+          正在使用
+          <span v-if="orderInfo.payType === 1">微信</span>
+          <span v-if="orderInfo.payType === 2">支付宝</span>
+          支付：￥{{ orderInfo.coursePrice.toFixed(2) }}
+        </div>
+
+        <canvas v-if="orderInfo.orderStatus === 1" id="canvas" />
+        <div v-if="orderInfo.orderStatus === 2" class="order-info-title">
+          <img src="~/assets/svg/success.svg" width="100px" />
+          <div>支付成功</div>
+        </div>
+        <div v-if="orderInfo.orderStatus === 3" class="order-info-title">
+          <img src="~/assets/svg/error.svg" width="100px" />
+          <div>支付失败</div>
+        </div>
+
+        <div class="course-qrcode-desc">请扫描二维码完成订单</div>
+        <div class="course-qrcode-tips">
+          提示: <br />
+          支付成功前请勿手动关闭页面 <br />
+          二维码两小时内有效，请及时扫码支付
         </div>
       </div>
-      <el-form-item label="支付方式：" prop="payType">
-        <el-radio-group v-model="orderModel.payType">
-          <el-radio :label="1"> 微信 </el-radio>
-          <el-radio :label="2"> 支付宝 </el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="订单备注：" prop="remark">
-        <el-input v-model="orderModel.remark" maxlength="25" placeholder="若需备注，请在这里输入" show-word-limit />
-      </el-form-item>
-    </el-form>
-
-    <div v-if="orderInfo.orderStatus > 0" class="course-qrcode">
-      <div class="course-qrcode-title">
-        正在使用
-        <span v-if="orderInfo.payType === 1">微信</span>
-        <span v-if="orderInfo.payType === 2">支付宝</span>
-        支付：￥{{ orderInfo.coursePrice.toFixed(2) }}
-      </div>
-
-      <canvas v-if="orderInfo.orderStatus === 1" id="canvas" />
-      <div v-if="orderInfo.orderStatus === 2" class="order-info-title">
-        <img src="~/assets/svg/success.svg" width="100px" />
-        <div>支付成功</div>
-      </div>
-      <div v-if="orderInfo.orderStatus === 3" class="order-info-title">
-        <img src="~/assets/svg/error.svg" width="100px" />
-        <div>支付失败</div>
-      </div>
-
-      <div class="course-qrcode-desc">请扫描二维码完成订单</div>
-      <div class="course-qrcode-tips">
-        提示: <br />
-        支付成功前请勿手动关闭页面 <br />
-        二维码两小时内有效，请及时扫码支付
-      </div>
-    </div>
-    <template #footer>
-      <span v-if="orderInfo.orderStatus === 0" class="dialog-footer">
-        <el-button v-loading="loading" type="primary" @click="onSubmit()">确认购买</el-button>
-      </span>
-    </template>
-  </el-dialog>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="danger" @click="onClose">关闭</el-button>
+          <el-button v-if="orderInfo.orderStatus === 0" v-loading="loading" type="primary" @click="onSubmit">确认购买</el-button>
+        </span>
+      </template>
+    </el-dialog>
+  </client-only>
 </template>
 <script setup>
   // 表单
@@ -107,10 +108,8 @@
     orderInfo.value = res
     if (res.orderStatus === 2) {
       ElMessage.success('支付成功')
-      onClose()
     } else if (res.orderStatus === 3) {
       ElMessage.error('支付失败')
-      onClose()
     }
   }
 
@@ -126,6 +125,9 @@
   const onClose = () => {
     visible.value = false
     courseInfo.value = {}
+    if (orderInfo.value.orderStatus === 2) {
+      emit('refresh')
+    }
     orderInfo.value.orderStatus = 0
     clearInterval(orderQueryInterval)
   }
