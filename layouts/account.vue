@@ -5,9 +5,7 @@
       <client-only>
         <el-menu :default-active="defaultActive">
           <nuxt-link v-for="(item, index) in menuList" :key="index" :to="{ name: item.name }">
-            <el-menu-item :index="item.name">
-              {{ item.title }}
-            </el-menu-item>
+            <el-menu-item :index="item.name"> <img src="~/assets/svg/course.svg" width="25px" /> {{ item.title }} </el-menu-item>
           </nuxt-link>
         </el-menu>
       </client-only>
@@ -25,18 +23,22 @@
   const menuList = [
     {
       name: 'account-course',
+      icon: '~/assets/svg/course.svg',
       title: '我的课程'
     },
     {
       name: 'account-collect',
+      icon: '~/assets/svg/collect.svg',
       title: '我的收藏'
     },
     {
       name: 'account-order',
+      icon: '~/assets/svg/order.svg',
       title: '我的订单'
     },
     {
       name: 'account-user',
+      icon: '~/assets/svg/user.svg',
       title: '个人信息'
     }
   ]
