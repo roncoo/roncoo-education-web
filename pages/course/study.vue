@@ -201,7 +201,7 @@
       justify-content: space-between;
       .player-box {
         width: calc(100% - 66px);
-        padding: 20px 20px 0;
+        padding: 10px 20px;
         .player-video {
           height: calc(100vh - 86px);
         }
