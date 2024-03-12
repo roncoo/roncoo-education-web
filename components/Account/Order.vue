@@ -95,6 +95,7 @@
 
     img {
       height: 100px;
+      width: auto;
       margin-right: 20px;
     }
     .order-info-title {

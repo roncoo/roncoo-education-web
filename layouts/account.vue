@@ -5,7 +5,7 @@
       <client-only>
         <el-menu :default-active="defaultActive">
           <nuxt-link v-for="(item, index) in menuList" :key="index" :to="{ name: item.name }">
-            <el-menu-item :index="item.name"> <img src="~/assets/svg/course.svg" width="25px" /> {{ item.title }} </el-menu-item>
+            <el-menu-item :index="item.name"> <img src="~/assets/svg/course.svg" class="img-icon" /> {{ item.title }} </el-menu-item>
           </nuxt-link>
         </el-menu>
       </client-only>
@@ -48,6 +48,9 @@
     width: 1200px;
     margin: 70px auto 0;
     height: calc(100vh - 130px);
+    .img-icon {
+      width: 25px;
+    }
   }
   .el-aside {
     width: 200px;

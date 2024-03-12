@@ -20,7 +20,7 @@
           <el-row>
             <el-col :span="4">
               <el-form-item>
-                <img :src="userInfo.userHead" style="height: 100px" />
+                <img :src="userInfo.userHead" style="height: 100px; width: auto" />
               </el-form-item>
             </el-col>
           </el-row>

@@ -112,7 +112,8 @@
     }
     .login_logo {
       float: left;
-      width: 50%;
+      width: 40%;
+      margin-right: 10%;
     }
     .login_content {
       float: right;

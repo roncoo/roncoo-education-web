@@ -1,6 +1,6 @@
 <template>
   <div class="collect" @click="handleCollect">
-    <img :class="{ color: status }" src="@/assets/svg/collect.svg" alt="收藏" height="20px" />
+    <img :class="{ color: status }" src="@/assets/svg/collect.svg" alt="收藏" />
     收藏
   </div>
 </template>
@@ -58,5 +58,6 @@
 
   .color {
     filter: drop-shadow(0px 0px 1px #70ff00);
+    width: 20px;
   }
 </style>

@@ -39,6 +39,7 @@
   .course-img {
     float: left;
     height: 100px;
+    width: auto;
   }
   .course-info {
     float: left;

@@ -22,9 +22,13 @@
           <div id="player" class="player-video" />
         </div>
         <div class="video-info">
-          <el-tabs v-model="activeTab" class="video-info-tabs" tab-position="right" @tab-click="handleTabClick">
-            <el-tab-pane label="目录" name="catalog ">
-              <div v-for="(one, index) in courseInfo.chapterRespList" :key="index" class="video-info-catalog">
+          <div class="video-info-tab">
+            <div :class="{ on: cateType === 'chapter' }" class="video-info-button cursor" @click="handleTab('chapter')"><img src="~/assets/svg/chapter.svg" class="img-icon" />目录</div>
+            <div :class="{ on: cateType === 'comment' }" class="video-info-button cursor" @click="handleTab('comment')"><img src="~/assets/svg/comment.svg" class="img-icon" />评论</div>
+          </div>
+          <div v-if="cateType != ''" class="video-info-content">
+            <div v-if="cateType === 'chapter'" class="video-info-chapter">
+              <div v-for="(one, index) in courseInfo.chapterRespList" :key="index">
                 <div class="catalog-chapter">第{{ index + 1 }}章：{{ one.chapterName }}</div>
                 <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: playPeriodId == two.id }" @click="playVideo(two)">
                   <span>&nbsp;&nbsp;视频：{{ index + 1 }}-{{ num + 1 }} {{ two.periodName }}</span>
@@ -32,16 +36,11 @@
                   <span v-if="two.isFree">(免费)</span>
                 </div>
               </div>
-            </el-tab-pane>
-            <el-tab-pane label="章节" name="chapter">
-              <div v-for="(one, index) in courseInfo.chapterRespList" :key="index" class="video-info-chapter">
-                <div>{{ one.chapterName }}</div>
-                <div v-for="(two, num) in one.periodRespList" :key="num">
-                  <span>{{ two.periodName }}</span>
-                </div>
-              </div>
-            </el-tab-pane>
-          </el-tabs>
+            </div>
+            <div v-if="cateType === 'comment'" class="video-info-comment">
+              <course-comment :course-id="courseInfo.id" :show-page="false" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -63,7 +62,7 @@
 
   const playPeriodId = ref()
   const courseInfo = ref({})
-  const cateType = ref(0)
+  const cateType = ref('')
 
   const userStudy = {}
   let progressInterval = null
@@ -160,12 +159,12 @@
     window.history.go(-1)
   }
 
-  const activeTab = ref(0)
-  function handleTabClick(tab) {
-    if (activeTab.value === tab.props.name) {
-      activeTab.value = 0
+  const showContent = ref(false)
+  function handleTab(item) {
+    if (item === cateType.value) {
+      cateType.value = ''
     } else {
-      activeTab.value = tab.props.name
+      cateType.value = item
     }
   }
 </script>
@@ -209,27 +208,53 @@
       }
 
       .video-info {
-        background: #fff;
-        .video-info-catalog,
-        .video-info-chapter {
-          width: 400px;
-          padding: 20px;
-        }
-
-        .catalog-chapter {
-          padding: 10px 0;
-          font-size: 14px;
-        }
-        .catalog-chapter-period {
-          padding: 5px 0;
-
-          &:hover {
-            color: blue;
+        background: #1c1f21;
+        display: flex;
+        flex-direction: row-reverse;
+        .video-info-tab {
+          width: 80px;
+          margin-top: calc(50vh - 120px);
+          font-size: 16px;
+          .video-info-button {
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            .img-icon {
+              width: 25px;
+            }
+            &:hover {
+              background-color: #333;
+            }
+          }
+          .on {
+            background-color: #333;
           }
         }
-
-        .on {
-          color: blue;
+        .content {
+          display: block;
+        }
+        .video-info-content {
+          background-color: #333;
+          color: #fff;
+          width: 400px;
+          padding: 20px;
+          overflow: hidden;
+          .catalog-chapter {
+            font-size: 16px;
+            margin: 15px 0;
+          }
+          .catalog-chapter-period {
+            font-size: 14px;
+            margin: 5px;
+            &:hover {
+              color: #2256f6;
+            }
+          }
+          .on {
+            color: #2256f6;
+          }
         }
       }
     }

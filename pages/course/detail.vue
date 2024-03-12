@@ -29,9 +29,9 @@
                 </span>
               </div>
             </div>
-            <div v-if="teacherInfo" class="view_info_item"><span class="text_b">讲师:</span>{{ teacherInfo.lecturerName }}（{{ teacherInfo.lecturerPosition }}）</div>
-            <div class="view_info_item"><span class="text_b">购买:</span>{{ courseInfo.countBuy }} 人</div>
-            <div class="view_info_item"><span class="text_b">学习:</span>{{ courseInfo.countStudy }} 人</div>
+            <div v-if="teacherInfo" class="view_info_item"><span class="text_b">讲师名称:</span>{{ teacherInfo.lecturerName }}（{{ teacherInfo.lecturerPosition }}）</div>
+            <div class="view_info_item"><span class="text_b">购买人数:</span>{{ courseInfo.countBuy }} 人</div>
+            <div class="view_info_item"><span class="text_b">学习人数:</span>{{ courseInfo.countStudy }} 人</div>
             <div class="foot_box">
               <button v-if="courseInfo.allowStudy === 1" class="buy_btn" @click="handleStudy">马上学习</button>
               <button v-else-if="courseInfo.isFree === 1" class="buy_btn" @click="handleLogin">登录观看</button>

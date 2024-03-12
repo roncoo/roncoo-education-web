@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-      <div v-if="page.totalCount >= 1" class="pagination">
+      <div v-if="props.showPage" class="pagination">
         <common-pagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
       </div>
     </div>
@@ -39,6 +39,10 @@
     courseId: {
       type: String,
       default: ''
+    },
+    showPage: {
+      type: Boolean,
+      default: true
     }
   })
 
@@ -97,6 +101,7 @@
         font-weight: 400;
         margin-bottom: 10px;
         margin-top: 10px;
+        word-wrap: break-word;
       }
     }
   }
