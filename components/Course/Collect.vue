@@ -1,6 +1,6 @@
 <template>
   <div class="collect" @click="handleCollect">
-    <img :class="{ color: status }" src="@/assets/svg/collect.svg" alt="收藏" />
+    <img :class="{ colors: status }" src="@/assets/svg/collect.svg" alt="收藏" />
     收藏
   </div>
 </template>
@@ -53,11 +53,11 @@
     img {
       vertical-align: middle;
       margin-top: -5px;
+      width: 20px;
     }
   }
 
-  .color {
+  .colors {
     filter: drop-shadow(0px 0px 1px #70ff00);
-    width: 20px;
   }
 </style>
