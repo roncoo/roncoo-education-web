@@ -2,8 +2,8 @@
 <template>
   <div>
     <el-form :model="comment" class="comment_box">
-      <el-input v-model="comment.commentText" :rows="5" class="comment-text" maxlength="200" show-word-limit type="textarea" placeholder="请输入评论" />
-      <el-button class="comment-button" type="primary" size="large" @click="handleComment"> 保存设置 </el-button>
+      <el-input v-model="comment.commentText" :rows="5" class="comment-text" maxlength="200" show-word-limit type="textarea" placeholder="请输入您的评论..." />
+      <el-button class="comment-button" type="primary" size="large" @click="handleComment"> 评论 </el-button>
     </el-form>
     <div class="course_comment_list clearfix">
       <div v-for="(comment, index) in page.list" :key="index" class="course_comment_item">
