@@ -24,6 +24,8 @@
 </script>
 <style lang="scss" scoped>
   .i_content {
+    width: 1200px;
+    margin: 0 auto;
     background: #f6f8fb;
     .i_zone {
       .zone_header {

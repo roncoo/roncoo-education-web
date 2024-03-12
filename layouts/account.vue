@@ -1,20 +1,22 @@
 <template>
   <common-header />
-  <el-container class="container-main">
-    <el-aside>
-      <client-only>
-        <el-menu :default-active="defaultActive">
-          <nuxt-link v-for="(item, index) in menuList" :key="index" :to="{ name: item.name }">
-            <el-menu-item :index="item.name"> <img :src="item.icon" class="img-icon" /> {{ item.title }} </el-menu-item>
-          </nuxt-link>
-        </el-menu>
-      </client-only>
-    </el-aside>
-    <el-main>
-      <slot />
-    </el-main>
-  </el-container>
-  <common-footer />
+  <el-main>
+    <el-container class="main">
+      <el-aside>
+        <client-only>
+          <el-menu :default-active="defaultActive">
+            <nuxt-link v-for="(item, index) in menuList" :key="index" :to="{ name: item.name }">
+              <el-menu-item :index="item.name"> <img :src="item.icon" class="img-icon" /> {{ item.title }} </el-menu-item>
+            </nuxt-link>
+          </el-menu>
+        </client-only>
+      </el-aside>
+      <div class="account">
+        <slot />
+      </div>
+    </el-container>
+    <common-footer />
+  </el-main>
 </template>
 <script setup>
   const route = useRoute()
@@ -49,20 +51,18 @@
   ]
 </script>
 <style lang="scss" scoped>
-  .container-main {
-    width: 1200px;
-    margin: 70px auto 0;
-    height: calc(100vh - 130px);
-    .img-icon {
-      width: 20px;
-      margin-right: 5px;
-    }
+  .account {
+    width: calc(100% - 200px);
+    padding: 20px;
+    background: #fff;
+    margin-bottom: 20px;
+    border-radius: 5px;
   }
   .el-aside {
     width: 200px;
-    min-height: calc(100vh - 130px);
-    margin: 20px auto 0;
+    margin-right: 20px;
     text-align: center;
+    min-height: calc(100vh - 140px);
     ul {
       border-right: none;
       padding: 10px;
@@ -76,10 +76,16 @@
         color: #3d7fff;
       }
     }
+    .img-icon {
+      width: 20px;
+      margin-right: 5px;
+    }
   }
+
   .el-main {
-    border-radius: 10px;
-    margin: 20px;
-    background-color: #fff;
+    padding: 20px 0 0;
+    overflow: auto;
+    margin: 70px auto 0;
+    height: calc(100vh - 60px);
   }
 </style>

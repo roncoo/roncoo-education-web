@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout>
-    <div class="main">
+    <div class="main course-list">
       <course-choose v-for="(category, index) in categoryList" :key="category.active" :menu="category" :index="index" @change="handleChange" />
       <course-list v-loading="page.loading" :list="page.list" />
       <div v-if="page.totalCount >= 1" class="pagination clearfix">
@@ -78,7 +78,7 @@
   })
 </script>
 <style lang="scss" scoped>
-  .main {
+  .course-list {
     padding: 10px 0;
   }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout>
-    <div class="main">
+    <div class="main search">
       <div class="search-info">
         <el-input v-model="kw" class="search-input" placeholder="请输入课程名称" @keyup.enter="handleSearch">
           <template #suffix>
@@ -44,8 +44,9 @@
   })
 </script>
 <style lang="scss" scoped>
-  .main {
+  .search {
     padding: 10px 0;
+    min-height: calc(100vh - 150px);
   }
 
   .search-info {
