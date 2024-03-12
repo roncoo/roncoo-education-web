@@ -25,7 +25,7 @@
               <div>
                 价格:<span v-if="courseInfo.coursePrice === 0">免费</span>
                 <span v-else>
-                  ￥{{ courseInfo.coursePrice }} <b style="text-decoration-line: line-through; font-size: 18px">￥{{ courseInfo.rulingPrice }}</b>
+                  ￥{{ courseInfo.coursePrice }} <b style="text-decoration-line: line-through; color: grey; font-size: 18px">￥{{ courseInfo.rulingPrice }}</b>
                 </span>
               </div>
             </div>
