@@ -23,7 +23,7 @@
             </div>
           </div>
           <div class="order-info-opt">
-            <div v-if="scope.row.orderStatus === 1 || scope.row.orderStatus != 3">
+            <div v-if="scope.row.orderStatus === 1 || scope.row.orderStatus === 3">
               <el-button type="primary" @click="handlePay(scope.row)"> 继续支付 </el-button>
               <br />
               <br />

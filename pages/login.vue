@@ -8,7 +8,7 @@
         <div class="login_content">
           <div class="login_title">账号登录</div>
           <div class="login_form">
-            <el-form :model="loginForm" @keyup.enter="handleLogin()">
+            <el-form v-loading="loading" :model="loginForm" @keyup.enter="handleLogin()">
               <el-form-item class="form-group" prop="mobile">
                 <el-input v-model="loginForm.mobile" placeholder="用户名" autofocus />
               </el-form-item>
@@ -25,7 +25,7 @@
                   <div class="login-info-reset">忘记密码？</div>
                 </nuxt-link>
               </div>
-              <el-button v-loading="loading" class="login-button" type="primary" size="large" @click="handleLogin"> 登 录 </el-button>
+              <el-button class="login-button" type="primary" size="large" @click="handleLogin"> 登 录 </el-button>
             </el-form>
             <div class="login_other">
               <nuxt-link :to="{ name: 'register' }"> 没有账号，我要注册 </nuxt-link>
