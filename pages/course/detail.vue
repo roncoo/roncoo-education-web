@@ -163,14 +163,11 @@
         margin: 0 10px;
         color: #fff;
         font-size: 14px;
-
         span {
           margin-left: 20px;
         }
-
         a {
           color: #fff;
-
           &:hover {
             text-decoration: none;
           }
@@ -179,9 +176,35 @@
     }
     .view_info {
       float: right;
-      width: 620px;
-      height: 300px;
+      width: 600px;
+      height: 260px;
       position: relative;
+
+      .view_info_item {
+        color: rgb(102, 102, 102);
+        font-size: 14px;
+        margin-top: 5px;
+
+        .text_b {
+          margin-right: 20px;
+          font-weight: bold;
+        }
+      }
+
+      .view_price {
+        border-bottom: 1px solid rgb(102, 102, 102);
+        padding-bottom: 10px;
+        color: rgb(102, 102, 102);
+        font-size: 14px;
+        margin: 20px 0;
+
+        span {
+          font-size: 24px;
+          color: #d51423;
+          font-weight: bold;
+          margin-left: 20px;
+        }
+      }
 
       p {
         font-size: 18px;
@@ -224,91 +247,20 @@
       }
     }
 
-    .view_price {
-      border-bottom: 1px solid rgb(102, 102, 102);
-      padding-bottom: 10px;
-      color: rgb(102, 102, 102);
-      font-size: 14px;
-      margin: 20px 0;
+    .video_box {
+      .detail_view {
+        float: left;
+        width: 575px;
+        height: 280px;
+        background-size: 100%;
+        border-radius: 5px;
 
-      span {
-        font-size: 24px;
-        color: #d51423;
-        font-weight: bold;
-        margin-left: 20px;
-      }
-
-      .font_16 {
-        font-size: 16px;
-        font-weight: 400;
-      }
-
-      .set_vip {
-        color: #0099ff;
-        margin-left: 6px;
-      }
-
-      .favo {
-        font-size: 10px;
-        display: inline-block;
-        height: 14px;
-        line-height: 14px;
-        background: #d51423;
-        color: #333;
-        padding: 0 8px;
-        border-radius: 0 7px 7px 0;
-        margin-left: 7px;
-      }
-
-      .favo_right {
-        background: none;
-        border: 1px solid #d51423;
-        height: 13px;
-        color: #d51423;
-        margin-left: -5px;
-        border-radius: 7px 0 0 7px;
-      }
-
-      .small_favo {
-        font-size: 10px;
-        border: 1px solid #d51423;
-        height: 13px;
-        line-height: 14px;
-        color: #d51423;
-        padding: 0 5px;
-      }
-
-      .big_favo {
-        color: #999;
-        font-size: 14px;
-        font-weight: 400;
-        margin-left: 3px;
-      }
-    }
-
-    .detail_view {
-      float: left;
-      width: 540px;
-      height: 300px;
-      background: rgb(102, 102, 102);
-      background-size: 100%;
-
-      &.float_win {
-        position: fixed;
-        right: 10px;
-        bottom: 30px;
-        z-index: 9999;
-      }
-    }
-
-    .view_info_item {
-      color: rgb(102, 102, 102);
-      font-size: 14px;
-      margin-top: 5px;
-
-      .text_b {
-        margin-right: 20px;
-        font-weight: bold;
+        &.float_win {
+          position: fixed;
+          right: 10px;
+          bottom: 30px;
+          z-index: 9999;
+        }
       }
     }
   }
@@ -319,13 +271,14 @@
     .layout_left {
       width: 920px;
       float: left;
+      .introduce {
+        font-size: 14px;
+        line-height: 30px;
+        color: #333;
+        padding-left: 8px;
+      }
     }
-    .introduce {
-      font-size: 14px;
-      line-height: 30px;
-      color: #333;
-      padding-left: 8px;
-    }
+
     .layout_right {
       width: 260px;
       float: right;
