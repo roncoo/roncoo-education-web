@@ -62,7 +62,7 @@
 
   const playPeriodId = ref()
   const courseInfo = ref({})
-  const cateType = ref('')
+  const cateType = ref('chapter')
 
   const userStudy = {}
   let progressInterval = null
