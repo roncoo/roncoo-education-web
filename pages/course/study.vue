@@ -143,16 +143,33 @@
       myPolyvPlayer.destroy()
     }
 
-    myPolyvPlayer = window.polyvPlayer({
-      wrap: '#player',
-      height: '100%',
-      width: '100%',
-      autoplay: true,
-      hideSwitchPlayer: true,
-      showLine: 'off',
-      playsafe: params.token,
-      ...params
-    })
+    if (playRes.vodPlatform === 1) {
+      // 私有化，这里也使用保利威的播放器
+      myPolyvPlayer = window.polyvPlayer({
+        wrap: '#player',
+        height: '100%',
+        width: '100%',
+        autoplay: true,
+        hideSwitchPlayer: true,
+        showLine: 'off',
+        url: params.hdUrl
+      })
+    } else if (playRes.vodPlatform === 2) {
+      // 保利威
+      myPolyvPlayer = window.polyvPlayer({
+        wrap: '#player',
+        height: '100%',
+        width: '100%',
+        autoplay: true,
+        hideSwitchPlayer: true,
+        showLine: 'off',
+        playsafe: params.token,
+        ...params
+      })
+    } else {
+      // 其他
+      ElMessage.warning('暂不支持该类型的播放')
+    }
   }
 
   function handleBack() {
