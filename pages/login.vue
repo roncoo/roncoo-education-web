@@ -39,6 +39,14 @@
 <script setup>
   import { loginApi } from '~/api/login.js'
 
+  useHead({
+    title: '登录',
+    meta: [
+      { hid: 'keywords', name: 'keywords', content: '首页' },
+      { hid: 'description', name: 'description', content: '首页' }
+    ]
+  })
+
   const router = useRouter()
   const loading = ref(false)
 

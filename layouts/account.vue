@@ -19,13 +19,17 @@
   </el-main>
 </template>
 <script setup>
-  const route = useRoute()
-  const defaultActive = ref(route.name)
-
   import course from '~/assets/svg/course.svg'
   import collect from '~/assets/svg/collect.svg'
   import order from '~/assets/svg/order.svg'
   import user from '~/assets/svg/user.svg'
+
+  useHead({
+    title: '用户中心'
+  })
+
+  const route = useRoute()
+  const defaultActive = ref(route.name)
 
   const menuList = [
     {

@@ -160,11 +160,11 @@
       .detail_title {
         float: left;
         line-height: 57px;
-        margin: 0 10px;
+        margin: 0 5px;
         color: #fff;
         font-size: 14px;
         span {
-          margin-left: 20px;
+          margin-left: 10px;
         }
         a {
           color: #fff;
