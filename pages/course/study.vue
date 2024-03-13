@@ -54,7 +54,8 @@
     meta: [
       { hid: 'keywords', name: 'keywords', content: '课程详情' },
       { hid: 'description', name: 'description', content: '课程详情' }
-    ]
+    ],
+    script: [{ src: 'https://player.polyv.net/resp/vod-player/latest/player.js' }]
   })
 
   const route = useRoute()
@@ -86,6 +87,7 @@
     await handlePolyvPlay(playRes)
 
     window.s2j_onVideoPlay = () => {
+      console.log('play')
       // 播放
       progressInterval = setInterval(() => {
         handleStudyRecord()
@@ -93,6 +95,7 @@
     }
 
     window.s2j_onVideoPause = () => {
+      console.log('pause')
       // 暂停
       if (progressInterval) {
         clearInterval(progressInterval)
@@ -141,6 +144,9 @@
     if (myPolyvPlayer) {
       myPolyvPlayer.destroy()
     }
+    if (progressInterval) {
+      clearInterval(progressInterval)
+    }
 
     if (playRes.vodPlatform === 1) {
       // 私有化，这里也使用保利威的播放器
@@ -148,10 +154,11 @@
         wrap: '#player',
         height: '100%',
         width: '100%',
-        autoplay: true,
         hideSwitchPlayer: true,
+        autoplay: false,
         showLine: 'off',
-        url: params.hdUrl
+        url: params.hdUrl,
+        watchStartTime: params.currentDuration
       })
     } else if (playRes.vodPlatform === 2) {
       // 保利威
