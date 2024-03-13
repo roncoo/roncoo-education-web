@@ -115,6 +115,9 @@
     if (myPolyvPlayer) {
       myPolyvPlayer.destroy()
     }
+    if (progressInterval) {
+      clearInterval(progressInterval)
+    }
   })
 
   // 记录进度
