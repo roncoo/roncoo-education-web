@@ -87,15 +87,17 @@
     await handlePolyvPlay(playRes)
 
     window.s2j_onVideoPlay = () => {
-      console.log('play')
       // 播放
+      if (progressInterval) {
+        clearInterval(progressInterval)
+      }
+
       progressInterval = setInterval(() => {
         handleStudyRecord()
       }, 3000)
     }
 
     window.s2j_onVideoPause = () => {
-      console.log('pause')
       // 暂停
       if (progressInterval) {
         clearInterval(progressInterval)
@@ -143,9 +145,6 @@
 
     if (myPolyvPlayer) {
       myPolyvPlayer.destroy()
-    }
-    if (progressInterval) {
-      clearInterval(progressInterval)
     }
 
     if (playRes.vodPlatform === 1) {
