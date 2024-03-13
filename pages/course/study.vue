@@ -54,8 +54,7 @@
     meta: [
       { hid: 'keywords', name: 'keywords', content: '课程详情' },
       { hid: 'description', name: 'description', content: '课程详情' }
-    ],
-    script: [{ src: 'https://player.polyv.net/resp/vod-player/latest/player.js' }]
+    ]
   })
 
   const route = useRoute()
@@ -163,6 +162,7 @@
         autoplay: true,
         hideSwitchPlayer: true,
         showLine: 'off',
+        history_video_duration: 1,
         playsafe: params.token,
         ...params
       })

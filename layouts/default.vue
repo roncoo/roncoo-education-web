@@ -5,7 +5,11 @@
     <common-footer />
   </el-main>
 </template>
-<script setup></script>
+<script setup>
+  useHead({
+    script: [{ src: 'https://player.polyv.net/resp/vod-player/latest/player.js' }]
+  })
+</script>
 <style lang="scss" scoped>
   .el-main {
     padding: 0;
