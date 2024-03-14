@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getToken, getTokenForServer, removeToken } from '@/utils/cookie.js'
+import { getToken, removeToken, getTokenForServer } from '@/utils/cookie.js'
 import { setStorage } from '@/utils/storage.js'
 import config from '@/config/index'
 
@@ -13,13 +13,12 @@ const request = axios.create({
 // request interceptor
 request.interceptors.request.use(
   (config) => {
-    let token = null
+    let token
     if (process.client) {
       // 获取浏览器token
       token = getToken()
     }
     if (process.server) {
-      // 获取服务端token
       const nuxtApp = useNuxtApp()
       token = getTokenForServer(nuxtApp.ssrContext.event.node.req)
     }
@@ -50,51 +49,45 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response) => {
     const res = response.data
-    // console.log(res)
-    if (res.code && res.code !== 200) {
-      if (res.code === 99 || res.code === 301) {
-        // 301=token过期
-        removeToken()
-        return Promise.reject(response)
-      }
-      if (res.code === 304) {
-        // 异地登录
-        ElMessageBox.confirm('异地登录', '确定登出', {
-          confirmButtonText: '重新登录',
-          showCancelButton: false,
-          type: 'warning'
-        }).then(() => {
-          removeToken()
-          location.reload()
-        })
-        return Promise.reject(response)
-      }
-      // 其他异常
-      console.error(res)
-      ElMessage({ message: res.msg, type: 'error', duration: 5 * 1000 })
-      return Promise.reject(response)
+    // console.log('res', res)
+    if (res.code && res.code === 200) {
+      // 返回数据
+      return Promise.resolve(res.data)
     }
-    // 返回数据
-    return Promise.resolve(res.data)
-  },
-  (error) => {
-    if (error.response && error.response.status === 500) {
-      if (error.config.url.indexOf('/course/api/user/study/progress') != -1) {
-        // 进度保存接口，特殊处理：不进行提示
-      } else {
-        ElMessage({ message: error.response.data.msg, type: 'error', duration: 5 * 1000 })
-      }
-      return Promise.reject(error)
-    }
-    if (error.response && error.response.data && error.response.data.code === 301) {
+    if (res.code === 99 || res.code === 301) {
       // 301=token过期
       removeToken()
-      return Promise.reject(error.response)
+      return Promise.reject(response)
     }
-    if (error.response && error.response.data && error.response.data.message) {
-      ElMessage({ message: error.response.data.message, type: 'error', duration: 5 * 1000 })
-      return Promise.reject(error)
+    if (res.code === 304) {
+      // 异地登录
+      ElMessageBox.confirm('异地登录', '确定登出', {
+        confirmButtonText: '重新登录',
+        showCancelButton: false,
+        type: 'warning'
+      }).then(() => {
+        removeToken()
+        location.reload()
+      })
+      return Promise.reject(response)
     }
+    // 其他异常
+    console.error(response)
+    ElMessage.error({ message: res.msg, duration: 5 * 1000 })
+    return Promise.reject(response)
+  },
+  (error) => {
+    if (error.response && error.response.data) {
+      if (error.response.data.code === 301) {
+        // 301=token过期
+        removeToken()
+        return Promise.reject(error)
+      }
+      if (error.response.data.msg) {
+        ElMessage.error({ message: error.response.data.msg, duration: 5 * 1000 })
+      }
+    }
+    console.error(error.response)
     return Promise.reject(error)
   }
 )

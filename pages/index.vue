@@ -8,11 +8,17 @@
   </NuxtLayout>
 </template>
 <script setup>
+  import { indexApi } from '~/api/index'
+
+  const { data: info } = await useAsyncData('index', async (ctx) => {
+    return indexApi.websiteInfo()
+  })
+
   useHead({
-    title: '首页',
+    title: info.value?.websiteName,
     meta: [
-      { hid: 'keywords', name: 'keywords', content: '首页' },
-      { hid: 'description', name: 'description', content: '首页' }
+      { hid: 'keywords', name: 'keywords', content: info.value?.websiteName },
+      { hid: 'description', name: 'description', content: info.value?.websiteDesc }
     ]
   })
 </script>
