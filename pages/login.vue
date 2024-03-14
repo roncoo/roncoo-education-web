@@ -20,7 +20,7 @@
                 <img class="var-img" :src="verImg" @click="getCaptcha" />
               </el-form-item>
               <div class="login-info">
-                <el-checkbox v-model="loginForm.isAgreement" size="default"> 我已阅读并同意<span class="blue_text" @click="loginForm.visible = true">《用户协议》</span> </el-checkbox>
+                <el-checkbox v-model="loginForm.isAgreement" size="default"> 登录即同意<span class="blue_text" @click="loginForm.visible = true">《隐私政策》</span> </el-checkbox>
                 <nuxt-link :to="{ name: 'reset' }">
                   <div class="login-info-reset">忘记密码？</div>
                 </nuxt-link>
@@ -52,8 +52,7 @@
 
   // 登录
   const loginForm = reactive({
-    mobile: '18800000000',
-    mobilePwd: '123456'
+    isAgreement: true
   })
 
   onMounted(() => {
