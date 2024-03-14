@@ -160,7 +160,7 @@
         autoplay: false,
         showLine: 'off',
         url: params.hdUrl,
-        watchStartTime: params.currentDuration
+        watchStartTime: playRes.currentDuration
       })
     } else if (playRes.vodPlatform === 2) {
       // 保利威
@@ -172,6 +172,7 @@
         hideSwitchPlayer: true,
         showLine: 'off',
         history_video_duration: 1,
+        watchStartTime: playRes.currentDuration,
         playsafe: params.token,
         ...params
       })
@@ -273,9 +274,9 @@
           }
           .catalog-chapter-period {
             font-size: 14px;
-            margin: 5px;
+            margin: 10px;
             &:hover {
-              color: #2256f6;
+              color: red;
             }
           }
           .on {
