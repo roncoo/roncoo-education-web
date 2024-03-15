@@ -4,6 +4,7 @@ npm-debug.log*
 yarn-debug.log*
 
 .nuxt
+.output
 .DS_Store
 .idea
 .vscode

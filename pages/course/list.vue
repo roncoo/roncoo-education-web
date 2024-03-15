@@ -14,7 +14,7 @@
   import useTable from '~/utils/table.js'
   import { indexApi } from '~/api'
 
-  const { data } = useAsyncData('index', async () => {
+  const { data } = useAsyncData('website', async () => {
     return await indexApi.websiteInfo()
   })
   useHead({
