@@ -44,7 +44,7 @@
     height: 20px;
     line-height: 20px;
     text-align: center;
-    padding-top: 10px;
+    padding-top: 5px;
     color: #ccc;
     a {
       color: #ccc;
