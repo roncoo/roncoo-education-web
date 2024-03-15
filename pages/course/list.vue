@@ -12,10 +12,17 @@
 <script setup>
   import { courseApi } from '~/api/course.js'
   import useTable from '~/utils/table.js'
+  import { indexApi } from '~/api'
 
+  const { data } = await useAsyncData('index', async () => {
+    return await indexApi.websiteInfo()
+  })
   useHead({
     title: '课程列表',
-    meta: [{ hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' }]
+    meta: [
+      { hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' },
+      { hid: 'description', name: 'description', content: data.value?.websiteDesc }
+    ]
   })
 
   const router = useRouter()

@@ -13,7 +13,6 @@
   const { data } = await useAsyncData('index', async () => {
     return await indexApi.websiteInfo()
   })
-
   useHead({
     title: data.value?.websiteName,
     meta: [
