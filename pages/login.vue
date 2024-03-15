@@ -42,8 +42,8 @@
   useHead({
     title: '登录',
     meta: [
-      { hid: 'keywords', name: 'keywords', content: '首页' },
-      { hid: 'description', name: 'description', content: '首页' }
+      { hid: 'keywords', name: 'keywords', content: '登录' },
+      { hid: 'description', name: 'description', content: '登录' }
     ]
   })
 

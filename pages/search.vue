@@ -20,6 +20,14 @@
   import { courseApi } from '~/api/course.js'
   import useTable from '~/utils/table.js'
 
+  useHead({
+    title: '课程搜索',
+    meta: [
+      { hid: 'keywords', name: 'keywords', content: '课程搜索' },
+      { hid: 'description', name: 'description', content: '课程搜索' }
+    ]
+  })
+
   const route = useRoute()
   const router = useRouter()
 
