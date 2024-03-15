@@ -41,10 +41,10 @@
             <source>${project.basedir}/../nuxt.config.ts</source>
         </file>
         <file>
-            <source>${project.basedir}/../package.json</source>
+            <source>${project.basedir}/../ecosystem.config.js</source>
         </file>
         <file>
-          <source>${project.basedir}/../ecosystem.config.js</source>
+            <source>${project.basedir}/../package.json</source>
         </file>
     </files>
 </assembly>
