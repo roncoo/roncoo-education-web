@@ -84,7 +84,6 @@
         </div>
       </div>
     </div>
-
     <common-pay ref="commonPayRef" @refresh="handleCourse" />
   </NuxtLayout>
 </template>

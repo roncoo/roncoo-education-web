@@ -31,9 +31,14 @@
               <div v-for="(one, index) in courseInfo.chapterRespList" :key="index">
                 <div class="catalog-chapter">第{{ index + 1 }}章：{{ one.chapterName }}</div>
                 <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: playPeriodId == two.id }" @click="playVideo(two)">
-                  <span>&nbsp;&nbsp;视频：{{ index + 1 }}-{{ num + 1 }} {{ two.periodName }}</span>
-                  <span v-if="two.resourceResp && two.resourceResp.videoStatus === 1">(未更新)</span>
-                  <span v-if="two.isFree">(免费)</span>
+                  <span>
+                    &nbsp;&nbsp;
+                    <span v-if="two.resourceResp.resourceType < 3">视频：</span>
+                    <span v-else>文档：</span>
+                    {{ index + 1 }}-{{ num + 1 }} {{ two.periodName }}
+                  </span>
+                  <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1">(未更新)</span>
+                  <span v-if="two.isFree">(试看)</span>
                 </div>
               </div>
             </div>
@@ -73,6 +78,11 @@
     // TODO
   }
   async function playVideo(data) {
+    if (data.resourceResp.resourceType >= 3) {
+      ElMessage.warning('暂不支持文档播放')
+      return
+    }
+
     const playRes = await courseApi.playSign({ periodId: data.id, courseId: route.query.id })
     handlePolyvPlay(playRes)
   }

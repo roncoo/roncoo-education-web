@@ -58,6 +58,7 @@
   // 表单
   import { courseApi } from '~/api/course.js'
   import QRCode from 'qrcode'
+  import { userApi } from '~/api/user'
 
   const courseInfo = ref({})
   // 订单
@@ -80,23 +81,27 @@
     }
     loading.value = true
     try {
-      if (courseInfo.value.id) {
-        orderModel.value.courseId = courseInfo.value.id
-        const res = await courseApi.createOrder(orderModel.value)
-        orderInfo.value = res
-        orderInfo.value.orderStatus = 1
-        await nextTick(() => {
-          QRCode.toCanvas(document.getElementById('canvas'), res.payMessage, { width: 250, height: 250 })
-        })
-
-        orderQueryInterval = setInterval(() => {
-          if (orderInfo.value.orderStatus === 1) {
-            orderQuery(orderInfo.value.orderNo)
-          }
-        }, 2000)
+      let res
+      if (courseInfo.value.orderNo) {
+        // 继续支付
+        res = await userApi.continuePay({ orderNo: courseInfo.value.orderNo, payType: orderModel.value.payType })
       } else {
-        ElMessage.warning('请先选择课程')
+        // 下单
+        orderModel.value.courseId = courseInfo.value.id
+        res = await courseApi.createOrder(orderModel.value)
       }
+
+      orderInfo.value = res
+      orderInfo.value.orderStatus = 1
+      await nextTick(() => {
+        QRCode.toCanvas(document.getElementById('canvas'), res.payMessage, { width: 250, height: 250 })
+      })
+
+      orderQueryInterval = setInterval(() => {
+        if (orderInfo.value.orderStatus === 1) {
+          orderQuery(orderInfo.value.orderNo)
+        }
+      }, 2000)
     } finally {
       loading.value = false
     }

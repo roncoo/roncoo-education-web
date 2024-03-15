@@ -65,7 +65,7 @@
     }).then(() => {
       usersApi.cancelOrder({ orderNo: row.orderNo }).then((res) => {
         ElMessage.success(res)
-        handlePage
+        handlePage()
       })
     })
   }

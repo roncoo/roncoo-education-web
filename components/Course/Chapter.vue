@@ -7,12 +7,15 @@
       </div>
       <div v-for="(two, num) in one.periodRespList" :key="num" class="period_info">
         <div class="period_top" :class="{ on: playPeriod == two.id }" @click="handlePlayVideo(two)">
-          <div class="period_video" :class="{ no_v: !two.videoVid }" />
           <span class="period_num">第{{ num + 1 }}讲</span>
-          <span v-if="two.resourceResp && two.resourceResp.videoStatus === 1" class="no_video">(未更新)</span>
-          <span v-if="two.isFree" class="c_blue">(免费)</span>
-          {{ two.periodName }}
-          <span v-if="two.resourceResp && two.resourceResp.videoStatus === 2">{{ formatTime(two.resourceResp.videoLength * 1000) }}</span>
+          <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1" class="no_video">(未更新)</span>
+          <span>{{ two.periodName }}</span>
+          &nbsp;
+          <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 2">{{ formatTime(two.resourceResp.videoLength) }}</span>
+          <span v-if="two.resourceResp && two.resourceResp.resourceType >= 3">{{ two.resourceResp.docPage }}页</span>
+          &nbsp;
+          <span class="period_video" :class="{ no_v: two.resourceResp.resourceType >= 3 }" />
+          <span v-if="two.isFree" class="c_blue">(试看)</span>
           <span v-if="two.periodProgress" class="video_time fr">{{ two.periodProgress }}%</span>
         </div>
       </div>
@@ -22,6 +25,9 @@
 
 <script setup>
   import { formatTime } from '~/utils/base.js'
+
+  const router = useRouter()
+  const route = useRoute()
 
   const props = defineProps({
     list: {
@@ -36,7 +42,9 @@
     }
   })
 
-  function handlePlayVideo(data) {}
+  function handlePlayVideo(data) {
+    router.push('/course/study?id=' + route.query.id)
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -135,14 +143,6 @@
       cursor: pointer;
       background: rgb(242, 242, 242);
       color: rgb(213, 20, 35);
-
-      .period_video {
-        background: url(../../assets/svg/video.svg) center center;
-
-        &.no_v {
-          background: url(../../assets/svg/time.svg) no-repeat center center;
-        }
-      }
     }
   }
 </style>
