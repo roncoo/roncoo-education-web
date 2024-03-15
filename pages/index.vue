@@ -10,7 +10,7 @@
 <script setup>
   import { indexApi } from '~/api/index'
 
-  const { data } = useAsyncData('website', async () => {
+  const { data } = await useAsyncData('website', async () => {
     return await indexApi.websiteInfo()
   })
   useHead({

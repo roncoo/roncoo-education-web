@@ -93,7 +93,7 @@
   import { setStorage } from '~/utils/storage.js'
   const route = useRoute()
 
-  const { data: courseInfo } = useAsyncData('course-detail' + route.query.id, async () => {
+  const { data: courseInfo } = await useAsyncData('course-detail' + route.query.id, async () => {
     if (getToken()) {
       // 已登录
       return await courseApi.userCourseDetail({ courseId: route.query.id })

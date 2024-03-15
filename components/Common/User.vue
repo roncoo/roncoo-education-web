@@ -32,9 +32,7 @@
   const userInfo = ref(null)
   onMounted(async () => {
     await userStore.login()
-    await nextTick(() => {
-      userInfo.value = userStore.getInfo
-    })
+    userInfo.value = userStore.getInfo
   })
 
   // 退出登录
