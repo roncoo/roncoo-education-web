@@ -1,6 +1,9 @@
 import Cookies from 'js-cookie'
-import { TOKEN_KEY } from '@/utils/constants/system'
 
+/**
+ * token的key
+ */
+const TOKEN_KEY = 'EDU_OS_TOKEN'
 /**
  * 单位：天
  */
