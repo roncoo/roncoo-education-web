@@ -2,7 +2,7 @@
   <client-only>
     <el-dropdown>
       <span class="el-dropdown-link">
-        <img v-if="userInfo.userHead" class="header-image" :src="userInfo.userHead" alt="头像" />
+        <img v-if="userInfo?.userHead" class="header-image" :src="userInfo.userHead" alt="头像" />
         <img v-else class="header-image" src="../../assets/image/common_head.jpg" alt="头像" />
       </span>
       <template #dropdown>
@@ -27,14 +27,12 @@
 </template>
 <script setup>
   import { useUserStore } from '~/store/modules/user.js'
-  import { userApi } from '~/api/user.js'
   const userStore = useUserStore()
 
-  const userInfo = ref({})
+  const userInfo = ref(null)
   onMounted(() => {
-    userApi.getUserInfo().then((res) => {
-      userInfo.value = res
-    })
+    userStore.login()
+    userInfo.value = userStore.getInfo
   })
 
   // 退出登录

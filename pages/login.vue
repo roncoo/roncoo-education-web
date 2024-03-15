@@ -38,6 +38,7 @@
 </template>
 <script setup>
   import { loginApi } from '~/api/login.js'
+  import { useUserStore } from '~/store/modules/user'
 
   useHead({
     title: '用户登录',
@@ -87,6 +88,9 @@
     try {
       const res = await loginApi.userLogin(loginForm)
       setToken(res.token)
+
+      useUserStore().login()
+
       const history = getStorage('history')
       if (history) {
         window.location.href = history
