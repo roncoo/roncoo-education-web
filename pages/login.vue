@@ -88,9 +88,6 @@
     try {
       const res = await loginApi.userLogin(loginForm)
       setToken(res.token)
-
-      useUserStore().login()
-
       const history = getStorage('history')
       if (history) {
         window.location.href = history

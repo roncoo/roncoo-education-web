@@ -14,13 +14,11 @@ export const useUserStore = defineStore({
   },
   actions: {
     // 登录操作
-    login() {
+    async login() {
       if (!this.info) {
-        console.log('login', this.info)
         // 获取用户信息
-        userApi.getUserInfo().then((res) => {
-          this.info = res
-        })
+        const res = await userApi.getUserInfo()
+        this.info = res
       }
     },
 

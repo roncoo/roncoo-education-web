@@ -30,9 +30,11 @@
   const userStore = useUserStore()
 
   const userInfo = ref(null)
-  onMounted(() => {
-    userStore.login()
-    userInfo.value = userStore.getInfo
+  onMounted(async () => {
+    await userStore.login()
+    await nextTick(() => {
+      userInfo.value = userStore.getInfo
+    })
   })
 
   // 退出登录
