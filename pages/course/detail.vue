@@ -29,13 +29,15 @@
                 </span>
               </div>
             </div>
-            <div v-if="teacherInfo" class="view_info_item"><span class="text_b">讲师名称:</span>{{ teacherInfo.lecturerName }}（{{ teacherInfo.lecturerPosition }}）</div>
+            <div v-if="courseInfo.lecturerResp" class="view_info_item">
+              <span class="text_b">讲师名称:</span>{{ courseInfo.lecturerResp.lecturerName }}（{{ courseInfo.lecturerResp.lecturerPosition }}）
+            </div>
             <div class="view_info_item"><span class="text_b">购买人数:</span>{{ courseInfo.countBuy }} 人</div>
             <div class="view_info_item"><span class="text_b">学习人数:</span>{{ courseInfo.countStudy }} 人</div>
             <div class="foot_box">
               <button v-if="courseInfo.allowStudy === 1" class="buy_btn" @click="handleStudy">马上学习</button>
-              <button v-else-if="courseInfo.isFree === 1" class="buy_btn" @click="handleLogin">登录观看</button>
               <button v-else-if="courseInfo.isFree === 0" class="buy_btn" @click="handleBuy(courseInfo)">立即购买</button>
+              <button v-else-if="courseInfo.isFree === 1" class="buy_btn" @click="handleLogin">登录观看</button>
               <div class="handle_info_btn">
                 <div class="collect_btn">
                   <course-collect :course-id="courseInfo.id" :collect-status="courseInfo.courseCollect" />
@@ -67,16 +69,16 @@
           <div class="teacher_info clearfix">
             <span class="head">讲师简介</span>
             <div class="teacher_msg">
-              <div v-if="teacherInfo" class="teacher_msg_right">
-                <img v-if="teacherInfo.lecturerHead" class="teacher_phone" :src="teacherInfo.lecturerHead" alt="" />
+              <div v-if="courseInfo.lecturerResp" class="teacher_msg_right">
+                <img v-if="courseInfo.lecturerResp.lecturerHead" class="teacher_phone" :src="courseInfo.lecturerResp.lecturerHead" alt="" />
                 <img v-else class="teacher_phone" src="~/assets/image/common_head.jpg" alt="" />
                 <div class="teacher_info_content">
-                  <span class="teacher_name">{{ teacherInfo.lecturerName }}</span>
+                  <span class="teacher_name">{{ courseInfo.lecturerResp.lecturerName }}</span>
                   <br />
-                  {{ teacherInfo.lecturerPosition }}
+                  {{ courseInfo.lecturerResp.lecturerPosition }}
                 </div>
               </div>
-              <div class="info_box" v-html="teacherInfo.introduce" />
+              <div class="info_box" v-html="courseInfo.lecturerResp.introduce" />
             </div>
           </div>
         </div>
@@ -89,13 +91,24 @@
 <script setup>
   import { courseApi } from '~/api/course.js'
   import { setStorage } from '~/utils/storage.js'
-
   const route = useRoute()
-  const courseInfo = ref({})
-  const teacherInfo = ref({})
 
-  onMounted(() => {
-    handleCourse()
+  const { data: courseInfo } = await useAsyncData('course-detail' + route.query.id, async () => {
+    if (getToken()) {
+      // 已登录
+      return await courseApi.userCourseDetail({ courseId: route.query.id })
+    } else {
+      // 未登录
+      return await courseApi.courseDetail({ courseId: route.query.id })
+    }
+  })
+
+  useHead({
+    title: courseInfo.value?.courseName,
+    meta: [
+      { hid: 'keywords', name: 'keywords', content: courseInfo.value?.courseName },
+      { hid: 'description', name: 'description', content: courseInfo.value?.courseName }
+    ]
   })
 
   const commonPayRef = ref()
@@ -114,20 +127,7 @@
   }
 
   // 课程详情
-  async function handleCourse() {
-    let res = null
-    if (getToken()) {
-      // 已登录
-      res = await courseApi.userCourseDetail({ courseId: route.query.id })
-    } else {
-      // 未登录
-      res = await courseApi.courseDetail({ courseId: route.query.id })
-    }
-    courseInfo.value = res
-    if (res.lecturerResp) {
-      teacherInfo.value = res.lecturerResp
-    }
-  }
+  async function handleCourse() {}
 
   // 课程收藏
   function handleCollect() {}

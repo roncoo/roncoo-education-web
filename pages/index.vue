@@ -10,15 +10,15 @@
 <script setup>
   import { indexApi } from '~/api/index'
 
-  const { data: info } = await useAsyncData('index', async (ctx) => {
-    return indexApi.websiteInfo()
+  const { data } = await useAsyncData('index', async () => {
+    return await indexApi.websiteInfo()
   })
 
   useHead({
-    title: info.value?.websiteName,
+    title: data.value?.websiteName,
     meta: [
-      { hid: 'keywords', name: 'keywords', content: info.value?.websiteName },
-      { hid: 'description', name: 'description', content: info.value?.websiteDesc }
+      { hid: 'keywords', name: 'keywords', content: data.value?.websiteName },
+      { hid: 'description', name: 'description', content: data.value?.websiteDesc }
     ]
   })
 </script>

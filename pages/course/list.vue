@@ -16,8 +16,8 @@
   useHead({
     title: '课程列表',
     meta: [
-      { hid: 'keywords', name: 'keywords', content: '首页' },
-      { hid: 'description', name: 'description', content: '首页' }
+      { hid: 'keywords', name: 'keywords', content: '课程列表' },
+      { hid: 'description', name: 'description', content: '课程列表' }
     ]
   })
 

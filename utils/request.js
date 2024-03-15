@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getToken, removeToken, getTokenForServer } from '@/utils/cookie.js'
+import { getToken, removeToken } from '@/utils/cookie.js'
 import { setStorage } from '@/utils/storage.js'
 import config from '@/config/index'
 
@@ -13,31 +13,26 @@ const request = axios.create({
 // request interceptor
 request.interceptors.request.use(
   (config) => {
-    let token
-    if (process.client) {
-      // 获取浏览器token
-      token = getToken()
+    if (config.url.indexOf('/auth') === -1) {
+      return config
     }
-    if (process.server) {
-      const nuxtApp = useNuxtApp()
-      token = getTokenForServer(nuxtApp.ssrContext.event.node.req)
-    }
-    if (config.url.indexOf('/auth') != -1 && !token) {
-      // 登录拦截
-      ElMessageBox.confirm('请先登录', '提示', {
-        confirmButtonText: '立即登录',
-        showCancelButton: false,
-        type: 'warning'
-      }).then(() => {
-        window.location.href = '/login'
-      })
-      setStorage('history', window.location.href, 5)
-      return Promise.reject(config)
-    }
+    // 需要token的请求
+    const token = getToken()
     if (token) {
       config.headers['token'] = token
+      return config
     }
-    return config
+
+    // 登录拦截
+    ElMessageBox.confirm('请先登录', '提示', {
+      confirmButtonText: '立即登录',
+      showCancelButton: false,
+      type: 'warning'
+    }).then(() => {
+      window.location.href = '/login'
+    })
+    setStorage('history', window.location.href, 5)
+    return Promise.reject(config)
   },
   (error) => {
     console.error(error)
@@ -49,7 +44,7 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response) => {
     const res = response.data
-    // console.log('res', res)
+    //console.log('res', res)
     if (res.code && res.code === 200) {
       // 返回数据
       return Promise.resolve(res.data)
