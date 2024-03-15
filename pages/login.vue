@@ -40,11 +40,8 @@
   import { loginApi } from '~/api/login.js'
 
   useHead({
-    title: '登录',
-    meta: [
-      { hid: 'keywords', name: 'keywords', content: '登录' },
-      { hid: 'description', name: 'description', content: '登录' }
-    ]
+    title: '用户登录',
+    meta: [{ hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' }]
   })
 
   const router = useRouter()

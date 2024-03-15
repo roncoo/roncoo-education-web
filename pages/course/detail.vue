@@ -106,8 +106,8 @@
   useHead({
     title: courseInfo.value?.courseName,
     meta: [
-      { hid: 'keywords', name: 'keywords', content: courseInfo.value?.courseName },
-      { hid: 'description', name: 'description', content: courseInfo.value?.courseName }
+      { hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' },
+      { hid: 'description', name: 'description', content: courseInfo.lecturerResp?.introduce }
     ]
   })
 

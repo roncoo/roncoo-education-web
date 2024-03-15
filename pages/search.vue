@@ -22,10 +22,7 @@
 
   useHead({
     title: '课程搜索',
-    meta: [
-      { hid: 'keywords', name: 'keywords', content: '课程搜索' },
-      { hid: 'description', name: 'description', content: '课程搜索' }
-    ]
+    meta: [{ hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' }]
   })
 
   const route = useRoute()
