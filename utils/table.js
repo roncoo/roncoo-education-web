@@ -43,7 +43,7 @@ export default function useTable(apis, paras = {}) {
     page.pageCurrent = 1
     // 分页查询
     handlePage().then(() => {
-      //ElMessage({ type: 'success', message: '查询成功' })
+      //ElMessage.success('查询成功')
     })
   }
 

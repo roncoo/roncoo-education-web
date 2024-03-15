@@ -2,6 +2,9 @@
 import config from './config/index'
 // eslint-disable-next-line no-undef
 export default defineNuxtConfig({
+  experimental: {
+    asyncContext: true
+  },
   css: ['~/assets/styles/main.scss'],
   modules: ['@element-plus/nuxt', '@vueuse/nuxt', '@pinia/nuxt'],
   nitro: {

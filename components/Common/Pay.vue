@@ -75,7 +75,7 @@
   // 下单
   const onSubmit = async () => {
     if (loading.value === true) {
-      ElMessage({ type: 'warning', message: '正在处理...' })
+      ElMessage.warning('正在处理...')
       return
     }
     loading.value = true

@@ -48,5 +48,5 @@ export function getTokenForServer(req) {
       const parts = val.split('=')
       serviceCookie[parts[0].trim()] = decodeURIComponent((parts[1] || '').trim())
     })
-  return serviceCookie.get(TOKEN_KEY)
+  return serviceCookie.EDU_OS_TOKEN
 }
