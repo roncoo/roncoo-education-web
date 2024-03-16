@@ -19,7 +19,7 @@
     <div class="video-body">
       <div class="video-content" :class="{ show_panel: cateType }">
         <div class="player-box">
-          <div id="player" class="player-video" />
+          <div id="player" v-loading="loading" class="player-video" />
         </div>
         <div class="video-info">
           <div class="video-info-tab">
@@ -30,7 +30,7 @@
             <div v-if="cateType === 'chapter'" class="video-info-chapter">
               <div v-for="(one, index) in courseInfo.chapterRespList" :key="index">
                 <div class="catalog-chapter">第{{ index + 1 }}章：{{ one.chapterName }}</div>
-                <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: playPeriodId == two.id }" @click="playVideo(two)">
+                <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: playPeriodId == two.id }" @click="handleStudy(two)">
                   <span>
                     &nbsp;&nbsp;
                     <span v-if="two.resourceResp.resourceType < 3">视频：</span>
@@ -53,6 +53,8 @@
 </template>
 <script setup>
   import { courseApi } from '~/api/course.js'
+  import { getClient, getClientForPri } from '~/utils/polyv'
+  const route = useRoute()
 
   useHead({
     title: '课程详情',
@@ -63,38 +65,21 @@
     script: [{ src: 'https://player.polyv.net/resp/vod-player/latest/player.js' }]
   })
 
-  const route = useRoute()
-
+  const loading = ref(false)
   const playPeriodId = ref()
   const courseInfo = ref({})
-  const cateType = ref('chapter')
 
   const userStudy = {}
   let progressInterval = null
   let myPolyvPlayer = null
-
-  // 下载附件
-  function downFile(item) {
-    // TODO
-  }
-  async function playVideo(data) {
-    if (data.resourceResp.resourceType >= 3) {
-      ElMessage.warning('暂不支持文档播放')
-      return
-    }
-
-    const playRes = await courseApi.playSign({ periodId: data.id, courseId: route.query.id })
-    handlePolyvPlay(playRes)
-  }
 
   onMounted(async () => {
     // 课程信息
     const res = await courseApi.userCourseDetail({ courseId: route.query.id })
     courseInfo.value = res
 
-    const playRes = await courseApi.playSign({ courseId: route.query.id })
-    // 播放视频
-    await handlePolyvPlay(playRes)
+    // 加载视频
+    await handleStudy({ courseId: route.query.id })
 
     window.s2j_onVideoPlay = () => {
       // 播放
@@ -122,14 +107,60 @@
   })
 
   onUnmounted(() => {
-    if (myPolyvPlayer) {
-      myPolyvPlayer.destroy()
-    }
-    if (progressInterval) {
-      clearInterval(progressInterval)
-    }
+    // 清除
+    handleClear()
   })
 
+  // 学习
+  async function handleStudy(data) {
+    loading.value = true
+    handleClear()
+    const studyRes = await courseApi.studySign({ periodId: data.id, courseId: route.query.id })
+    if (studyRes.resourceType < 3) {
+      // 音视频播放
+      handlePlay(studyRes)
+    } else if (studyRes.resourceType === 3) {
+      // 文档播放
+      handleDoc(studyRes)
+    } else {
+      ElMessage.warning('暂不支持该类型资源')
+    }
+    loading.value = false
+  }
+
+  // 下载附件
+  function downFile(item) {
+    // TODO
+  }
+
+  /**
+   * 文档播放
+   */
+  function handleDoc(studyRes) {
+    const iframe = document.createElement('iframe')
+    iframe.setAttribute('src', JSON.parse(studyRes.docStudyConfig).previewUrl)
+    iframe.style.width = '100%'
+    iframe.style.height = '100%'
+    document.getElementById('player').appendChild(iframe)
+  }
+
+  // 音视频播放
+  function handlePlay(playRes) {
+    playPeriodId.value = playRes.periodId
+    userStudy.studyId = playRes.studyId
+    userStudy.resourceId = playRes.resourceId
+
+    if (playRes.vodPlatform === 1) {
+      // 私有化，这里也使用保利威的播放器
+      myPolyvPlayer = getClientForPri(playRes)
+    } else if (playRes.vodPlatform === 2) {
+      // 保利威
+      myPolyvPlayer = getClient(playRes)
+    } else {
+      // 其他
+      ElMessage.warning('暂不支持该类型的播放')
+    }
+  }
   // 记录进度
   function handleStudyRecord() {
     userStudy.currentDuration = myPolyvPlayer.j2s_getCurrentTime()
@@ -149,60 +180,28 @@
       })
   }
 
-  // 保利威播放
-  function handlePolyvPlay(playRes) {
-    playPeriodId.value = playRes.periodId
-    userStudy.studyId = playRes.studyId
-    userStudy.resourceId = playRes.resourceId
-    const params = JSON.parse(playRes.vodPlayConfig)
-
-    if (myPolyvPlayer) {
-      myPolyvPlayer.destroy()
-    }
-
-    if (playRes.vodPlatform === 1) {
-      // 私有化，这里也使用保利威的播放器
-      myPolyvPlayer = window.polyvPlayer({
-        wrap: '#player',
-        height: '100%',
-        width: '100%',
-        hideSwitchPlayer: true,
-        autoplay: false,
-        showLine: 'off',
-        url: params.hdUrl,
-        watchStartTime: playRes.currentDuration
-      })
-    } else if (playRes.vodPlatform === 2) {
-      // 保利威
-      myPolyvPlayer = window.polyvPlayer({
-        wrap: '#player',
-        height: '100%',
-        width: '100%',
-        autoplay: true,
-        hideSwitchPlayer: true,
-        showLine: 'off',
-        history_video_duration: 1,
-        watchStartTime: playRes.currentDuration,
-        playsafe: params.token,
-        ...params
-      })
-    } else {
-      // 其他
-      ElMessage.warning('暂不支持该类型的播放')
-    }
-  }
-
-  function handleBack() {
-    window.history.go(-1)
-  }
-
-  const showContent = ref(false)
+  // tab切换
+  const cateType = ref('chapter')
   function handleTab(item) {
     if (item === cateType.value) {
       cateType.value = ''
     } else {
       cateType.value = item
     }
+  }
+
+  // 处理返回
+  function handleClear() {
+    if (myPolyvPlayer) {
+      myPolyvPlayer.destroy()
+    }
+    if (progressInterval) {
+      clearInterval(progressInterval)
+    }
+  }
+
+  function handleBack() {
+    window.history.go(-1)
   }
 </script>
 <style lang="scss">

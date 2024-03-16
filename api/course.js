@@ -26,7 +26,7 @@ export const courseApi = {
   },
 
   // 获取播放sign
-  playSign: (params = {}) => {
+  studySign: (params = {}) => {
     return postRequest('/course/auth/course/sign', params)
   },
 
