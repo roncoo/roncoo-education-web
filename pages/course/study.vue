@@ -30,7 +30,7 @@
             <div v-if="cateType === 'chapter'" class="video-info-chapter">
               <div v-for="(one, index) in courseInfo.chapterRespList" :key="index">
                 <div class="catalog-chapter">第{{ index + 1 }}章：{{ one.chapterName }}</div>
-                <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: playPeriodId == two.id }" @click="handleStudy(two)">
+                <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: studyPeriodId == two.id }" @click="handleStudy(two)">
                   <span>
                     &nbsp;&nbsp;
                     <span v-if="two.resourceResp.resourceType < 3">视频：</span>
@@ -66,7 +66,7 @@
   })
 
   const loading = ref(false)
-  const playPeriodId = ref()
+  const studyPeriodId = ref()
   const courseInfo = ref({})
 
   const userStudy = {}
@@ -115,7 +115,12 @@
   async function handleStudy(data) {
     loading.value = true
     handleClear()
+
     const studyRes = await courseApi.studySign({ periodId: data.id, courseId: route.query.id })
+    studyPeriodId.value = studyRes.periodId
+    userStudy.studyId = studyRes.studyId
+    userStudy.resourceId = studyRes.resourceId
+
     if (studyRes.resourceType < 3) {
       // 音视频播放
       handlePlay(studyRes)
@@ -126,11 +131,6 @@
       ElMessage.warning('暂不支持该类型资源')
     }
     loading.value = false
-  }
-
-  // 下载附件
-  function downFile(item) {
-    // TODO
   }
 
   /**
@@ -146,10 +146,6 @@
 
   // 音视频播放
   function handlePlay(playRes) {
-    playPeriodId.value = playRes.periodId
-    userStudy.studyId = playRes.studyId
-    userStudy.resourceId = playRes.resourceId
-
     if (playRes.vodPlatform === 1) {
       // 私有化，这里也使用保利威的播放器
       myPolyvPlayer = getClientForPri(playRes)
