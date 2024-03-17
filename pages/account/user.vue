@@ -6,6 +6,10 @@
           <el-form-item label="手机：">
             {{ userInfo.mobile }}
           </el-form-item>
+          <el-form-item label="余额：">
+            ￥{{ userInfo.availableAmount }}元&nbsp;&nbsp;
+            <!--<el-button type="danger" size="small" @click="onRecharge"> 充 值 </el-button>-->
+          </el-form-item>
           <el-form-item label="昵称：">
             <el-input v-model="userInfo.nickname" size="large" />
           </el-form-item>
@@ -40,6 +44,11 @@
       userInfo.value = res
     })
   })
+
+  // 充值
+  const onRecharge = () => {
+    ElMessage.info('充值功能开发中')
+  }
 
   const onSubmit = () => {
     usersApi.usersUpdata(userInfo.value).then((res) => {

@@ -126,10 +126,9 @@
   }
 
   // 课程详情
-  async function handleCourse() {}
-
-  // 课程收藏
-  function handleCollect() {}
+  async function handleCourse() {
+    window.location.reload()
+  }
 
   // 学习
   function handleStudy() {

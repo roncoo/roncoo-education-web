@@ -10,11 +10,13 @@
           <div class="course-info-price">￥{{ courseInfo.coursePrice }}</div>
         </div>
         <el-form-item label="支付方式：" prop="payType">
-          <el-radio-group v-model="orderModel.payType">
-            <el-radio :label="1"> 微信 </el-radio>
-            <el-radio :label="2"> 支付宝 </el-radio>
+          <el-radio-group v-model="orderModel.payType" @change="handleChange">
+            <el-radio v-for="(item, index) in payTypes" :key="index" :label="item.code">
+              {{ item.desc }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item v-if="orderModel.payType === 100" label="可用金额：" prop="remark"> ￥{{ availableAmount }}元 </el-form-item>
         <el-form-item label="订单备注：" prop="remark">
           <el-input v-model="orderModel.remark" maxlength="25" placeholder="若需备注，请在这里输入" show-word-limit />
         </el-form-item>
@@ -23,8 +25,10 @@
       <div v-if="orderInfo.orderStatus > 0" class="course-qrcode">
         <div class="course-qrcode-title">
           正在使用
-          <span v-if="orderInfo.payType === 1">微信</span>
-          <span v-if="orderInfo.payType === 2">支付宝</span>
+          <span v-for="(item, index) in payTypes" :key="index">
+            <span v-if="orderInfo.payType === item.code"> {{ item.desc }}</span>
+          </span>
+          <span v-if="orderInfo.payType === 100">余额</span>
           支付：￥{{ orderInfo.coursePrice.toFixed(2) }}
         </div>
 
@@ -59,6 +63,7 @@
   import { courseApi } from '~/api/course.js'
   import QRCode from 'qrcode'
   import { userApi } from '~/api/user'
+  import { useUserStore } from '~/store/modules/user'
 
   const courseInfo = ref({})
   // 订单
@@ -70,8 +75,19 @@
     // 0订单没生成，1待支付，2成功支付，3支付失败，4关闭支付
     orderStatus: 0
   })
-
+  const payTypes = ref([
+    { code: 1, desc: '微信' },
+    { code: 2, desc: '支付宝' },
+    { code: 100, desc: '余额' }
+  ])
   let orderQueryInterval = null
+
+  const availableAmount = ref(0)
+  const handleChange = (item) => {
+    if (item === 100) {
+      availableAmount.value = useUserStore().getInfo.availableAmount
+    }
+  }
 
   // 下单
   const onSubmit = async () => {
@@ -90,18 +106,21 @@
         orderModel.value.courseId = courseInfo.value.id
         res = await courseApi.createOrder(orderModel.value)
       }
-
       orderInfo.value = res
-      orderInfo.value.orderStatus = 1
-      await nextTick(() => {
-        QRCode.toCanvas(document.getElementById('canvas'), res.payMessage, { width: 250, height: 250 })
-      })
 
-      orderQueryInterval = setInterval(() => {
-        if (orderInfo.value.orderStatus === 1) {
-          orderQuery(orderInfo.value.orderNo)
-        }
-      }, 2000)
+      if (orderInfo.value.orderStatus === 2) {
+        ElMessage.success('支付成功')
+      } else {
+        await nextTick(() => {
+          QRCode.toCanvas(document.getElementById('canvas'), res.payMessage, { width: 250, height: 250 })
+        })
+
+        orderQueryInterval = setInterval(() => {
+          if (orderInfo.value.orderStatus === 1) {
+            orderQuery(orderInfo.value.orderNo)
+          }
+        }, 2000)
+      }
     } finally {
       loading.value = false
     }

@@ -24,5 +24,9 @@ export const indexApi = {
   // 友情链接
   websiteLink: () => {
     return getRequest('/system/api/website/link/list')
+  },
+  // 获取枚举
+  getEnum: (data) => {
+    return postRequest('/system/api/common/enum', data)
   }
 }
