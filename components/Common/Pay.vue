@@ -28,7 +28,6 @@
           <span v-for="(item, index) in payTypes" :key="index">
             <span v-if="orderInfo.payType === item.code"> {{ item.desc }}</span>
           </span>
-          <span v-if="orderInfo.payType === 100">余额</span>
           支付：￥{{ orderInfo.coursePrice.toFixed(2) }}
         </div>
 
