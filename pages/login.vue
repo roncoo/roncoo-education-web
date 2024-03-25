@@ -97,6 +97,7 @@
       }
     } catch (error) {
       console.error(error)
+      await getCaptcha()
     } finally {
       loading.value = false
     }
