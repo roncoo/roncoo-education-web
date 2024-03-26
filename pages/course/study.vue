@@ -78,8 +78,8 @@
     const res = await courseApi.userCourseDetail({ courseId: route.query.id })
     courseInfo.value = res
 
-    // 加载视频
-    await handleStudy({ courseId: route.query.id })
+    // 初始化学习
+    await handleStudy({ courseId: route.query.id, speedDouble: res.speedDouble, speedDrag: res.speedDrag })
 
     window.s2j_onVideoPlay = () => {
       // 播放
@@ -123,7 +123,7 @@
 
     if (studyRes.resourceType < 3) {
       // 音视频播放
-      handlePlay(studyRes)
+      handlePlay(studyRes, data)
     } else if (studyRes.resourceType === 3) {
       // 文档播放
       handleDoc(studyRes)
@@ -145,13 +145,13 @@
   }
 
   // 音视频播放
-  function handlePlay(playRes) {
+  function handlePlay(playRes, course) {
     if (playRes.vodPlatform === 1) {
       // 领课云，这里也使用保利威的播放器
-      myPolyvPlayer = getClientForPri(playRes)
+      myPolyvPlayer = getClientForPri(playRes, course.speedDouble, course.speedDrag)
     } else if (playRes.vodPlatform === 2) {
       // 保利威
-      myPolyvPlayer = getClient(playRes)
+      myPolyvPlayer = getClient(playRes, course.speedDouble, course.speedDrag)
     } else {
       // 其他
       ElMessage.warning('暂不支持该类型的播放')
