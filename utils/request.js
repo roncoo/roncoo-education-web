@@ -49,13 +49,15 @@ request.interceptors.response.use(
       // 返回数据
       return Promise.resolve(res.data)
     }
-    if (res.code === 99 || res.code === 301) {
-      // 301=token过期
+
+    if (res.code === 301) {
+      // token过期
       removeToken()
       return Promise.reject(response)
     }
-    if (res.code === 304) {
-      // 异地登录
+
+    if (res.code === 302 || res.code === 303 || res.code === 304 || res.code === 305) {
+      // 302token异常，303登录异常，304异地登录，305菜单过期
       ElMessageBox.confirm('异地登录', '确定登出', {
         confirmButtonText: '重新登录',
         showCancelButton: false,
@@ -66,23 +68,18 @@ request.interceptors.response.use(
       })
       return Promise.reject(response)
     }
+
     // 其他异常
     console.error(response)
     ElMessage.error({ message: res.msg, duration: 5 * 1000 })
     return Promise.reject(response)
   },
   (error) => {
-    if (error.response && error.response.data) {
-      if (error.response.data.code === 301) {
-        // 301=token过期
-        removeToken()
-        return Promise.reject(error)
-      }
-      if (error.response.data.msg) {
-        ElMessage.error({ message: error.response.data.msg, duration: 5 * 1000 })
-      }
+    if (error.response && error.response.status === 500 && error.response.data.message) {
+      ElMessage.error({ message: error.response.data.msg, duration: 5 * 1000 })
+    } else {
+      console.error(error)
     }
-    console.error(error.response)
     return Promise.reject(error)
   }
 )

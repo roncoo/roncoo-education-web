@@ -147,7 +147,7 @@
   // 音视频播放
   function handlePlay(playRes) {
     if (playRes.vodPlatform === 1) {
-      // 私有化，这里也使用保利威的播放器
+      // 领课云，这里也使用保利威的播放器
       myPolyvPlayer = getClientForPri(playRes)
     } else if (playRes.vodPlatform === 2) {
       // 保利威
