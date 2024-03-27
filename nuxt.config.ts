@@ -18,6 +18,8 @@ export default defineNuxtConfig({
   vite: {
     build: {
       minify: 'terser',
+      emptyOutDir: true,
+      chunkSizeWarningLimit: 1500,
       terserOptions: {
         compress: {
           drop_console: true,
