@@ -51,8 +51,13 @@
   })
 
   function handleComment() {
+    if (!comment.value.commentText) {
+      ElMessage.warning('请输入评论内容')
+      return
+    }
     courseApi.courseCommentAdd(comment.value).then((res) => {
       handlePage()
+      comment.value.commentText = ''
     })
   }
   const { page, handlePage } = reactive({

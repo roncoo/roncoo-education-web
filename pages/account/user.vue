@@ -5,13 +5,14 @@
         <el-col :span="16">
           <el-form-item label="手机：">
             {{ userInfo.mobile }}
+            <span style="margin-left: 20px; color: #999">不可修改</span>
           </el-form-item>
           <el-form-item label="余额：">
             ￥{{ userInfo.availableAmount }}元&nbsp;&nbsp;
             <!--<el-button type="danger" size="small" @click="onRecharge"> 充 值 </el-button>-->
           </el-form-item>
           <el-form-item label="昵称：">
-            <el-input v-model="userInfo.nickname" size="large" />
+            <el-input v-model="userInfo.nickname" size="large" placeholder="请输入昵称" />
           </el-form-item>
           <el-form-item label="年龄：">
             <el-input-number v-model="userInfo.userAge" size="large" />
@@ -51,6 +52,16 @@
   }
 
   const onSubmit = () => {
+    if (!userInfo.value.nickname) {
+      ElMessage.warning('请输入昵称')
+      return
+    }
+
+    if (userInfo.value.userAge < 0) {
+      ElMessage.warning('请输入正确的年龄')
+      return
+    }
+
     usersApi.usersUpdata(userInfo.value).then((res) => {
       ElMessage.info(res)
     })
