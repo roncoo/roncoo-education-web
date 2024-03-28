@@ -18,29 +18,29 @@
         <div class="clearfix">
           <div class="video_box">
             <div id="player" class="detail_view" :style="'background-image:url(' + courseInfo.courseLogo + ')'" />
-          </div>
-          <div class="view_info">
-            <p>{{ courseInfo.courseName }}</p>
-            <div class="view_price">
-              <div>
-                价格:<span v-if="courseInfo.coursePrice === 0">免费</span>
-                <span v-else>
-                  ￥{{ courseInfo.coursePrice }} <b style="text-decoration-line: line-through; color: grey; font-size: 18px">￥{{ courseInfo.rulingPrice }}</b>
-                </span>
+            <div class="view_info">
+              <p>{{ courseInfo.courseName }}</p>
+              <div class="view_price">
+                <div>
+                  价格:<span v-if="courseInfo.coursePrice === 0">免费</span>
+                  <span v-else>
+                    ￥{{ courseInfo.coursePrice }} <b style="text-decoration-line: line-through; color: grey; font-size: 18px">￥{{ courseInfo.rulingPrice }}</b>
+                  </span>
+                </div>
               </div>
-            </div>
-            <div v-if="courseInfo.lecturerResp" class="view_info_item">
-              <span class="text_b">讲师名称:</span>{{ courseInfo.lecturerResp.lecturerName }}（{{ courseInfo.lecturerResp.lecturerPosition }}）
-            </div>
-            <div class="view_info_item"><span class="text_b">购买人数:</span>{{ courseInfo.countBuy }} 人</div>
-            <div class="view_info_item"><span class="text_b">学习人数:</span>{{ courseInfo.countStudy }} 人</div>
-            <div class="foot_box">
-              <button v-if="courseInfo.allowStudy === 1" class="buy_btn" @click="handleStudy">马上学习</button>
-              <button v-else-if="courseInfo.isFree === 0" class="buy_btn" @click="handleBuy(courseInfo)">立即购买</button>
-              <button v-else-if="courseInfo.isFree === 1" class="buy_btn" @click="handleLogin">登录观看</button>
-              <div class="handle_info_btn">
-                <div class="collect_btn">
-                  <course-collect :course-id="courseInfo.id" :collect-status="courseInfo.courseCollect" />
+              <div v-if="courseInfo.lecturerResp" class="view_info_item">
+                <span class="text_b">讲师名称:</span>{{ courseInfo.lecturerResp.lecturerName }}（{{ courseInfo.lecturerResp.lecturerPosition }}）
+              </div>
+              <div class="view_info_item"><span class="text_b">购买人数:</span>{{ courseInfo.countBuy }} 人</div>
+              <div class="view_info_item"><span class="text_b">学习人数:</span>{{ courseInfo.countStudy }} 人</div>
+              <div class="foot_box">
+                <button v-if="courseInfo.allowStudy === 1" class="buy_btn" @click="handleStudy">马上学习</button>
+                <button v-else-if="courseInfo.isFree === 0" class="buy_btn" @click="handleBuy(courseInfo)">立即购买</button>
+                <button v-else-if="courseInfo.isFree === 1" class="buy_btn" @click="handleLogin">登录观看</button>
+                <div class="handle_info_btn">
+                  <div class="collect_btn">
+                    <course-collect :course-id="courseInfo.id" :collect-status="courseInfo.courseCollect" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -172,83 +172,12 @@
         }
       }
     }
-    .view_info {
-      float: right;
-      width: 600px;
-      height: 260px;
-      position: relative;
-
-      .view_info_item {
-        color: rgb(102, 102, 102);
-        font-size: 14px;
-        margin-top: 5px;
-
-        .text_b {
-          margin-right: 20px;
-          font-weight: bold;
-        }
-      }
-
-      .view_price {
-        border-bottom: 1px solid rgb(102, 102, 102);
-        padding-bottom: 10px;
-        color: rgb(102, 102, 102);
-        font-size: 14px;
-        margin: 20px 0;
-
-        span {
-          font-size: 24px;
-          color: #d51423;
-          font-weight: bold;
-          margin-left: 20px;
-        }
-      }
-
-      p {
-        font-size: 18px;
-        color: #fff;
-        word-break: break-all;
-      }
-
-      .foot_box {
-        position: absolute;
-        bottom: 0px;
-        width: 100%;
-        height: 36px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .buy_btn {
-        display: block;
-        width: 136px;
-        height: 36px;
-        color: #fff;
-        background: #d51423;
-        border: none;
-        border-radius: 6px;
-        line-height: 36px;
-        text-align: center;
-        font-size: 14px;
-        &:hover {
-          text-decoration: none;
-          color: #fff;
-          cursor: pointer;
-        }
-      }
-      .handle_info_btn {
-        display: flex;
-        align-items: center;
-        color: #999;
-        font-size: 14px;
-      }
-    }
 
     .video_box {
+      overflow: hidden;
       .detail_view {
         float: left;
-        width: 575px;
+        width: 504px;
         height: 280px;
         background-size: 100%;
         border-radius: 5px;
@@ -258,6 +187,78 @@
           right: 10px;
           bottom: 30px;
           z-index: 9999;
+        }
+      }
+      .view_info {
+        float: right;
+        width: 650px;
+        height: 260px;
+        position: relative;
+
+        .view_info_item {
+          color: rgb(102, 102, 102);
+          font-size: 14px;
+          margin-top: 5px;
+
+          .text_b {
+            margin-right: 20px;
+            font-weight: bold;
+          }
+        }
+
+        .view_price {
+          border-bottom: 1px solid rgb(102, 102, 102);
+          padding-bottom: 10px;
+          color: rgb(102, 102, 102);
+          font-size: 14px;
+          margin: 20px 0;
+
+          span {
+            font-size: 24px;
+            color: #d51423;
+            font-weight: bold;
+            margin-left: 20px;
+          }
+        }
+
+        p {
+          font-size: 18px;
+          color: #fff;
+          word-break: break-all;
+        }
+
+        .foot_box {
+          position: absolute;
+          bottom: 0px;
+          width: 100%;
+          height: 36px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .buy_btn {
+          display: block;
+          width: 136px;
+          height: 36px;
+          color: #fff;
+          background: #d51423;
+          border: none;
+          border-radius: 6px;
+          line-height: 36px;
+          text-align: center;
+          font-size: 14px;
+          &:hover {
+            text-decoration: none;
+            color: #fff;
+            cursor: pointer;
+          }
+        }
+        .handle_info_btn {
+          display: flex;
+          align-items: center;
+          color: #999;
+          font-size: 14px;
         }
       }
     }
