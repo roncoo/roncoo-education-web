@@ -6,7 +6,7 @@
         v-for="(item, index) in list"
         :key="index"
         :class="{ active: item.id == categoryId }"
-        :style="list.length >= 5 && list.length <= 10 && 'line-height:' + height / list.length + 'px;'"
+        :style="list.length >= 5 && list.length <= 10 && 'line-height:' + (height - 10) / list.length + 'px;'"
         @mouseenter="changeWidth(item)"
       >
         <nuxt-link :to="{ name: 'course-list', query: { categoryId: item.id } }">
@@ -73,10 +73,10 @@
   }
 
   .left_block {
-    border-radius: 10px;
+    padding: 5px 0;
+    border-radius: 10px 0 0 10px;
     width: 200px;
     font-size: 14px;
-    height: 100%;
     background: rgba(0, 0, 0, 0.67843137254902);
 
     &.show_scroll {
@@ -106,7 +106,6 @@
     }
 
     div {
-      line-height: 50px;
       padding: 0 20px;
       position: relative;
       overflow: hidden;
@@ -116,7 +115,7 @@
       &.active {
         background: rgba(255, 255, 255, 0.9);
         border-radius: 10px 0 0 10px;
-        margin: 0px 8px;
+        margin: 0 8px;
         a {
           color: #d51423;
         }
