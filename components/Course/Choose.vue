@@ -1,11 +1,7 @@
 <template>
   <div class="search_type_list">
     <div class="tag">
-      <p v-if="index === 0">一级分类：</p>
-      <p v-else-if="index === 1">二级分类：</p>
-      <p v-else-if="index === 2">三级分类：</p>
-      <p v-else-if="index === 3">四级分类：</p>
-      <p v-else-if="index === 4">五级分类：</p>
+      <p>{{ changeNumToHan(index + 1) }}级分类：</p>
       <div class="item_box">
         <span v-for="(item, index) in menu.list" :key="index" class="search_type_item" :data-id="item.id" :class="{ active: map.key === item.id }" @click="handleClick(item)">
           {{ item.categoryName }}
@@ -16,6 +12,8 @@
 </template>
 
 <script setup>
+  import { changeNumToHan } from '~/utils/base'
+
   const props = defineProps({
     menu: {
       type: Object,
