@@ -2,7 +2,7 @@
   <NuxtLayout>
     <div class="main course-list">
       <!-- 选择分类 -->
-      <course-choose v-for="(category, index) in categoryList" :key="category.active" :menu="category" :index="index" @change="handleChange" />
+      <course-choose v-for="(category, index) in categoryList" :key="index" :menu="category" :index="index" @change="handleChange" />
 
       <!-- 课程列表 -->
       <course-list v-loading="page.loading" :list="page.list" />
@@ -38,9 +38,54 @@
   const showCate = ref(true)
   let selectCategory = []
 
-  onMounted(() => {
-    getCategoryList()
+  onMounted(async () => {
+    // 分类列表
+    await getCategoryList()
+
+    // 初始化分类
+    initCategory()
   })
+
+  const initCategory = () => {
+    if (route.query.categoryId) {
+      const classifyIdObj = {}
+      const key = []
+      const init = (list, prefixId) => {
+        list.forEach((e) => {
+          if (e.id) {
+            const id = prefixId + '_' + e.id
+            key.push(id)
+            classifyIdObj[e.id] = e
+            if (e.list && e.list.length) {
+              return init(e.list, id)
+            }
+          }
+        })
+      }
+      init(categoryList.value[0].list, '')
+      const lists = key.filter((e) => e.indexOf(route.query.categoryId) > -1)
+      if (lists && lists.length) {
+        lists.sort((a, b) => {
+          return a.length - b.length
+        })
+        const ids = lists[0].split('_')
+        if (ids && ids.length) {
+          ids.forEach((id, index) => {
+            const item = classifyIdObj[id]
+            if (item) {
+              selectCategory.push(id)
+              if (item.list.length) {
+                categoryList.value.push({
+                  active: id,
+                  list: [{ id: id, categoryName: '全部' }].concat(item.list)
+                })
+              }
+            }
+          })
+        }
+      }
+    }
+  }
 
   // 分类处理
   const handleChange = (index, row) => {
@@ -53,7 +98,6 @@
         }
         categoryList.value.push({
           active: row.id,
-          all: row.id,
           list: [{ id: row.id, categoryName: '全部' }].concat(row.list)
         })
         showCate.value = true
@@ -73,14 +117,11 @@
 
   // 分类查询
   const getCategoryList = async () => {
-    courseApi.categoryList().then((res) => {
-      selectCategory = []
-      setTimeout(() => {
-        categoryList.value.push({
-          active: '',
-          list: [{ id: '', categoryName: '全部' }].concat(res)
-        })
-      }, 200)
+    const res = await courseApi.categoryList()
+    selectCategory = []
+    categoryList.value.push({
+      active: '',
+      list: [{ id: '', categoryName: '全部' }].concat(res)
     })
   }
 
