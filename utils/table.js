@@ -2,7 +2,6 @@
  * 表单封装
  */
 import { onMounted, reactive } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default function useTable(apis, paras = {}) {
   // 分页对象

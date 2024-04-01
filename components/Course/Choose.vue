@@ -3,7 +3,7 @@
     <div class="tag">
       <p>{{ changeNumToHan(index + 1) }}级分类：</p>
       <div class="item_box">
-        <span v-for="(item, index) in menu.list" :key="index" class="search_type_item" :class="{ active: map.key === item.id }" @click="handleClick(item)">
+        <span v-for="(item, index) in menu.list" :key="index" class="search_type_item" :data-id="item.id" :class="{ active: map.key === item.id }" @click="handleClick(item)">
           {{ item.categoryName }}
         </span>
       </div>

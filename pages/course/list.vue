@@ -35,7 +35,6 @@
 
   // 分类查询
   const categoryList = ref([])
-  const showCate = ref(true)
   let selectCategory = []
 
   onMounted(async () => {
@@ -84,6 +83,12 @@
           })
         }
       }
+    } else {
+      selectCategory = ['']
+      categoryList.value.push({
+        active: '',
+        list: [{ id: '', categoryName: '全部' }].concat(categoryList.value)
+      })
     }
   }
 
@@ -92,7 +97,6 @@
     if (selectCategory[index] !== row.id) {
       selectCategory[index] = row.id
       if (row.list && row.list.length) {
-        showCate.value = false
         if (categoryList.value.length > index + 1) {
           categoryList.value.length = index + 1
         }
@@ -100,13 +104,12 @@
           active: row.id,
           list: [{ id: row.id, categoryName: '全部' }].concat(row.list)
         })
-        showCate.value = true
       } else {
         categoryList.value.length = index + 1
         selectCategory.length = index + 1
       }
     }
-    const querys = Object.assign({ ...(route.query || {}) }, { categoryId: selectCategory[selectCategory.length - 1] || '' })
+    const querys = Object.assign({ ...(route.query || {}) }, { categoryId: selectCategory[index] || '' })
     if (!querys.categoryId) {
       delete querys.categoryId
     }
