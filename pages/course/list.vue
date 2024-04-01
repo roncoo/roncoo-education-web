@@ -83,12 +83,6 @@
           })
         }
       }
-    } else {
-      selectCategory = ['']
-      categoryList.value.push({
-        active: '',
-        list: [{ id: '', categoryName: '全部' }].concat(categoryList.value)
-      })
     }
   }
 
@@ -109,12 +103,12 @@
         selectCategory.length = index + 1
       }
     }
-    const querys = Object.assign({ ...(route.query || {}) }, { categoryId: selectCategory[index] || '' })
-    if (!querys.categoryId) {
-      delete querys.categoryId
+    const queryObj = Object.assign({ ...(route.query || {}) }, { categoryId: selectCategory[index] || '' })
+    if (!queryObj.categoryId) {
+      delete queryObj.categoryId
     }
-    router.push({ query: querys })
-    query.categoryId = querys.categoryId
+    router.push({ query: queryObj })
+    query.categoryId = queryObj.categoryId
     handleQuery()
   }
 
