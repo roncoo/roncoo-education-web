@@ -32,12 +32,15 @@
   const map = reactive({
     key: ''
   })
-  watch(menu, (val) => {
-    console.log(val)
-    if (val) {
-      map.key = val.active
-    }
-  }, { immediate: true })
+  watch(
+    menu,
+    (val) => {
+      if (val) {
+        map.key = val.active
+      }
+    },
+    { immediate: true }
+  )
   const emit = defineEmits(['change'])
   const handleClick = (row) => {
     if (row.id !== map.key) {
