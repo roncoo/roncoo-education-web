@@ -40,7 +40,6 @@
   onMounted(async () => {
     // 分类列表
     await getCategoryList()
-
     // 初始化分类
     initCategory()
   })
