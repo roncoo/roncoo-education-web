@@ -52,7 +52,7 @@
       const init = (list, prefixId) => {
         list.forEach((e) => {
           if (e.id) {
-            const id = prefixId + '_' + e.id
+            const id = prefixId ? prefixId + '_' + e.id : e.id
             key.push(id)
             classifyIdObj[e.id] = e
             if (e.list && e.list.length) {
@@ -61,7 +61,7 @@
           }
         })
       }
-      init(categoryList.value[0].list, '')
+      init(categoryRes, '')
       const lists = key.filter((e) => e.indexOf(route.query.categoryId) > -1)
       if (lists && lists.length) {
         lists.sort((a, b) => {
@@ -69,13 +69,17 @@
         })
         const ids = lists[0].split('_')
         if (ids && ids.length) {
+          categoryList.value.push({
+            active: ids[0],
+            list: [{ id: '', categoryName: '全部' }].concat(categoryRes)
+          })
           ids.forEach((id, index) => {
             const item = classifyIdObj[id]
             if (item) {
               selectCategory.push(id)
               if (item.list.length) {
                 categoryList.value.push({
-                  active: id,
+                  active: ids[index + 1] || id,
                   list: [{ id: id, categoryName: '全部' }].concat(item.list)
                 })
               }
@@ -83,6 +87,12 @@
           })
         }
       }
+      console.log(categoryList)
+    } else {
+      categoryList.value.push({
+        active: '',
+        list: [{ id: '', categoryName: '全部' }].concat(categoryRes)
+      })
     }
   }
 
@@ -113,13 +123,11 @@
   }
 
   // 分类查询
+  let categoryRes = []
   const getCategoryList = async () => {
     const res = await courseApi.categoryList()
+    categoryRes = res
     selectCategory = []
-    categoryList.value.push({
-      active: '',
-      list: [{ id: '', categoryName: '全部' }].concat(res)
-    })
   }
 
   // 分页查询

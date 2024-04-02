@@ -28,14 +28,17 @@
       }
     }
   })
-
   const { menu, index } = toRefs(props)
   const map = reactive({
-    key: menu.value.active
+    key: ''
   })
-
+  watch(menu, (val) => {
+    console.log(val)
+    if (val) {
+      map.key = val.active
+    }
+  }, { immediate: true })
   const emit = defineEmits(['change'])
-
   const handleClick = (row) => {
     if (row.id !== map.key) {
       map.key = row.id

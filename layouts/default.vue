@@ -5,6 +5,9 @@
     <common-footer />
   </el-main>
 </template>
+<script setup>
+  
+</script>
 <style lang="scss" scoped>
   .el-main {
     padding: 0;
