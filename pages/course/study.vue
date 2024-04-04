@@ -126,7 +126,10 @@
       handlePlay(studyRes, data)
     } else if (studyRes.resourceType === 3) {
       // 文档播放
-      handleDoc(studyRes)
+      handleDoc(JSON.parse(studyRes.docStudyConfig).previewUrl)
+    } else if (studyRes.resourceType === 4) {
+      // 图片播放
+      handleDoc(JSON.parse(studyRes.picStudyConfig).previewUrl)
     } else {
       ElMessage.warning('暂不支持该类型资源')
     }
@@ -134,14 +137,16 @@
   }
 
   /**
-   * 文档播放
+   * 文档图片播放
    */
-  function handleDoc(studyRes) {
+  function handleDoc(srcPath) {
     const iframe = document.createElement('iframe')
-    iframe.setAttribute('src', JSON.parse(studyRes.docStudyConfig).previewUrl)
+    iframe.setAttribute('src', srcPath)
     iframe.style.width = '100%'
     iframe.style.height = '100%'
-    document.getElementById('player').appendChild(iframe)
+    const player = document.getElementById('player')
+    player.innerHTML = ''
+    player.appendChild(iframe)
   }
 
   // 音视频播放
