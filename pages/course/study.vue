@@ -31,14 +31,18 @@
               <div v-for="(one, index) in courseInfo.chapterRespList" :key="index">
                 <div class="catalog-chapter">第{{ index + 1 }}章：{{ one.chapterName }}</div>
                 <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: studyPeriodId == two.id }" @click="handleStudy(two)">
-                  <span>
+                  <div class="period-name">
                     &nbsp;&nbsp;
-                    <span v-if="two.resourceResp.resourceType < 3">视频：</span>
-                    <span v-else>文档：</span>
+                    <span v-if="two.resourceResp.resourceType === 1">视频：</span>
+                    <span v-else-if="two.resourceResp.resourceType === 2">音频：</span>
+                    <span v-else-if="two.resourceResp.resourceType === 3">文档：</span>
+                    <span v-else-if="two.resourceResp.resourceType === 4">图片：</span>
+                    <span v-else-if="two.resourceResp.resourceType === 5">压缩包：</span>
+                    <span v-else>未知：</span>
                     {{ index + 1 }}-{{ num + 1 }} {{ two.periodName }}
-                  </span>
-                  <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1">(未更新)</span>
-                  <span v-if="two.isFree">(试看)</span>
+                    <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1">(未更新)</span>
+                    <span v-if="two.isFree">(试看)</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -277,7 +281,8 @@
           color: #fff;
           width: 400px;
           padding: 20px;
-          overflow: hidden;
+          height: calc(100vh - 86px);
+          overflow: auto;
           .catalog-chapter {
             font-size: 16px;
             margin: 15px 0;
@@ -287,6 +292,11 @@
             margin: 10px;
             &:hover {
               color: red;
+            }
+            .period-name {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
           }
           .on {
