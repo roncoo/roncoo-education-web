@@ -8,15 +8,17 @@
       <div v-for="(two, num) in one.periodRespList" :key="num" class="period_info">
         <div class="period_top" :class="{ on: playPeriod == two.id }" @click="handlePlayVideo(two)">
           <span class="period_num">第{{ num + 1 }}讲</span>
+          <span style="margin-right: 5px">
+            <el-tag>{{ getResourceTypeName(two.resourceResp.resourceType) }}</el-tag>
+          </span>
           <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1" class="no_video">(未更新)</span>
           <span>{{ two.periodName }}</span>
           &nbsp;
           <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 2">{{ formatTime(two.resourceResp.videoLength) }}</span>
-          <span v-if="two.resourceResp && two.resourceResp.resourceType >= 3">{{ two.resourceResp.docPage }}页</span>
+          <span v-if="two.resourceResp && two.resourceResp.resourceType === 3">{{ two.resourceResp.docPage }}页</span>
           &nbsp;
-          <span class="period_video" :class="{ no_v: two.resourceResp.resourceType >= 3 }" />
           <span v-if="two.isFree" class="c_blue">(试看)</span>
-          <span v-if="two.periodProgress" class="video_time fr">{{ two.periodProgress }}%</span>
+          <span v-if="two.periodProgress" class="video_time fr"> {{ two.periodProgress }}% </span>
         </div>
       </div>
     </div>
@@ -24,7 +26,7 @@
 </template>
 
 <script setup>
-  import { formatTime } from '~/utils/base.js'
+  import { formatTime, getResourceTypeName } from '~/utils/base.js'
 
   const router = useRouter()
   const route = useRoute()

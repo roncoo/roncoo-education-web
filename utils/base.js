@@ -1,3 +1,18 @@
+export function getResourceTypeName(resourceType) {
+  if (resourceType === 1) {
+    return '视频'
+  } else if (resourceType === 2) {
+    return '音频'
+  } else if (resourceType === 3) {
+    return '文档'
+  } else if (resourceType === 4) {
+    return '图片'
+  } else if (resourceType === 5) {
+    return '压缩包'
+  } else {
+    return '未知'
+  }
+}
 /**
  * 判断是否是外部链接
  * @param path

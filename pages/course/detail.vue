@@ -19,6 +19,7 @@
           <div class="video_box">
             <div id="player" class="detail_view" :style="'background-image:url(' + courseInfo.courseLogo + ')'" />
             <div class="view_info">
+              <!-- 课程详情 -->
               <p>{{ courseInfo.courseName }}</p>
               <div class="view_price">
                 <div>
@@ -48,7 +49,6 @@
         </div>
       </div>
     </div>
-
     <div class="main">
       <!-- 章节详情 -->
       <div class="course_info clearfix">
