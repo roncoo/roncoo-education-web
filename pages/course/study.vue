@@ -42,6 +42,9 @@
                     {{ index + 1 }}-{{ num + 1 }} {{ two.periodName }}
                     <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1">(未更新)</span>
                     <span v-if="two.isFree">(试看)</span>
+                    <div style="width: 300px; margin-left: 50px">
+                      <el-progress :percentage="two.periodProgress" :stroke-width="2" :status="two.periodProgress > 99 ? 'success' : ''" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -155,6 +158,8 @@
 
   // 音视频播放
   function handlePlay(playRes, course) {
+    // 清除内容
+    document.getElementById('player').innerHTML = ''
     if (playRes.vodPlatform === 1) {
       // 领课云，这里也使用保利威的播放器
       myPolyvPlayer = getClientForPri(playRes, course.speedDouble, course.speedDrag)

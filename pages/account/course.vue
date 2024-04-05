@@ -7,8 +7,11 @@
             <img v-if="scope.row.courseResp" :src="scope.row.courseResp.courseLogo" :alt="scope.row.courseResp.courseName" class="course-img" />
             <div v-if="scope.row.courseResp" class="course-info">
               <div class="course-info-title">{{ scope.row.courseResp.courseName }}<span v-if="scope.row.courseResp.isFree === 1" style="margin: 0">【免费课】</span></div>
-              <div v-if="scope.row.periodName">学习至：{{ scope.row.periodName }}（{{ scope.row.periodProgress }}%）| {{ scope.row.periodTime }}</div>
-              <div>总进度：{{ scope.row.courseProgress ? scope.row.courseProgress : 0 }}%</div>
+              <div v-if="scope.row.periodName" class="course-info-title">学习至：{{ scope.row.periodName }}（{{ scope.row.periodProgress }}%）| {{ scope.row.periodTime }}</div>
+              <!-- 总进度：{{ scope.row.courseProgress ? scope.row.courseProgress : 0 }}%-->
+              <div class="course-info-title" style="width: 300px">
+                <el-progress :percentage="scope.row.courseProgress" :status="scope.row.courseProgress > 99 ? 'success' : ''" />
+              </div>
             </div>
           </template>
         </el-table-column>
@@ -45,7 +48,7 @@
   .course-info {
     float: left;
     font-size: 12px;
-    div {
+    .course-info-title {
       margin-left: 20px;
       height: 33px;
       line-height: 33px;
