@@ -38,7 +38,7 @@
                     <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1">(未更新)</span>
                     <span v-if="two.isFree">(试看)</span>
                     <div style="width: 300px; margin-left: 50px">
-                      <el-progress :percentage="two.periodProgress" :stroke-width="2" :status="two.periodProgress > 99 ? 'success' : ''" />
+                      <el-progress :percentage="two.periodProgress ? two.periodProgress : '0'" :stroke-width="2" :status="two.periodProgress > 99 ? 'success' : ''" />
                     </div>
                   </div>
                 </div>
@@ -90,7 +90,7 @@
       }
 
       progressInterval = setInterval(() => {
-        handleStudyRecord()
+        handleStudyRecordForVod()
       }, 3000)
     }
 
@@ -104,7 +104,7 @@
     window.s2j_onPlayOver = () => {
       // 播放完成
       clearInterval(progressInterval)
-      handleStudyRecord()
+      handleStudyRecordForVod()
     }
   })
 
@@ -149,6 +149,9 @@
     const player = document.getElementById('player')
     player.innerHTML = ''
     player.appendChild(iframe)
+
+    // 记录进度
+    handleStudyRecord()
   }
 
   // 音视频播放
@@ -166,8 +169,9 @@
       ElMessage.warning('暂不支持该类型的播放')
     }
   }
+
   // 记录进度
-  function handleStudyRecord() {
+  function handleStudyRecordForVod() {
     userStudy.currentDuration = myPolyvPlayer.j2s_getCurrentTime()
     courseApi
       .studyProgress(userStudy)
@@ -179,6 +183,24 @@
       })
       .catch((error) => {
         myPolyvPlayer.j2s_pauseVideo()
+        ElMessageBox.confirm('系统异常将暂停观看，请联系管理员', '提示', { confirmButtonText: '返回', cancelButtonText: '取消', type: 'warning' }).then(() => {
+          handleBack()
+        })
+      })
+  }
+
+  // 记录进度
+  function handleStudyRecord() {
+    userStudy.currentPage = 1
+    courseApi
+      .studyProgress(userStudy)
+      .then((res) => {
+        if (res === 'OK') {
+          // 完成，暂停同步
+          clearInterval(progressInterval)
+        }
+      })
+      .catch((error) => {
         ElMessageBox.confirm('系统异常将暂停观看，请联系管理员', '提示', { confirmButtonText: '返回', cancelButtonText: '取消', type: 'warning' }).then(() => {
           handleBack()
         })
