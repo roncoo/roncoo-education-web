@@ -89,3 +89,64 @@ export function changeNumToHan(num) {
   result = result.replace(/^一十/g, '十')
   return result
 }
+
+// 获取操作系统信息
+export function getOsInfo() {
+  const userAgent = navigator.userAgent
+  console.log(userAgent)
+  let name = 'unknown'
+  if (userAgent.indexOf('Windows Phone') > -1) {
+    name = 'Windows Phone'
+  } else if (userAgent.indexOf('Windows NT') > -1) {
+    name = 'Windows'
+  } else if (userAgent.indexOf('Mac') > -1) {
+    name = 'Mac'
+  } else if (userAgent.indexOf('X11') > -1) {
+    name = 'UNIX'
+  } else if (userAgent.indexOf('Linux') > -1) {
+    name = 'Linux'
+  } else if (userAgent.indexOf('iPhone') > -1) {
+    name = 'iOS'
+  } else if (userAgent.indexOf('iPad') > -1) {
+    name = 'iOS'
+  } else if (userAgent.indexOf('iPod') > -1) {
+    name = 'iOS'
+  } else if (userAgent.indexOf('Android') > -1) {
+    name = 'Android'
+  } else if (userAgent.indexOf('BlackBerry') > -1) {
+    name = 'BlackBerry'
+  } else if (userAgent.indexOf('webOS') > -1) {
+    name = 'webOS'
+  }
+  return name
+}
+
+export function getBrowserInfo() {
+  /* eslint-disable */
+  const Sys = {}
+  const ua = navigator.userAgent.toLowerCase()
+  let s
+  ;(s = ua.match(/rv:([\d.]+)\) like gecko/))
+    ? (Sys.ie = s[1])
+    : (s = ua.match(/msie ([\d]+)/))
+      ? (Sys.ie = s[1])
+      : (s = ua.match(/edge\/([\d]+)/))
+        ? (Sys.edge = s[1])
+        : (s = ua.match(/firefox\/([\d]+)/))
+          ? (Sys.firefox = s[1])
+          : (s = ua.match(/(?:opera|opr).([\d]+)/))
+            ? (Sys.opera = s[1])
+            : (s = ua.match(/chrome\/([\d]+)/))
+              ? (Sys.chrome = s[1])
+              : (s = ua.match(/version\/([\d]+).*safari/))
+                ? (Sys.safari = s[1])
+                : 0
+  // 根据关系进行判断
+  if (Sys.ie) return { name: 'IE', version: Sys.ie }
+  if (Sys.edge) return { name: 'EDGE', version: Sys.edge }
+  if (Sys.firefox) return { name: 'Firefox', version: Sys.firefox }
+  if (Sys.chrome) return { name: 'Chrome', version: Sys.chrome }
+  if (Sys.opera) return { name: 'Opera', version: Sys.opera }
+  if (Sys.safari) return { name: 'Safari', version: Sys.safari }
+  return { name: 'Unkonwn', version: '0.0.0' }
+}

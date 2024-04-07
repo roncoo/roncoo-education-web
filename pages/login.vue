@@ -39,6 +39,7 @@
 <script setup>
   import { loginApi } from '~/api/login.js'
   import { useUserStore } from '~/store/modules/user'
+  import { getBrowserInfo, getOsInfo } from '~/utils/base'
 
   useHead({
     title: '用户登录',
@@ -86,6 +87,8 @@
 
     loading.value = true
     try {
+      loginForm.os = getOsInfo()
+      loginForm.browser = getBrowserInfo().name
       const res = await loginApi.userLogin(loginForm)
       setToken(res.token)
       const history = getStorage('history')
