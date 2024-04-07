@@ -93,7 +93,6 @@ export function changeNumToHan(num) {
 // 获取操作系统信息
 export function getOsInfo() {
   const userAgent = navigator.userAgent
-  console.log(userAgent)
   let name = 'unknown'
   if (userAgent.indexOf('Windows Phone') > -1) {
     name = 'Windows Phone'
