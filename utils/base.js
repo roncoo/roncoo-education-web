@@ -121,8 +121,11 @@ export function getOsInfo() {
   return name
 }
 
+/**
+ * 获取浏览器信息
+ * @returns {{name: string, version: string}}
+ */
 export function getBrowserInfo() {
-  /* eslint-disable */
   const Sys = {}
   const ua = navigator.userAgent.toLowerCase()
   let s
