@@ -34,7 +34,7 @@
 </script>
 <style lang="scss" scoped>
   .lecturer {
-    background: #1e9fff;
+    background: #333;
     color: #fff;
 
     .lecturer-info {
