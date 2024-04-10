@@ -75,7 +75,7 @@ request.interceptors.response.use(
     return Promise.reject(response)
   },
   (error) => {
-    if (error.response && error.response.status === 500 && error.response.data.message) {
+    if (error.response && error.response.status === 500 && error.response.data.msg) {
       ElMessage.error({ message: error.response.data.msg, duration: 5 * 1000 })
     } else {
       console.error(error)

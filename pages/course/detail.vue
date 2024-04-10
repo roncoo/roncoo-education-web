@@ -69,16 +69,18 @@
           <div class="teacher_info clearfix">
             <span class="head">讲师简介</span>
             <div class="teacher_msg">
-              <div v-if="courseInfo.lecturerResp" class="teacher_msg_right">
-                <img v-if="courseInfo.lecturerResp.lecturerHead" class="teacher_phone" :src="courseInfo.lecturerResp.lecturerHead" alt="" />
-                <img v-else class="teacher_phone" src="~/assets/image/common_head.jpg" alt="" />
-                <div class="teacher_info_content">
-                  <span class="teacher_name">{{ courseInfo.lecturerResp.lecturerName }}</span>
-                  <br />
-                  {{ courseInfo.lecturerResp.lecturerPosition }}
+              <nuxt-link target="_blank" :to="{ name: 'lecturer-detail', query: { id: courseInfo.lecturerResp.id } }">
+                <div v-if="courseInfo.lecturerResp" class="teacher_msg_right">
+                  <img v-if="courseInfo.lecturerResp.lecturerHead" class="teacher_phone" :src="courseInfo.lecturerResp.lecturerHead" alt="" />
+                  <img v-else class="teacher_phone" src="~/assets/image/common_head.jpg" alt="" />
+                  <div class="teacher_info_content">
+                    <span class="teacher_name">{{ courseInfo.lecturerResp.lecturerName }}</span>
+                    <br />
+                    {{ courseInfo.lecturerResp.lecturerPosition }}
+                  </div>
                 </div>
-              </div>
-              <div class="info_box" v-html="courseInfo.lecturerResp.introduce" />
+              </nuxt-link>
+              <div class="info_box" v-html="courseInfo.lecturerResp?.introduce" />
             </div>
           </div>
         </div>
@@ -106,7 +108,7 @@
     title: courseInfo.value?.courseName,
     meta: [
       { hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' },
-      { hid: 'description', name: 'description', content: courseInfo.lecturerResp?.introduce }
+      { hid: 'description', name: 'description', content: courseInfo.value?.lecturerResp?.introduce }
     ]
   })
 
