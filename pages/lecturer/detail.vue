@@ -10,10 +10,11 @@
       </div>
     </div>
     <div class="course">
-      <div class="course-info">
+      <div v-if="lecturerInfo.courseViewVO.length > 0" class="course-info">
         <!-- 课程列表 -->
         <course-list :list="lecturerInfo.courseViewVO" />
       </div>
+      <div v-else class="no-data">暂无数据</div>
     </div>
   </NuxtLayout>
 </template>

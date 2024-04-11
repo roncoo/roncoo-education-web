@@ -32,6 +32,13 @@ a {
 .fr{
   float: right;
 }
+//
+.no-data{
+  margin: calc((100vh - 346px)/2) auto;
+  text-align: center;
+  font-size: 20px;
+}
+
 // 滚动条样式
 ::-webkit-scrollbar {
   width: 5px;
