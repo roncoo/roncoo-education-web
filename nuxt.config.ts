@@ -28,7 +28,7 @@ export default defineNuxtConfig({
       }
     },
     optimizeDeps: {
-      include: ['element-plus', 'element-plus/es/constants/**']
+      include: ['element-plus/es/components/**']
     }
   },
   telemetry: false,
