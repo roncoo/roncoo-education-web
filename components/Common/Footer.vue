@@ -1,19 +1,19 @@
 <template>
-  <el-footer class="i_bottom">
+  <el-footer v-if="info" class="footer-bottom">
     <div v-if="info.websiteCopyright" class="copyright">
       <span v-html="info.websiteCopyright" />
     </div>
     <div class="icp_num">
       <a href="http://www.doityun.com/" target="_blank" class="lingke_link">IT云提供计算服务</a>
-      <span v-if="info.websiteIcp"
-        >&nbsp;|&nbsp;
+      <span v-if="info.websiteIcp">
+        &nbsp;|&nbsp;
         <a href="http://www.miitbeian.gov.cn/" target="_blank" class="lingke_link">{{ info.websiteIcp }}</a>
       </span>
-      <span v-if="info.websitePrn"
-        >&nbsp;|&nbsp;
-        <a :href="'http://www.beian.gov.cn/portal/registerSystemprops.info?recordcode=' + info.websitePrnNo" target="_blank" class="lingke_link"
-          ><img src="../../assets/image/common_prn.png" class="prn_icon" alt="" />&nbsp;{{ info.websitePrn }}</a
-        >
+      <span v-if="info.websitePrn">
+        &nbsp;|&nbsp;
+        <a :href="'http://www.beian.gov.cn/portal/registerSystemprops.info?recordcode=' + info.websitePrnNo" target="_blank" class="lingke_link">
+          <img src="../../assets/image/common_prn.png" class="prn_icon" alt="" />&nbsp;{{ info.websitePrn }}
+        </a>
       </span>
     </div>
   </el-footer>
@@ -35,7 +35,7 @@
   })
 </script>
 <style lang="scss" scoped>
-  .i_bottom {
+  .footer-bottom {
     background: rgb(51, 51, 51);
     z-index: 999;
   }
