@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import config from './config/index'
+import config from './config/index.js'
 // eslint-disable-next-line no-undef
 export default defineNuxtConfig({
   experimental: {
@@ -26,6 +26,9 @@ export default defineNuxtConfig({
           drop_debugger: true
         }
       }
+    },
+    optimizeDeps: {
+      include: ['element-plus', 'element-plus/es/constants/**']
     }
   },
   telemetry: false,
