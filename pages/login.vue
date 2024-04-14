@@ -13,7 +13,7 @@
                 <el-input v-model="loginForm.mobile" placeholder="用户名" autofocus />
               </el-form-item>
               <el-form-item class="form-group" prop="password">
-                <el-input v-model="loginForm.password" placeholder="密码" type="password" show-password />
+                <el-input v-model="mobilePwd" placeholder="密码" type="password" show-password />
               </el-form-item>
               <el-form-item class="form-group" prop="verCode">
                 <el-input v-model="loginForm.verCode" class="var-input" placeholder="验证码" />
@@ -38,20 +38,29 @@
 </template>
 <script setup>
   import { loginApi } from '~/api/login.js'
-  import { useUserStore } from '~/store/modules/user'
-  import { getBrowserInfo, getOsInfo } from '~/utils/base'
-
-  useHead({
-    title: '用户登录',
-    meta: [{ hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' }]
-  })
+  import { encrypt, getBrowserInfo, getOsInfo } from '~/utils/base'
+  import { indexApi } from '~/api/index'
 
   const router = useRouter()
   const loading = ref(false)
 
-  // 登录
+  // 密码
+  const mobilePwd = ref('')
+
+  // 登录信息
   const loginForm = reactive({
     isAgreement: true
+  })
+
+  const { data: websiteInfo } = await useAsyncData('website', async () => {
+    return await indexApi.websiteInfo()
+  })
+  useHead({
+    title: '用户登录',
+    meta: [
+      { hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' },
+      { hid: 'description', name: 'description', content: websiteInfo.value?.websiteDesc }
+    ]
   })
 
   onMounted(() => {
@@ -71,7 +80,7 @@
   }
 
   async function handleLogin() {
-    if (!loginForm.password) {
+    if (!mobilePwd) {
       ElMessage.warning('请输入密码')
       return
     }
@@ -79,14 +88,14 @@
       ElMessage.warning('请填写验证码')
       return
     }
-
     if (!loginForm.isAgreement) {
       ElMessage.warning('请阅读并同意用户协议')
       return
     }
-
     loading.value = true
     try {
+      // 密码加密
+      loginForm.mobilePwdEncrypt = encrypt(mobilePwd.value, websiteInfo.value.rsaLoginPublicKey)
       loginForm.os = getOsInfo()
       loginForm.browser = getBrowserInfo().name
       const res = await loginApi.userLogin(loginForm)

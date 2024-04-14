@@ -1,3 +1,5 @@
+import { JSEncrypt } from 'jsencrypt'
+
 export function getResourceTypeName(resourceType) {
   if (resourceType === 1) {
     return '视频'
@@ -151,4 +153,10 @@ export function getBrowserInfo() {
   if (Sys.opera) return { name: 'Opera', version: Sys.opera }
   if (Sys.safari) return { name: 'Safari', version: Sys.safari }
   return { name: 'Unkonwn', version: '0.0.0' }
+}
+
+export function encrypt(password, publicKey) {
+  const crypt = new JSEncrypt()
+  crypt.setPublicKey(publicKey)
+  return crypt.encrypt(password)
 }

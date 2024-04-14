@@ -22,10 +22,10 @@
                 </el-input>
               </el-form-item>
               <el-form-item prop="loginPwd">
-                <el-input v-model="loginForm.loginPwd" type="password" show-password placeholder="密码由6-20位大写和小写字母和数字组成" />
+                <el-input v-model="mobilePwd" type="password" show-password placeholder="密码由6-20位大写和小写字母和数字组成" />
               </el-form-item>
               <el-form-item prop="repeatPwd">
-                <el-input v-model="loginForm.repeatPwd" type="password" show-password placeholder="确认密码" />
+                <el-input v-model="mobilePwdRepeat" type="password" show-password placeholder="确认密码" />
               </el-form-item>
               <el-button class="login-button" type="primary" size="large" @click="onSubmit"> 重 置 </el-button>
             </el-form>
@@ -37,17 +37,38 @@
 </template>
 <script setup>
   import { loginApi } from '~/api/login.js'
+  import { indexApi } from '~/api/index'
 
   const router = useRouter()
   const loading = ref(false)
 
-  // 注册
+  // 信息
   const loginForm = reactive({})
+
+  // 密码
+  const mobilePwd = ref('')
+  const mobilePwdRepeat = ref('')
+
+  const { data: websiteInfo } = await useAsyncData('website', async () => {
+    return await indexApi.websiteInfo()
+  })
+
+  useHead({
+    title: '密码重置',
+    meta: [
+      { hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' },
+      { hid: 'description', name: 'description', content: websiteInfo.value?.websiteDesc }
+    ]
+  })
 
   // 获取验证码
   async function getCode() {
     if (!loginForm.mobile) {
       ElMessage.error('请输入手机号')
+      return
+    }
+    if (!/^1[3456789]\d{9}$/.test(loginForm.mobile)) {
+      ElMessage.error('请输入正确的手机号')
       return
     }
     loading.value = true
@@ -60,8 +81,26 @@
   }
 
   async function onSubmit() {
+    if (!loginForm.mobile) {
+      ElMessage.error('请输入手机号')
+      return
+    }
+    if (!/^1[3456789]\d{9}$/.test(loginForm.mobile)) {
+      ElMessage.error('请输入正确的手机号')
+      return
+    }
+    if (!mobilePwd) {
+      ElMessage.error('请输入密码')
+      return
+    }
+    if (mobilePwd !== mobilePwdRepeat) {
+      ElMessage.error('两次密码输入不一致')
+      return
+    }
     loading.value = true
     try {
+      // 密码加密
+      loginForm.mobilePwdEncrypt = encrypt(mobilePwd.value, websiteInfo.value.rsaLoginPublicKey)
       const res = await loginApi.updatePassword(loginForm)
       ElMessage.success(res)
       await router.replace({ path: '/login' })

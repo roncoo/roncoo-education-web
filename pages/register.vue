@@ -8,22 +8,22 @@
             <div>已有账号，<nuxt-link to="/login"> 立即登录 </nuxt-link></div>
           </div>
           <div class="login_form">
-            <el-form v-loading="loading" :model="loginForm" @keyup.enter="onSubmit">
+            <el-form v-loading="loading" :model="registerForm" @keyup.enter="onSubmit">
               <el-form-item prop="mobile">
-                <el-input v-model="loginForm.mobile" placeholder="手机号" autofocus />
+                <el-input v-model="registerForm.mobile" placeholder="手机号" autofocus />
               </el-form-item>
               <el-form-item prop="verificationCode">
-                <el-input v-model="loginForm.code" placeholder="验证码">
+                <el-input v-model="registerForm.code" placeholder="验证码">
                   <template #suffix>
                     <el-button link @click="getCode"> 获取验证码 </el-button>
                   </template>
                 </el-input>
               </el-form-item>
               <el-form-item prop="loginPwd">
-                <el-input v-model="loginForm.mobilePwd" type="password" show-password placeholder="密码由6-20位大写和小写字母和数字组成" />
+                <el-input v-model="mobilePwd" type="password" show-password placeholder="密码由6-20位大写和小写字母和数字组成" />
               </el-form-item>
               <el-form-item prop="repeatPwd">
-                <el-input v-model="loginForm.repassword" type="password" show-password placeholder="确认密码" />
+                <el-input v-model="mobilePwdRepeat" type="password" show-password placeholder="确认密码" />
               </el-form-item>
               <el-button class="login-button" type="primary" size="large" @click="onSubmit"> 注 册 </el-button>
             </el-form>
@@ -35,22 +35,42 @@
 </template>
 <script setup>
   import { loginApi } from '~/api/login.js'
+  import { indexApi } from '~/api'
 
   const router = useRouter()
   const loading = ref(false)
 
-  // 注册
-  const loginForm = reactive({})
+  // 密码
+  const mobilePwd = ref('')
+  const mobilePwdRepeat = ref('')
+
+  // 注册信息
+  const registerForm = reactive({})
+  const { data: websiteInfo } = await useAsyncData('website', async () => {
+    return await indexApi.websiteInfo()
+  })
+
+  useHead({
+    title: '用户注册',
+    meta: [
+      { hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' },
+      { hid: 'description', name: 'description', content: websiteInfo.value?.websiteDesc }
+    ]
+  })
 
   // 获取验证码
   async function getCode() {
-    if (!loginForm.mobile) {
+    if (!registerForm.mobile) {
       ElMessage.error('请输入手机号')
+      return
+    }
+    if (!/^1[3456789]\d{9}$/.test(registerForm.mobile)) {
+      ElMessage.error('请输入正确的手机号')
       return
     }
     loading.value = true
     try {
-      const res = await loginApi.getMobileCode({ mobile: loginForm.mobile })
+      const res = await loginApi.getMobileCode({ mobile: registerForm.mobile })
       ElMessage.success(res)
     } finally {
       loading.value = false
@@ -58,9 +78,27 @@
   }
 
   async function onSubmit() {
+    if (!registerForm.mobile) {
+      ElMessage.error('请输入手机号')
+      return
+    }
+    if (!/^1[3456789]\d{9}$/.test(registerForm.mobile)) {
+      ElMessage.error('请输入正确的手机号')
+      return
+    }
+    if (!mobilePwd) {
+      ElMessage.error('请输入密码')
+      return
+    }
+    if (mobilePwd !== mobilePwdRepeat) {
+      ElMessage.error('两次密码输入不一致')
+      return
+    }
     loading.value = true
     try {
-      const res = await loginApi.register(loginForm)
+      // 密码加密
+      registerForm.mobilePwdEncrypt = encrypt(mobilePwd.value, websiteInfo.value.rsaLoginPublicKey)
+      const res = await loginApi.register(registerForm)
       ElMessage.success(res)
       await router.replace({ path: '/login' })
     } catch (error) {
