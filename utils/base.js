@@ -1,4 +1,4 @@
-import { JSEncrypt } from 'jsencrypt'
+import { KEYUTIL, KJUR } from 'jsrsasign'
 
 export function getResourceTypeName(resourceType) {
   if (resourceType === 1) {
@@ -156,7 +156,6 @@ export function getBrowserInfo() {
 }
 
 export function encrypt(password, publicKey) {
-  const crypt = new JSEncrypt()
-  crypt.setPublicKey(publicKey)
-  return crypt.encrypt(password)
+  publicKey = `-----BEGIN PUBLIC KEY-----\n` + publicKey + `\n-----END PUBLIC KEY-----`
+  return KJUR.crypto.Cipher.encrypt(password, KEYUTIL.getKey(publicKey))
 }

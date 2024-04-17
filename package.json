@@ -15,7 +15,7 @@
     "dayjs": "1.11.3",
     "element-plus": "^2.6.3",
     "js-cookie": "^3.0.5",
-    "jsencrypt": "^3.3.2",
+    "jsrsasign": "^10.9.0",
     "nuxt": "^3.11.2",
     "pinia": "^2.1.7",
     "qrcode": "^1.5.3",

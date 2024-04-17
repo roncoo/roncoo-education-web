@@ -28,7 +28,7 @@ export default defineNuxtConfig({
       }
     },
     optimizeDeps: {
-      include: ['dayjs', 'element-plus/es/components/**']
+      include: ['element-plus/es/components/**']
     }
   },
   telemetry: false,
