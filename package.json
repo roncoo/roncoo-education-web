@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "axios": "^1.6.8",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.3",
     "element-plus": "^2.7.0",
     "js-cookie": "^3.0.5",
     "jsencrypt": "^3.3.2",
