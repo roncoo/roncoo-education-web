@@ -77,7 +77,7 @@
     border-radius: 10px 0 0 10px;
     width: 200px;
     font-size: 14px;
-    background: rgba(0, 0, 0, 0.67843137254902);
+    background: #39364d;
 
     &.show_scroll {
       overflow-y: auto;
@@ -127,7 +127,7 @@
     }
 
     a {
-      color: #ccc;
+      color: #fff;
       display: block;
 
       &:hover {
