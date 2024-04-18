@@ -85,6 +85,7 @@
     height: 70px;
     display: flex;
     justify-content: center;
+    border: 1px solid #ebeef5;
   }
 
   .active {
