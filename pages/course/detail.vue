@@ -20,7 +20,9 @@
             <div id="player" class="detail_view" :style="'background-image:url(' + courseInfo.courseLogo + ')'" />
             <div class="view_info">
               <!-- 课程详情 -->
-              <p>{{ courseInfo.courseName }}</p>
+              <div class="view_info_course">
+                {{ courseInfo.courseName }}
+              </div>
               <div class="view_price">
                 <div>
                   价格:<span v-if="courseInfo.coursePrice === 0">免费</span>
@@ -150,7 +152,9 @@
 </script>
 <style lang="scss" scoped>
   .detail_content {
-    background: rgb(51, 51, 51);
+    background: #fff;
+    color: #999;
+    font-size: 14px;
     .detail_body {
       width: 1200px;
       margin: 0 auto;
@@ -161,16 +165,8 @@
         float: left;
         line-height: 57px;
         margin: 0 5px;
-        color: #fff;
-        font-size: 14px;
         span {
           margin-left: 10px;
-        }
-        a {
-          color: #fff;
-          &:hover {
-            text-decoration: none;
-          }
         }
       }
     }
@@ -194,39 +190,33 @@
       .view_info {
         float: right;
         width: 650px;
-        height: 260px;
+        height: 270px;
         position: relative;
 
         .view_info_item {
-          color: rgb(102, 102, 102);
-          font-size: 14px;
-          margin-top: 5px;
-
+          line-height: 30px;
           .text_b {
             margin-right: 20px;
-            font-weight: bold;
           }
         }
 
         .view_price {
-          border-bottom: 1px solid rgb(102, 102, 102);
-          padding-bottom: 10px;
+          background: #f5f5f5;
           color: rgb(102, 102, 102);
-          font-size: 14px;
-          margin: 20px 0;
-
+          padding: 15px 10px;
+          margin: 10px 0;
           span {
-            font-size: 24px;
+            font-size: 20px;
             color: #d51423;
             font-weight: bold;
             margin-left: 20px;
           }
         }
 
-        p {
+        .view_info_course {
           font-size: 18px;
-          color: #fff;
-          word-break: break-all;
+          margin: 5px 0;
+          color: #333;
         }
 
         .foot_box {
@@ -243,8 +233,8 @@
           display: block;
           width: 136px;
           height: 36px;
+          background: #2256f6;
           color: #fff;
-          background: #d51423;
           border: none;
           border-radius: 6px;
           line-height: 36px;
