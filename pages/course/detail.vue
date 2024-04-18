@@ -17,7 +17,7 @@
         </div>
         <div class="clearfix">
           <div class="video_box">
-            <div id="player" class="detail_view" :style="'background-image:url(' + courseInfo.courseLogo + ')'" />
+            <img class="detail_view" :src="courseInfo.courseLogo" :alt="课程logo" />
             <div class="view_info">
               <!-- 课程详情 -->
               <div class="view_info_course">
