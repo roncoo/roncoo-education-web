@@ -1,13 +1,18 @@
 <template>
   <div class="zone_body">
-    <div v-for="(that, int) in props.list" :key="int" class="zone_body_course">
-      <nuxt-link target="_blank" :to="{ name: 'course-detail', query: { id: that.id } }">
-        <img :src="that.courseLogo" alt="" />
-        <div class="course_name" v-html="that.courseName" />
-        <span v-if="that.coursePrice === 0" class="price_box">免费</span>
-        <span v-else class="price_box">
-          ￥{{ that.coursePrice }} <span style="text-decoration-line: line-through; font-size: 12px">￥{{ that.rulingPrice }}</span>
-        </span>
+    <div v-for="(course, int) in props.list" :key="int" class="zone_body_course">
+      <nuxt-link target="_blank" :to="{ name: 'course-detail', query: { id: course.id } }">
+        <img :src="course.courseLogo" alt="" />
+        <div class="course_name" v-html="course.courseName" />
+        <div class="course_desc">
+          <div v-if="course.coursePrice === 0" class="price_box">免费</div>
+          <div v-else class="price_box">
+            ￥{{ course.coursePrice }} <span style="text-decoration-line: line-through; font-size: 12px">￥{{ course.rulingPrice }}</span>
+          </div>
+          <div class="collect">
+            <course-collect :course-id="course.id" />
+          </div>
+        </div>
       </nuxt-link>
     </div>
   </div>
@@ -27,7 +32,7 @@
     .zone_body_course {
       float: left;
       width: 285px;
-      height: 222px;
+      height: 255px;
       border-radius: 6px;
       margin: 0px 20px 20px 0px;
 
@@ -60,16 +65,28 @@
           padding-left: 10px;
           overflow: hidden;
           text-overflow: ellipsis;
-          white-space: nowrap;
-          word-break: break-all;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          line-height: 25px;
+          height: 50px;
         }
 
-        .price_box {
-          font-size: 16px;
-          position: absolute;
-          bottom: 10px;
-          left: 10px;
-          color: red;
+        .course_desc {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .price_box {
+            font-size: 16px;
+            margin-top: 5px;
+            margin-left: 10px;
+            color: red;
+          }
+
+          .collect {
+            margin-right: 8px;
+            font-size: 12px;
+          }
         }
       }
     }

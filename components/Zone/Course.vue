@@ -33,7 +33,7 @@
           display: inline-block;
           width: 4px;
           height: 24px;
-          background: #333;
+          background: blue;
           position: relative;
           top: 4px;
         }
