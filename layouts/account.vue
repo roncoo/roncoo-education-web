@@ -19,10 +19,10 @@
   </el-main>
 </template>
 <script setup>
-  import course from '~/assets/svg/course.svg'
-  import collect from '~/assets/svg/collect.svg'
-  import order from '~/assets/svg/order.svg'
-  import user from '~/assets/svg/user.svg'
+  import course from 'assets/svg/account/course.svg'
+  import collect from 'assets/svg/account/collect.svg'
+  import order from 'assets/svg/account/order.svg'
+  import user from 'assets/svg/account/user.svg'
 
   useHead({
     title: '用户中心'

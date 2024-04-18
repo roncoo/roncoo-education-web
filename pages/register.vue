@@ -15,7 +15,7 @@
               <el-form-item prop="verificationCode">
                 <el-input v-model="registerForm.code" placeholder="验证码">
                   <template #suffix>
-                    <el-button link @click="getCode"> 获取验证码 </el-button>
+                    <el-button link type="primary" @click="getCode"> 获取验证码 </el-button>
                   </template>
                 </el-input>
               </el-form-item>

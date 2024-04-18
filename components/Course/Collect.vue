@@ -1,7 +1,8 @@
 <template>
   <div class="collect" @click="handleCollect">
-    <img :class="{ colors: status }" src="@/assets/svg/collect.svg" alt="收藏" />
-    收藏
+    <img v-if="!status" src="../../assets/svg/collect.svg" alt="收藏" />
+    <img v-if="status" src="../../assets/svg/favorite.svg" alt="已收藏" />
+    <span>收藏</span>
   </div>
 </template>
 
@@ -33,7 +34,7 @@
 
   const handleCollect = () => {
     courseApi.courseCollectAdd({ courseId: props.courseId }).then((res) => {
-      if (res === 'add') {
+      if (res && res === 'add') {
         status.value = true
         ElMessage.success('收藏成功')
       } else {
@@ -46,18 +47,15 @@
 
 <style lang="scss" scoped>
   .collect {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 14px;
     cursor: pointer;
     float: right;
     margin-left: 20px;
     img {
-      vertical-align: middle;
-      margin-top: -5px;
       width: 20px;
     }
-  }
-
-  .colors {
-    filter: drop-shadow(0px 0px 1px #70ff00);
   }
 </style>
