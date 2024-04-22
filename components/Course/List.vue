@@ -27,7 +27,7 @@
 </script>
 <style lang="scss" scoped>
   .zone_body {
-    margin-top: 25px;
+    margin-top: 20px;
     overflow: hidden;
     .zone_body_course {
       float: left;

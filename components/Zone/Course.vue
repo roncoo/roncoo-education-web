@@ -28,6 +28,7 @@
     margin: 0 auto;
     background: #f6f8fb;
     .i_zone {
+      margin-top: 30px;
       .zone_header {
         .col_block {
           display: inline-block;
@@ -37,17 +38,14 @@
           position: relative;
           top: 4px;
         }
-
         .big_text {
           font-size: 24px;
         }
-
         .small_text {
           font-size: 14px;
           color: #999;
           margin-top: 10px;
         }
-
         .link_text:hover {
           text-decoration: none;
           color: #333;
