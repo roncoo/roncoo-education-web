@@ -3,14 +3,17 @@
   <el-main>
     <el-container class="main">
       <el-aside>
-        <client-only>
-          <el-menu :default-active="defaultActive">
-            <nuxt-link v-for="(item, index) in menuList" :key="index" :to="{ name: item.name }">
-              <el-menu-item :index="item.name"> <img :src="item.icon" class="img-icon" /> {{ item.title }} </el-menu-item>
-            </nuxt-link>
-          </el-menu>
-        </client-only>
+        <el-affix :offset="91">
+          <client-only>
+            <el-menu :default-active="defaultActive">
+              <nuxt-link v-for="(item, index) in menuList" :key="index" :to="{ name: item.name }">
+                <el-menu-item :index="item.name"> <img :src="item.icon" class="img-icon" /> {{ item.title }} </el-menu-item>
+              </nuxt-link>
+            </el-menu>
+          </client-only>
+        </el-affix>
       </el-aside>
+
       <div class="account">
         <slot />
       </div>
