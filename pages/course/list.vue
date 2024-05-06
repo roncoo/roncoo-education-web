@@ -130,14 +130,12 @@
   }
 
   // 分页查询
-  const { page, handlePage, query, handleQuery } = reactive({
-    ...useTable(
-      {
-        page: courseApi.courseList
-      },
-      { categoryId: route.query.categoryId || '' }
-    )
-  })
+  const { page, handlePage, query, handleQuery } = useTable(
+    {
+      page: courseApi.courseList
+    },
+    { categoryId: route.query.categoryId || '' }
+  )
 </script>
 <style lang="scss" scoped>
   .course-list {

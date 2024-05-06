@@ -60,14 +60,12 @@
       comment.value.commentText = ''
     })
   }
-  const { page, handlePage } = reactive({
-    ...useTable(
-      {
-        page: courseApi.courseCommentPage
-      },
-      { courseId: props.courseId }
-    )
-  })
+  const { page, handlePage } = useTable(
+    {
+      page: courseApi.courseCommentPage
+    },
+    { courseId: props.courseId }
+  )
 </script>
 
 <style lang="scss" scoped>

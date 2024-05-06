@@ -17,10 +17,8 @@
   import { lecturerApi } from '~/api/lecturer'
 
   // 分页查询
-  const { page, handlePage } = reactive({
-    ...useTable({
-      page: lecturerApi.lecturerList
-    })
+  const { page, handlePage } = useTable({
+    page: lecturerApi.lecturerList
   })
 
   const { data } = useAsyncData('website', async () => {

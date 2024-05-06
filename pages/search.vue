@@ -39,14 +39,12 @@
   }
 
   // 分页查询
-  const { page, handlePage, query, handleQuery } = reactive({
-    ...useTable(
-      {
-        page: courseApi.courseList
-      },
-      { courseName: kw.value || '' }
-    )
-  })
+  const { page, handlePage, query, handleQuery } = useTable(
+    {
+      page: courseApi.courseList
+    },
+    { courseName: kw.value || '' }
+  )
 </script>
 <style lang="scss" scoped>
   .search {

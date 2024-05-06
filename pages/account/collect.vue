@@ -29,10 +29,8 @@
   import useTable from '~/utils/table.js'
   import { userApi as usersApi } from '~/api/user.js'
 
-  const { page, handlePage } = reactive({
-    ...useTable({
-      page: usersApi.userCourseCollectPage
-    })
+  const { page, handlePage } = useTable({
+    page: usersApi.userCourseCollectPage
   })
 </script>
 <style lang="scss" scoped>

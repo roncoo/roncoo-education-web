@@ -70,16 +70,14 @@
     })
   }
 
-  const { page, handlePage } = reactive({
-    ...useTable(
-      {
-        page: usersApi.orderPage
-      },
-      {
-        orderStatus: orderStatus.value === 0 ? '' : orderStatus.value
-      }
-    )
-  })
+  const { page, handlePage } = useTable(
+    {
+      page: usersApi.orderPage
+    },
+    {
+      orderStatus: orderStatus.value === 0 ? '' : orderStatus.value
+    }
+  )
 </script>
 <style lang="scss" scoped>
   .order-no {
