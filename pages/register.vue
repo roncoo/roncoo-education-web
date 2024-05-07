@@ -86,11 +86,11 @@
       ElMessage.error('请输入正确的手机号')
       return
     }
-    if (!mobilePwd) {
+    if (!mobilePwd.value) {
       ElMessage.error('请输入密码')
       return
     }
-    if (mobilePwd !== mobilePwdRepeat) {
+    if (mobilePwd.value !== mobilePwdRepeat.value) {
       ElMessage.error('两次密码输入不一致')
       return
     }
