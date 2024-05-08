@@ -77,8 +77,7 @@
 
   onMounted(async () => {
     // 课程信息
-    const res = await courseApi.userCourseDetail({ courseId: route.query.id })
-    courseInfo.value = res
+    const res = await getCourseInfo()
 
     // 初始化学习
     await handleStudy({ courseId: route.query.id, speedDouble: res.speedDouble, speedDrag: res.speedDrag })
@@ -118,6 +117,9 @@
     loading.value = true
     handleClear()
 
+    // 更新课程信息
+    const res = await getCourseInfo()
+
     const studyRes = await courseApi.studySign({ periodId: data.id, courseId: route.query.id })
     studyPeriodId.value = studyRes.periodId
     userStudy.studyId = studyRes.studyId
@@ -136,6 +138,14 @@
       ElMessage.warning('暂不支持该类型资源')
     }
     loading.value = false
+  }
+
+  /**
+   *  获取课程信息
+   * @returns {Promise<void>}
+   */
+  async function getCourseInfo() {
+    courseInfo.value = await courseApi.userCourseDetail({ courseId: route.query.id })
   }
 
   /**
