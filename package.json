@@ -1,6 +1,6 @@
 {
   "name": "roncoo-education-web",
-  "version": "13.0.0-RELEASE",
+  "version": "24.0.0-RELEASE",
   "private": true,
   "type": "commonjs",
   "scripts": {
