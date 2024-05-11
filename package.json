@@ -1,7 +1,7 @@
 {
   "name": "roncoo-education-web",
   "version": "24.0.0-RELEASE",
-  "private": true,
+  "license": "MIT",
   "type": "commonjs",
   "scripts": {
     "dev": "nuxt dev",
