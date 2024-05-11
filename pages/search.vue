@@ -27,7 +27,6 @@
 
   const route = useRoute()
   const router = useRouter()
-
   const kw = ref(route.query.kw)
 
   function handleSearch() {
