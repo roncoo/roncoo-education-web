@@ -2,11 +2,10 @@ import axios from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getToken, removeToken } from '@/utils/cookie.js'
 import { setStorage } from '@/utils/storage.js'
-import config from '@/config/index'
 
 // create an axios instance
 const request = axios.create({
-  baseURL: process.client ? '/gateway' : config.baseUrl,
+  baseURL: process.client ? '/gateway' : import.meta.env.VITE_BASE_URL,
   timeout: 60000 // request timeout
 })
 

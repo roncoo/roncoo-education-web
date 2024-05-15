@@ -26,7 +26,7 @@
   let interval = null
   function change() {
     interval = setInterval(() => {
-      if (num.value + 1 >= data.value.length) {
+      if (data.value != undefined && num.value + 1 >= data.value.length) {
         num.value = 0
       } else {
         num.value++

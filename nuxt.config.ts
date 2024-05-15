@@ -1,5 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import config from './config/index.js'
 // eslint-disable-next-line no-undef
 export default defineNuxtConfig({
   experimental: {
@@ -10,7 +9,7 @@ export default defineNuxtConfig({
   nitro: {
     devProxy: {
       '/gateway': {
-        target: config.baseUrl,
+        target: import.meta.env.VITE_BASE_URL,
         changeOrigin: true
       }
     }

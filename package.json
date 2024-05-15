@@ -4,8 +4,8 @@
   "license": "MIT",
   "type": "commonjs",
   "scripts": {
-    "dev": "nuxt dev",
-    "build": "nuxt build"
+    "dev": "nuxt dev --dotenv .env.development",
+    "build": "nuxt build --dotenv .env.production"
   },
   "engines": {
     "node": ">=18.0.0"
