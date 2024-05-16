@@ -19,7 +19,13 @@
     <div class="video-body">
       <div class="video-content" :class="{ show_panel: cateType }">
         <div class="player-box">
-          <div id="player" v-loading="loading" class="player-video" />
+          <div v-show="showing" id="player" v-loading="loading" class="player-video" />
+          <div v-show="!showing" class="study-tip">
+            <div>
+              下一节：{{ nextPeriod?.periodName }}
+              <el-button size="small" type="success" @click="handleStudy(nextPeriod)"> 马上学习 </el-button>
+            </div>
+          </div>
         </div>
         <div class="video-info">
           <div class="video-info-tab">
@@ -38,7 +44,7 @@
                     <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1">(未更新)</span>
                     <span v-if="two.isFree">(试看)</span>
                     <div style="width: 300px; margin-left: 50px">
-                      <el-progress :percentage="two.periodProgress ? two.periodProgress : '0'" :stroke-width="2" :status="two.periodProgress > 99 ? 'success' : ''" />
+                      <el-progress v-if="two" :percentage="two.periodProgress ? two.periodProgress : 0" :stroke-width="2" :status="two.periodProgress > 99 ? 'success' : ''" />
                     </div>
                   </div>
                 </div>
@@ -68,26 +74,30 @@
   })
 
   const loading = ref(false)
+  const showing = ref(true)
   const studyPeriodId = ref()
   const courseInfo = ref({})
+  const nextPeriod = ref()
 
   const userStudy = {}
   let progressInterval = null
   let myPolyvPlayer = null
+  let currentPeriodId = null
 
   onMounted(async () => {
     // 课程信息
     const res = await getCourseInfo()
 
-    // 初始化学习
-    await handleStudy({ courseId: route.query.id, speedDouble: res.speedDouble, speedDrag: res.speedDrag })
+    if (res != null) {
+      // 初始化学习
+      await handleStudy({ courseId: route.query.id, speedDouble: res.speedDouble, speedDrag: res.speedDrag })
+    }
 
     window.s2j_onVideoPlay = () => {
       // 播放
       if (progressInterval) {
         clearInterval(progressInterval)
       }
-
       progressInterval = setInterval(() => {
         handleStudyRecordForVod()
       }, 3000)
@@ -104,6 +114,10 @@
       // 播放完成
       clearInterval(progressInterval)
       handleStudyRecordForVod()
+
+      // 显示下一节
+      showing.value = false
+      nextPeriod.value = getNextPeriod(currentPeriodId)
     }
   })
 
@@ -115,11 +129,12 @@
   // 学习
   async function handleStudy(data) {
     loading.value = true
+    showing.value = true
     handleClear()
 
     // 更新课程信息
-    const res = await getCourseInfo()
-
+    await getCourseInfo()
+    currentPeriodId = data.id
     const studyRes = await courseApi.studySign({ periodId: data.id, courseId: route.query.id })
     studyPeriodId.value = studyRes.periodId
     userStudy.studyId = studyRes.studyId
@@ -142,10 +157,28 @@
 
   /**
    *  获取课程信息
-   * @returns {Promise<void>}
    */
   async function getCourseInfo() {
     courseInfo.value = await courseApi.userCourseDetail({ courseId: route.query.id })
+  }
+
+  /**
+   * 获取课程学习中的下一节
+   * @param periodId
+   * @returns {*}
+   */
+  function getNextPeriod(periodId) {
+    for (let i = 0; i < courseInfo.value.chapterRespList.length; i++) {
+      for (let j = 0; j < courseInfo.value.chapterRespList[i].periodRespList.length; j++) {
+        if (courseInfo.value.chapterRespList[i].periodRespList[j].id === periodId) {
+          if (courseInfo.value.chapterRespList[i].periodRespList.length === j + 1) {
+            return courseInfo.value.chapterRespList[i + 1].periodRespList[0]
+          } else {
+            return courseInfo.value.chapterRespList[i].periodRespList[j + 1]
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -277,6 +310,15 @@
         padding: 10px 20px;
         .player-video {
           height: calc(100vh - 86px);
+        }
+        .study-tip {
+          height: calc(100vh - 86px);
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          color: #fff;
+          font-size: 16px;
         }
       }
 

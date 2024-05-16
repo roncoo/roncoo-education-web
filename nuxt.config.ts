@@ -30,6 +30,5 @@ export default defineNuxtConfig({
       include: ['element-plus/es/components/**']
     }
   },
-  telemetry: false,
-  devtools: { enabled: true }
+  telemetry: false
 })
