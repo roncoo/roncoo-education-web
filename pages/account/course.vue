@@ -50,6 +50,10 @@
       margin-left: 20px;
       height: 33px;
       line-height: 33px;
+      max-width: 400px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 </style>

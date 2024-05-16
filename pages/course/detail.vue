@@ -165,6 +165,10 @@
         float: left;
         line-height: 57px;
         margin: 0 5px;
+        max-width: 600px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         span {
           margin-left: 10px;
         }
@@ -217,6 +221,10 @@
           font-size: 18px;
           margin: 5px 0;
           color: #333;
+          height: 25px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .foot_box {

@@ -11,7 +11,6 @@
           </div>
         </template>
       </el-table-column>
-
       <el-table-column :width="200" align="center" label="操作">
         <template #default="scope">
           <nuxt-link :to="{ name: 'course-detail', query: { id: scope.row.courseResp.id } }" link plain type="primary">
@@ -42,6 +41,12 @@
   .course-info {
     float: left;
     font-size: 12px;
+    .course-info-title {
+      max-width: 400px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     div {
       margin-left: 20px;
       height: 33px;

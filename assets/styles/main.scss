@@ -33,6 +33,12 @@ a {
 .fr{
   float: right;
 }
+.title{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
 //
 .no-data{
   margin: calc((100vh - 346px)/2) auto;

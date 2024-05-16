@@ -17,7 +17,7 @@
             <nuxt-link v-if="scope.row.courseId" :to="{ name: 'course-study', query: { id: scope.row.courseId } }" link plain type="primary">
               <img v-if="scope.row.courseLogo" :src="scope.row.courseLogo" :alt="scope.row.courseName" />
             </nuxt-link>
-            <div>
+            <div class="order-info-course">
               {{ scope.row.courseName }}<br /><br />
               <span>原价：￥{{ scope.row.rulingPrice }} </span><span>实付：￥{{ scope.row.coursePrice }}</span>
             </div>
@@ -102,6 +102,12 @@
     }
     .order-info-opt {
       margin-right: 0;
+    }
+    .order-info-course {
+      max-width: 400px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
