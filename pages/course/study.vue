@@ -21,9 +21,12 @@
         <div class="player-box">
           <div v-show="showing" id="player" v-loading="loading" class="player-video" />
           <div v-show="!showing" class="study-tip">
-            <div>
+            <div v-if="nextPeriod">
               下一节：{{ nextPeriod?.periodName }}
               <el-button size="small" type="success" @click="handleStudy(nextPeriod)"> 马上学习 </el-button>
+            </div>
+            <div>
+              <el-button type="success" @click="handleBack"> 完成学习 </el-button>
             </div>
           </div>
         </div>
@@ -99,12 +102,14 @@
         clearInterval(progressInterval)
       }
       progressInterval = setInterval(() => {
-        handleStudyRecordForVod()
+        handleStudyRecordForVod(1)
       }, 3000)
     }
 
     window.s2j_onVideoPause = () => {
       // 暂停
+      handleStudyRecordForVod(2)
+
       if (progressInterval) {
         clearInterval(progressInterval)
       }
@@ -113,7 +118,9 @@
     window.s2j_onPlayOver = () => {
       // 播放完成
       clearInterval(progressInterval)
-      handleStudyRecordForVod()
+
+      // 更新进度
+      handleStudyRecordForVod(1)
 
       // 显示下一节
       showing.value = false
@@ -172,7 +179,9 @@
       for (let j = 0; j < courseInfo.value.chapterRespList[i].periodRespList.length; j++) {
         if (courseInfo.value.chapterRespList[i].periodRespList[j].id === periodId) {
           if (courseInfo.value.chapterRespList[i].periodRespList.length === j + 1) {
-            return courseInfo.value.chapterRespList[i + 1].periodRespList[0]
+            if (courseInfo.value.chapterRespList[i + 1]) {
+              return courseInfo.value.chapterRespList[i + 1].periodRespList[0]
+            }
           } else {
             return courseInfo.value.chapterRespList[i].periodRespList[j + 1]
           }
@@ -214,8 +223,10 @@
   }
 
   // 记录进度
-  function handleStudyRecordForVod() {
+  function handleStudyRecordForVod(studyStatus) {
     userStudy.currentDuration = myPolyvPlayer.j2s_getCurrentTime()
+    // studyStatus 1学习中 2暂停
+    userStudy.studyStatus = studyStatus
     courseApi
       .studyProgress(userStudy)
       .then((res) => {
@@ -263,6 +274,9 @@
   // 处理返回
   function handleClear() {
     if (myPolyvPlayer) {
+      // 暂停学习
+      handleStudyRecordForVod(2)
+
       myPolyvPlayer.destroy()
     }
     if (progressInterval) {
