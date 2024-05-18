@@ -21,8 +21,8 @@ export default defineNuxtConfig({
       chunkSizeWarningLimit: 1500,
       terserOptions: {
         compress: {
-          drop_console: true,
-          drop_debugger: true
+          drop_console: import.meta.env.VITE_DROP_CONSOLE,
+          drop_debugger: import.meta.env.VITE_DROP_DEBUGGER
         }
       }
     },
