@@ -17,10 +17,10 @@
 3. 从24.0.0-RELEASE版本开始(包含此版本)，限制商业使用。
 4. 商业授权和合作，请联系：18302045627(微信同号)。
 
-| 版本             | 商业使用    | 说明                  |
-|:---------------|:--------|:--------------------|
+| 版本           | 商业使用       | 说明                    |
+| :------------- | :------------- | :---------------------- |
 | 13.0.0-RELEASE | 不限制商业使用 | Java8 + Vue2 (停止维护) |
-| 24.0.0-RELEASE | 需要商业授权  | Java8 + Vue3 (持续维护) |
+| 24.0.0-RELEASE | 需要商业授权   | Java8 + Vue3 (持续维护) |
 
 ### 项目介绍
 
@@ -48,10 +48,10 @@ Cloud为核心框架。系统目前主要功能有课程点播功能，支持多
 
 ### 演示地址
 
-* 前端门户演示地址：[https://eduos.roncoo.net/](https://eduos.roncoo.net/)
-* 后台管理演示地址：[https://eduos.roncoo.net/admin](https://eduos.roncoo.net/admin/)
-* 前端：Vue3 + Vite5 + Vue-Router + Element-Plus + Pinia + Axios
-* 后端：Spring Cloud Alibaba2021 + MySQL8 + Nacos + Seata + Mybatis + Druid
+- 前端门户演示地址：[https://eduos.roncoo.net/](https://eduos.roncoo.net/)
+- 后台管理演示地址：[https://eduos.roncoo.net/admin](https://eduos.roncoo.net/admin/)
+- 前端：Vue3 + Vite5 + Vue-Router + Element-Plus + Pinia + Axios
+- 后端：Spring Cloud Alibaba2021 + MySQL8 + Nacos + Seata + Mybatis + Druid
 
 ---
 
