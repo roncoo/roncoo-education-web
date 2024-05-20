@@ -56,13 +56,13 @@
   </NuxtLayout>
 </template>
 <script setup>
-  import { userApi as usersApi } from '~/api/user.js'
+  import { userApi } from '~/api/user.js'
   import { ElMessage } from 'element-plus'
 
   const userInfo = ref({})
 
   onMounted(() => {
-    usersApi.getUserInfo().then((res) => {
+    userApi.getUserInfo().then((res) => {
       userInfo.value = res
     })
   })
