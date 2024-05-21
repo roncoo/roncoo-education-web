@@ -19,6 +19,7 @@
     <div class="video-body">
       <div class="video-content" :class="{ show_panel: cateType }">
         <div class="player-box">
+          <!-- 播放器 -->
           <div v-show="showing" id="player" v-loading="loading" class="player-video" />
           <div v-show="!showing" class="study-tip">
             <div v-if="nextPeriod">
@@ -76,10 +77,10 @@
     script: [{ src: 'https://player.polyv.net/resp/vod-player/latest/player.js' }]
   })
 
+  const courseInfo = ref(null)
   const loading = ref(false)
   const showing = ref(true)
   const studyPeriodId = ref()
-  const courseInfo = ref({})
   const nextPeriod = ref()
 
   const userStudy = {}
@@ -89,11 +90,11 @@
 
   onMounted(async () => {
     // 课程信息
-    const res = await getCourseInfo()
+    await getCourseInfo()
 
-    if (res != null) {
+    if (courseInfo.value != null) {
       // 初始化学习
-      await handleStudy({ courseId: route.query.id, speedDouble: res.speedDouble, speedDrag: res.speedDrag })
+      await handleStudy({ courseId: route.query.id, speedDouble: courseInfo.value.speedDouble, speedDrag: courseInfo.value.speedDrag })
     }
 
     window.s2j_onVideoPlay = () => {
@@ -167,6 +168,7 @@
    */
   async function getCourseInfo() {
     courseInfo.value = await courseApi.userCourseDetail({ courseId: route.query.id })
+    return courseInfo.value
   }
 
   /**

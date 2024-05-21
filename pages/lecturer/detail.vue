@@ -24,7 +24,6 @@
   const { data: lecturerInfo } = await useAsyncData('lecturer-detail' + route.query.id, async () => {
     return await lecturerApi.lecturerDetail({ id: route.query.id })
   })
-  console.log(lecturerInfo.value)
   useHead({
     title: lecturerInfo.value?.lecturerName,
     meta: [
