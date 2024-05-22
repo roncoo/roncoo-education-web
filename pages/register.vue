@@ -12,17 +12,17 @@
               <el-form-item prop="mobile">
                 <el-input v-model="registerForm.mobile" placeholder="手机号" autofocus />
               </el-form-item>
-              <el-form-item prop="verificationCode">
+              <el-form-item prop="code">
                 <el-input v-model="registerForm.code" placeholder="验证码">
                   <template #suffix>
                     <el-button link type="primary" @click="getCode"> 获取验证码 </el-button>
                   </template>
                 </el-input>
               </el-form-item>
-              <el-form-item prop="loginPwd">
+              <el-form-item prop="mobilePwd">
                 <el-input v-model="mobilePwd" type="password" show-password placeholder="密码由6-20位大写和小写字母和数字组成" />
               </el-form-item>
-              <el-form-item prop="repeatPwd">
+              <el-form-item prop="mobilePwdRepeat">
                 <el-input v-model="mobilePwdRepeat" type="password" show-password placeholder="确认密码" />
               </el-form-item>
               <el-button class="login-button" type="primary" size="large" @click="onSubmit"> 注 册 </el-button>
