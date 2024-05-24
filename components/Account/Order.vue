@@ -25,7 +25,7 @@
             </nuxt-link>
             <div class="order-info-course">
               {{ scope.row.courseName }}<br /><br />
-              <span>原价：￥{{ scope.row.rulingPrice }} </span><span>实付：￥{{ scope.row.coursePrice }}</span>
+              <span>支付金额：￥{{ scope.row.coursePrice }}</span>
             </div>
           </div>
           <div class="order-info-opt">
