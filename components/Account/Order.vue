@@ -42,7 +42,7 @@
 </template>
 <script setup>
   import useTable from '~/utils/table.js'
-  import { userApi as usersApi } from '~/api/user.js'
+  import { userApi } from '~/api/user.js'
 
   const props = defineProps({
     orderStatus: {
@@ -63,7 +63,7 @@
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      usersApi.cancelOrder({ orderNo: row.orderNo }).then((res) => {
+      userApi.cancelOrder({ orderNo: row.orderNo }).then((res) => {
         ElMessage.success(res)
         handlePage()
       })
@@ -72,7 +72,7 @@
 
   const { page, handlePage } = useTable(
     {
-      page: usersApi.orderPage
+      page: userApi.orderPage
     },
     {
       orderStatus: orderStatus.value === 0 ? '' : orderStatus.value
