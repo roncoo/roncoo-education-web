@@ -11,6 +11,12 @@
             <b v-else-if="scope.row.orderStatus === 3">支付失败</b>
             <b v-else-if="scope.row.orderStatus === 4">已关闭</b>
           </span>
+          <span>
+            支付方式：
+            <b v-if="scope.row.payType === 1">微信支付</b>
+            <b v-else-if="scope.row.payType === 2">支付宝支付</b>
+            <b v-else-if="scope.row.payType === 100">余额支付</b>
+          </span>
         </div>
         <div class="order-info">
           <div class="order-info-title">

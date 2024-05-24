@@ -8,8 +8,7 @@
             <div v-if="scope.row.courseResp" class="course-info">
               <div class="course-info-title">{{ scope.row.courseResp.courseName }}<span v-if="scope.row.courseResp.isFree === 1" style="margin: 0">【免费课】</span></div>
               <div v-if="scope.row.periodName" class="course-info-title">学习至：{{ scope.row.periodName }}（{{ scope.row.periodProgress }}%）| {{ scope.row.periodTime }}</div>
-              <!-- 总进度：{{ scope.row.courseProgress ? scope.row.courseProgress : 0 }}%-->
-              <div class="course-info-title" style="width: 300px">
+              <div v-if="scope.row.courseProgress" class="course-info-title" style="width: 300px">
                 <el-progress :percentage="scope.row.courseProgress" :status="scope.row.courseProgress > 99 ? 'success' : ''" />
               </div>
             </div>
