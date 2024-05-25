@@ -213,14 +213,14 @@
     // 清除内容
     document.getElementById('player').innerHTML = ''
     if (playRes.vodPlatform === 1) {
-      // 领课云，这里也使用保利威的播放器
+      // 领课云
       myPolyvPlayer = getClientForPri(playRes, course.speedDouble, course.speedDrag)
     } else if (playRes.vodPlatform === 2) {
       // 保利威
       myPolyvPlayer = getClient(playRes, course.speedDouble, course.speedDrag)
     } else {
       // 其他
-      ElMessage.warning('暂不支持该类型的播放')
+      ElMessage.warning('暂不支持该平台的播放')
     }
   }
 
