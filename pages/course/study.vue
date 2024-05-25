@@ -135,22 +135,22 @@
   })
 
   // 学习
-  async function handleStudy(data) {
+  async function handleStudy(period) {
     loading.value = true
     showing.value = true
     handleClear()
 
     // 更新课程信息
     await getCourseInfo()
-    currentPeriodId = data.id
-    const studyRes = await courseApi.studySign({ periodId: data.id, courseId: route.query.id })
+    currentPeriodId = period.id
+    const studyRes = await courseApi.studySign({ periodId: period.id, courseId: route.query.id })
     studyPeriodId.value = studyRes.periodId
     userStudy.studyId = studyRes.studyId
     userStudy.resourceId = studyRes.resourceId
 
     if (studyRes.resourceType < 3) {
       // 音视频播放
-      handlePlay(studyRes, data)
+      handlePlay(studyRes)
     } else if (studyRes.resourceType === 3) {
       // 文档播放
       handleDoc(JSON.parse(studyRes.docStudyConfig).previewUrl)
@@ -209,15 +209,15 @@
   }
 
   // 音视频播放
-  function handlePlay(playRes, course) {
+  function handlePlay(playRes) {
     // 清除内容
     document.getElementById('player').innerHTML = ''
     if (playRes.vodPlatform === 1) {
       // 领课云
-      myPolyvPlayer = getClientForPri(playRes, course.speedDouble, course.speedDrag)
+      myPolyvPlayer = getClientForPri(playRes, courseInfo.value.speedDouble, courseInfo.value.speedDrag)
     } else if (playRes.vodPlatform === 2) {
       // 保利威
-      myPolyvPlayer = getClient(playRes, course.speedDouble, course.speedDrag)
+      myPolyvPlayer = getClient(playRes, courseInfo.value.speedDouble, courseInfo.value.speedDrag)
     } else {
       // 其他
       ElMessage.warning('暂不支持该平台的播放')
