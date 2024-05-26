@@ -77,13 +77,15 @@
   const courseInfo = ref(null)
   const loading = ref(false)
   const showing = ref(true)
-  const studyPeriodId = ref()
-  const nextPeriod = ref()
 
+  // 当前播放的课时id
+  const studyPeriodId = ref()
+  // 下一个课时
+  const nextPeriod = ref()
+  // 用户学习信息
   const userStudy = {}
   let progressInterval = null
   let polyvPlayerClient = null
-  let currentPeriodId = null
 
   onMounted(async () => {
     // 课程信息
@@ -105,9 +107,8 @@
 
     // 更新课程信息
     await getCourseInfo()
-    currentPeriodId = period.id
-    const studyRes = await courseApi.studySign({ periodId: currentPeriodId, courseId: route.query.id })
-    studyPeriodId.value = studyRes.periodId
+    studyPeriodId.value = period.id
+    const studyRes = await courseApi.studySign({ periodId: studyPeriodId.value, courseId: route.query.id })
     userStudy.studyId = studyRes.studyId
     userStudy.resourceId = studyRes.resourceId
 
@@ -296,7 +297,7 @@
 
     // 显示下一节
     showing.value = false
-    nextPeriod.value = getNextPeriod(currentPeriodId)
+    nextPeriod.value = getNextPeriod(studyPeriodId.value)
   }
 
   // 清除
