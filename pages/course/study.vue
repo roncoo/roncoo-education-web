@@ -301,14 +301,13 @@
 
   // 清除
   function handleClear() {
+    if (progressInterval) {
+      clearInterval(progressInterval)
+    }
     if (polyvPlayerClient) {
       // 暂停学习
       handleStudyRecordForVod(2)
-
       polyvPlayerClient.destroy()
-    }
-    if (progressInterval) {
-      clearInterval(progressInterval)
     }
   }
 
