@@ -107,8 +107,8 @@
 
     // 更新课程信息
     await getCourseInfo()
-    studyPeriodId.value = period.id
-    const studyRes = await courseApi.studySign({ periodId: studyPeriodId.value, courseId: route.query.id })
+    const studyRes = await courseApi.studySign({ periodId: period.id, courseId: route.query.id })
+    studyPeriodId.value = studyRes.periodId
     userStudy.studyId = studyRes.studyId
     userStudy.resourceId = studyRes.resourceId
 
