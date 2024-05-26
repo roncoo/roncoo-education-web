@@ -112,7 +112,7 @@
     userStudy.studyId = studyRes.studyId
     userStudy.resourceId = studyRes.resourceId
 
-    if (studyRes.resourceType < 3) {
+    if (studyRes.resourceType <= 2) {
       handleClear()
       // 音视频播放
       handlePlay(studyRes)
