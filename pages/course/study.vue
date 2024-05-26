@@ -117,11 +117,13 @@
     }
 
     window.s2j_onPlayOver = () => {
-      // 播放完成
-      clearInterval(progressInterval)
-
       // 更新进度
       handleStudyRecordForVod(1)
+
+      // 播放完成
+      if (progressInterval) {
+        clearInterval(progressInterval)
+      }
 
       // 显示下一节
       showing.value = false
