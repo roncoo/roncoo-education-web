@@ -5,12 +5,12 @@
         <span class="cursor" @click="handleBack">
           <img class="cursor-image" src="~/assets/svg/return.svg" alt="return" />
         </span>
-        <nuxt-link :to="{ name: 'course-detail', query: { id: courseInfo.id } }" class="left_col">
+        <nuxt-link :to="{ name: 'course-detail', query: { id: courseInfo?.id } }" class="left_col">
           <span class="header-course">
-            {{ courseInfo.courseName }}
+            {{ courseInfo?.courseName }}
           </span>
         </nuxt-link>
-        <course-collect :course-id="courseInfo.id" :collect-status="courseInfo.courseCollect" />
+        <course-collect :course-id="courseInfo?.id" :collect-status="courseInfo?.courseCollect" />
       </div>
       <div class="header-right">
         <common-user />
@@ -26,9 +26,6 @@
               下一节：{{ nextPeriod?.periodName }}
               <el-button size="small" type="success" @click="handleStudy(nextPeriod)"> 马上学习 </el-button>
             </div>
-            <div>
-              <el-button type="success" @click="handleBack"> 完成学习 </el-button>
-            </div>
           </div>
         </div>
         <div class="video-info">
@@ -38,9 +35,9 @@
           </div>
           <div v-if="cateType != ''" class="video-info-content">
             <div v-if="cateType === 'chapter'" class="video-info-chapter">
-              <div v-for="(one, index) in courseInfo.chapterRespList" :key="index">
+              <div v-for="(one, index) in courseInfo?.chapterRespList" :key="index">
                 <div class="catalog-chapter">第{{ index + 1 }}章：{{ one.chapterName }}</div>
-                <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: studyPeriodId == two.id }" @click="handleStudy(two)">
+                <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: studyPeriodId == two?.id }" @click="handleStudy(two)">
                   <div class="period-name">
                     &nbsp;&nbsp;
                     <span>{{ getResourceTypeName(two.resourceResp.resourceType) }}：</span>
@@ -55,7 +52,7 @@
               </div>
             </div>
             <div v-if="cateType === 'comment'" class="video-info-comment">
-              <course-comment :course-id="courseInfo.id" :show-page="false" />
+              <course-comment :course-id="courseInfo?.id" :show-page="false" />
             </div>
           </div>
         </div>
@@ -85,50 +82,15 @@
 
   const userStudy = {}
   let progressInterval = null
-  let myPolyvPlayer = null
+  let polyvPlayerClient = null
   let currentPeriodId = null
 
   onMounted(async () => {
     // 课程信息
     await getCourseInfo()
 
-    if (courseInfo.value != null) {
-      // 初始化学习
-      await handleStudy({ courseId: route.query.id, speedDouble: courseInfo.value.speedDouble, speedDrag: courseInfo.value.speedDrag })
-    }
-
-    window.s2j_onVideoPlay = () => {
-      // 播放
-      if (progressInterval) {
-        clearInterval(progressInterval)
-      }
-      progressInterval = setInterval(() => {
-        handleStudyRecordForVod(1)
-      }, 3000)
-    }
-
-    window.s2j_onVideoPause = () => {
-      // 暂停
-      handleStudyRecordForVod(2)
-
-      if (progressInterval) {
-        clearInterval(progressInterval)
-      }
-    }
-
-    window.s2j_onPlayOver = () => {
-      // 更新进度
-      handleStudyRecordForVod(1)
-
-      // 播放完成
-      if (progressInterval) {
-        clearInterval(progressInterval)
-      }
-
-      // 显示下一节
-      showing.value = false
-      nextPeriod.value = getNextPeriod(currentPeriodId)
-    }
+    // 初始化学习
+    await handleStudy({})
   })
 
   onUnmounted(() => {
@@ -140,17 +102,17 @@
   async function handleStudy(period) {
     loading.value = true
     showing.value = true
-    handleClear()
 
     // 更新课程信息
     await getCourseInfo()
     currentPeriodId = period.id
-    const studyRes = await courseApi.studySign({ periodId: period.id, courseId: route.query.id })
+    const studyRes = await courseApi.studySign({ periodId: currentPeriodId, courseId: route.query.id })
     studyPeriodId.value = studyRes.periodId
     userStudy.studyId = studyRes.studyId
     userStudy.resourceId = studyRes.resourceId
 
     if (studyRes.resourceType < 3) {
+      handleClear()
       // 音视频播放
       handlePlay(studyRes)
     } else if (studyRes.resourceType === 3) {
@@ -216,10 +178,34 @@
     document.getElementById('player').innerHTML = ''
     if (playRes.vodPlatform === 1) {
       // 领课云
-      myPolyvPlayer = getClientForPri(playRes, courseInfo.value.speedDouble, courseInfo.value.speedDrag)
+      polyvPlayerClient = getClientForPri(playRes, courseInfo.value.speedDouble, courseInfo.value.speedDrag)
+      polyvPlayerClient.on('s2j_onVideoPlay', function () {
+        // 开始播放
+        handleStart()
+      })
+      polyvPlayerClient.on('s2j_onVideoPause', function () {
+        // 暂停播放
+        handlePause()
+      })
+      polyvPlayerClient.on('s2j_onPlayOver', function () {
+        // 完成播放
+        handleComplete()
+      })
     } else if (playRes.vodPlatform === 2) {
       // 保利威
-      myPolyvPlayer = getClient(playRes, courseInfo.value.speedDouble, courseInfo.value.speedDrag)
+      polyvPlayerClient = getClient(playRes, courseInfo.value.speedDouble, courseInfo.value.speedDrag)
+      polyvPlayerClient.on('s2j_onVideoPlay', function () {
+        // 开始播放
+        handleStart()
+      })
+      polyvPlayerClient.on('s2j_onVideoPause', function () {
+        // 暂停播放
+        handlePause()
+      })
+      polyvPlayerClient.on('s2j_onPlayOver', function () {
+        // 完成播放
+        handleComplete()
+      })
     } else {
       // 其他
       ElMessage.warning('暂不支持该平台的播放')
@@ -228,7 +214,7 @@
 
   // 记录进度
   function handleStudyRecordForVod(studyStatus) {
-    userStudy.currentDuration = myPolyvPlayer.j2s_getCurrentTime()
+    userStudy.currentDuration = polyvPlayerClient.j2s_getCurrentTime()
     // studyStatus 1学习中 2暂停
     userStudy.studyStatus = studyStatus
     courseApi
@@ -236,11 +222,13 @@
       .then((res) => {
         if (res === 'OK') {
           // 完成，暂停同步
-          clearInterval(progressInterval)
+          if (progressInterval) {
+            clearInterval(progressInterval)
+          }
         }
       })
       .catch((error) => {
-        myPolyvPlayer.j2s_pauseVideo()
+        polyvPlayerClient.j2s_pauseVideo()
         ElMessageBox.confirm('系统异常将暂停观看，请联系管理员', '提示', { confirmButtonText: '返回', cancelButtonText: '取消', type: 'warning' }).then(() => {
           handleBack()
         })
@@ -255,7 +243,9 @@
       .then((res) => {
         if (res === 'OK') {
           // 完成，暂停同步
-          clearInterval(progressInterval)
+          if (progressInterval) {
+            clearInterval(progressInterval)
+          }
         }
       })
       .catch((error) => {
@@ -275,13 +265,47 @@
     }
   }
 
-  // 处理返回
+  // 开始
+  function handleStart() {
+    // 播放
+    if (progressInterval) {
+      clearInterval(progressInterval)
+    }
+    progressInterval = setInterval(() => {
+      handleStudyRecordForVod(1)
+    }, 3000)
+  }
+
+  // 暂停
+  function handlePause() {
+    // 更新进度
+    handleStudyRecordForVod(2)
+    if (progressInterval) {
+      clearInterval(progressInterval)
+    }
+  }
+
+  // 完成播放
+  function handleComplete() {
+    // 更新进度
+    handleStudyRecordForVod(1)
+    // 播放完成
+    if (progressInterval) {
+      clearInterval(progressInterval)
+    }
+
+    // 显示下一节
+    showing.value = false
+    nextPeriod.value = getNextPeriod(currentPeriodId)
+  }
+
+  // 清除
   function handleClear() {
-    if (myPolyvPlayer) {
+    if (polyvPlayerClient) {
       // 暂停学习
       handleStudyRecordForVod(2)
 
-      myPolyvPlayer.destroy()
+      polyvPlayerClient.destroy()
     }
     if (progressInterval) {
       clearInterval(progressInterval)
