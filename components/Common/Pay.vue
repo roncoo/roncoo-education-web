@@ -41,8 +41,8 @@
           <div>支付失败</div>
         </div>
 
-        <div class="course-qrcode-desc">请扫描二维码完成订单</div>
-        <div class="course-qrcode-tips">
+        <div v-if="orderModel.payType !== 100" class="course-qrcode-desc">请扫描二维码完成订单</div>
+        <div v-if="orderModel.payType !== 100" class="course-qrcode-tips">
           提示: <br />
           支付成功前请勿手动关闭页面 <br />
           二维码两小时内有效，请及时扫码支付
@@ -75,8 +75,8 @@
     orderStatus: 0
   })
   const payTypes = ref([
-    { code: 1, desc: '微信' },
-    { code: 2, desc: '支付宝' },
+    { code: 11, desc: '微信' },
+    { code: 21, desc: '支付宝' },
     { code: 100, desc: '余额' }
   ])
   let orderQueryInterval = null
