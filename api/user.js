@@ -37,8 +37,8 @@ export const userApi = {
   },
 
   // 用户解绑微信
-  userUnbind: (params = {}) => {
-    return postRequest('/user/auth/users/unbind', params)
+  userUnbind: () => {
+    return getRequest('/user/auth/users/unbind')
   },
 
   // 课程收藏列出
