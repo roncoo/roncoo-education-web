@@ -6,7 +6,6 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="onClose"> 取消 </el-button>
-        <el-button type="primary" @click="onClose"> 完成 </el-button>
       </span>
     </template>
   </el-dialog>
@@ -29,18 +28,6 @@
   const wxLoginUrl = ref('')
   const websiteInfo = ref({})
 
-  watch(
-    () => props.modelValue,
-    (val) => {
-      if (val) {
-        if (!wxCode.value) {
-          handleBinding()
-        } else {
-          userBinding()
-        }
-      }
-    }
-  )
   onMounted(() => {
     // 站点信息
     websiteInfo.value = getStorage('WebsiteInfo')
@@ -50,6 +37,7 @@
         websiteInfo.value = res
       })
     }
+    handleBinding()
   })
 
   // 获取微信授权链接
@@ -62,9 +50,7 @@
 
   const onClose = () => {
     emit('update:modelValue', false)
-    if (wxCode.value) {
-      emit('callback')
-    }
+    emit('callback')
   }
 </script>
 

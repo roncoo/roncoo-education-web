@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout name="account">
     <el-tabs v-model="activeName">
-      <el-tab-pane key="1" label="基本资料">
+      <el-tab-pane :name="1" label="基本资料">
         <el-form :model="userInfo" label-width="60px" style="max-width: 600px">
           <el-row>
             <el-col :span="16">
@@ -35,7 +35,7 @@
           </el-row>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane key="2" label="账号设置">
+      <el-tab-pane :name="2" label="账号设置">
         <el-card class="account-setting">
           <div class="setting">
             <div class="setting-info">
@@ -80,15 +80,15 @@
   const router = useRouter()
   const route = useRoute()
 
+  const activeName = ref(1)
   const userInfo = ref({})
-  const activeName = ref('1')
   const binding = ref(false)
   const wxCode = ref('')
 
   onMounted(() => {
     wxCode.value = route.query.code
     if (wxCode.value) {
-      activeName.value = '2'
+      activeName.value = 2
       // 进行绑定
       userBinding()
     }
