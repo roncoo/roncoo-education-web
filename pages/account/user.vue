@@ -88,7 +88,6 @@
   onMounted(() => {
     wxCode.value = route.query.code
     if (wxCode.value) {
-      activeName.value = 2
       // 进行绑定
       userBinding()
     }
@@ -97,10 +96,9 @@
   })
 
   // 获取用户信息
-  const getUserInfo = () => {
-    userApi.getUserInfo().then((res) => {
-      userInfo.value = res
-    })
+  const getUserInfo = async () => {
+    const res = userApi.getUserInfo()
+    userInfo.value = res
   }
 
   // 绑定
@@ -109,13 +107,14 @@
   }
 
   // 用户绑定微信
-  const userBinding = () => {
-    userApi.userBinding({ code: wxCode.value }).then((res) => {
-      router.push({
-        query: Object.assign({ ...route.query }, { code: '', state: '' })
-      })
-      ElMessage.success(res)
+  const userBinding = async () => {
+    const res = await userApi.userBinding({ code: wxCode.value })
+    await router.push({
+      query: Object.assign({ ...route.query }, { code: '', state: '' })
     })
+    await getUserInfo()
+    ElMessage.success(res)
+    activeName.value = 2
   }
 
   // 解除绑定

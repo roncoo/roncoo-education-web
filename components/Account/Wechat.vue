@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :model-value="props.modelValue" width="400px" center align-center :destroy-on-close="true" @close="onClose">
+  <el-dialog :append-to-body="true" :model-value="props.modelValue" width="450px" center align-center :destroy-on-close="true" @close="onClose">
     <div class="wx">
       <iframe v-if="wxLoginUrl" :src="wxLoginUrl" />
     </div>
