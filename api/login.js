@@ -1,9 +1,21 @@
 import { postRequest, getRequest } from '@/utils/request'
 
 export const loginApi = {
-  // 用户登录
+  // 密码登录
   userLogin: (params = {}) => {
     return postRequest('/user/api/users/login', params)
+  },
+  // 微信登录
+  wxLogin: (params = {}) => {
+    return postRequest('/user/api/users/wx/login', params)
+  },
+  // 微信登录
+  wxCode: (params = {}) => {
+    return postRequest('/user/api/users/wx/code', params)
+  },
+  // 微信登录
+  wxBinding: (params = {}) => {
+    return postRequest('/user/api/users/wx/binding', params)
   },
   getCodeImg: () => {
     return getRequest('/system/api/common/code')

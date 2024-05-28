@@ -31,7 +31,7 @@
 
   const userInfo = ref(null)
   onMounted(async () => {
-    await userStore.login()
+    await userStore.refresh()
     userInfo.value = userStore.getInfo
   })
 
