@@ -134,11 +134,6 @@
     })
   }
 
-  // 充值
-  const onDevelop = () => {
-    ElMessage.info('功能开发中')
-  }
-
   const onSubmit = () => {
     if (!userInfo.value.nickname) {
       ElMessage.warning('请输入昵称')
@@ -153,6 +148,11 @@
     userApi.usersUpdata(userInfo.value).then((res) => {
       ElMessage.info(res)
     })
+  }
+
+  // 充值
+  const onDevelop = () => {
+    ElMessage.info('功能开发中')
   }
 </script>
 <style lang="scss" scoped>
