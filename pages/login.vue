@@ -73,7 +73,7 @@
   const router = useRouter()
   const route = useRoute()
   const loading = ref(false)
-  const binding = ref(true)
+  const binding = ref(false)
 
   // 是否为密码登录
   const isPwdLogin = ref(true)
