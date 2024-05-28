@@ -1,7 +1,7 @@
 <template>
   <el-dialog :append-to-body="true" :model-value="props.modelValue" width="480px" center align-center :destroy-on-close="true" @close="onClose">
     <div class="wx">
-      <iframe v-if="wxLoginUrl && !bindSuccess" :src="wxLoginUrl" />
+      <iframe v-if="wxLoginUrl" :src="wxLoginUrl" />
     </div>
     <template #footer>
       <span class="dialog-footer">
