@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout name="account">
-    <el-tabs>
+    <el-tabs v-model="activeName">
       <el-tab-pane key="1" label="基本资料">
         <el-form :model="userInfo" label-width="60px" style="max-width: 600px">
           <el-row>
@@ -76,11 +76,23 @@
 <script setup>
   import { userApi } from '~/api/user.js'
   import { ElMessage } from 'element-plus'
+  import { ref } from 'vue'
+  const router = useRouter()
+  const route = useRoute()
 
   const userInfo = ref({})
+  const activeName = ref('1')
   const binding = ref(false)
+  const wxCode = ref('')
 
   onMounted(() => {
+    wxCode.value = route.query.code
+    if (wxCode.value) {
+      activeName.value = '2'
+      // 进行绑定
+      userBinding()
+    }
+
     getUserInfo()
   })
 
@@ -96,7 +108,17 @@
     binding.value = true
   }
 
-  // 接触绑定
+  // 用户绑定微信
+  const userBinding = () => {
+    userApi.userBinding({ code: wxCode.value }).then((res) => {
+      router.push({
+        query: Object.assign({ ...route.query }, { code: '', state: '' })
+      })
+      ElMessage.success(res)
+    })
+  }
+
+  // 解除绑定
   const handleUnBind = () => {
     ElMessageBox.confirm('确定解除绑定？解绑后，将无法使用微信账号快捷登录', '解绑提示', {
       confirmButtonText: '确定',
@@ -104,7 +126,7 @@
       type: 'warning'
     }).then(() => {
       userApi.userUnbind().then((res) => {
-        ElMessage.info(res)
+        ElMessage.success(res)
         getUserInfo()
       })
     })

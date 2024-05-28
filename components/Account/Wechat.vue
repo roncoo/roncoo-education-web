@@ -2,10 +2,6 @@
   <el-dialog :append-to-body="true" :model-value="props.modelValue" width="480px" center align-center :destroy-on-close="true" @close="onClose">
     <div class="wx">
       <iframe v-if="wxLoginUrl && !bindSuccess" :src="wxLoginUrl" />
-      <div v-if="bindSuccess">
-        <img src="@/assets/svg/success.svg" />
-        <div class="binding-success">绑定成功</div>
-      </div>
     </div>
     <template #footer>
       <span class="dialog-footer">
@@ -19,7 +15,6 @@
 <script setup>
   import { ref, watch } from 'vue'
   import { loginApi } from '~/api/login.js'
-  import { userApi } from '~/api/user'
   import { indexApi } from '~/api'
 
   const props = defineProps({
@@ -30,12 +25,8 @@
   })
 
   const emit = defineEmits(['update:modelValue', 'callback'])
-  const router = useRouter()
-  const route = useRoute()
 
-  const wxCode = ref('')
   const wxLoginUrl = ref('')
-  const bindSuccess = ref(false)
   const websiteInfo = ref({})
 
   watch(
@@ -51,8 +42,6 @@
     }
   )
   onMounted(() => {
-    wxCode.value = route.query.code
-
     // 站点信息
     websiteInfo.value = getStorage('WebsiteInfo')
     if (!websiteInfo.value) {
@@ -68,18 +57,6 @@
     const redirectUrl = websiteInfo.value.websiteDomain + window.location.pathname
     loginApi.wxLogin({ loginAuthType: 1, redirectUrl: redirectUrl }).then((res) => {
       wxLoginUrl.value = res
-    })
-  }
-
-  // 用户绑定微信
-  const userBinding = () => {
-    userApi.userBinding({ code: wxCode.value }).then((res) => {
-      if (res) {
-        router.push({
-          query: Object.assign({ ...route.query }, { code: '', state: '' })
-        })
-        bindSuccess.value = true
-      }
     })
   }
 
