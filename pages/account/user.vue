@@ -91,7 +91,6 @@
       // 进行绑定
       userBinding()
     }
-
     getUserInfo()
   })
 
@@ -127,6 +126,7 @@
       userApi.userUnbind().then((res) => {
         ElMessage.success(res)
         getUserInfo()
+        activeName.value = 2
       })
     })
   }
