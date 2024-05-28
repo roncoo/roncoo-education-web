@@ -39,9 +39,9 @@
           </div>
           <div v-if="!isPwdLogin" class="login_app">
             <iframe v-if="!binding" :src="wxLoginUrl" class="login_iframe" />
-            <div class="login_form">
+            <div v-if="binding" class="login_form">
               <div class="login_title">账号绑定</div>
-              <el-form v-if="binding" v-loading="loading" :model="bindingForm" @keyup.enter="handleBinding()">
+              <el-form v-loading="loading" :model="bindingForm" @keyup.enter="handleBinding()">
                 <el-form-item class="form-group" prop="mobile">
                   <el-input v-model="bindingForm.mobile" placeholder="手机号" autofocus />
                 </el-form-item>

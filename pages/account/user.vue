@@ -51,6 +51,24 @@
             </el-button>
           </div>
         </el-card>
+        <el-card class="account-setting">
+          <div class="setting">
+            <div class="setting-info">
+              <img src="../../assets/svg/account/wechat.svg" width="60px" />
+              <div>
+                微信账号绑定
+                <br />
+                <span v-if="userInfo.unionId || userInfo.openId" style="color: #999">已绑定</span>
+                <span v-else style="color: #999">未绑定</span>
+              </div>
+            </div>
+            <el-button text type="primary">
+              <div v-if="userInfo.unionId || userInfo.openId" @click="handleUnBind">解除绑定</div>
+              <div v-else @click="handleBinding">绑定微信</div>
+            </el-button>
+          </div>
+          <account-wechat v-model="binding" @callback="getUserInfo()" />
+        </el-card>
       </el-tab-pane>
     </el-tabs>
   </NuxtLayout>
@@ -60,12 +78,37 @@
   import { ElMessage } from 'element-plus'
 
   const userInfo = ref({})
+  const binding = ref(false)
 
   onMounted(() => {
+    getUserInfo()
+  })
+
+  // 获取用户信息
+  const getUserInfo = () => {
     userApi.getUserInfo().then((res) => {
       userInfo.value = res
     })
-  })
+  }
+
+  // 绑定
+  const handleBinding = () => {
+    binding.value = true
+  }
+
+  // 接触绑定
+  const handleUnBind = () => {
+    ElMessageBox.confirm('确定解除绑定？解绑后，将无法使用微信账号快捷登录', '解绑提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      userApi.userUnbind().then((res) => {
+        ElMessage.info(res)
+        getUserInfo()
+      })
+    })
+  }
 
   // 充值
   const onDevelop = () => {
