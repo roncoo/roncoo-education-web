@@ -190,10 +190,9 @@
     }
     loading.value = true
     try {
-      // 密码加密
+      // 绑定
       const res = await loginApi.wxBinding(bindingForm)
-      ElMessage.success(res)
-      await router.replace({ path: '/login' })
+      userStore.login(res.token)
     } catch (error) {
       console.error(error)
     } finally {
