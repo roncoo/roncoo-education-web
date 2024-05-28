@@ -149,11 +149,6 @@
       ElMessage.info(res)
     })
   }
-
-  // 充值
-  const onDevelop = () => {
-    ElMessage.info('功能开发中')
-  }
 </script>
 <style lang="scss" scoped>
   .el-form {
