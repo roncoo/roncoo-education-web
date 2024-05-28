@@ -32,7 +32,7 @@
   const userInfo = ref(null)
   onMounted(async () => {
     await userStore.refresh()
-    userInfo.value = userStore.getInfo
+    userInfo.value = userStore.info
   })
 
   // 退出登录

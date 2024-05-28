@@ -11,11 +11,8 @@ export const useUserStore = defineStore({
   actions: {
     // 刷新
     async refresh() {
-      if (!this.info) {
-        // 获取用户信息
-        const res = await userApi.getUserInfo()
-        this.info = res
-      }
+      // 获取用户信息
+      this.info = await userApi.getUserInfo()
     },
 
     // 登录操作
