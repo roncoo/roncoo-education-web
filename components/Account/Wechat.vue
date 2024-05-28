@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :model-value="props.modelValue" width="480px" center align-center :destroy-on-close="true" @close="onClose">
+  <el-dialog :append-to-body="true" :model-value="props.modelValue" width="400px" center align-center :destroy-on-close="true" @close="onClose">
     <div class="wx">
       <iframe v-if="wxLoginUrl" :src="wxLoginUrl" />
     </div>
@@ -42,7 +42,7 @@
 
   // 获取微信授权链接
   const handleBinding = () => {
-    const redirectUrl = websiteInfo.value.websiteDomain + window.location.pathname
+    const redirectUrl = websiteInfo.value.websiteDomain + 'account/user'
     loginApi.wxLogin({ loginAuthType: 1, redirectUrl: redirectUrl }).then((res) => {
       wxLoginUrl.value = res
     })
@@ -56,7 +56,6 @@
 
 <style lang="scss" scoped>
   .wx {
-    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
