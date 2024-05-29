@@ -190,7 +190,7 @@
     try {
       // 绑定
       const res = await loginApi.wxBinding(bindingForm)
-      userStore.login(res.token)
+      login(res.token)
     } catch (error) {
       console.error(error)
     } finally {
