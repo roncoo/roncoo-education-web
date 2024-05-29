@@ -1,5 +1,7 @@
 <template>
-  <el-row class="zone_body" :gutter="20">
+  <!-- 暂没数据 -->
+  <div v-if="props.list.length === 0" class="no-data">暂无数据</div>
+  <el-row v-else class="zone_body" :gutter="20">
     <el-col v-for="(course, int) in props.list" :key="int" :span="6" class="zone_body_course">
       <nuxt-link target="_blank" :to="{ name: 'course-detail', query: { id: course.id } }">
         <img :src="course.courseLogo" alt="" />
@@ -27,18 +29,10 @@
 </script>
 <style lang="scss" scoped>
   .zone_body {
-    margin-top: 20px 0;
-    overflow: hidden;
     .zone_body_course {
-      float: left;
-      width: 285px;
       height: 255px;
       border-radius: 6px;
-      margin: 20px 0;
-
-      &:nth-child(4n) {
-        margin-right: 0px;
-      }
+      margin: 10px 0;
 
       &:hover {
         box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
