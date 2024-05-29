@@ -99,7 +99,8 @@
 
     img {
       height: 100px;
-      width: auto;
+      width: 180px;
+      border-radius: 6px;
       margin-right: 20px;
     }
     .order-info-title {

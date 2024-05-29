@@ -1,6 +1,6 @@
 <template>
-  <div class="zone_body">
-    <div v-for="(course, int) in props.list" :key="int" class="zone_body_course">
+  <el-row class="zone_body" :gutter="20">
+    <el-col v-for="(course, int) in props.list" :key="int" :span="6" class="zone_body_course">
       <nuxt-link target="_blank" :to="{ name: 'course-detail', query: { id: course.id } }">
         <img :src="course.courseLogo" alt="" />
         <div class="course_name" v-html="course.courseName" />
@@ -14,8 +14,8 @@
           </div>
         </div>
       </nuxt-link>
-    </div>
-  </div>
+    </el-col>
+  </el-row>
 </template>
 <script setup>
   const props = defineProps({
@@ -27,21 +27,21 @@
 </script>
 <style lang="scss" scoped>
   .zone_body {
-    margin-top: 20px;
+    margin-top: 20px 0;
     overflow: hidden;
     .zone_body_course {
       float: left;
       width: 285px;
       height: 255px;
       border-radius: 6px;
-      margin: 0px 20px 20px 0px;
+      margin: 20px 0;
 
       &:nth-child(4n) {
         margin-right: 0px;
       }
 
       &:hover {
-        box-shadow: 0px 3px 18px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
         transform: translateY(-2px);
         transition: all 0.3s;
       }

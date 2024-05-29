@@ -40,7 +40,8 @@
   .course-img {
     float: left;
     height: 100px;
-    width: auto;
+    width: 180px;
+    border-radius: 6px;
   }
   .course-info {
     float: left;
