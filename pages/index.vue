@@ -11,7 +11,7 @@
   import { indexApi } from '~/api/index'
 
   const { data } = await useAsyncData('website', async () => {
-    return await indexApi.websiteInfo()
+    return indexApi.websiteInfo()
   })
 
   useHead({

@@ -22,7 +22,7 @@
   import { lecturerApi } from '~/api/lecturer'
   const route = useRoute()
   const { data: lecturerInfo } = await useAsyncData('lecturer-detail' + route.query.id, async () => {
-    return await lecturerApi.lecturerDetail({ id: route.query.id })
+    return lecturerApi.lecturerDetail({ id: route.query.id })
   })
   useHead({
     title: lecturerInfo.value?.lecturerName,

@@ -50,7 +50,7 @@
   const mobilePwdRepeat = ref('')
 
   const { data: websiteInfo } = await useAsyncData('website', async () => {
-    return await indexApi.websiteInfo()
+    return indexApi.websiteInfo()
   })
 
   useHead({

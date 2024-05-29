@@ -99,12 +99,14 @@
   const { data: courseInfo } = await useAsyncData('course-detail' + route.query.id, async () => {
     if (getToken()) {
       // 已登录
-      return await courseApi.userCourseDetail({ courseId: route.query.id })
+      return courseApi.userCourseDetail({ courseId: route.query.id })
     } else {
       // 未登录
-      return await courseApi.courseDetail({ courseId: route.query.id })
+      return courseApi.courseDetail({ courseId: route.query.id })
     }
   })
+
+  console.log(courseInfo.value)
 
   useHead({
     title: courseInfo.value?.courseName,

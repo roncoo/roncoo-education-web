@@ -47,7 +47,7 @@
   // 注册信息
   const registerForm = reactive({})
   const { data: websiteInfo } = await useAsyncData('website', async () => {
-    return await indexApi.websiteInfo()
+    return indexApi.websiteInfo()
   })
 
   useHead({

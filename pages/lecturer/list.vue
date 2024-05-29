@@ -22,7 +22,7 @@
   })
 
   const { data } = useAsyncData('website', async () => {
-    return await indexApi.websiteInfo()
+    return indexApi.websiteInfo()
   })
   useHead({
     title: '讲师列表',
