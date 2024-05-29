@@ -77,9 +77,7 @@
   import { userApi } from '~/api/user.js'
   import { ElMessage } from 'element-plus'
   import { ref } from 'vue'
-  import { useUserStore } from '~/store/modules/user'
 
-  const userStore = useUserStore()
   const router = useRouter()
   const route = useRoute()
 
@@ -99,8 +97,7 @@
 
   // 获取用户信息
   const getUserInfo = async () => {
-    await userStore.refresh()
-    userInfo.value = userStore.info
+    userInfo.value = await userApi.getUserInfo()
   }
 
   // 绑定

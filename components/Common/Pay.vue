@@ -62,7 +62,6 @@
   import { courseApi } from '~/api/course.js'
   import QRCode from 'qrcode'
   import { userApi } from '~/api/user'
-  import { useUserStore } from '~/store/modules/user'
 
   const courseInfo = ref({})
   // 订单
@@ -84,7 +83,9 @@
   const availableAmount = ref(0)
   const handleChange = (item) => {
     if (item === 100) {
-      availableAmount.value = useUserStore().getInfo.availableAmount
+      userApi.getUserInfo().then((res) => {
+        availableAmount.value = res.availableAmount
+      })
     }
   }
 

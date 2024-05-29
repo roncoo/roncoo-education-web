@@ -19,7 +19,6 @@
     "js-cookie": "3.0.5",
     "jsrsasign": "10.9.0",
     "nuxt": "3.11.2",
-    "pinia": "2.1.7",
     "qrcode": "1.5.3",
     "vue": "3.4.21",
     "vue-router": "4.3.0"
@@ -27,7 +26,6 @@
   "devDependencies": {
     "@element-plus/nuxt": "1.0.8",
     "@nuxt/eslint-config": "0.3.7",
-    "@pinia/nuxt": "0.5.1",
     "@vueuse/nuxt": "10.9.0",
     "eslint": "8.57.0",
     "eslint-config-prettier": "9.1.0",

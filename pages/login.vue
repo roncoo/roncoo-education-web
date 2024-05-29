@@ -66,9 +66,7 @@
   import { loginApi } from '~/api/login.js'
   import { encrypt, getBrowserInfo, getOsInfo } from '~/utils/base'
   import { indexApi } from '~/api/index'
-  import { useUserStore } from '~/store/modules/user'
-
-  const userStore = useUserStore()
+  import { login } from '~/utils/login'
 
   const router = useRouter()
   const route = useRoute()
@@ -93,7 +91,7 @@
   const wxLoginUrl = ref('')
 
   const { data: websiteInfo } = await useAsyncData('website', async () => {
-    return await indexApi.websiteInfo()
+    return indexApi.websiteInfo()
   })
   useHead({
     title: '用户登录',
@@ -112,7 +110,7 @@
         const res = await loginApi.wxCode({ code: route.query.code, loginAuthType: 1, clientType: 1 })
         if (res.bindingStatus) {
           // 已经绑定直接登录
-          userStore.login(res.token)
+          login(res.token)
         } else {
           // 进行绑定
           binding.value = true
@@ -220,7 +218,7 @@
       loginForm.os = getOsInfo()
       loginForm.browser = getBrowserInfo().name
       const res = await loginApi.userLogin(loginForm)
-      userStore.login(res.token)
+      login(res.token)
     } catch (error) {
       console.error(error)
       await getCaptcha()

@@ -26,13 +26,12 @@
   </client-only>
 </template>
 <script setup>
-  import { useUserStore } from '~/store/modules/user.js'
-  const userStore = useUserStore()
+  import { userApi } from '~/api/user'
+  import { logout } from '~/utils/login'
 
   const userInfo = ref(null)
   onMounted(async () => {
-    await userStore.refresh()
-    userInfo.value = userStore.info
+    userInfo.value = await userApi.getUserInfo()
   })
 
   // 退出登录
@@ -42,7 +41,7 @@
       showCancelButton: false,
       type: 'warning'
     }).then(() => {
-      userStore.logout()
+      logout()
       location.reload()
     })
   }

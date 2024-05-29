@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     asyncContext: true
   },
   css: ['~/assets/styles/main.scss'],
-  modules: ['@element-plus/nuxt', '@pinia/nuxt', '@vueuse/nuxt'],
+  modules: ['@element-plus/nuxt', '@vueuse/nuxt'],
   nitro: {
     devProxy: {
       '/gateway': {
