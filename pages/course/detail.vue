@@ -106,8 +106,6 @@
     }
   })
 
-  console.log(courseInfo.value)
-
   useHead({
     title: courseInfo.value?.courseName,
     meta: [
