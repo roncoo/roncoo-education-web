@@ -7,9 +7,9 @@
         </div>
         <div class="login_content">
           <!-- 账号登录 -->
-          <img v-if="isPwdLogin" src="../assets/image/common_login_app.png" class="login_ico" @click="switchLogin" />
+          <img v-if="isPwdLogin && websiteInfo?.wxPcLoginEnable === '1'" src="../assets/image/common_login_app.png" class="login_ico" @click="switchLogin" />
           <!-- 扫码登录 -->
-          <img v-if="!isPwdLogin" src="../assets/image/common_login_pc.png" class="login_ico" @click="switchLogin" />
+          <img v-if="!isPwdLogin && websiteInfo?.wxPcLoginEnable === '1'" src="../assets/image/common_login_pc.png" class="login_ico" @click="switchLogin" />
           <div v-if="isPwdLogin" class="login_pc">
             <div class="login_form">
               <div class="login_title">账号登录</div>
@@ -93,6 +93,7 @@
   const { data: websiteInfo } = await useAsyncData('website', async () => {
     return indexApi.websiteInfo()
   })
+
   useHead({
     title: '用户登录',
     meta: [

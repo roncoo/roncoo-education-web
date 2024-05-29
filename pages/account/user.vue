@@ -51,7 +51,7 @@
             </el-button>
           </div>
         </el-card>
-        <el-card class="account-setting">
+        <el-card v-if="websiteInfo?.wxPcLoginEnable === '1'" class="account-setting">
           <div class="setting">
             <div class="setting-info">
               <img src="../../assets/svg/account/wechat.svg" width="60px" />
@@ -77,6 +77,7 @@
   import { userApi } from '~/api/user.js'
   import { ElMessage } from 'element-plus'
   import { ref } from 'vue'
+  import { indexApi } from '~/api'
 
   const router = useRouter()
   const route = useRoute()
@@ -85,6 +86,10 @@
   const userInfo = ref({})
   const binding = ref(false)
   const wxCode = ref('')
+
+  const { data: websiteInfo } = await useAsyncData('website', async () => {
+    return indexApi.websiteInfo()
+  })
 
   onMounted(() => {
     wxCode.value = route.query.code
