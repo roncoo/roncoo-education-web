@@ -39,7 +39,7 @@
   const twoList = ref([])
   const categoryId = ref('')
   const width = ref(0)
-  const height = ref(366)
+  const height = ref(360)
 
   onMounted(async () => {
     list.value = await indexApi.categoryList()
@@ -56,13 +56,6 @@
   }
 </script>
 <style lang="scss" scoped>
-  a {
-    &:hover {
-      color: #d51423;
-      text-decoration: none;
-    }
-  }
-
   .class_block {
     position: absolute;
     height: 100%;
@@ -270,6 +263,13 @@
       position: absolute;
       color: #999;
       bottom: 2px;
+    }
+  }
+
+  a {
+    &:hover {
+      color: #d51423;
+      text-decoration: none;
     }
   }
 </style>
