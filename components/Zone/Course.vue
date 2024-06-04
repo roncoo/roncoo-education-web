@@ -25,7 +25,7 @@
 <style lang="scss" scoped>
   .i_content {
     width: 1200px;
-    margin: 0 auto;
+    margin: 0 0 30px 0;
     background: #f6f8fb;
     .i_zone {
       margin-top: 30px;
