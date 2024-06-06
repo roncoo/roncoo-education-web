@@ -5,7 +5,7 @@
         <div class="body-item">
           <img :src="item.lecturerHead" :alt="item.lecturerName" />
           <div class="item-info">
-            <div>{{ item.lecturerName }}</div>
+            <div v-html="item.lecturerName" />
             <div>{{ item.lecturerPosition }}</div>
           </div>
         </div>
