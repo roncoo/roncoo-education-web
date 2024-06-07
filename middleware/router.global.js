@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware((to) => {
     return navigateTo('/404')
   }
 
-  // 判断若是手机端，则跳转手机端地址
+  // 判断若是手机端，则跳转手机端路由
   if (process.client) {
     const isMobile = /(Android|webOS|iPhone|iPod|tablet|BlackBerry|Mobile)/i.test(navigator.userAgent)
     if (isMobile) {
