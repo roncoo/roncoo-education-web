@@ -12,11 +12,7 @@ export default defineNuxtRouteMiddleware((to) => {
   if (process.client) {
     const isMobile = /(Android|webOS|iPhone|iPod|tablet|BlackBerry|Mobile)/i.test(navigator.userAgent)
     if (isMobile) {
-      const isRouterMobile = /h5/i.test(to.fullPath)
-      if (!isRouterMobile) {
-        let path = '/h5' + to.fullPath.slice(0, to.fullPath.length - 1)
-        return navigateTo(path)
-      }
+      return navigateTo('/h5' + to.fullPath.slice(0, to.fullPath.length - 1))
     }
   }
 })
