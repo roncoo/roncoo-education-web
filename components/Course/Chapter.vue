@@ -9,7 +9,7 @@
         <div class="period_top" :class="{ on: playPeriod == two.id }" @click="handlePlayVideo(two)">
           <span class="period_num">第{{ num + 1 }}讲</span>
           <span style="margin-right: 5px">
-            <el-tag>{{ getResourceTypeName(two.resourceResp.resourceType) }}</el-tag>
+            <el-tag>{{ getResourceTypeName(two.resourceResp?.resourceType) }}</el-tag>
           </span>
           <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1" class="no_video">(未更新)</span>
           <span>{{ two.periodName }}</span>

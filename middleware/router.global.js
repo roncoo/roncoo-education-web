@@ -1,4 +1,5 @@
 export default defineNuxtRouteMiddleware((to) => {
+  // 首页重定向
   if (to.path === '/index') {
     return navigateTo('/')
   }
