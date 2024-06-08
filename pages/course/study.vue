@@ -40,7 +40,7 @@
                 <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: studyPeriodId == two?.id }" @click="handleStudy(two)">
                   <div class="period-name">
                     &nbsp;&nbsp;
-                    <span>{{ getResourceTypeName(two.resourceResp.resourceType) }}：</span>
+                    <span>{{ getResourceTypeName(two.resourceResp?.resourceType) }}：</span>
                     {{ index + 1 }}-{{ num + 1 }} {{ two.periodName }}
                     <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1">(未更新)</span>
                     <span v-if="two.isFree">(试看)</span>
