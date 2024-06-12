@@ -40,7 +40,8 @@
                 <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: studyPeriodId == two?.id }" @click="handleStudy(two)">
                   <div class="period-name">
                     &nbsp;&nbsp;
-                    <span>{{ getResourceTypeName(two.resourceResp?.resourceType) }}：</span>
+                    <span v-if="two.periodType === 10">{{ getResourceTypeName(two.resourceResp?.resourceType) }}：</span>
+                    <span v-if="two.periodType === 20">直播：</span>
                     {{ index + 1 }}-{{ num + 1 }} {{ two.periodName }}
                     <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1">(未更新)</span>
                     <span v-if="two.isFree">(试看)</span>
@@ -107,23 +108,35 @@
 
     // 更新课程信息
     await getCourseInfo()
-    const studyRes = await courseApi.studySign({ periodId: period.id, courseId: route.query.id })
+    let studyRes
+    try {
+      studyRes = await courseApi.studySign({ periodId: period.id, courseId: route.query.id })
+    } catch (e) {
+      loading.value = false
+    }
+
     studyPeriodId.value = studyRes.periodId
     userStudy.studyId = studyRes.studyId
     userStudy.resourceId = studyRes.resourceId
 
-    if (studyRes.resourceType <= 2) {
-      handleClear()
-      // 音视频播放
-      handlePlay(studyRes)
-    } else if (studyRes.resourceType === 3) {
-      // 文档播放
-      handleDoc(JSON.parse(studyRes.docStudyConfig).previewUrl)
-    } else if (studyRes.resourceType === 4) {
-      // 图片播放
-      handleDoc(JSON.parse(studyRes.picStudyConfig).previewUrl)
+    if (studyRes.periodType === 20) {
+      // 直播类型
+      handleLive(studyRes.liveViewConfig)
     } else {
-      ElMessage.warning('暂不支持该类型资源')
+      // 资源类型
+      if (studyRes.resourceType <= 2) {
+        handleClear()
+        // 音视频播放
+        handlePlay(studyRes)
+      } else if (studyRes.resourceType === 3) {
+        // 文档播放
+        handleDoc(JSON.parse(studyRes.docStudyConfig).previewUrl)
+      } else if (studyRes.resourceType === 4) {
+        // 图片播放
+        handleDoc(JSON.parse(studyRes.picStudyConfig).previewUrl)
+      } else {
+        ElMessage.warning('暂不支持该类型资源')
+      }
     }
     loading.value = false
   }
@@ -155,6 +168,19 @@
         }
       }
     }
+  }
+
+  /**
+   * 直播播放
+   */
+  function handleLive(watchUrl) {
+    const iframe = document.createElement('iframe')
+    iframe.setAttribute('src', srcPath)
+    iframe.style.width = '100%'
+    iframe.style.height = '100%'
+    const player = document.getElementById('player')
+    player.innerHTML = ''
+    player.appendChild(iframe)
   }
 
   /**
