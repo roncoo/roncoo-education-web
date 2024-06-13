@@ -110,7 +110,7 @@
     await getCourseInfo()
     let studyRes
     try {
-      studyRes = await courseApi.studySign({ periodId: period.id, courseId: route.query.id })
+      studyRes = await courseApi.studySign({ periodId: period.id, courseId: route.query.id, isPc: true })
     } catch (e) {
       loading.value = false
     }
@@ -121,6 +121,7 @@
 
     if (studyRes.periodType === 20) {
       // 直播类型
+      console.log('直播类型', studyRes.liveViewConfig)
       handleLive(studyRes.liveViewConfig)
     } else {
       // 资源类型
@@ -175,7 +176,7 @@
    */
   function handleLive(watchUrl) {
     const iframe = document.createElement('iframe')
-    iframe.setAttribute('src', srcPath)
+    iframe.setAttribute('src', watchUrl)
     iframe.style.width = '100%'
     iframe.style.height = '100%'
     const player = document.getElementById('player')

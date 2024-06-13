@@ -14,12 +14,17 @@
           </span>
           <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1" class="no_video">(未更新)</span>
           <span>{{ two.periodName }}</span>
-          &nbsp;
           <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 2">{{ formatTime(two.resourceResp.videoLength) }}</span>
           <span v-if="two.resourceResp && two.resourceResp.resourceType === 3">{{ two.resourceResp.docPage }}页</span>
-          &nbsp;
-          <span v-if="two.isFree" class="c_blue">(试看)</span>
-          <span v-if="two.periodProgress" class="video_time fr"> {{ two.periodProgress }}% </span>
+          &nbsp;<span v-if="two.isFree" class="c_blue">(试看)</span>
+          <!-- 右边 -->
+          <span v-if="two.periodType === 10 && two.periodProgress" class="video_time fr"> {{ two.periodProgress }}% </span>
+          <span v-if="two.periodType === 20" class="video_time fr">
+            <span v-if="two.liveResp?.liveStatus === 1">开播时间：{{ two.liveResp?.beginTime }}</span>
+            <span v-if="two.liveResp?.liveStatus === 2">直播中</span>
+            <span v-if="two.liveResp?.liveStatus === 3">待回放</span>
+            <span v-if="two.liveResp?.liveStatus === 4">观看回放</span>
+          </span>
         </div>
       </div>
     </div>
