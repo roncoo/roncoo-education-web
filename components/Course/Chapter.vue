@@ -21,9 +21,7 @@
           <span v-if="two.periodType === 10 && two.periodProgress" class="video_time fr"> {{ two.periodProgress }}% </span>
           <span v-if="two.periodType === 20" class="video_time fr">
             <span v-if="two.liveResp?.liveStatus === 1">开播时间：{{ two.liveResp?.beginTime }}</span>
-            <span v-if="two.liveResp?.liveStatus === 2">直播中</span>
-            <span v-if="two.liveResp?.liveStatus === 3">待回放</span>
-            <span v-if="two.liveResp?.liveStatus === 4">观看回放</span>
+            <span v-if="two.liveResp?.liveStatus > 1">{{ getLiveStatusName(two.liveResp.liveStatus) }}</span>
           </span>
         </div>
       </div>
@@ -50,8 +48,16 @@
     }
   })
 
-  function handlePlayVideo(data) {
-    router.push('/course/study?id=' + route.query.id)
+  function handlePlayVideo(period) {
+    if (period.periodType === 20 && period.liveResp?.liveStatus === 2) {
+      // 直播
+      router.push('/course/live?id=' + route.query.id + '&periodId=' + period.id)
+      return
+    }
+
+    // 资源
+    router.push('/course/study?id=' + route.query.id + '&periodId=' + period.id)
+    return
   }
 </script>
 
