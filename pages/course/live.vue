@@ -17,7 +17,7 @@
 
   const watchUrl = ref()
   onMounted(async () => {
-    const studyRes = await courseApi.studySign({ periodId: route.query.periodId, courseId: route.query.id, isPc: true })
+    const studyRes = await courseApi.studySign({ periodId: route.query.periodId, courseId: route.query.id })
     watchUrl.value = studyRes.liveViewConfig
   })
 </script>
