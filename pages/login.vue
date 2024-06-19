@@ -108,7 +108,7 @@
       isPwdLogin.value = false
       // 根据授权码获取用户信息
       try {
-        const res = await loginApi.wxCode({ code: route.query.code, loginAuthType: 1, clientType: 1 })
+        const res = await loginApi.wxCode({ code: route.query.code, loginAuthType: 1, clientType: 1, os: getOsInfo(), browser: getBrowserInfo().name })
         if (res.bindingStatus) {
           // 已经绑定直接登录
           login(res.token)
@@ -190,6 +190,8 @@
     loading.value = true
     try {
       // 绑定
+      bindingForm.os = getOsInfo()
+      bindingForm.browser = getBrowserInfo().name
       const res = await loginApi.wxBinding(bindingForm)
       login(res.token)
     } catch (error) {
