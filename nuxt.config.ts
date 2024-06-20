@@ -5,6 +5,16 @@ export default defineNuxtConfig({
     asyncContext: true
   },
   css: ['~/assets/styles/main.scss'],
+  app: {
+    head: {
+      meta: [
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1'
+        }
+      ]
+    }
+  },
   modules: ['@element-plus/nuxt', '@vueuse/nuxt'],
   nitro: {
     devProxy: {
