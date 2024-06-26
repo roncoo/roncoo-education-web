@@ -11,6 +11,17 @@
         </template>
       </el-popover>
     </el-affix>
+    <el-affix class="affix-info">
+      <el-popover placement="left">
+        <template #reference>
+          <img src="~/assets/svg/phone.svg" width="30" />
+        </template>
+        <template #default>
+          <img style="width: 126px" src="~/assets/image/phone.jpg" />
+          <div style="font-size: 10px; text-align: center">扫码进入移动端学习</div>
+        </template>
+      </el-popover>
+    </el-affix>
   </div>
 </template>
 <script setup></script>
@@ -18,10 +29,9 @@
   .affix {
     position: fixed;
     right: 5px;
-    top: 50vh;
+    top: 40vh;
     .affix-info {
       background-color: #fff;
-      border-radius: 8px 0 0 8px;
       padding: 10px;
     }
   }
