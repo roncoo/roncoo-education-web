@@ -5,7 +5,6 @@
     </div>
     <div class="icp_num">
       <span v-if="info.websiteIcp">
-        &nbsp;|&nbsp;
         <a href="http://www.miitbeian.gov.cn/" target="_blank" class="lingke_link">{{ info.websiteIcp }}</a>
       </span>
       <span v-if="info.websitePrn">
