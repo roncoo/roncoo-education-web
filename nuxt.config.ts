@@ -4,8 +4,10 @@ export default defineNuxtConfig({
   experimental: {
     asyncContext: true
   },
+
   css: ['~/assets/styles/main.scss'],
   modules: ['@element-plus/nuxt', '@vueuse/nuxt'],
+
   nitro: {
     devProxy: {
       '/gateway': {
@@ -14,6 +16,7 @@ export default defineNuxtConfig({
       }
     }
   },
+
   vite: {
     build: {
       minify: 'terser',
@@ -30,5 +33,7 @@ export default defineNuxtConfig({
       include: ['element-plus/es/components/**']
     }
   },
-  telemetry: false
+
+  telemetry: false,
+  compatibilityDate: '2024-09-20'
 })
