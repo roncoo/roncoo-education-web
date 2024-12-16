@@ -1,6 +1,6 @@
 {
   "name": "roncoo-education-web",
-  "version": "24.0.0-RELEASE",
+  "version": "25.0.0-RELEASE",
   "license": "MIT",
   "type": "commonjs",
   "scripts": {

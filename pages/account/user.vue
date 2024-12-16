@@ -16,8 +16,8 @@
               <el-form-item label="昵称：">
                 <el-input v-model="userInfo.nickname" size="large" placeholder="请输入昵称" />
               </el-form-item>
-              <el-form-item label="年龄：">
-                <el-input-number v-model="userInfo.userAge" size="large" />
+              <el-form-item label="生日：">
+                <el-date-picker v-model="userInfo.userAge" value-format="YYYY-MM-DD" format="YYYY-MM-DD" type="date" placeholder="请选择出生日期" />
               </el-form-item>
               <el-form-item label="">
                 <el-button type="primary" size="large" @click="onSubmit"> 保存设置 </el-button>

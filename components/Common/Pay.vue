@@ -172,8 +172,11 @@
       padding: 0 10px;
     }
     .course-info-img {
-      height: 100px;
-      width: auto;
+      width: 120px;
+      height: auto;
+    }
+    .course-info-title {
+      width: 200px;
     }
   }
 

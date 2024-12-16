@@ -3,17 +3,17 @@
     <el-table v-loading="page.loading" :border="false" :data="page.list" :show-header="false">
       <el-table-column label="课程">
         <template #default="scope">
-          <img :src="scope.row.courseResp.courseLogo" :alt="scope.row.courseResp.courseName" class="course-img" />
+          <img :src="scope.row.courseResp?.courseLogo" :alt="scope.row.courseResp?.courseName" class="course-img" />
           <div class="course-info">
-            <div class="course-info-title">{{ scope.row.courseResp.courseName }}<span v-if="scope.row.courseResp.isFree === 1" style="margin: 0">【免费课】</span></div>
-            <div>购买人数：{{ scope.row.courseResp.countBuy }}</div>
-            <div>学习人数：{{ scope.row.courseResp.countStudy }}</div>
+            <div class="course-info-title">{{ scope.row.courseResp?.courseName }}<span v-if="scope.row.courseResp?.isFree === 1" style="margin: 0">【免费课】</span></div>
+            <div>购买人数：{{ scope.row.courseResp?.countBuy }}</div>
+            <div>学习人数：{{ scope.row.courseResp?.countStudy }}</div>
           </div>
         </template>
       </el-table-column>
       <el-table-column :width="200" align="center" label="操作">
         <template #default="scope">
-          <nuxt-link :to="{ name: 'course-detail', query: { id: scope.row.courseResp.id } }" link plain type="primary">
+          <nuxt-link :to="{ name: 'course-detail', query: { id: scope.row.courseResp?.id } }" link plain type="primary">
             <el-button plain> 马上学习 </el-button>
           </nuxt-link>
         </template>

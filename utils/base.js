@@ -1,5 +1,19 @@
 import { KEYUTIL, KJUR } from 'jsrsasign'
 
+export function getLiveStatusName(liveStatus) {
+  if (liveStatus === 1) {
+    return '待开播'
+  } else if (liveStatus === 2) {
+    return '直播中'
+  } else if (liveStatus === 3) {
+    return '待回放'
+  } else if (liveStatus === 4) {
+    return '观看回放'
+  } else {
+    return '未知'
+  }
+}
+
 export function getResourceTypeName(resourceType) {
   if (resourceType === 1) {
     return '视频'
@@ -15,6 +29,7 @@ export function getResourceTypeName(resourceType) {
     return '未知'
   }
 }
+
 /**
  * 判断是否是外部链接
  * @param path

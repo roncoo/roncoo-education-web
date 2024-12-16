@@ -40,12 +40,17 @@
                 <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: studyPeriodId == two?.id }" @click="handleStudy(two)">
                   <div class="period-name">
                     &nbsp;&nbsp;
-                    <span>{{ getResourceTypeName(two.resourceResp.resourceType) }}：</span>
+                    <span v-if="two.periodType === 10">{{ getResourceTypeName(two.resourceResp?.resourceType) }}：</span>
+                    <span v-if="two.periodType === 20">直播：</span>
                     {{ index + 1 }}-{{ num + 1 }} {{ two.periodName }}
                     <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1">(未更新)</span>
                     <span v-if="two.isFree">(试看)</span>
-                    <div style="width: 300px; margin-left: 50px">
+                    <div v-if="two.periodType === 10" class="period-progress">
                       <el-progress v-if="two" :percentage="two.periodProgress ? two.periodProgress : 0" :stroke-width="2" :status="two.periodProgress > 99 ? 'success' : ''" />
+                    </div>
+                    <div v-if="two.periodType === 20" class="period-live">
+                      <span v-if="two.liveResp?.liveStatus === 1">开播时间：{{ two.liveResp?.beginTime }}</span>
+                      <span v-if="two.liveResp?.liveStatus > 1">{{ getLiveStatusName(two.liveResp.liveStatus) }}</span>
                     </div>
                   </div>
                 </div>
@@ -63,7 +68,9 @@
 <script setup>
   import { courseApi } from '~/api/course.js'
   import { getClient, getClientForPri } from '~/utils/polyv'
+  import { getLiveStatusName } from '~/utils/base'
   const route = useRoute()
+  const router = useRouter()
 
   useHead({
     title: '课程详情',
@@ -92,7 +99,7 @@
     await getCourseInfo()
 
     // 初始化学习
-    await handleStudy({})
+    await handleStudy({ id: route.query.periodId })
   })
 
   onUnmounted(() => {
@@ -102,16 +109,29 @@
 
   // 学习
   async function handleStudy(period) {
+    if (period.periodType === 20 && period.liveResp?.liveStatus === 2) {
+      // 直播
+      await router.push('/course/live?id=' + route.query.id + '&periodId=' + period.id)
+      return
+    }
+
     loading.value = true
     showing.value = true
 
     // 更新课程信息
     await getCourseInfo()
-    const studyRes = await courseApi.studySign({ periodId: period.id, courseId: route.query.id })
+    let studyRes
+    try {
+      studyRes = await courseApi.studySign({ periodId: period.id, courseId: route.query.id })
+    } catch (e) {
+      loading.value = false
+    }
+
     studyPeriodId.value = studyRes.periodId
     userStudy.studyId = studyRes.studyId
     userStudy.resourceId = studyRes.resourceId
 
+    // 资源类型
     if (studyRes.resourceType <= 2) {
       handleClear()
       // 音视频播放
@@ -155,6 +175,19 @@
         }
       }
     }
+  }
+
+  /**
+   * 直播播放
+   */
+  function handleLive(watchUrl) {
+    const iframe = document.createElement('iframe')
+    iframe.setAttribute('src', watchUrl)
+    iframe.style.width = '100%'
+    iframe.style.height = '100%'
+    const player = document.getElementById('player')
+    player.innerHTML = ''
+    player.appendChild(iframe)
   }
 
   /**
@@ -413,6 +446,16 @@
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
+              width: 350px;
+            }
+            .period-progress {
+              height: 20px;
+              width: 300px;
+              margin-left: 50px;
+            }
+            .period-live {
+              font-size: 12px;
+              text-align: right;
             }
           }
           .on {
