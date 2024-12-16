@@ -12,7 +12,7 @@
           <div class="login_form">
             <el-form v-loading="loading" :model="loginForm" @keyup.enter="onSubmit">
               <el-form-item prop="mobile">
-                <el-input v-model="loginForm.mobile" placeholder="用户名" autofocus />
+                <el-input v-model="loginForm.mobile" placeholder="手机号" autofocus />
               </el-form-item>
               <el-form-item prop="verificationCode">
                 <el-input v-model="loginForm.verificationCode" placeholder="验证码">
@@ -89,11 +89,12 @@
       ElMessage.error('请输入正确的手机号')
       return
     }
-    if (!mobilePwd) {
+    if (!mobilePwd.value) {
       ElMessage.error('请输入密码')
       return
     }
-    if (mobilePwd !== mobilePwdRepeat) {
+
+    if (mobilePwd.value !== mobilePwdRepeat.value) {
       ElMessage.error('两次密码输入不一致')
       return
     }

@@ -4,9 +4,7 @@
       <span v-html="info.websiteCopyright" />
     </div>
     <div class="icp_num">
-      <a href="http://www.doityun.com/" target="_blank" class="lingke_link">IT云提供计算服务</a>
       <span v-if="info.websiteIcp">
-        &nbsp;|&nbsp;
         <a href="http://www.miitbeian.gov.cn/" target="_blank" class="lingke_link">{{ info.websiteIcp }}</a>
       </span>
       <span v-if="info.websitePrn">
