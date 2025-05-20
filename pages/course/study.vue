@@ -178,19 +178,6 @@
   }
 
   /**
-   * 直播播放
-   */
-  function handleLive(watchUrl) {
-    const iframe = document.createElement('iframe')
-    iframe.setAttribute('src', watchUrl)
-    iframe.style.width = '100%'
-    iframe.style.height = '100%'
-    const player = document.getElementById('player')
-    player.innerHTML = ''
-    player.appendChild(iframe)
-  }
-
-  /**
    * 文档图片播放
    */
   function handleDoc(srcPath) {
