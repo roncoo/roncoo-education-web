@@ -24,7 +24,7 @@
           <div v-show="!showing" class="study-tip">
             <div v-if="nextPeriod">
               下一节：{{ nextPeriod?.periodName }}
-              <el-button size="small" type="success" @click="handleStudy(nextPeriod)"> 马上学习 </el-button>
+              <el-button size="small" type="success" @click="handleStudy(nextPeriod)"> 马上学习</el-button>
             </div>
           </div>
         </div>
@@ -41,16 +41,11 @@
                   <div class="period-name">
                     &nbsp;&nbsp;
                     <span v-if="two.periodType === 10">{{ getResourceTypeName(two.resourceResp?.resourceType) }}：</span>
-                    <span v-if="two.periodType === 20">直播：</span>
                     {{ index + 1 }}-{{ num + 1 }} {{ two.periodName }}
                     <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1">(未更新)</span>
                     <span v-if="two.isFree">(试看)</span>
                     <div v-if="two.periodType === 10" class="period-progress">
                       <el-progress v-if="two" :percentage="two.periodProgress ? two.periodProgress : 0" :stroke-width="2" :status="two.periodProgress > 99 ? 'success' : ''" />
-                    </div>
-                    <div v-if="two.periodType === 20" class="period-live">
-                      <span v-if="two.liveResp?.liveStatus === 1">开播时间：{{ two.liveResp?.beginTime }}</span>
-                      <span v-if="two.liveResp?.liveStatus > 1">{{ getLiveStatusName(two.liveResp.liveStatus) }}</span>
                     </div>
                   </div>
                 </div>
@@ -68,9 +63,8 @@
 <script setup>
   import { courseApi } from '~/api/course.js'
   import { getClient, getClientForPri } from '~/utils/polyv'
-  import { getLiveStatusName } from '~/utils/base'
+
   const route = useRoute()
-  const router = useRouter()
 
   useHead({
     title: '课程详情',
@@ -109,12 +103,6 @@
 
   // 学习
   async function handleStudy(period) {
-    if (period.periodType === 20 && period.liveResp?.liveStatus === 2) {
-      // 直播
-      await router.push('/course/live?id=' + route.query.id + '&periodId=' + period.id)
-      return
-    }
-
     loading.value = true
     showing.value = true
 
@@ -250,7 +238,11 @@
       })
       .catch((error) => {
         polyvPlayerClient.j2s_pauseVideo()
-        ElMessageBox.confirm('系统异常将暂停观看，请联系管理员', '提示', { confirmButtonText: '返回', cancelButtonText: '取消', type: 'warning' }).then(() => {
+        ElMessageBox.confirm('系统异常将暂停观看，请联系管理员', '提示', {
+          confirmButtonText: '返回',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           handleBack()
         })
       })
@@ -270,7 +262,11 @@
         }
       })
       .catch((error) => {
-        ElMessageBox.confirm('系统异常将暂停观看，请联系管理员', '提示', { confirmButtonText: '返回', cancelButtonText: '取消', type: 'warning' }).then(() => {
+        ElMessageBox.confirm('系统异常将暂停观看，请联系管理员', '提示', {
+          confirmButtonText: '返回',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           handleBack()
         })
       })
@@ -278,6 +274,7 @@
 
   // tab切换
   const cateType = ref('chapter')
+
   function handleTab(item) {
     if (item === cateType.value) {
       cateType.value = ''
@@ -345,15 +342,19 @@
     line-height: 66px;
     margin: 0 auto;
     font-size: 18px;
+
     .cursor-image {
       width: 20px;
     }
+
     .header-left {
       margin-left: 20px;
+
       .header-course {
         margin-left: 20px;
       }
     }
+
     .header-right {
       margin-right: 20px;
       display: flex;
@@ -363,16 +364,20 @@
 
   .video-body {
     background: #000;
+
     .video-content {
       display: flex;
       flex-wrap: nowrap;
       justify-content: space-between;
+
       .player-box {
         width: calc(100% - 66px);
         padding: 10px 20px;
+
         .player-video {
           height: calc(100vh - 86px);
         }
+
         .study-tip {
           height: calc(100vh - 86px);
           display: flex;
@@ -388,30 +393,37 @@
         background: #1c1f21;
         display: flex;
         flex-direction: row-reverse;
+
         .video-info-tab {
           width: 80px;
           margin-top: calc(50vh - 120px);
           font-size: 16px;
+
           .video-info-button {
             color: #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px 0;
+
             .img-icon {
               width: 25px;
             }
+
             &:hover {
               background-color: #333;
             }
           }
+
           .on {
             background-color: #333;
           }
         }
+
         .content {
           display: block;
         }
+
         .video-info-content {
           background-color: #333;
           color: #fff;
@@ -419,32 +431,39 @@
           padding: 20px;
           height: calc(100vh - 86px);
           overflow: auto;
+
           .catalog-chapter {
             font-size: 16px;
             margin: 15px 0;
           }
+
           .catalog-chapter-period {
             font-size: 14px;
             margin: 10px;
+
             &:hover {
               color: red;
             }
+
             .period-name {
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
               width: 350px;
             }
+
             .period-progress {
               height: 20px;
               width: 300px;
               margin-left: 50px;
             }
+
             .period-live {
               font-size: 12px;
               text-align: right;
             }
           }
+
           .on {
             color: #2256f6;
           }

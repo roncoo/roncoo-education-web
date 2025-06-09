@@ -10,7 +10,6 @@
           <span class="period_num">第{{ num + 1 }}讲</span>
           <span style="margin-right: 5px">
             <el-tag v-if="two.periodType === 10">{{ getResourceTypeName(two.resourceResp?.resourceType) }}</el-tag>
-            <el-tag v-if="two.periodType === 20">直播</el-tag>
           </span>
           <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1" class="no_video">(未更新)</span>
           <span>{{ two.periodName }}</span>
@@ -19,10 +18,6 @@
           &nbsp;<span v-if="two.isFree" class="c_blue">(试看)</span>
           <!-- 右边 -->
           <span v-if="two.periodType === 10 && two.periodProgress" class="video_time fr"> {{ two.periodProgress }}% </span>
-          <span v-if="two.periodType === 20" class="video_time fr">
-            <span v-if="two.liveResp?.liveStatus === 1">开播时间：{{ two.liveResp?.beginTime }}</span>
-            <span v-if="two.liveResp?.liveStatus > 1">{{ getLiveStatusName(two.liveResp.liveStatus) }}</span>
-          </span>
         </div>
       </div>
     </div>
@@ -49,15 +44,8 @@
   })
 
   function handlePlayVideo(period) {
-    if (period.periodType === 20 && period.liveResp?.liveStatus === 2) {
-      // 直播
-      router.push('/course/live?id=' + route.query.id + '&periodId=' + period.id)
-      return
-    }
-
     // 资源
     router.push('/course/study?id=' + route.query.id + '&periodId=' + period.id)
-    return
   }
 </script>
 
