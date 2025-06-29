@@ -10,10 +10,10 @@
           <a v-else :href="item.navUrl" :target="item.target">{{ item.navTitle }}</a>
         </div>
       </div>
-      <div v-if="pathUrl != '/search'" class="top-search">
+      <div v-if="pathUrl !== '/search'" class="top-search">
         <el-input v-model="search" autofocus placeholder="请输入搜索内容" @keyup.enter="handleSearch">
           <template #prefix>
-            <img src="~/assets/svg/search.svg" />
+            <img src="https://asset.roncoos.com/static/search.png" alt="" />
           </template>
         </el-input>
       </div>
@@ -22,8 +22,8 @@
           <common-user />
         </div>
         <div v-else>
-          <nuxt-link :to="{ name: 'login' }"> 登录 </nuxt-link>
-          <nuxt-link :to="{ name: 'register' }"> 注册 </nuxt-link>
+          <nuxt-link :to="{ name: 'login' }"> 登录</nuxt-link>
+          <nuxt-link :to="{ name: 'register' }"> 注册</nuxt-link>
         </div>
       </div>
     </div>
@@ -104,6 +104,7 @@
     .top-nav {
       display: flex;
       align-items: center;
+
       .top-nav-title {
         margin-left: 30px;
         font-size: 18px;
@@ -123,6 +124,7 @@
         height: 35px;
         line-height: 35px;
       }
+
       img {
         width: 20px;
       }
@@ -132,6 +134,7 @@
       img {
         border-radius: 50%;
       }
+
       a {
         font-size: 16px;
         margin-left: 10px;

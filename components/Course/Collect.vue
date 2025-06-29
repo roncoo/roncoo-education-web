@@ -1,7 +1,7 @@
 <template>
   <div class="collect" @click="handleCollect">
-    <img v-if="!status" src="../../assets/svg/collect.svg" alt="收藏" />
-    <img v-if="status" src="../../assets/svg/favorite.svg" alt="已收藏" />
+    <img v-if="!status" src="https://asset.roncoos.com/static/collect.png" alt="收藏" />
+    <img v-if="status" src="https://asset.roncoos.com/static/favorite.png" alt="已收藏" />
     <span>收藏</span>
   </div>
 </template>
@@ -54,6 +54,7 @@
     cursor: pointer;
     float: right;
     margin-left: 20px;
+
     img {
       width: 20px;
     }

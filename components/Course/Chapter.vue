@@ -132,11 +132,11 @@
       position: relative;
       top: 6px;
       margin-right: 10px;
-      background: url(../../assets/svg/video.svg) center center;
+      background: url(https://asset.roncoos.com/static/video.png) center center;
       background-size: 21px 21px;
 
       &.no_v {
-        background: url(../../assets/svg/time.svg) no-repeat center center;
+        background: url(https://asset.roncoos.com/static/time.png) no-repeat center center;
       }
     }
 

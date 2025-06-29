@@ -3,13 +3,13 @@
     <div class="login_body">
       <div class="login_box">
         <div class="login_logo">
-          <img src="../assets/image/common_login.png" />
+          <img src="../assets/image/common_login.png" alt="" />
         </div>
         <div class="login_content">
           <!-- 账号登录 -->
-          <img v-if="isPwdLogin && websiteInfo?.wxPcLoginEnable === '1'" src="../assets/image/common_login_app.png" class="login_ico" @click="switchLogin" />
+          <img v-if="isPwdLogin && websiteInfo?.wxPcLoginEnable === '1'" src="https://asset.roncoos.com/static/qr.png" class="login_ico" @click="switchLogin" alt="" />
           <!-- 扫码登录 -->
-          <img v-if="!isPwdLogin && websiteInfo?.wxPcLoginEnable === '1'" src="../assets/image/common_login_pc.png" class="login_ico" @click="switchLogin" />
+          <img v-if="!isPwdLogin && websiteInfo?.wxPcLoginEnable === '1'" src="https://asset.roncoos.com/static/pc.png" class="login_ico" @click="switchLogin" alt="" />
           <div v-if="isPwdLogin" class="login_pc">
             <div class="login_form">
               <div class="login_title">账号登录</div>
@@ -30,10 +30,10 @@
                     <div class="login-info-reset">忘记密码？</div>
                   </nuxt-link>
                 </div>
-                <el-button class="login-button" type="primary" size="large" @click="handleLogin()"> 马上登录 </el-button>
+                <el-button class="login-button" type="primary" size="large" @click="handleLogin()"> 马上登录</el-button>
               </el-form>
               <div class="login_other">
-                <nuxt-link :to="{ name: 'register' }"> 没有账号，我要注册 </nuxt-link>
+                <nuxt-link :to="{ name: 'register' }"> 没有账号，我要注册</nuxt-link>
               </div>
             </div>
           </div>
@@ -48,7 +48,7 @@
                 <el-form-item prop="code">
                   <el-input v-model="bindingForm.code" placeholder="验证码">
                     <template #suffix>
-                      <el-button link type="primary" @click="getCode"> 获取验证码 </el-button>
+                      <el-button link type="primary" @click="getCode"> 获取验证码</el-button>
                     </template>
                   </el-input>
                 </el-form-item>
@@ -108,7 +108,13 @@
       isPwdLogin.value = false
       // 根据授权码获取用户信息
       try {
-        const res = await loginApi.wxCode({ code: route.query.code, loginAuthType: 1, clientType: 1, os: getOsInfo(), browser: getBrowserInfo().name })
+        const res = await loginApi.wxCode({
+          code: route.query.code,
+          loginAuthType: 1,
+          clientType: 1,
+          os: getOsInfo(),
+          browser: getBrowserInfo().name
+        })
         if (res.bindingStatus) {
           // 已经绑定直接登录
           login(res.token)
@@ -149,6 +155,7 @@
 
   // 获取图形验证码
   const verImg = ref()
+
   async function getCaptcha() {
     try {
       const res = await loginApi.getCodeImg()
@@ -234,6 +241,7 @@
   .login_body {
     background-color: #2256f7;
     height: calc(100vh - 130px);
+
     .login_box {
       width: 1400px;
       margin: 0 auto;
@@ -242,23 +250,28 @@
       align-items: center;
       height: 100%;
     }
+
     .login_logo {
       float: left;
       width: 40%;
       margin-right: 10%;
     }
+
     .login_content {
       float: right;
       width: 400px;
       height: 480px;
       background-color: #fff;
       border-radius: 10px;
+
       .login_pc {
         padding: 0 40px;
       }
+
       .login_app {
         height: 100%;
         padding: 0 40px;
+
         .login_iframe {
           border: none;
           width: 100%;
@@ -270,23 +283,28 @@
     .login_ico {
       float: right;
     }
+
     .login_title {
       color: #2256f6;
       font-size: 24px;
       margin: 20px auto;
       text-align: center;
     }
+
     .login-info {
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       .login-info-reset {
         color: #2256f6;
       }
     }
+
     .login-button {
       margin-top: 100px;
     }
+
     .login_other {
       color: #2256f6;
       font-size: 14px;
@@ -295,17 +313,21 @@
       margin-bottom: 20px;
     }
   }
+
   .var-input {
     width: 220px;
   }
+
   .var-img {
     margin-left: 20px;
     width: 80px;
   }
+
   .el-input {
     height: 40px;
     line-height: 40px;
   }
+
   .el-button {
     width: 100%;
     margin: 20px 0;

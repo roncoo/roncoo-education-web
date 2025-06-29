@@ -3,7 +3,7 @@
     <div class="video-header">
       <div class="header-left">
         <span class="cursor" @click="handleBack">
-          <img class="cursor-image" src="~/assets/svg/return.svg" alt="return" />
+          <img class="cursor-image" src="https://asset.roncoos.com/static/return.png" alt="return" />
         </span>
         <nuxt-link :to="{ name: 'course-detail', query: { id: courseInfo?.id } }" class="left_col">
           <span class="header-course">

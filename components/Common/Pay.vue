@@ -33,11 +33,11 @@
 
         <canvas v-if="orderInfo.orderStatus === 1" id="canvas" />
         <div v-if="orderInfo.orderStatus === 2" class="order-info-title">
-          <img src="~/assets/svg/success.svg" class="order-info-img" />
+          <img src="https://asset.roncoos.com/static/success.png" class="order-info-img" alt="" />
           <div>支付成功</div>
         </div>
         <div v-if="orderInfo.orderStatus === 3" class="order-info-title">
-          <img src="~/assets/svg/error.svg" class="order-info-img" />
+          <img src="https://asset.roncoos.com/static/error.png" class="order-info-img" alt="" />
           <div>支付失败</div>
         </div>
 
@@ -163,18 +163,22 @@
   .el-form {
     padding: 10px 20px;
   }
+
   .course-info {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 0 30px;
+
     div {
       padding: 0 10px;
     }
+
     .course-info-img {
       width: 120px;
       height: auto;
     }
+
     .course-info-title {
       width: 200px;
     }
@@ -183,6 +187,7 @@
   .course-qrcode {
     padding: 0 20px;
     text-align: center;
+
     .course-qrcode-desc {
       margin: 0 auto;
       width: 160px;
@@ -199,6 +204,7 @@
       height: 100px;
       width: auto;
     }
+
     .course-qrcode-tips {
       margin-top: 30px;
       text-align: left;

@@ -10,7 +10,7 @@
       <span v-if="info.websitePrn">
         &nbsp;|&nbsp;
         <a :href="'http://www.beian.gov.cn/portal/registerSystemprops.info?recordcode=' + info.websitePrnNo" target="_blank" class="lingke_link">
-          <img src="../../assets/image/common_prn.png" class="prn_icon" alt="" />&nbsp;{{ info.websitePrn }}
+          <img src="https://asset.roncoos.com/static/emblem.png" class="prn_icon" alt="" />&nbsp;{{ info.websitePrn }}
         </a>
       </span>
     </div>
@@ -44,6 +44,7 @@
     text-align: center;
     padding-top: 5px;
     color: #ccc;
+
     a {
       color: #ccc;
     }
@@ -54,8 +55,10 @@
     line-height: 30px;
     text-align: center;
     color: #ccc;
+
     .lingke_link {
       color: #ccc;
+
       &:hover {
         text-decoration: underline;
       }
