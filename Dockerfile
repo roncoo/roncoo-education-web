@@ -1,4 +1,4 @@
-FROM registry.cn-beijing.aliyuncs.com/sunjinke/node:12.22.12
+FROM registry.cn-beijing.aliyuncs.com/sunjinke/node:20.11.1
 WORKDIR /web
 COPY  ./ /web
 ARG env
