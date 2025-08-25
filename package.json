@@ -7,18 +7,20 @@
     "dev": "nuxt dev --dotenv .env.development",
     "build": "nuxt build --dotenv .env.production",
     "lint": "eslint . --fix --ext .vue,.js",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "zip": "node zip.mjs"
   },
   "engines": {
-    "node": "18.x || 20.x || 22.x"
+    "node": ">=20.0.0"
   },
   "dependencies": {
+    "archiver": "7.0.1",
     "axios": "1.11.0",
     "dayjs": "1.11.3",
     "element-plus": "2.6.3",
     "js-cookie": "3.0.5",
-    "jsrsasign": "10.9.0",
-    "nuxt": "3.12.4",
+    "node-forge": "1.3.1",
+    "nuxt": "3.16.0",
     "qrcode": "1.5.3",
     "vue": "3.4.21",
     "vue-router": "4.3.0"

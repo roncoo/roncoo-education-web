@@ -2,6 +2,7 @@ node_modules
 dist
 npm-debug.log*
 yarn-debug.log*
+web.zip
 
 .nuxt
 .output
