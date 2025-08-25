@@ -35,5 +35,5 @@ export default defineNuxtConfig({
   },
 
   telemetry: false,
-  compatibilityDate: '2024-09-20'
+  compatibilityDate: '2025-08-25'
 })
