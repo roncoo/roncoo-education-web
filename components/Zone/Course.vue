@@ -18,8 +18,7 @@
 
   const zoneData = ref()
   onMounted(async () => {
-    const res = await indexApi.zoneList({})
-    zoneData.value = res
+    zoneData.value = await indexApi.zoneList({})
   })
 </script>
 <style lang="scss" scoped>

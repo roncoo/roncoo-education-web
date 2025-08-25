@@ -8,7 +8,7 @@
   </NuxtLayout>
 </template>
 <script setup>
-  import { indexApi } from '~/api/index'
+  import { indexApi } from '~/api'
 
   const { data } = await useAsyncData('website', async () => {
     return indexApi.websiteInfo()

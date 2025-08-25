@@ -37,7 +37,7 @@
 </template>
 <script setup>
   import { loginApi } from '~/api/login.js'
-  import { indexApi } from '~/api/index'
+  import { indexApi } from '~/api'
 
   const router = useRouter()
   const loading = ref(false)

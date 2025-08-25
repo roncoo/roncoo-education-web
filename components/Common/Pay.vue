@@ -3,7 +3,7 @@
     <el-dialog :model-value="visible" :destroy-on-close="true" :append-to-body="true" title="收银台" width="500px" align-center @close="onClose">
       <el-form v-if="orderInfo.orderStatus === 0" ref="formRef" :model="orderModel">
         <div class="course-info">
-          <img :src="courseInfo.courseLogo" class="course-info-img" />
+          <img :src="courseInfo.courseLogo" class="course-info-img" alt="" />
           <div class="course-info-title">
             {{ courseInfo.courseName }}
           </div>

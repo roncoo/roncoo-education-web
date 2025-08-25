@@ -65,7 +65,7 @@
 <script setup>
   import { loginApi } from '~/api/login.js'
   import { encrypt, getBrowserInfo, getOsInfo } from '~/utils/base'
-  import { indexApi } from '~/api/index'
+  import { indexApi } from '~/api'
   import { login } from '~/utils/login'
 
   const router = useRouter()

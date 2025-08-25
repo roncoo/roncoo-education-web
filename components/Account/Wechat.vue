@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-  import { ref, watch } from 'vue'
+  import { ref } from 'vue'
   import { loginApi } from '~/api/login.js'
   import { indexApi } from '~/api'
 

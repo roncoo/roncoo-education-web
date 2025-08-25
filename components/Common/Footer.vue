@@ -5,11 +5,11 @@
     </div>
     <div class="icp_num">
       <span v-if="info.websiteIcp">
-        <a href="http://www.miitbeian.gov.cn/" target="_blank" class="lingke_link">{{ info.websiteIcp }}</a>
+        <a href="https://beian.miit.gov.cn/" target="_blank" class="lingke_link">{{ info.websiteIcp }}</a>
       </span>
       <span v-if="info.websitePrn">
         &nbsp;|&nbsp;
-        <a :href="'http://www.beian.gov.cn/portal/registerSystemprops.info?recordcode=' + info.websitePrnNo" target="_blank" class="lingke_link">
+        <a :href="'https://beian.mps.gov.cn/#/query/webSearch?code=' + info.websitePrnNo" target="_blank" class="lingke_link">
           <img src="https://asset.roncoos.com/static/emblem.png" class="prn_icon" alt="" />&nbsp;{{ info.websitePrn }}
         </a>
       </span>

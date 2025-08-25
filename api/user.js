@@ -22,7 +22,7 @@ export const userApi = {
   },
 
   // 用户信息修改
-  usersUpdata: (params = {}) => {
+  usersUpdate: (params = {}) => {
     return postRequest('/user/auth/users/edit', params)
   },
 

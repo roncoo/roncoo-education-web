@@ -229,7 +229,7 @@
 
         .foot_box {
           position: absolute;
-          bottom: 0px;
+          bottom: 0;
           width: 100%;
           height: 36px;
           display: flex;

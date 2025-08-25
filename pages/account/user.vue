@@ -147,7 +147,7 @@
       return
     }
 
-    userApi.usersUpdata(userInfo.value).then((res) => {
+    userApi.usersUpdate(userInfo.value).then((res) => {
       ElMessage.info(res)
     })
   }

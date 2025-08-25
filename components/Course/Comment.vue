@@ -8,7 +8,7 @@
     <div class="course_comment_list clearfix">
       <div v-for="(comment, index) in page.list" :key="index" class="course_comment_item">
         <div class="course_comment_cover">
-          <img :src="comment.usersVO.userHead" class="comment_cover_img" />
+          <img :src="comment.usersVO.userHead" class="comment_cover_img" alt="" />
         </div>
         <div class="course_comment_content">
           <div class="course_comment_user">

@@ -124,8 +124,7 @@
   // 分类查询
   let categoryRes = []
   const getCategoryList = async () => {
-    const res = await courseApi.categoryList()
-    categoryRes = res
+    categoryRes = await courseApi.categoryList()
     selectCategory = []
   }
 
