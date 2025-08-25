@@ -1,18 +1,4 @@
-import { KEYUTIL, KJUR } from 'jsrsasign'
-
-export function getLiveStatusName(liveStatus) {
-  if (liveStatus === 1) {
-    return '待开播'
-  } else if (liveStatus === 2) {
-    return '直播中'
-  } else if (liveStatus === 3) {
-    return '待回放'
-  } else if (liveStatus === 4) {
-    return '观看回放'
-  } else {
-    return '未知'
-  }
-}
+import forge from 'node-forge'
 
 export function getResourceTypeName(resourceType) {
   if (resourceType === 1) {
@@ -36,10 +22,7 @@ export function getResourceTypeName(resourceType) {
  * @returns {boolean}
  */
 export function isExternalUrl(path) {
-  if (path.indexOf('http') != -1) {
-    return true
-  }
-  return false
+  return path.indexOf('http') !== -1
 }
 
 /**
@@ -60,26 +43,6 @@ export function formatTime(time) {
   }
 }
 
-// 文件大小转换
-export function transformSize(bytes) {
-  // 文件大小转换
-  const bt = parseInt(bytes)
-  let result
-  if (bt === 0) {
-    result = '0B'
-  } else {
-    const k = 1024
-    const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-    const i = Math.floor(Math.log(bt) / Math.log(k))
-    if (typeof i !== 'number') {
-      result = '-'
-    } else {
-      result = (bt / Math.pow(k, i)).toFixed(2) + sizes[i]
-    }
-  }
-  return result
-}
-
 /**
  * 数字转换为中文
  * @param num
@@ -97,7 +60,7 @@ export function changeNumToHan(num) {
     const arr1_index = english[des_i]
     result = arr1[arr1_index] + result
   }
-  result = result.replace(/零(千|百|十)/g, '零').replace(/十零/g, '十') // 将【零千、零百】换成【零】 【十零】换成【十】
+  result = result.replace(/零([千百十])/g, '零').replace(/十零/g, '十') // 将【零千、零百】换成【零】 【十零】换成【十】
   result = result.replace(/零+/g, '零') // 合并中间多个零为一个零
   result = result.replace(/零亿/g, '亿').replace(/零万/g, '万') // 将【零亿】换成【亿】【零万】换成【万】
   result = result.replace(/亿万/g, '亿') // 将【亿万】换成【亿】
@@ -142,35 +105,28 @@ export function getOsInfo() {
  * @returns {{name: string, version: string}}
  */
 export function getBrowserInfo() {
-  const Sys = {}
   const ua = navigator.userAgent.toLowerCase()
-  let s
-  ;(s = ua.match(/rv:([\d.]+)\) like gecko/))
-    ? (Sys.ie = s[1])
-    : (s = ua.match(/msie ([\d]+)/))
-      ? (Sys.ie = s[1])
-      : (s = ua.match(/edge\/([\d]+)/))
-        ? (Sys.edge = s[1])
-        : (s = ua.match(/firefox\/([\d]+)/))
-          ? (Sys.firefox = s[1])
-          : (s = ua.match(/(?:opera|opr).([\d]+)/))
-            ? (Sys.opera = s[1])
-            : (s = ua.match(/chrome\/([\d]+)/))
-              ? (Sys.chrome = s[1])
-              : (s = ua.match(/version\/([\d]+).*safari/))
-                ? (Sys.safari = s[1])
-                : 0
-  // 根据关系进行判断
-  if (Sys.ie) return { name: 'IE', version: Sys.ie }
-  if (Sys.edge) return { name: 'EDGE', version: Sys.edge }
-  if (Sys.firefox) return { name: 'Firefox', version: Sys.firefox }
-  if (Sys.chrome) return { name: 'Chrome', version: Sys.chrome }
-  if (Sys.opera) return { name: 'Opera', version: Sys.opera }
-  if (Sys.safari) return { name: 'Safari', version: Sys.safari }
-  return { name: 'Unkonwn', version: '0.0.0' }
+  const browserPatterns = {
+    ie: /rv:([\d.]+)\) like gecko/,
+    edge: /edge\/([\d.]+)/,
+    firefox: /firefox\/([\d.]+)/,
+    opera: /(?:opera|opr).([\d.]+)/,
+    chrome: /chrome\/([\d.]+)/,
+    safari: /version\/([\d.]+).*safari/
+  }
+  for (const [browserName, pattern] of Object.entries(browserPatterns)) {
+    const match = pattern.exec(ua)
+    if (match) {
+      const version = match[1]
+      const capitalizedName = browserName.charAt(0).toUpperCase() + browserName.slice(1)
+      return { name: capitalizedName === 'Ie' ? 'IE' : capitalizedName, version }
+    }
+  }
+  return { name: 'Unknown', version: '0.0.0' }
 }
 
 export function encrypt(password, publicKey) {
   publicKey = `-----BEGIN PUBLIC KEY-----\n` + publicKey + `\n-----END PUBLIC KEY-----`
-  return KJUR.crypto.Cipher.encrypt(password, KEYUTIL.getKey(publicKey))
+  publicKey = forge.pki.publicKeyFromPem(publicKey)
+  return forge.util.encode64(publicKey.encrypt(password))
 }
