@@ -6,7 +6,7 @@
 
     <groupId>com.roncoo</groupId>
     <artifactId>distribution</artifactId>
-    <version>13.0.0-RELEASE</version>
+    <version>25.0.0-RELEASE</version>
     <packaging>pom</packaging>
     <name>distribution</name>
 
