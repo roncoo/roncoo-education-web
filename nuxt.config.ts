@@ -4,10 +4,8 @@ export default defineNuxtConfig({
   experimental: {
     asyncContext: true
   },
-
   css: ['~/assets/styles/main.scss'],
   modules: ['@element-plus/nuxt', '@vueuse/nuxt'],
-
   nitro: {
     devProxy: {
       '/gateway': {
@@ -16,7 +14,6 @@ export default defineNuxtConfig({
       }
     }
   },
-
   vite: {
     build: {
       minify: 'terser',
@@ -28,12 +25,12 @@ export default defineNuxtConfig({
           drop_debugger: import.meta.env.VITE_DROP_DEBUGGER
         }
       }
-    },
-    optimizeDeps: {
-      include: ['element-plus/es/components/**']
     }
   },
-
-  telemetry: false,
+  sourcemap: {
+    server: import.meta.env.NODE_ENV === 'development',
+    client: import.meta.env.NODE_ENV === 'development'
+  },
+  telemetry: true,
   compatibilityDate: '2025-08-25'
 })
