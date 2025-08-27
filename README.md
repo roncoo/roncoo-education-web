@@ -1,17 +1,17 @@
 <div>
     <img src="distribution/images/logo.jpg" alt="领课教育系统-开源版"/>
-    <div>    
+    <div>
         <a href="http://spring.io/projects/spring-boot">
-            <img src="https://img.shields.io/badge/spring--boot-2.6.3-blue.svg" alt="spring-boot">
+            <img src="https://img.shields.io/badge/spring--boot-3.2.4-blue.svg" alt="spring-boot">
         </a>
         <a href="https://spring.io/projects/spring-cloud-alibaba">
-            <img src="https://img.shields.io/badge/spring--cloud--alibaba-2021.0.1.0-blue.svg" alt="spring-cloud-alibaba">
+            <img src="https://img.shields.io/badge/spring--cloud--alibaba-2023.0.1.0-blue.svg" alt="spring-cloud-alibaba">
         </a> 
         <a href="https://cn.vuejs.org/">
-            <img src="https://img.shields.io/badge/vue-3.4.21-blue.svg" alt="vue">
+            <img src="https://img.shields.io/badge/vue-3.5.20-blue.svg" alt="vue">
         </a> 
         <a href="https://element-plus.org/">
-            <img src="https://img.shields.io/badge/element--plus-2.6.3-blue.svg" alt="vue">
+            <img src="https://img.shields.io/badge/element--plus-2.9.9-blue.svg" alt="element-plus">
         </a> 
     </div>
 </div>
@@ -28,22 +28,22 @@
 Cloud为核心框架。系统目前主要功能有课程点播功能，支持多家视频云的接入，课程附件管理功能，支持多家存储云的接入，可以帮助个人或者企业快速搭建一个轻量级的在线教育平台。
 
 <table>
-<tr>
-  <td><img src="distribution/images/web1.png"/></td>
-  <td><img src="distribution/images/web2.png"/></td>
-</tr>
-<tr>
-  <td><img src="distribution/images/web3.png"/></td>
-  <td><img src="distribution/images/web4.png"/></td>
-</tr>
-<tr>
-  <td><img src="distribution/images/admin1.png"/></td>
-  <td><img src="distribution/images/admin2.png"/></td>
-</tr>
-<tr>
-  <td><img src="distribution/images/admin3.png"/></td>
-  <td><img src="distribution/images/admin4.png"/></td>
-</tr>
+  <tr>
+    <td><img src="distribution/images/web1.png"/></td>
+    <td><img src="distribution/images/web2.png"/></td>
+  </tr>
+  <tr>
+    <td><img src="distribution/images/web3.png"/></td>
+    <td><img src="distribution/images/web4.png"/></td>
+  </tr>
+  <tr>
+    <td><img src="distribution/images/admin1.png"/></td>
+    <td><img src="distribution/images/admin2.png"/></td>
+  </tr>
+  <tr>
+    <td><img src="distribution/images/admin3.png"/></td>
+    <td><img src="distribution/images/admin4.png"/></td>
+  </tr>
 </table>
 
 ### 演示地址
@@ -60,8 +60,5 @@ Cloud为核心框架。系统目前主要功能有课程点播功能，支持多
 * 管理系统：roncoo-education-admin（核心框架：Vue3）：[码云](https://gitee.com/roncoocom/roncoo-education-admin) | [Github](https://github.com/roncoo/roncoo-education-admin) | [Gitcode](https://gitcode.com/roncoocom/roncoo-education-admin)
 
 ---
-
-<div>
 <div>关注微信公众号可获取更多学习资料（SQL脚本、部署教程、常见问题等）</div>
 <img src="distribution/images/gzh.png" alt="领课开源-微信公众号" width="600"/>
-</div>
