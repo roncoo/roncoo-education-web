@@ -1,8 +1,5 @@
 <template>
   <div class="banner">
-    <!--
-    <zone-category />
-    -->
     <div class="carousel">
       <el-carousel height="360px">
         <el-carousel-item v-for="(item, index) in carouselList" :key="index">
