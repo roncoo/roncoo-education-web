@@ -1,6 +1,5 @@
 <template>
   <div class="banner">
-    <zone-category />
     <div class="carousel">
       <el-carousel height="360px">
         <el-carousel-item v-for="(item, index) in carouselList" :key="index">
@@ -29,11 +28,12 @@
     justify-content: space-between;
     .carousel {
       width: 100%;
-      margin-left: 200px;
+      //margin-left: 200px;
       img {
         width: 100%;
         height: 100%;
-        border-radius: 0 10px 10px 0;
+        //border-radius: 0 10px 10px 0;
+        border-radius: 10px;
       }
     }
   }
