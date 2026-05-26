@@ -1,13 +1,14 @@
 {
   "name": "roncoo-education-web",
-  "version": "25.0.0-RELEASE",
-  "license": "MIT",
+  "version": "26.0.0-RELEASE",
+  "license": "AGPL-3.0",
   "type": "commonjs",
   "scripts": {
     "dev": "nuxt dev --dotenv .env.development",
     "build": "nuxt build --dotenv .env.production",
     "lint": "eslint . --fix --ext .vue,.js",
     "prettier": "prettier --write .",
+    "tar": "node tar.gz.mjs",
     "zip": "node zip.mjs"
   },
   "engines": {
@@ -15,11 +16,11 @@
   },
   "dependencies": {
     "archiver": "7.0.1",
-    "axios": "1.11.0",
+    "axios": "1.15.2",
     "dayjs": "1.11.3",
-    "element-plus": "2.9.9",
+    "element-plus": "2.11.3",
     "js-cookie": "3.0.5",
-    "node-forge": "1.3.1",
+    "node-forge": "1.4.0",
     "nuxt": "3.17.2",
     "qrcode": "1.5.3",
     "vue": "3.5.20",
@@ -36,6 +37,6 @@
     "prettier": "3.2.5",
     "sass": "1.75.0",
     "terser": "5.31.0",
-    "vite": "6.3.4"
+    "vite": "8.0.5"
   }
 }

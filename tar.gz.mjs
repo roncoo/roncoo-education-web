@@ -1,12 +1,12 @@
 /**
- * 打包工具，方便将打包后的dist进行管理，打包后的文件为：web.zip
+ * 打包工具，将构建产物打包为 tar.gz 格式，输出文件为：web.tar.gz
  */
 import { createWriteStream } from 'fs'
 import path from 'path'
 import archiver from 'archiver'
 
-const output = createWriteStream(path.resolve('./web.zip'))
-const archive = archiver('zip', { zlib: { level: 9 } })
+const output = createWriteStream(path.resolve('./web.tar.gz'))
+const archive = archiver('tar', { gzip: true, gzipOptions: { level: 9 } })
 
 archive.pipe(output)
 archive.directory(path.resolve('.output'), '.output', null)
@@ -16,5 +16,5 @@ archive.file(path.resolve('nuxt.config.ts'), { name: 'nuxt.config.ts' })
 archive.file(path.resolve('package.json'), { name: 'package.json' })
 
 archive.finalize().then(() => {
-  console.log('打包成功，请查看根目录下的：web.zip')
+  console.log('打包成功，请查看根目录下的：web.tar.gz')
 })

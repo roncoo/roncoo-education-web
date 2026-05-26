@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-// eslint-disable-next-line no-undef
+import { defineNuxtConfig } from 'nuxt/config'
+
 export default defineNuxtConfig({
   experimental: {
     asyncContext: true
@@ -9,7 +10,7 @@ export default defineNuxtConfig({
   nitro: {
     devProxy: {
       '/gateway': {
-        target: import.meta.env.VITE_BASE_URL,
+        target: process.env.VITE_BASE_URL,
         changeOrigin: true
       }
     }
@@ -21,15 +22,15 @@ export default defineNuxtConfig({
       chunkSizeWarningLimit: 1500,
       terserOptions: {
         compress: {
-          drop_console: import.meta.env.VITE_DROP_CONSOLE,
-          drop_debugger: import.meta.env.VITE_DROP_DEBUGGER
+          drop_console: process.env.VITE_DROP_CONSOLE,
+          drop_debugger: process.env.VITE_DROP_DEBUGGER
         }
       }
     }
   },
   sourcemap: {
-    server: import.meta.env.NODE_ENV === 'development',
-    client: import.meta.env.NODE_ENV === 'development'
+    server: process.env.NODE_ENV === 'development',
+    client: process.env.NODE_ENV === 'development'
   },
   telemetry: true,
   compatibilityDate: '2025-08-25'
