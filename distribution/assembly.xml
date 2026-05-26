@@ -32,9 +32,6 @@
       <fileSet>
         <directory>${project.basedir}/../.output</directory>
       </fileSet>
-      <fileSet>
-        <directory>${project.basedir}/../node_modules</directory>
-      </fileSet>
     </fileSets>
     <files>
         <file>
