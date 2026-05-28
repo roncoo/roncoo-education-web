@@ -8,9 +8,6 @@ export SERVER="web"
 case "$1" in
 start)
   cd ${BASE_DIR}
-  if [ ! -d "node_modules" ];then
-    npm install
-  fi
   ${PM2} start
   echo "${SERVER} start success"
   ;;
