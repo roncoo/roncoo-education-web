@@ -109,14 +109,6 @@
         margin-left: 30px;
         font-size: 18px;
       }
-
-      .top-nav-title:last-child {
-        border-radius: 10px;
-        color: #fff;
-        border-color: #46c37b;
-        background-color: #46c37b;
-        padding: 8px 10px;
-      }
     }
 
     .top-search {
