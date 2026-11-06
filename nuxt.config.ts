@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { defineNuxtConfig } from 'nuxt/config'
+import { codeInspectorPlugin } from 'code-inspector-plugin'
 
 export default defineNuxtConfig({
   experimental: {
@@ -16,6 +17,14 @@ export default defineNuxtConfig({
     }
   },
   vite: {
+    plugins: process.env.NODE_ENV === 'development'
+      ? [
+          codeInspectorPlugin({
+            bundler: 'vite',
+            editor: 'webstorm'
+          })
+        ]
+      : [],
     build: {
       minify: 'terser',
       emptyOutDir: true,
@@ -33,5 +42,5 @@ export default defineNuxtConfig({
     client: process.env.NODE_ENV === 'development'
   },
   telemetry: true,
-  compatibilityDate: '2025-08-25'
+  compatibilityDate: '2026-11-06'
 })

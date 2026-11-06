@@ -1,313 +1,225 @@
-<template>
-  <NuxtLayout>
-    <div class="detail_content">
-      <div class="detail_body">
-        <div class="detail_header clearfix">
-          <div class="detail_title">
-            <nuxt-link :to="{ path: '/' }"> 首页 </nuxt-link>
-            <span>></span>
-          </div>
-          <div class="detail_title">
-            <nuxt-link :to="{ name: 'course-list' }"> 课程中心 </nuxt-link>
-            <span>></span>
-          </div>
-          <div class="detail_title">
-            {{ courseInfo.courseName }}
-          </div>
-        </div>
-        <div class="clearfix">
-          <div class="video_box">
-            <img class="detail_view" :src="courseInfo?.courseLogo" :alt="courseInfo?.courseName" />
-            <div class="view_info">
-              <!-- 课程详情 -->
-              <div class="view_info_course">
-                {{ courseInfo.courseName }}
-              </div>
-              <div class="view_price">
-                <div>
-                  价格:<span v-if="courseInfo.coursePrice === 0">免费</span>
-                  <span v-else>
-                    ￥{{ courseInfo.coursePrice }} <b style="text-decoration-line: line-through; color: grey; font-size: 18px">￥{{ courseInfo.rulingPrice }}</b>
-                  </span>
-                </div>
-              </div>
-              <div v-if="courseInfo.lecturerResp" class="view_info_item">
-                <span class="text_b">讲师名称:</span>{{ courseInfo.lecturerResp.lecturerName }}（{{ courseInfo.lecturerResp.lecturerPosition }}）
-              </div>
-              <div class="view_info_item"><span class="text_b">购买人数:</span>{{ courseInfo.countBuy }} 人</div>
-              <div class="view_info_item"><span class="text_b">学习人数:</span>{{ courseInfo.countStudy }} 人</div>
-              <div class="foot_box">
-                <button v-if="courseInfo.allowStudy === 1" class="buy_btn" @click="handleStudy">马上学习</button>
-                <button v-else-if="courseInfo.isFree === 0" class="buy_btn" @click="handleBuy(courseInfo)">立即购买</button>
-                <button v-else-if="courseInfo.isFree === 1" class="buy_btn" @click="handleLogin">登录观看</button>
-                <div class="handle_info_btn">
-                  <div class="collect_btn">
-                    <course-collect :course-id="courseInfo.id" :collect-status="courseInfo.courseCollect" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="main">
-      <!-- 章节详情 -->
-      <div class="course_info clearfix">
-        <div class="layout_left">
-          <el-tabs type="border-card" @tab-click="handleTabClick">
-            <el-tab-pane label="课程介绍">
-              <div class="introduce" v-html="courseInfo.introduce" />
-            </el-tab-pane>
-            <el-tab-pane label="课程目录">
-              <course-chapter :list="courseInfo.chapterRespList" />
-            </el-tab-pane>
-            <el-tab-pane label="课程评论" name="comment">
-              <course-comment v-if="activeName === 'comment'" :course-id="courseInfo.id" />
-            </el-tab-pane>
-          </el-tabs>
-        </div>
-        <div class="layout_right">
-          <div class="teacher_info clearfix">
-            <span class="head">讲师简介</span>
-            <div class="teacher_msg">
-              <nuxt-link target="_blank" :to="{ name: 'lecturer-detail', query: { id: courseInfo.lecturerResp.id } }">
-                <div v-if="courseInfo.lecturerResp" class="teacher_msg_right">
-                  <img v-if="courseInfo.lecturerResp.lecturerHead" class="teacher_phone" :src="courseInfo.lecturerResp.lecturerHead" alt="" />
-                  <img v-else class="teacher_phone" src="~/assets/image/common_head.jpg" alt="" />
-                  <div class="teacher_info_content">
-                    <span class="teacher_name">{{ courseInfo.lecturerResp.lecturerName }}</span>
-                    <br />
-                    {{ courseInfo.lecturerResp.lecturerPosition }}
-                  </div>
-                </div>
-              </nuxt-link>
-              <div class="info_box" v-html="courseInfo.lecturerResp?.introduce" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <common-pay ref="commonPayRef" @refresh="handleCourse" />
-  </NuxtLayout>
-</template>
 <script setup>
-  import { courseApi } from '~/api/course.js'
-  import { setStorage } from '~/utils/storage.js'
+  import { courseApi } from '~/api/course'
+  import { setStorage } from '~/utils/storage'
   const route = useRoute()
-
-  const { data: courseInfo } = await useAsyncData('course-detail' + route.query.id, async () => {
-    if (getToken()) {
-      // 已登录
-      return courseApi.userCourseDetail({ courseId: route.query.id })
-    } else {
-      // 未登录
-      return courseApi.courseDetail({ courseId: route.query.id })
-    }
-  })
-
-  useHead({
-    title: courseInfo.value?.courseName,
-    meta: [
-      { hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' },
-      { hid: 'description', name: 'description', content: courseInfo.value?.lecturerResp?.introduce }
-    ]
-  })
-
-  const commonPayRef = ref()
-
-  // 购买
-  function handleBuy(courseInfo) {
-    if (getToken()) {
-      // 购买
-      commonPayRef.value.onOpen(courseInfo)
-    } else {
-      setStorage('history', window.location.href, 5)
-      ElMessageBox.confirm('请先登录', '提示', { confirmButtonText: '立即登录', cancelButtonText: '取消', type: 'warning' }).then(() => {
-        useRouter().push('/login')
-      })
-    }
-  }
-
-  // 课程详情
-  async function handleCourse() {
-    window.location.reload()
-  }
-
-  // 学习
-  function handleStudy() {
-    useRouter().push('/course/study?id=' + courseInfo.value.id)
-  }
-
-  // 登录
-  function handleLogin() {
+  const {
+    data: course,
+    status,
+    error,
+    refresh
+  } = useAsyncData(
+    () => 'course-detail-' + route.query.id,
+    () => (getToken() ? courseApi.userCourseDetail({ courseId: route.query.id }) : courseApi.courseDetail({ courseId: route.query.id }))
+  )
+  const pay = ref(),
+    tab = ref('intro')
+  useHead({ title: () => course.value?.courseName || '课程详情' })
+  const price = computed(() => new Intl.NumberFormat('zh-CN', { style: 'currency', currency: 'CNY' }).format(course.value?.coursePrice || 0))
+  function login() {
     setStorage('history', window.location.href, 5)
-    useRouter().push('/login')
+    navigateTo('/login')
   }
-
-  const activeName = ref('')
-  function handleTabClick(tab) {
-    activeName.value = tab.props.name
+  function buy() {
+    if (!getToken()) return login()
+    pay.value?.onOpen(course.value)
   }
 </script>
-<style lang="scss" scoped>
-  .detail_content {
-    background: #fff;
-    color: #999;
-    font-size: 14px;
-    .detail_body {
-      width: 1200px;
-      margin: 0 auto;
-      height: 373px;
-    }
-    .detail_header {
-      .detail_title {
-        float: left;
-        line-height: 57px;
-        margin: 0 5px;
-        max-width: 600px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        span {
-          margin-left: 10px;
-        }
-      }
-    }
-
-    .video_box {
-      overflow: hidden;
-      .detail_view {
-        float: left;
-        width: 504px;
-        height: 280px;
-        background-size: 100%;
-        border-radius: 5px;
-
-        &.float_win {
-          position: fixed;
-          right: 10px;
-          bottom: 30px;
-          z-index: 9999;
-        }
-      }
-      .view_info {
-        float: right;
-        width: 650px;
-        height: 270px;
-        position: relative;
-
-        .view_info_item {
-          line-height: 30px;
-          .text_b {
-            margin-right: 20px;
-          }
-        }
-
-        .view_price {
-          background: #f5f5f5;
-          color: rgb(102, 102, 102);
-          padding: 15px 10px;
-          margin: 10px 0;
-          span {
-            font-size: 20px;
-            color: #d51423;
-            font-weight: bold;
-            margin-left: 20px;
-          }
-        }
-
-        .view_info_course {
-          font-size: 18px;
-          margin: 5px 0;
-          color: #333;
-          height: 25px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .foot_box {
-          position: absolute;
-          bottom: 0;
-          width: 100%;
-          height: 36px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .buy_btn {
-          display: block;
-          width: 136px;
-          height: 36px;
-          background: #2256f6;
-          color: #fff;
-          border: none;
-          border-radius: 6px;
-          line-height: 36px;
-          text-align: center;
-          font-size: 14px;
-          &:hover {
-            text-decoration: none;
-            color: #fff;
-            cursor: pointer;
-          }
-        }
-        .handle_info_btn {
-          display: flex;
-          align-items: center;
-          color: #999;
-          font-size: 14px;
-        }
-      }
-    }
+<template>
+  <NuxtLayout>
+    <div class="main page-space">
+      <nav class="breadcrumbs" aria-label="面包屑">
+        <NuxtLink to="/">首页</NuxtLink>
+        <span>/</span>
+        <NuxtLink to="/course/list">全部课程</NuxtLink>
+        <span>/</span>
+        <span>课程详情</span>
+      </nav>
+      <CommonState :loading="status === 'pending'" :error="!!error" @retry="refresh" />
+      <template v-if="course && !error">
+        <section class="course-hero surface">
+          <div class="hero-cover-frame">
+            <CommonImage class="hero-cover" :src="course.courseLogo" :alt="course.courseName" eager />
+          </div>
+          <div class="hero-info">
+            <h1>{{ course.courseName }}</h1>
+            <div class="course-stats">
+              <span v-if="course.countBuy != null">{{ course.countBuy }} 人购买</span>
+              <span v-if="course.countStudy != null">{{ course.countStudy }} 人学习</span>
+            </div>
+            <div class="price-panel">
+              <span>课程价格</span>
+              <strong>{{ course.coursePrice === 0 ? '免费' : price }}</strong>
+              <del v-if="course.rulingPrice > course.coursePrice">¥{{ course.rulingPrice }}</del>
+            </div>
+            <div class="hero-actions">
+              <NuxtLink v-if="course.allowStudy === 1" class="button-link primary" :to="{ path: '/course/study', query: { id: course.id } }">开始学习 <CommonIcon name="arrow" :size="16" /></NuxtLink>
+              <ElButton v-else-if="course.isFree === 0" type="primary" size="large" @click="buy">立即购买</ElButton>
+              <ElButton v-else type="primary" size="large" @click="login">登录观看</ElButton>
+              <CourseCollect :course-id="course.id" :collect-status="course.courseCollect" />
+            </div>
+          </div>
+        </section>
+        <div class="detail-grid">
+          <section class="surface course-information">
+            <ElTabs v-model="tab">
+              <ElTabPane name="intro" label="课程介绍">
+                <div v-if="course.introduce" class="rich-content" v-html="course.introduce" />
+                <CommonState v-else empty title="课程介绍正在准备中" description="你可以先查看课程目录。" action-to="" />
+              </ElTabPane>
+              <ElTabPane name="chapter" label="课程目录"><CourseChapter :list="course.chapterRespList || []" /></ElTabPane>
+              <ElTabPane name="comment" label="学员评论"><CourseComment v-if="tab === 'comment'" :course-id="course.id" /></ElTabPane>
+            </ElTabs>
+          </section>
+          <aside v-if="course.lecturerResp" class="surface instructor-panel">
+            <h3>关于讲师</h3>
+            <NuxtLink class="instructor-profile" :to="{ path: '/lecturer/detail', query: { id: course.lecturerResp.id } }">
+              <CommonImage class="avatar" :src="course.lecturerResp.lecturerHead" :alt="course.lecturerResp.lecturerName" :width="64" :height="64" />
+              <div>
+                <strong>{{ course.lecturerResp.lecturerName }}</strong>
+                <p>{{ course.lecturerResp.lecturerPosition }}</p>
+              </div>
+            </NuxtLink>
+            <div class="rich-content" v-html="course.lecturerResp.introduce" />
+          </aside>
+        </div>
+        <CommonPay ref="pay" @refresh="refresh" />
+      </template>
+    </div>
+  </NuxtLayout>
+</template>
+<style scoped>
+  .breadcrumbs {
+    display: flex;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 24px;
   }
-
-  .course_info {
-    margin: 20px 0;
+  .course-hero {
+    display: grid;
+    grid-template-columns: 40% minmax(0, 1fr);
+    gap: 40px;
+    padding: 32px;
+    background: linear-gradient(120deg, #f8faff, #fff 65%);
+    margin-bottom: 28px;
+    align-items: stretch;
+  }
+  .hero-cover-frame {
+    position: relative;
+    aspect-ratio: 16/9;
+    border-radius: 12px;
     overflow: hidden;
-    .layout_left {
-      width: 920px;
-      float: left;
-      .introduce {
-        font-size: 14px;
-        line-height: 30px;
-        color: #333;
-        padding-left: 8px;
-      }
+    box-shadow: 0 8px 28px #172b4d0d;
+  }
+  .hero-cover-frame .hero-cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .hero-info h1 {
+    font-size: 28px;
+    font-weight: 650;
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+  .course-stats {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .course-stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .price-panel {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    background: #f5f7fc;
+    border-radius: 8px;
+    margin-bottom: 22px;
+  }
+  .price-panel > span {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .price-panel strong {
+    font-size: 30px;
+    font-variant-numeric: tabular-nums;
+    color: #c24e28;
+  }
+  .price-panel del {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: auto;
+  }
+  .hero-actions .el-button {
+    min-width: 180px;
+  }
+  .detail-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 28px;
+    align-items: start;
+  }
+  .course-information {
+    padding: 8px 28px 28px;
+    min-width: 0;
+  }
+  .course-information :deep(.el-tabs__item) {
+    height: 56px;
+  }
+  .instructor-panel {
+    position: sticky;
+    top: 104px;
+    padding: 28px 24px;
+  }
+  .instructor-profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .instructor-profile p {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .instructor-panel .rich-content {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  @media (max-width: 1100px) {
+    .course-hero {
+      grid-template-columns: 1fr;
     }
-
-    .layout_right {
-      width: 260px;
-      float: right;
-      img {
-        width: 50px;
-        border-radius: 50px;
-      }
-      .teacher_info {
-        background-color: #fff;
-        padding: 20px;
-        .head {
-          font-size: 18px;
-        }
-        .teacher_msg_right {
-          float: left;
-          display: flex;
-          padding: 20px 0;
-          align-items: center;
-          .teacher_info_content {
-            margin-left: 10px;
-          }
-          .teacher_name {
-            font-size: 16px;
-            font-weight: bold;
-          }
-        }
-        .info_box {
-          clear: both;
-        }
-      }
+    .hero-cover-frame {
+      max-height: 420px;
+    }
+    .detail-grid {
+      grid-template-columns: 1fr;
+    }
+    .instructor-panel {
+      position: static;
     }
   }
 </style>

@@ -1,111 +1,101 @@
-<!-- 课程评论列表 -->
+<script setup>
+  import { courseApi } from '~/api/course'
+  import useTable from '~/utils/table'
+  const props = defineProps({ courseId: { type: [String, Number], default: '' }, showPage: { type: Boolean, default: true } })
+  const text = ref(''),
+    busy = ref(false),
+    message = ref('')
+  const { page, handlePage } = useTable({ page: courseApi.courseCommentPage }, { courseId: props.courseId })
+  async function submit() {
+    if (busy.value) return
+    if (!text.value.trim()) {
+      message.value = '请先填写评论内容'
+      return
+    }
+    busy.value = true
+    message.value = ''
+    try {
+      await courseApi.courseCommentAdd({ courseId: props.courseId, commentText: text.value.trim() })
+      text.value = ''
+      await handlePage()
+      ElMessage.success('评论已发布')
+    } catch {
+      message.value = '发布失败，请确认已登录后重试。'
+    } finally {
+      busy.value = false
+    }
+  }
+</script>
 <template>
-  <div>
-    <el-form :model="comment" class="comment_box">
-      <el-input v-model="comment.commentText" :rows="5" class="comment-text" maxlength="200" show-word-limit type="textarea" placeholder="请输入您的评论..." />
-      <el-button class="comment-button" type="primary" size="large" @click="handleComment"> 评论 </el-button>
-    </el-form>
-    <div class="course_comment_list clearfix">
-      <div v-for="(comment, index) in page.list" :key="index" class="course_comment_item">
-        <div class="course_comment_cover">
-          <img :src="comment.usersVO.userHead" class="comment_cover_img" alt="" />
+  <div class="comments">
+    <form class="comment-form" @submit.prevent="submit">
+      <label :for="'comment-' + courseId">分享你的学习感受</label>
+      <ElInput :id="'comment-' + courseId" v-model="text" class="comment-textarea" type="textarea" :rows="4" maxlength="200" show-word-limit placeholder="写下你的收获或问题…" />
+      <p v-if="message" class="comment-error" role="alert">{{ message }}</p>
+      <ElButton native-type="submit" type="primary" :loading="busy">发布评论</ElButton>
+    </form>
+    <CommonState
+      :loading="page.loading"
+      :error="page.error"
+      :empty="!page.list.length"
+      title="还没有学员评论"
+      description="分享你的学习体验，让更多同学了解这门课程。"
+      action-to=""
+      @retry="handlePage"
+    />
+    <template v-if="!page.loading && !page.error">
+      <article v-for="item in page.list" :key="item.id" class="comment-item">
+        <CommonImage class="comment-avatar" :src="item.usersVO?.userHead" :alt="item.usersVO?.nickname || '学员'" :width="40" :height="40" />
+        <div>
+          <strong>{{ item.usersVO?.nickname || '学员' }}</strong>
+          <p>{{ item.commentText }}</p>
+          <time>{{ item.gmtCreate }}</time>
         </div>
-        <div class="course_comment_content">
-          <div class="course_comment_user">
-            {{ comment.usersVO.nickname }}
-          </div>
-          <div class="course_comment_int">
-            {{ comment.commentText }}
-          </div>
-          <div class="course_comment_btn">
-            <div class="course_comment_time">
-              {{ comment.gmtCreate }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-if="props.showPage" class="pagination">
-        <common-pagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
-      </div>
+      </article>
+    </template>
+    <div v-if="showPage && !page.loading && !page.error && page.list.length > 0 && page.totalCount > 0" class="pagination">
+      <CommonPagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
     </div>
   </div>
 </template>
-
-<script setup>
-  import useTable from '~/utils/table.js'
-  import { courseApi } from '~/api/course.js'
-
-  const props = defineProps({
-    courseId: {
-      type: String,
-      default: ''
-    },
-    showPage: {
-      type: Boolean,
-      default: true
-    }
-  })
-
-  const comment = ref({
-    courseId: props.courseId
-  })
-
-  function handleComment() {
-    if (!comment.value.commentText) {
-      ElMessage.warning('请输入评论内容')
-      return
-    }
-    courseApi.courseCommentAdd(comment.value).then((res) => {
-      handlePage()
-      comment.value.commentText = ''
-    })
+<style scoped>
+  .comment-form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 12px;
+    margin: 16px 0 28px;
   }
-  const { page, handlePage } = useTable(
-    {
-      page: courseApi.courseCommentPage
-    },
-    { courseId: props.courseId }
-  )
-</script>
-
-<style lang="scss" scoped>
-  .comment_box {
-    padding: 20px;
-    .comment-text {
-      float: right;
-      margin-bottom: 20px;
-    }
-    .comment-button {
-      float: right;
-    }
+  .comment-form label {
+    font-weight: 500;
   }
-  .course_comment_list {
-    padding: 20px 20px 0 20px;
-    .course_comment_item {
-      border-bottom: 1px solid #ebeef5;
-      display: flex;
-      padding-bottom: 20px;
-      padding-top: 20px;
-    }
-    .course_comment_cover {
-      margin-right: 20px;
-      .comment_cover_img {
-        border-radius: 50%;
-        width: 50px;
-      }
-    }
-
-    .course_comment_content {
-      width: calc(100% - 68px);
-      .course_comment_int {
-        color: #999;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        margin-bottom: 10px;
-        margin-top: 10px;
-        word-wrap: break-word;
-      }
-    }
+  .comment-error {
+    color: #dc2626;
+    font-size: 12px;
+    margin: 0;
+  }
+  .comment-item {
+    display: flex;
+    gap: 14px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .comment-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .comment-item > div {
+    min-width: 0;
+    flex: 1;
+  }
+  .comment-item p {
+    margin: 8px 0;
+    white-space: pre-wrap;
+  }
+  .comment-item time {
+    font-size: 12px;
+    color: var(--muted);
   }
 </style>

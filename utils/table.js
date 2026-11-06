@@ -1,67 +1,38 @@
-/**
- * 表单封装
- */
-import { onMounted, reactive } from 'vue'
-
+import { onMounted, onUnmounted, reactive } from 'vue'
 export default function useTable(apis, paras = {}) {
-  // 分页对象
-  const page = reactive({
-    pageCurrent: 1,
-    pageSize: 20,
-    totalCount: 0,
-    list: [],
-    loading: true
-  })
-
-  // 分页查询
-  const handlePage = async () => {
-    if (apis.page) {
-      page.loading = true
-      try {
-        const res = await apis.page({
-          pageCurrent: page.pageCurrent,
-          pageSize: page.pageSize,
-          ...paras,
-          ...query
-        })
-        if (res) {
-          page.list = res.list || res || []
-          page.totalCount = res.totalCount || 0
-        }
-      } finally {
-        page.loading = false
-      }
-    }
-  }
-
-  // 查询对象
+  const page = reactive({ pageCurrent: 1, pageSize: 12, totalCount: 0, list: [], loading: true, error: false })
   const query = reactive({})
-
-  // 查询
-  const handleQuery = () => {
-    page.pageCurrent = 1
-    // 分页查询
-    handlePage().then(() => {
-      //ElMessage.success('查询成功')
-    })
-  }
-
-  // 重置
-  const resetQuery = () => {
-    for (let i in query) {
-      query[i] = ''
+  let sequence = 0
+  async function handlePage() {
+    const ticket = ++sequence
+    page.loading = true
+    page.error = false
+    try {
+      const res = await apis.page({ pageCurrent: page.pageCurrent, pageSize: page.pageSize, ...paras, ...query })
+      if (ticket !== sequence) return
+      page.list = Array.isArray(res) ? res : res?.list || []
+      page.totalCount = res?.totalCount || 0
+    } catch {
+      if (ticket === sequence) {
+        page.error = true
+        page.list = []
+        page.totalCount = 0
+      }
+    } finally {
+      if (ticket === sequence) page.loading = false
     }
-    handleQuery()
   }
-
-  // 获取数据
+  function handleQuery() {
+    page.pageCurrent = 1
+    return handlePage()
+  }
+  function resetQuery() {
+    Object.keys(query).forEach((key) => delete query[key])
+    return handleQuery()
+  }
   onMounted(handlePage)
-
-  return {
-    page,
-    handlePage,
-    query,
-    handleQuery,
-    resetQuery
-  }
+  onUnmounted(() => {
+    sequence++
+  })
+  return { page, query, handlePage, handleQuery, resetQuery }
 }

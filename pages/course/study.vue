@@ -1,474 +1,240 @@
+<script setup>
+  const { course, loading, error, completed, activeId, panel, nextPeriod, select, retry } = useStudyPlayer()
+  useHead({ title: () => course.value?.courseName || '课程学习', script: [{ src: 'https://player.polyv.net/resp/vod-player/latest/player.js' }] })
+</script>
 <template>
-  <div class="detail-video">
-    <div class="video-header">
-      <div class="header-left">
-        <span class="cursor" @click="handleBack">
-          <img class="cursor-image" src="https://asset.roncoos.com/static/return.png" alt="return" />
-        </span>
-        <nuxt-link :to="{ name: 'course-detail', query: { id: courseInfo?.id } }" class="left_col">
-          <span class="header-course">
-            {{ courseInfo?.courseName }}
-          </span>
-        </nuxt-link>
-        <course-collect :course-id="courseInfo?.id" :collect-status="courseInfo?.courseCollect" />
-      </div>
-      <div class="header-right">
-        <common-user />
-      </div>
-    </div>
-    <div class="video-body">
-      <div class="video-content" :class="{ show_panel: cateType }">
-        <div class="player-box">
-          <!-- 播放器 -->
-          <div v-show="showing" id="player" v-loading="loading" class="player-video" />
-          <div v-show="!showing" class="study-tip">
-            <div v-if="nextPeriod">
-              下一节：{{ nextPeriod?.periodName }}
-              <el-button size="small" type="success" @click="handleStudy(nextPeriod)"> 马上学习</el-button>
+  <div class="study-shell">
+    <header class="study-header">
+      <NuxtLink class="study-back" to="/account/course"><CommonIcon name="arrow" :size="16" class="back-arrow" /> 我的课程</NuxtLink>
+      <NuxtLink v-if="course" class="study-title" :to="{ path: '/course/detail', query: { id: course.id } }">{{ course.courseName }}</NuxtLink>
+      <span v-else class="study-title">课程学习</span>
+      <CourseCollect v-if="course" :course-id="course.id" :collect-status="course.courseCollect" />
+      <CommonUser />
+    </header>
+    <main class="study-workspace">
+      <section class="study-player" aria-label="课程播放器">
+        <div v-show="!error && !completed" id="player" class="player-mount" />
+        <div v-if="loading || error || completed" class="player-overlay" role="status" aria-live="polite">
+          <template v-if="loading">
+            <span class="loading-dot" aria-hidden="true"></span>
+            <h2>正在准备课程…</h2>
+            <p>请稍候，即将开始学习。</p>
+          </template>
+          <template v-else-if="error">
+            <h2>暂时无法继续学习</h2>
+            <p>{{ error }}</p>
+            <div>
+              <ElButton type="primary" @click="retry">重新加载</ElButton>
+              <NuxtLink class="study-return" to="/account/course">返回我的课程</NuxtLink>
             </div>
-          </div>
+          </template>
+          <template v-else>
+            <h2>{{ nextPeriod ? '这一节已学完，继续加油' : '本课程已播放完毕' }}</h2>
+            <p>{{ nextPeriod ? '下一节：' + nextPeriod.periodName : '你可以选择目录中的课时，回顾学习内容。' }}</p>
+            <ElButton v-if="nextPeriod" type="primary" @click="select(nextPeriod)">学习下一节 <CommonIcon name="arrow" :size="16" /></ElButton>
+            <NuxtLink v-else class="button-link primary" to="/account/course">返回我的课程</NuxtLink>
+          </template>
         </div>
-        <div class="video-info">
-          <div class="video-info-tab">
-            <div :class="{ on: cateType === 'chapter' }" class="video-info-button cursor" @click="handleTab('chapter')"><img src="~/assets/svg/chapter.svg" class="img-icon" />目录</div>
-            <div :class="{ on: cateType === 'comment' }" class="video-info-button cursor" @click="handleTab('comment')"><img src="~/assets/svg/comment.svg" class="img-icon" />评论</div>
-          </div>
-          <div v-if="cateType != ''" class="video-info-content">
-            <div v-if="cateType === 'chapter'" class="video-info-chapter">
-              <div v-for="(one, index) in courseInfo?.chapterRespList" :key="index">
-                <div class="catalog-chapter">第{{ index + 1 }}章：{{ one.chapterName }}</div>
-                <div v-for="(two, num) in one.periodRespList" :key="num" class="catalog-chapter-period cursor" :class="{ on: studyPeriodId == two?.id }" @click="handleStudy(two)">
-                  <div class="period-name">
-                    &nbsp;&nbsp;
-                    <span v-if="two.periodType === 10">{{ getResourceTypeName(two.resourceResp?.resourceType) }}：</span>
-                    {{ index + 1 }}-{{ num + 1 }} {{ two.periodName }}
-                    <span v-if="two.resourceResp && two.resourceResp.resourceType < 3 && two.resourceResp.videoStatus === 1">(未更新)</span>
-                    <span v-if="two.isFree">(试看)</span>
-                    <div v-if="two.periodType === 10" class="period-progress">
-                      <el-progress v-if="two" :percentage="two.periodProgress ? two.periodProgress : 0" :stroke-width="2" :status="two.periodProgress > 99 ? 'success' : ''" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div v-if="cateType === 'comment'" class="video-info-comment">
-              <course-comment :course-id="courseInfo?.id" :show-page="false" />
-            </div>
-          </div>
+      </section>
+      <aside v-if="panel" class="study-panel">
+        <header>
+          <h2>{{ panel === 'chapter' ? '课程目录' : '学员评论' }}</h2>
+          <button type="button" aria-label="收起侧栏" @click="panel = ''"><CommonIcon name="close" :size="18" /></button>
+        </header>
+        <div class="panel-scroll">
+          <StudyCatalog v-if="panel === 'chapter'" :chapters="course?.chapterRespList || []" :active-id="activeId" :disabled="loading" @select="select" />
+          <CourseComment v-else-if="course" :course-id="course.id" :show-page="false" />
         </div>
-      </div>
-    </div>
+      </aside>
+      <nav class="study-tools" aria-label="学习工具">
+        <button type="button" :aria-pressed="panel === 'chapter'" @click="panel = panel === 'chapter' ? '' : 'chapter'">
+          <CommonIcon name="book" :size="22" />
+          目录
+        </button>
+        <button type="button" :aria-pressed="panel === 'comment'" @click="panel = panel === 'comment' ? '' : 'comment'">
+          <CommonIcon name="comment" :size="22" />
+          评论
+        </button>
+      </nav>
+    </main>
   </div>
 </template>
-<script setup>
-  import { courseApi } from '~/api/course.js'
-  import { getClient, getClientForPri } from '~/utils/polyv'
-
-  const route = useRoute()
-
-  useHead({
-    title: '课程详情',
-    meta: [
-      { hid: 'keywords', name: 'keywords', content: '课程详情' },
-      { hid: 'description', name: 'description', content: '课程详情' }
-    ],
-    script: [{ src: 'https://player.polyv.net/resp/vod-player/latest/player.js' }]
-  })
-
-  const courseInfo = ref(null)
-  const loading = ref(false)
-  const showing = ref(true)
-
-  // 当前播放的课时id
-  const studyPeriodId = ref()
-  // 下一个课时
-  const nextPeriod = ref()
-  // 用户学习信息
-  const userStudy = {}
-  let progressInterval = null
-  let polyvPlayerClient = null
-
-  onMounted(async () => {
-    // 课程信息
-    await getCourseInfo()
-
-    // 初始化学习
-    await handleStudy({ id: route.query.periodId })
-  })
-
-  onUnmounted(() => {
-    // 清除
-    handleClear()
-  })
-
-  // 学习
-  async function handleStudy(period) {
-    loading.value = true
-    showing.value = true
-
-    // 更新课程信息
-    await getCourseInfo()
-    let studyRes
-    try {
-      studyRes = await courseApi.studySign({ periodId: period.id, courseId: route.query.id })
-    } catch (e) {
-      loading.value = false
-    }
-
-    studyPeriodId.value = studyRes.periodId
-    userStudy.studyId = studyRes.studyId
-    userStudy.resourceId = studyRes.resourceId
-
-    // 资源类型
-    if (studyRes.resourceType <= 2) {
-      handleClear()
-      // 音视频播放
-      handlePlay(studyRes)
-    } else if (studyRes.resourceType === 3) {
-      // 文档播放
-      handleDoc(JSON.parse(studyRes.docStudyConfig).previewUrl)
-    } else if (studyRes.resourceType === 4) {
-      // 图片播放
-      handleDoc(JSON.parse(studyRes.picStudyConfig).previewUrl)
-    } else {
-      ElMessage.warning('暂不支持该类型资源')
-    }
-    loading.value = false
+<style scoped>
+  .study-shell {
+    height: 100vh;
+    overflow: hidden;
+    background: #0c1321;
+    color: #e2e8f0;
   }
-
-  /**
-   *  获取课程信息
-   */
-  async function getCourseInfo() {
-    courseInfo.value = await courseApi.userCourseDetail({ courseId: route.query.id })
-    return courseInfo.value
-  }
-
-  /**
-   * 获取课程学习中的下一节
-   * @param periodId
-   * @returns {*}
-   */
-  function getNextPeriod(periodId) {
-    for (let i = 0; i < courseInfo.value.chapterRespList.length; i++) {
-      for (let j = 0; j < courseInfo.value.chapterRespList[i].periodRespList.length; j++) {
-        if (courseInfo.value.chapterRespList[i].periodRespList[j].id === periodId) {
-          if (courseInfo.value.chapterRespList[i].periodRespList.length === j + 1) {
-            if (courseInfo.value.chapterRespList[i + 1]) {
-              return courseInfo.value.chapterRespList[i + 1].periodRespList[0]
-            }
-          } else {
-            return courseInfo.value.chapterRespList[i].periodRespList[j + 1]
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * 文档图片播放
-   */
-  function handleDoc(srcPath) {
-    const iframe = document.createElement('iframe')
-    iframe.setAttribute('src', srcPath)
-    iframe.style.width = '100%'
-    iframe.style.height = '100%'
-    const player = document.getElementById('player')
-    player.innerHTML = ''
-    player.appendChild(iframe)
-
-    // 记录进度
-    handleStudyRecord()
-  }
-
-  // 音视频播放
-  function handlePlay(playRes) {
-    // 清除内容
-    document.getElementById('player').innerHTML = ''
-    if (playRes.vodPlatform === 1) {
-      // 领课云
-      polyvPlayerClient = getClientForPri(playRes, courseInfo.value.speedDouble, courseInfo.value.speedDrag)
-      polyvPlayerClient.on('s2j_onVideoPlay', function () {
-        // 开始播放
-        handleStart()
-      })
-      polyvPlayerClient.on('s2j_onVideoPause', function () {
-        // 暂停播放
-        handlePause()
-      })
-      polyvPlayerClient.on('s2j_onPlayOver', function () {
-        // 完成播放
-        handleComplete()
-      })
-    } else if (playRes.vodPlatform === 2) {
-      // 保利威
-      polyvPlayerClient = getClient(playRes, courseInfo.value.speedDouble, courseInfo.value.speedDrag)
-      polyvPlayerClient.on('s2j_onVideoPlay', function () {
-        // 开始播放
-        handleStart()
-      })
-      polyvPlayerClient.on('s2j_onVideoPause', function () {
-        // 暂停播放
-        handlePause()
-      })
-      polyvPlayerClient.on('s2j_onPlayOver', function () {
-        // 完成播放
-        handleComplete()
-      })
-    } else {
-      // 其他
-      ElMessage.warning('暂不支持该平台的播放')
-    }
-  }
-
-  // 记录进度
-  function handleStudyRecordForVod(studyStatus) {
-    userStudy.currentDuration = polyvPlayerClient.j2s_getCurrentTime()
-    // studyStatus 1学习中 2暂停
-    userStudy.studyStatus = studyStatus
-    courseApi
-      .studyProgress(userStudy)
-      .then((res) => {
-        if (res === 'OK') {
-          // 完成，暂停同步
-          if (progressInterval) {
-            clearInterval(progressInterval)
-          }
-        }
-      })
-      .catch((error) => {
-        polyvPlayerClient.j2s_pauseVideo()
-        ElMessageBox.confirm('系统异常将暂停观看，请联系管理员', '提示', {
-          confirmButtonText: '返回',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          handleBack()
-        })
-      })
-  }
-
-  // 记录进度
-  function handleStudyRecord() {
-    userStudy.currentPage = 1
-    courseApi
-      .studyProgress(userStudy)
-      .then((res) => {
-        if (res === 'OK') {
-          // 完成，暂停同步
-          if (progressInterval) {
-            clearInterval(progressInterval)
-          }
-        }
-      })
-      .catch((error) => {
-        ElMessageBox.confirm('系统异常将暂停观看，请联系管理员', '提示', {
-          confirmButtonText: '返回',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          handleBack()
-        })
-      })
-  }
-
-  // tab切换
-  const cateType = ref('chapter')
-
-  function handleTab(item) {
-    if (item === cateType.value) {
-      cateType.value = ''
-    } else {
-      cateType.value = item
-    }
-  }
-
-  // 开始
-  function handleStart() {
-    // 播放
-    if (progressInterval) {
-      clearInterval(progressInterval)
-    }
-    progressInterval = setInterval(() => {
-      handleStudyRecordForVod(1)
-    }, 3000)
-  }
-
-  // 暂停
-  function handlePause() {
-    // 更新进度
-    handleStudyRecordForVod(2)
-    if (progressInterval) {
-      clearInterval(progressInterval)
-    }
-  }
-
-  // 完成播放
-  function handleComplete() {
-    // 更新进度
-    handleStudyRecordForVod(1)
-    // 播放完成
-    if (progressInterval) {
-      clearInterval(progressInterval)
-    }
-
-    // 显示下一节
-    showing.value = false
-    nextPeriod.value = getNextPeriod(studyPeriodId.value)
-  }
-
-  // 清除
-  function handleClear() {
-    if (progressInterval) {
-      clearInterval(progressInterval)
-    }
-    if (polyvPlayerClient) {
-      // 暂停学习
-      handleStudyRecordForVod(2)
-      polyvPlayerClient.destroy()
-    }
-  }
-
-  function handleBack() {
-    window.history.go(-1)
-  }
-</script>
-<style lang="scss">
-  .video-header {
+  .study-header {
+    height: 72px;
     display: flex;
-    flex-wrap: nowrap;
+    align-items: center;
+    gap: 24px;
+    padding: 0 24px;
+    border-bottom: 1px solid #273248;
+    background: #111c2e;
+  }
+  .study-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #94a3b8;
+    white-space: nowrap;
+  }
+  .back-arrow {
+    transform: rotate(180deg);
+  }
+  .player-overlay :deep(.el-button .ui-icon) {
+    margin-left: 10px;
+  }
+  .study-title {
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+  .study-workspace {
+    display: flex;
+    height: calc(100vh - 72px);
+  }
+  .study-player {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    background: #050a12;
+    padding: 16px;
+    overflow: auto;
+  }
+  .player-mount {
+    height: 100%;
+    min-height: 320px;
+  }
+  .player-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: #0c1321ee;
+    text-align: center;
+  }
+  .player-overlay h2 {
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  .player-overlay p {
+    color: #94a3b8;
+    max-width: 540px;
+    margin-bottom: 28px;
+  }
+  .study-return {
+    margin-left: 20px;
+    color: #93c5fd;
+  }
+  .study-panel {
+    width: 340px;
+    flex-shrink: 0;
+    background: #152033;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #273248;
+  }
+  .study-panel > header {
+    display: flex;
     justify-content: space-between;
-    height: 66px;
-    line-height: 66px;
-    margin: 0 auto;
-    font-size: 18px;
-
-    .cursor-image {
-      width: 20px;
-    }
-
-    .header-left {
-      margin-left: 20px;
-
-      .header-course {
-        margin-left: 20px;
-      }
-    }
-
-    .header-right {
-      margin-right: 20px;
-      display: flex;
-      align-items: center;
+    align-items: center;
+    height: 64px;
+    padding: 0 20px;
+    border-bottom: 1px solid #273248;
+  }
+  .study-panel h2 {
+    font-size: 16px;
+    margin: 0;
+  }
+  .study-panel header button {
+    background: none;
+    border: 0;
+    color: #94a3b8;
+    padding: 8px;
+  }
+  .panel-scroll {
+    overflow: auto;
+    flex: 1;
+    padding: 20px 12px;
+  }
+  .study-tools {
+    width: 64px;
+    background: #111c2e;
+    flex-shrink: 0;
+    padding-top: 16px;
+  }
+  .study-tools button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    border: 0;
+    background: none;
+    padding: 16px 4px;
+    color: #94a3b8;
+    font-size: 12px;
+  }
+  .study-tools button span {
+    font-size: 22px;
+  }
+  .study-tools button:hover,
+  .study-tools button[aria-pressed='true'] {
+    color: #93c5fd;
+    background: #1c2d48;
+  }
+  .loading-dot {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 24px;
+    border: 3px solid #334155;
+    border-top-color: #60a5fa;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
     }
   }
-
-  .video-body {
-    background: #000;
-
-    .video-content {
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: space-between;
-
-      .player-box {
-        width: calc(100% - 66px);
-        padding: 10px 20px;
-
-        .player-video {
-          height: calc(100vh - 86px);
-        }
-
-        .study-tip {
-          height: calc(100vh - 86px);
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          align-items: center;
-          color: #fff;
-          font-size: 16px;
-        }
-      }
-
-      .video-info {
-        background: #1c1f21;
-        display: flex;
-        flex-direction: row-reverse;
-
-        .video-info-tab {
-          width: 80px;
-          margin-top: calc(50vh - 120px);
-          font-size: 16px;
-
-          .video-info-button {
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 0;
-
-            .img-icon {
-              width: 25px;
-            }
-
-            &:hover {
-              background-color: #333;
-            }
-          }
-
-          .on {
-            background-color: #333;
-          }
-        }
-
-        .content {
-          display: block;
-        }
-
-        .video-info-content {
-          background-color: #333;
-          color: #fff;
-          width: 400px;
-          padding: 20px;
-          height: calc(100vh - 86px);
-          overflow: auto;
-
-          .catalog-chapter {
-            font-size: 16px;
-            margin: 15px 0;
-          }
-
-          .catalog-chapter-period {
-            font-size: 14px;
-            margin: 10px;
-
-            &:hover {
-              color: red;
-            }
-
-            .period-name {
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              width: 350px;
-            }
-
-            .period-progress {
-              height: 20px;
-              width: 300px;
-              margin-left: 50px;
-            }
-
-            .period-live {
-              font-size: 12px;
-              text-align: right;
-            }
-          }
-
-          .on {
-            color: #2256f6;
-          }
-        }
-      }
+  .study-panel :deep(.surface) {
+    background: #1c2d48;
+    border-color: #334155;
+    color: #e2e8f0;
+  }
+  .study-panel :deep(.comment-textarea) {
+    color: var(--ink);
+  }
+  @media (max-width: 1100px) {
+    .study-panel {
+      width: 300px;
     }
+    .study-header {
+      gap: 16px;
+    }
+  }
+  .study-header :deep(.collect-button) {
+    color: #a4b8d4;
+  }
+  .study-header :deep(.collect-button:hover) {
+    color: #bfdbfe;
+    background: #20365a;
+  }
+  .study-panel :deep(.state p),
+  .study-panel :deep(.comment-item time) {
+    color: #aabbd2;
+  }
+  .study-panel :deep(.comment-item) {
+    border-color: #30415b;
   }
 </style>

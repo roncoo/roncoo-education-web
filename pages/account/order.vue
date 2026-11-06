@@ -1,31 +1,26 @@
+<script setup>
+  const route = useRoute(),
+    router = useRouter()
+  const status = computed(() => ([1, 2].includes(Number(route.query.status)) ? Number(route.query.status) : 0))
+</script>
 <template>
   <NuxtLayout name="account">
-    <el-tabs v-model="orderStatus" @tab-click="handleTabClick">
-      <el-tab-pane v-for="(item, index) in tabPanes" :key="index" :label="item.label" :name="item.orderStatus">
-        <account-order v-if="orderStatus === item.orderStatus" :order-status="orderStatus" />
-      </el-tab-pane>
-    </el-tabs>
+    <div class="order-tabs surface">
+      <ElTabs :model-value="status" @update:model-value="(value) => router.push({ query: { status: value || undefined } })">
+        <ElTabPane label="全部订单" :name="0" />
+        <ElTabPane label="待支付" :name="1" />
+        <ElTabPane label="已完成" :name="2" />
+      </ElTabs>
+    </div>
+    <AccountOrder :key="status" :order-status="status" />
   </NuxtLayout>
 </template>
-<script setup>
-  const orderStatus = ref(0)
-  function handleTabClick(tab) {
-    orderStatus.value = tab.props.name
+<style scoped>
+  .order-tabs {
+    padding: 4px 20px 0;
+    margin-bottom: 20px;
   }
-
-  const tabPanes = [
-    {
-      label: '所有订单',
-      orderStatus: 0
-    },
-    {
-      label: '待支付订单',
-      orderStatus: 1
-    },
-    {
-      label: '已完成订单',
-      orderStatus: 2
-    }
-  ]
-</script>
-<style lang="scss" scoped></style>
+  .order-tabs :deep(.el-tabs__header) {
+    margin: 0;
+  }
+</style>

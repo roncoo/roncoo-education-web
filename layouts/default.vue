@@ -1,17 +1,20 @@
 <template>
-  <common-header />
-  <common-affix />
-  <el-main>
-    <slot />
-    <common-footer />
-  </el-main>
+  <div class="site-shell">
+    <a class="skip-link" href="#main-content">跳至主要内容</a>
+    <CommonHeader />
+    <CommonAffix />
+    <main id="main-content" class="site-content"><slot /></main>
+    <CommonFooter />
+  </div>
 </template>
-<script setup></script>
-<style lang="scss" scoped>
-  .el-main {
-    padding: 0;
-    overflow: auto;
-    margin: 70px auto 0;
-    height: calc(100vh - 70px);
+<style scoped>
+  .site-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .site-content {
+    flex: 1;
+    min-width: 0;
   }
 </style>

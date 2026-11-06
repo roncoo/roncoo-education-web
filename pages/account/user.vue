@@ -1,182 +1,188 @@
+<script setup>
+  import { userApi } from '~/api/user'
+  const { data: website } = useWebsite()
+  const user = ref({}),
+    loading = ref(true),
+    error = ref(false),
+    saving = ref(false),
+    binding = ref(false),
+    formError = ref('')
+  const route = useRoute(),
+    router = useRouter()
+  async function load() {
+    loading.value = true
+    error.value = false
+    try {
+      user.value = await userApi.getUserInfo()
+    } catch {
+      error.value = true
+    } finally {
+      loading.value = false
+    }
+  }
+  async function save() {
+    if (saving.value) return
+    formError.value = ''
+    if (!user.value.nickname?.trim()) {
+      formError.value = '请输入昵称'
+      return
+    }
+    saving.value = true
+    try {
+      await userApi.usersUpdate(user.value)
+      ElMessage.success('个人资料已保存')
+    } catch {
+      formError.value = '保存失败，请稍后重试'
+    } finally {
+      saving.value = false
+    }
+  }
+  async function unbind() {
+    try {
+      await ElMessageBox.confirm('解绑后将无法使用微信快捷登录。', '解除微信绑定', { confirmButtonText: '确认解绑', cancelButtonText: '保留绑定', type: 'warning' })
+      await userApi.userUnbind()
+      await load()
+    } catch {
+      /* User may cancel. */
+    }
+  }
+  onMounted(async () => {
+    if (route.query.code) {
+      try {
+        await userApi.userBinding({ code: route.query.code })
+        await router.replace({ query: { ...route.query, code: undefined, state: undefined } })
+      } catch {
+        ElMessage.error('微信绑定未完成，请重试')
+      }
+    }
+    await load()
+  })
+</script>
 <template>
   <NuxtLayout name="account">
-    <el-tabs v-model="activeName">
-      <el-tab-pane :name="1" label="基本资料">
-        <el-form :model="userInfo" label-width="60px" style="max-width: 600px">
-          <el-row>
-            <el-col :span="16">
-              <el-form-item label="手机：">
-                {{ userInfo.mobile }}
-                <span style="margin-left: 20px; color: #999">不可修改</span>
-              </el-form-item>
-              <el-form-item label="余额：">
-                ￥{{ userInfo.availableAmount }}元&nbsp;&nbsp;
-                <!--<el-button type="danger" size="small" @click="onDevelop"> 充 值 </el-button>-->
-              </el-form-item>
-              <el-form-item label="昵称：">
-                <el-input v-model="userInfo.nickname" size="large" placeholder="请输入昵称" />
-              </el-form-item>
-              <el-form-item label="生日：">
-                <el-date-picker v-model="userInfo.userAge" value-format="YYYY-MM-DD" format="YYYY-MM-DD" type="date" placeholder="请选择出生日期" />
-              </el-form-item>
-              <el-form-item label="">
-                <el-button type="primary" size="large" @click="onSubmit"> 保存设置 </el-button>
-              </el-form-item>
-            </el-col>
-            <el-row>
-              <el-row>
-                <el-col :span="4">
-                  <el-form-item>
-                    <img :src="userInfo.userHead" style="height: 100px; width: auto" />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-row>
-          </el-row>
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane :name="2" label="账号设置">
-        <el-card class="account-setting">
-          <div class="setting">
-            <div class="setting-info">
-              <img src="../../assets/svg/account/password.svg" width="60px" />
-              <div>
-                重置登录密码
-                <br />
-                ********
+    <CommonState :loading="loading" :error="error" @retry="load" />
+    <div v-if="!loading && !error" class="surface profile">
+      <ElTabs>
+        <ElTabPane label="基本资料">
+          <div class="profile-content">
+            <form class="profile-form" @submit.prevent="save">
+              <div class="read-field">
+                <span>手机号</span>
+                <strong>{{ user.mobile }}</strong>
+                <small>用于登录，不可修改</small>
               </div>
-            </div>
-            <el-button text type="primary">
-              <nuxt-link :to="{ name: 'reset' }"> 密码重置 </nuxt-link>
-            </el-button>
-          </div>
-        </el-card>
-        <el-card v-if="websiteInfo?.wxPcLoginEnable === '1'" class="account-setting">
-          <div class="setting">
-            <div class="setting-info">
-              <img src="../../assets/svg/account/wechat.svg" width="60px" />
-              <div>
-                微信账号绑定
-                <br />
-                <span v-if="userInfo.unionId || userInfo.openId" style="color: #999">已绑定</span>
-                <span v-else style="color: #999">未绑定</span>
+              <div class="read-field">
+                <span>账户余额</span>
+                <strong>{{ new Intl.NumberFormat('zh-CN', { style: 'currency', currency: 'CNY' }).format(user.availableAmount || 0) }}</strong>
               </div>
+              <label for="nickname">昵称</label>
+              <ElInput id="nickname" v-model="user.nickname" name="nickname" autocomplete="nickname" placeholder="输入你的昵称…" />
+              <label for="birthday">生日</label>
+              <ElDatePicker id="birthday" v-model="user.userAge" type="date" value-format="YYYY-MM-DD" format="YYYY-MM-DD" placeholder="选择出生日期…" />
+              <p v-if="formError" class="form-error" role="alert">{{ formError }}</p>
+              <ElButton class="save" native-type="submit" type="primary" :loading="saving">保存资料</ElButton>
+            </form>
+            <div class="profile-avatar">
+              <CommonImage :src="user.userHead" :alt="user.nickname || '个人头像'" :width="96" :height="96" />
+              <p>个人头像</p>
             </div>
-            <el-button text type="primary">
-              <div v-if="userInfo.unionId || userInfo.openId" @click="handleUnBind">解除绑定</div>
-              <div v-else @click="handleBinding">绑定微信</div>
-            </el-button>
           </div>
-          <account-wechat v-model="binding" @callback="getUserInfo()" />
-        </el-card>
-      </el-tab-pane>
-    </el-tabs>
+        </ElTabPane>
+        <ElTabPane label="账号安全">
+          <div class="security-row">
+            <div>
+              <h3>登录密码</h3>
+              <p>定期更新密码，保护你的账号安全</p>
+            </div>
+            <NuxtLink class="button-link" to="/reset">重置密码</NuxtLink>
+          </div>
+          <div v-if="website?.wxPcLoginEnable === '1'" class="security-row">
+            <div>
+              <h3>微信账号</h3>
+              <p>{{ user.unionId || user.openId ? '已绑定，可使用微信快捷登录' : '绑定后可使用微信快捷登录' }}</p>
+            </div>
+            <ElButton v-if="user.unionId || user.openId" @click="unbind">解除绑定</ElButton>
+            <ElButton v-else type="primary" @click="binding = true">绑定微信</ElButton>
+          </div>
+          <AccountWechat v-model="binding" @callback="load" />
+        </ElTabPane>
+      </ElTabs>
+    </div>
   </NuxtLayout>
 </template>
-<script setup>
-  import { userApi } from '~/api/user.js'
-  import { ElMessage } from 'element-plus'
-  import { ref } from 'vue'
-  import { indexApi } from '~/api'
-
-  const router = useRouter()
-  const route = useRoute()
-
-  const activeName = ref(1)
-  const userInfo = ref({})
-  const binding = ref(false)
-  const wxCode = ref('')
-
-  const { data: websiteInfo } = await useAsyncData('website', async () => {
-    return indexApi.websiteInfo()
-  })
-
-  onMounted(() => {
-    wxCode.value = route.query.code
-    if (wxCode.value) {
-      // 进行绑定
-      userBinding()
-    }
-    getUserInfo()
-  })
-
-  // 获取用户信息
-  const getUserInfo = async () => {
-    userInfo.value = await userApi.getUserInfo()
+<style scoped>
+  .profile {
+    padding: 8px 28px 32px;
   }
-
-  // 绑定
-  const handleBinding = () => {
-    binding.value = true
-  }
-
-  // 用户绑定微信
-  const userBinding = async () => {
-    const res = await userApi.userBinding({ code: wxCode.value })
-    await router.push({
-      query: Object.assign({ ...route.query }, { code: '', state: '' })
-    })
-    await getUserInfo()
-    ElMessage.success(res)
-    activeName.value = 2
-  }
-
-  // 解除绑定
-  const handleUnBind = () => {
-    ElMessageBox.confirm('确定解除绑定？解绑后，将无法使用微信账号快捷登录', '解绑提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }).then(() => {
-      userApi.userUnbind().then((res) => {
-        ElMessage.success(res)
-        getUserInfo()
-        activeName.value = 2
-      })
-    })
-  }
-
-  const onSubmit = () => {
-    if (!userInfo.value.nickname) {
-      ElMessage.warning('请输入昵称')
-      return
-    }
-
-    if (userInfo.value.userAge < 0) {
-      ElMessage.warning('请输入正确的年龄')
-      return
-    }
-
-    userApi.usersUpdate(userInfo.value).then((res) => {
-      ElMessage.info(res)
-    })
-  }
-</script>
-<style lang="scss" scoped>
-  .el-form {
-    margin: 20px;
-    .el-form-item {
-      margin: 20px;
-    }
-  }
-
-  .account-setting {
-    margin: 20px auto;
-    width: 90%;
-  }
-
-  .setting {
+  .profile-content {
     display: flex;
     justify-content: space-between;
+    gap: 40px;
+    padding: 24px 0;
+  }
+  .profile-form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 420px;
+    max-width: 100%;
+  }
+  .profile-form > label {
+    margin: 16px 0 8px;
+  }
+  .profile-form > .el-input {
+    width: 100%;
+  }
+  .read-field {
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    line-height: 30px;
-    img {
-      padding: 10px 20px;
-    }
-    .setting-info {
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-    }
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .read-field > span {
+    color: var(--muted);
+    width: 70px;
+  }
+  .read-field small {
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .profile-avatar {
+    padding: 16px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .profile-avatar :deep(img),
+  .profile-avatar :deep(.image-placeholder) {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    margin-bottom: 12px;
+  }
+  .save {
+    margin-top: 28px;
+  }
+  .form-error {
+    color: #b91c1c;
+    margin-top: 12px;
+  }
+  .security-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .security-row h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .security-row p {
+    color: var(--muted);
+    margin: 0;
+    font-size: 13px;
   }
 </style>

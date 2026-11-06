@@ -1,57 +1,27 @@
+<script setup>
+  import useTable from '~/utils/table'
+  import { userApi } from '~/api/user'
+  const { page, handlePage } = useTable({ page: userApi.userCourseCollectPage })
+  const courses = computed(() => page.list.map((item) => item.courseResp && { ...item.courseResp, courseCollect: true }).filter(Boolean))
+</script>
 <template>
   <NuxtLayout name="account">
-    <el-table v-loading="page.loading" :border="false" :data="page.list" :show-header="false">
-      <el-table-column label="课程">
-        <template #default="scope">
-          <img :src="scope.row.courseResp?.courseLogo" :alt="scope.row.courseResp?.courseName" class="course-img" />
-          <div class="course-info">
-            <div class="course-info-title">{{ scope.row.courseResp?.courseName }}<span v-if="scope.row.courseResp?.isFree === 1" style="margin: 0">【免费课】</span></div>
-            <div>购买人数：{{ scope.row.courseResp?.countBuy }}</div>
-            <div>学习人数：{{ scope.row.courseResp?.countStudy }}</div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column :width="200" align="center" label="操作">
-        <template #default="scope">
-          <nuxt-link :to="{ name: 'course-detail', query: { id: scope.row.courseResp?.id } }" link plain type="primary">
-            <el-button plain> 马上学习 </el-button>
-          </nuxt-link>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div v-if="page.totalCount >= 1" class="pagination">
-      <common-pagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
+    <CommonState :loading="page.loading" :error="page.error" :empty="!courses.length" title="收藏你感兴趣的课程" description="在课程卡片上点击收藏，方便下次继续探索。" @retry="handlePage" />
+    <div v-if="!page.loading && !page.error && courses.length" class="saved-courses"><CourseCard v-for="course in courses" :key="course.id" :course="course" /></div>
+    <div v-if="!page.loading && !page.error && courses.length > 0 && page.totalCount > 0" class="pagination">
+      <CommonPagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
     </div>
   </NuxtLayout>
 </template>
-<script setup>
-  import useTable from '~/utils/table.js'
-  import { userApi } from '~/api/user.js'
-
-  const { page, handlePage } = useTable({
-    page: userApi.userCourseCollectPage
-  })
-</script>
-<style lang="scss" scoped>
-  .course-img {
-    float: left;
-    height: 100px;
-    width: 180px;
-    border-radius: 6px;
+<style scoped>
+  .saved-courses {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
   }
-  .course-info {
-    float: left;
-    font-size: 12px;
-    .course-info-title {
-      max-width: 400px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    div {
-      margin-left: 20px;
-      height: 33px;
-      line-height: 33px;
+  @media (max-width: 1100px) {
+    .saved-courses {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 </style>

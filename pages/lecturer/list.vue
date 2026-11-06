@@ -1,39 +1,23 @@
+<script setup>
+  import { lecturerApi } from '~/api/lecturer'
+  const { list, total, loading, error, page, pageSize, load, updateQuery } = useCatalog(lecturerApi.lecturerList, () => ({}))
+  useHead({ title: '名师团队' })
+</script>
 <template>
   <NuxtLayout>
-    <div class="main course-list">
-      <!-- 讲师列表 -->
-      <lecturer-list v-loading="page.loading" :list="page.list" />
-
-      <!-- 分页功能 -->
-      <div v-if="page.totalCount >= 1" class="pagination clearfix">
-        <common-pagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
+    <div class="main page-space">
+      <header class="page-heading">
+        <div>
+          <p class="eyebrow">专业陪伴 · 一起成长</p>
+          <h1>与优秀的讲师一起成长</h1>
+          <p>了解讲师，找到适合你的学习引路人。</p>
+        </div>
+      </header>
+      <CommonState :loading="loading" :error="error" @retry="load" />
+      <LecturerList v-if="!loading && !error" :list="list" />
+      <div v-if="!loading && !error && list.length > 0 && total > 0" class="pagination">
+        <ElPagination :current-page="page" :page-size="pageSize" :total="total" layout="prev, pager, next" background @current-change="(value) => updateQuery({ page: value })" />
       </div>
     </div>
   </NuxtLayout>
 </template>
-<script setup>
-  import useTable from '~/utils/table.js'
-  import { indexApi } from '~/api'
-  import { lecturerApi } from '~/api/lecturer'
-
-  // 分页查询
-  const { page, handlePage } = useTable({
-    page: lecturerApi.lecturerList
-  })
-
-  const { data } = useAsyncData('website', async () => {
-    return indexApi.websiteInfo()
-  })
-  useHead({
-    title: '讲师列表',
-    meta: [
-      { hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' },
-      { hid: 'description', name: 'description', content: data.value?.websiteDesc }
-    ]
-  })
-</script>
-<style lang="scss" scoped>
-  .course-list {
-    padding: 10px 0;
-  }
-</style>

@@ -1,67 +1,64 @@
-<template>
-  <NuxtLayout>
-    <div class="lecturer">
-      <div class="lecturer-info">
-        <img :src="lecturerInfo.lecturerHead" :alt="lecturerInfo.lecturerName" />
-        <div class="item-info">
-          <div>{{ lecturerInfo.lecturerName }} {{ lecturerInfo.lecturerPosition }}</div>
-          <div v-html="lecturerInfo.introduce" />
-        </div>
-      </div>
-    </div>
-    <div class="course">
-      <div v-if="lecturerInfo.courseViewVO.length > 0" class="course-info">
-        <!-- 课程列表 -->
-        <course-list :list="lecturerInfo.courseViewVO" />
-      </div>
-      <div v-else class="no-data">暂无数据</div>
-    </div>
-  </NuxtLayout>
-</template>
 <script setup>
   import { lecturerApi } from '~/api/lecturer'
   const route = useRoute()
-  const { data: lecturerInfo } = await useAsyncData('lecturer-detail' + route.query.id, async () => {
-    return lecturerApi.lecturerDetail({ id: route.query.id })
-  })
-  useHead({
-    title: lecturerInfo.value?.lecturerName,
-    meta: [
-      { hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' },
-      { hid: 'description', name: 'description', content: lecturerInfo.value?.introduce }
-    ]
-  })
+  const {
+    data: info,
+    status,
+    error,
+    refresh
+  } = useAsyncData(
+    () => 'lecturer-detail-' + route.query.id,
+    () => lecturerApi.lecturerDetail({ id: route.query.id })
+  )
+  useHead({ title: () => info.value?.lecturerName || '讲师详情' })
 </script>
-<style lang="scss" scoped>
-  .lecturer {
-    background: #39364d;
-    color: #fff;
-
-    .lecturer-info {
-      width: 1200px;
-      margin: 0 auto;
-      border-radius: 10px;
-      padding: 20px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      img {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-      }
-      .item-info {
-        margin-left: 20px;
-        font-size: 14px;
-        line-height: 25px;
-      }
-    }
+<template>
+  <NuxtLayout>
+    <div class="main page-space">
+      <CommonState :loading="status === 'pending'" :error="!!error" @retry="refresh" />
+      <template v-if="info && !error">
+        <section class="lecturer-profile surface">
+          <CommonImage class="portrait" :src="info.lecturerHead" :alt="info.lecturerName" :width="128" :height="128" eager />
+          <div>
+            <p class="eyebrow">认识你的讲师</p>
+            <h1>{{ info.lecturerName }}</h1>
+            <p class="position">{{ info.lecturerPosition }}</p>
+            <div class="rich-content" v-html="info.introduce" />
+          </div>
+        </section>
+        <header class="page-heading">
+          <div>
+            <h2>讲师课程</h2>
+            <p>从一门课程开始新的探索</p>
+          </div>
+        </header>
+        <CourseList :list="info.courseViewVO || []" />
+      </template>
+    </div>
+  </NuxtLayout>
+</template>
+<style scoped>
+  .lecturer-profile {
+    display: flex;
+    gap: 32px;
+    padding: 40px;
+    margin-bottom: 36px;
+    background: linear-gradient(110deg, #eff6ff, white);
   }
-
-  .course {
-    .course-info {
-      width: 1200px;
-      margin: 0 auto;
-    }
+  .portrait {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .lecturer-profile h1 {
+    margin-bottom: 6px;
+  }
+  .position {
+    color: var(--muted);
+  }
+  .lecturer-profile > div {
+    min-width: 0;
+    flex: 1;
   }
 </style>

@@ -25,3 +25,6 @@ distribution/target
 package-lock.json
 pnpm-lock.yaml
 pnpm-workspace.yaml
+
+# Local UI verification screenshots and reports
+.data/ui-*

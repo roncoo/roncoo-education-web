@@ -1,124 +1,113 @@
-<template>
-  <el-table v-loading="page.loading" :border="false" :data="page.list" :show-header="false">
-    <el-table-column label="课程">
-      <template #default="scope">
-        <div class="order-no">
-          <span>订单号：{{ scope.row.orderNo }}</span>
-          <span>
-            支付状态：
-            <b v-if="scope.row.orderStatus === 1">待支付</b>
-            <b v-else-if="scope.row.orderStatus === 2">已支付</b>
-            <b v-else-if="scope.row.orderStatus === 3">支付失败</b>
-            <b v-else-if="scope.row.orderStatus === 4">已关闭</b>
-          </span>
-          <span>
-            支付方式：
-            <b v-if="scope.row.payType === 1">微信支付</b>
-            <b v-else-if="scope.row.payType === 2">支付宝支付</b>
-            <b v-else-if="scope.row.payType === 100">余额支付</b>
-          </span>
-        </div>
-        <div class="order-info">
-          <div class="order-info-title">
-            <nuxt-link v-if="scope.row.courseId" :to="{ name: 'course-study', query: { id: scope.row.courseId } }" link plain type="primary">
-              <img v-if="scope.row.courseLogo" :src="scope.row.courseLogo" :alt="scope.row.courseName" />
-            </nuxt-link>
-            <div class="order-info-course">
-              {{ scope.row.courseName }}<br /><br />
-              <span>支付金额：￥{{ scope.row.coursePrice }}</span>
-            </div>
-          </div>
-          <div class="order-info-opt">
-            <div v-if="scope.row.orderStatus === 1 || scope.row.orderStatus === 3">
-              <el-button type="primary" @click="handlePay(scope.row)"> 继续支付 </el-button>
-              <br />
-              <br />
-              <el-button @click="handleCancel(scope.row)"> 取消订单 </el-button>
-            </div>
-          </div>
-        </div>
-      </template>
-    </el-table-column>
-  </el-table>
-  <div v-if="page.totalCount >= 1" class="pagination">
-    <common-pagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
-  </div>
-
-  <common-pay ref="commonPayRef" />
-</template>
 <script setup>
-  import useTable from '~/utils/table.js'
-  import { userApi } from '~/api/user.js'
-
-  const props = defineProps({
-    orderStatus: {
-      type: Number,
-      default: 0
+  import useTable from '~/utils/table'
+  import { userApi } from '~/api/user'
+  const props = defineProps({ orderStatus: { type: Number, default: 0 } })
+  const { page, handlePage } = useTable({ page: userApi.orderPage }, { orderStatus: props.orderStatus || '' })
+  const pay = ref()
+  const labels = { 1: '待支付', 2: '已支付', 3: '支付失败', 4: '已关闭' }
+  const methods = { 11: '微信支付', 21: '支付宝', 100: '余额支付' }
+  const money = (value) => new Intl.NumberFormat('zh-CN', { style: 'currency', currency: 'CNY' }).format(Number(value) || 0)
+  async function cancel(row) {
+    try {
+      await ElMessageBox.confirm('取消后将无法使用当前订单支付。', '确认取消订单', { confirmButtonText: '取消订单', cancelButtonText: '保留订单', type: 'warning' })
+      await userApi.cancelOrder({ orderNo: row.orderNo })
+      await handlePage()
+    } catch {
+      /* Cancellation leaves the order unchanged. */
     }
-  })
-
-  const orderStatus = ref(props.orderStatus)
-  const commonPayRef = ref()
-  function handlePay(row) {
-    commonPayRef.value.onOpen(row)
   }
-
-  function handleCancel(row) {
-    ElMessageBox.confirm('是否取消订单？', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }).then(() => {
-      userApi.cancelOrder({ orderNo: row.orderNo }).then((res) => {
-        ElMessage.success(res)
-        handlePage()
-      })
-    })
-  }
-
-  const { page, handlePage } = useTable(
-    {
-      page: userApi.orderPage
-    },
-    {
-      orderStatus: orderStatus.value === 0 ? '' : orderStatus.value
-    }
-  )
 </script>
-<style lang="scss" scoped>
-  .order-no {
-    padding: 0 20px;
-    margin: 10px 0;
-    line-height: 25px;
+<template>
+  <CommonState :loading="page.loading" :error="page.error" :empty="!page.list.length" title="这里还没有订单" description="找到感兴趣的课程后，你的订单会展示在这里。" @retry="handlePage" />
+  <template v-if="!page.loading && !page.error">
+    <article v-for="row in page.list" :key="row.orderNo" class="order-card surface">
+      <header>
+        <span>订单号 {{ row.orderNo }}</span>
+        <ElTag :type="row.orderStatus === 2 ? 'success' : row.orderStatus === 1 ? 'warning' : 'info'">{{ labels[row.orderStatus] || '处理中' }}</ElTag>
+      </header>
+      <div class="order-content">
+        <NuxtLink :to="{ path: '/course/detail', query: { id: row.courseId } }"><CommonImage class="order-cover" :src="row.courseLogo" :alt="row.courseName" /></NuxtLink>
+        <div class="order-details">
+          <h3>{{ row.courseName }}</h3>
+          <p>{{ methods[row.payType] || '支付方式待确认' }}</p>
+          <strong>{{ money(row.coursePrice) }}</strong>
+        </div>
+        <div class="order-actions">
+          <template v-if="row.orderStatus === 1 || row.orderStatus === 3">
+            <ElButton type="primary" @click="pay.onOpen(row)">继续支付</ElButton>
+            <ElButton link @click="cancel(row)">取消订单</ElButton>
+          </template>
+          <NuxtLink v-else-if="row.orderStatus === 2" class="button-link" :to="{ path: '/course/study', query: { id: row.courseId } }">开始学习 <CommonIcon name="arrow" :size="16" /></NuxtLink>
+        </div>
+      </div>
+    </article>
+    <div v-if="page.list.length > 0 && page.totalCount > 0" class="pagination">
+      <CommonPagination v-model:current-page="page.pageCurrent" v-model:page-size="page.pageSize" :total="page.totalCount" @pagination="handlePage" />
+    </div>
+  </template>
+  <CommonPay ref="pay" @refresh="handlePage" />
+</template>
+<style scoped>
+  .order-card {
+    padding: 0;
+    margin-bottom: 20px;
+    overflow: hidden;
   }
-  .order-info {
-    padding: 0 20px;
+  .order-card header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-
-    img {
-      height: 100px;
-      width: 180px;
-      border-radius: 6px;
-      margin-right: 20px;
-    }
-    .order-info-title {
-      display: flex;
-      align-items: center;
-    }
-    .order-info-opt {
-      margin-right: 0;
-    }
-    .order-info-course {
-      max-width: 400px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+    justify-content: space-between;
+    gap: 16px;
+    background: #fafbfd;
+    border-bottom: 1px solid var(--line);
+    padding: 14px 20px;
+    font-size: 12px;
+    color: var(--muted);
   }
-
-  span {
-    margin-right: 50px;
+  .order-content {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 20px;
+  }
+  .order-cover {
+    width: 160px;
+    height: 90px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  .order-details {
+    flex: 1;
+    min-width: 0;
+  }
+  .order-details h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .order-details p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .order-details strong {
+    color: #c2410c;
+    font-size: 18px;
+  }
+  .order-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .order-actions .el-button {
+    margin: 0;
+  }
+  @media (max-width: 1100px) {
+    .order-cover {
+      width: 130px;
+      height: 74px;
+    }
+    .order-content {
+      gap: 16px;
+    }
   }
 </style>

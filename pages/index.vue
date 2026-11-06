@@ -1,25 +1,13 @@
+<script setup>
+  const { data } = useWebsite()
+  useHead({ title: () => data.value?.websiteName || '在线网校', meta: [{ name: 'description', content: () => data.value?.websiteDesc }] })
+</script>
 <template>
   <NuxtLayout>
-    <div class="main">
-      <zone-banner />
-      <zone-course />
+    <div class="main page-space home-page">
+      <ZoneBanner />
+      <ZoneCourse />
     </div>
-    <common-link />
+    <CommonLink />
   </NuxtLayout>
 </template>
-<script setup>
-  import { indexApi } from '~/api'
-
-  const { data } = await useAsyncData('website', async () => {
-    return indexApi.websiteInfo()
-  })
-
-  useHead({
-    title: data.value?.websiteName,
-    meta: [
-      { hid: 'keywords', name: 'keywords', content: '领课网络、在线教育系统、开源教育系统、roncoo-education' },
-      { hid: 'description', name: 'description', content: data.value?.websiteDesc }
-    ]
-  })
-</script>
-<style lang="scss" scoped></style>

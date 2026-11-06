@@ -1,26 +1,190 @@
+html:root {
+  --brand: #2563eb;
+  --brand-soft: #eff6ff;
+  --ink: #172b4d;
+  --muted: #62738c;
+  --line: #e7edf5;
+  --surface: #fff;
+  --canvas: #f6f8fc;
+  --radius: 16px;
+  --el-color-primary: #2563eb;
+  --el-color-primary-light-3: #6692f1;
+  --el-color-primary-light-5: #93b4f5;
+  --el-color-primary-light-7: #c2d5fa;
+  --el-color-primary-light-8: #d6e3fc;
+  --el-color-primary-light-9: #eff6ff;
+  --el-color-primary-dark-2: #1d4ed8;
+  --el-border-radius-base: 8px;
+  --el-text-color-primary: #17243b;
+  --el-font-size-base: 14px;
+}
+* {
+  box-sizing: border-box;
+}
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #b1bdcc;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7c8da4;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #b1bdcc transparent;
+  }
+}
+html {
+  scroll-padding-top: 96px;
+}
 body {
   margin: 0;
-  padding: 0;
-  font-size: 12px;
-  background-color: #f6f8fb;
-  height: 100vh;
-  overflow: hidden;
-  word-break: break-all;
+  color: var(--ink);
+  background: var(--canvas);
+  font:
+    15px/1.7 Inter,
+    'PingFang SC',
+    'Microsoft YaHei UI',
+    'Microsoft YaHei',
+    system-ui,
+    sans-serif;
+  overflow-wrap: anywhere;
+  -webkit-font-smoothing: antialiased;
 }
 a {
-  text-decoration: none;
   color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: var(--brand);
+}
+button,
+input,
+textarea {
+  font: inherit;
+}
+button,
+a {
+  touch-action: manipulation;
+}
+button {
+  cursor: pointer;
+}
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+h1 {
+  font-size: 32px;
+  line-height: 1.4;
+  letter-spacing: -0.8px;
+  font-weight: 650;
+}
+h2 {
+  font-size: 24px;
+  line-height: 1.45;
+}
+h3 {
+  font-size: 18px;
+  line-height: 1.5;
+}
+:focus-visible {
+  outline: 3px solid #93b4f5;
+  outline-offset: 4px;
 }
 .main {
-  width: 1200px;
+  width: min(1200px, calc(100% - 64px));
   margin: 0 auto;
+}
+.page-space {
+  padding-top: 40px;
+  padding-bottom: 64px;
+}
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+.page-heading h1,
+.page-heading h2 {
+  margin-bottom: 10px;
+}
+.page-heading p {
+  color: var(--muted);
+  margin-bottom: 0;
+  font-size: 14px;
+}
+.eyebrow {
+  color: var(--brand);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.surface {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: 0 3px 14px #1b355405;
+}
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 9px 20px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: white;
+  font-size: 14px;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.button-link:hover {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+}
+.button-link.primary {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: white;
+  box-shadow: 0 4px 10px #2563eb14;
+}
+.button-link.primary:hover {
+  background: #1d4ed8;
 }
 .pagination {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
+  margin: 28px 0;
 }
-.clearfix {
+.clearfix::after {
+  content: '';
+  display: table;
   clear: both;
 }
 .cursor {
@@ -33,31 +197,124 @@ a {
   float: right;
 }
 .title {
+  display: -webkit-box;
   overflow: hidden;
-  text-overflow: ellipsis;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
-//
 .no-data {
-  margin: calc((100vh - 346px) / 2) auto;
+  padding: 64px 24px;
   text-align: center;
+  color: var(--muted);
+  font-size: 16px;
+}
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: -100px;
+  z-index: 3000;
+  padding: 12px 20px;
+  background: white;
+  border: 2px solid var(--brand);
+}
+.skip-link:focus {
+  top: 12px;
+}
+.rich-content {
+  overflow-wrap: anywhere;
+  line-height: 1.9;
+}
+.rich-content img,
+.introduce img {
+  max-width: 100%;
+  height: auto;
+}
+.rich-content table {
+  max-width: 100%;
+}
+.el-button {
+  font-weight: 500;
+  --el-button-size: 40px;
+}
+.el-input__wrapper {
+  min-height: 42px;
+}
+.el-dialog {
+  max-width: calc(100vw - 48px);
+  border-radius: 16px;
+  padding: 24px;
+}
+.el-tabs__item {
+  height: 48px;
+}
+.el-empty__description p {
+  color: var(--muted);
+}
+@media (max-width: 1100px) {
+  .main {
+    width: calc(100% - 48px);
+  }
+  h1 {
+    font-size: 26px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Shared finishing details for forms, navigation and checkout. */
+.el-tabs__nav-wrap::after {
+  height: 1px;
+  background: var(--line);
+}
+.el-tabs__active-bar {
+  height: 2px;
+  border-radius: 2px;
+}
+.el-tabs__item {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0 24px;
+}
+.el-dialog__header {
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+.el-dialog__title {
   font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
 }
-
-// 滚动条样式
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-  border-radius: 5px;
+.el-dialog__footer {
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
 }
-
-::-webkit-scrollbar-thumb {
-  border-radius: 5px;
-  background: rgba(0, 0, 0, 0.2);
+.el-pagination {
+  --el-pagination-button-bg-color: #fff;
+  --el-pagination-hover-color: var(--brand);
 }
-
-::-webkit-scrollbar-track {
-  border-radius: 0;
-  background: #fff;
+.el-pagination.is-background .el-pager li {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+}
+.el-pagination.is-background .el-pager li.is-active {
+  border-color: var(--brand);
+}
+.el-input__wrapper {
+  border-radius: 8px;
+}
+.rich-content {
+  color: #465975;
+  font-size: 14px;
+}
+.rich-content h2,
+.rich-content h3 {
+  color: var(--ink);
 }

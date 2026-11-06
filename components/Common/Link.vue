@@ -1,59 +1,20 @@
-<template>
-  <div v-if="friendLinkList" class="friend">
-    <div class="friend_link">
-      <div class="link_one">友情链接:</div>
-      <div v-for="(item, index) in friendLinkList" :key="index">
-        <a :href="item.linkUrl" :target="item.linkTarget">{{ item.linkName }}</a>
-      </div>
-    </div>
-  </div>
-</template>
 <script setup>
-  import { indexApi } from '~/api/index.js'
-  import { getStorage, setStorage } from '~/utils/storage.js'
-
-  const friendLinkList = ref()
-  onMounted(() => {
-    friendLinkList.value = getStorage('WebsiteLink')
-    if (!friendLinkList.value) {
-      indexApi.websiteLink().then((res) => {
-        setStorage('WebsiteLink', res, 60)
-        friendLinkList.value = res
-      })
-    }
-  })
+  import { indexApi } from '~/api'
+  const { data: list } = useAsyncData('website-links', () => indexApi.websiteLink(), { default: () => [] })
 </script>
-<style lang="scss" scoped>
-  .friend {
-    clear: both;
-    background-color: rgb(51, 51, 51);
-    height: 30px;
-    width: 100%;
-
-    .friend_link {
-      width: 1200px;
-      margin: 0 auto;
-      padding: 10px 0 0;
-
-      div {
-        float: left;
-        font-size: 14px;
-
-        &.link_one {
-          color: #fff;
-          margin-right: 20px;
-        }
-
-        a {
-          color: #ccc;
-          margin: 0px 10px;
-
-          &:hover {
-            color: #fff;
-            text-decoration: none;
-          }
-        }
-      }
-    }
+<template>
+  <nav v-if="list.length" class="main friend-links" aria-label="友情链接">
+    <span>友情链接</span>
+    <a v-for="item in list" :key="item.linkUrl" :href="item.linkUrl" :target="item.linkTarget" rel="noopener noreferrer">{{ item.linkName }}</a>
+  </nav>
+</template>
+<style scoped>
+  .friend-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    padding: 0 0 24px;
+    color: var(--muted);
+    font-size: 13px;
   }
 </style>

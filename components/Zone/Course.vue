@@ -1,55 +1,53 @@
-<template>
-  <div v-for="(item, index) in zoneData" :key="index" class="i_content">
-    <div class="i_zone">
-      <div class="zone_header">
-        <div class="big_text">
-          <span class="col_block" />
-          {{ item.zoneName }}
-          <span class="small_text">{{ item.zoneDesc }}</span>
-          <nuxt-link :to="{ name: 'course-list' }" class="fr small_text link_text"> 更多课程 > </nuxt-link>
-        </div>
-      </div>
-      <course-list :list="item.courseList" />
-    </div>
-  </div>
-</template>
 <script setup>
-  import { indexApi } from '@/api/index.js'
-
-  const zoneData = ref()
-  onMounted(async () => {
-    zoneData.value = await indexApi.zoneList({})
-  })
+  import { indexApi } from '~/api'
+  const { data: zones, status, error, refresh } = useAsyncData('home-zones', () => indexApi.zoneList({}), { default: () => [] })
 </script>
-<style lang="scss" scoped>
-  .i_content {
-    width: 1200px;
-    margin: 0 0 30px 0;
-    background: #f6f8fb;
-    .i_zone {
-      margin-top: 30px;
-      .zone_header {
-        .col_block {
-          display: inline-block;
-          width: 4px;
-          height: 24px;
-          background: blue;
-          position: relative;
-          top: 4px;
-        }
-        .big_text {
-          font-size: 24px;
-        }
-        .small_text {
-          font-size: 14px;
-          color: #999;
-          margin-top: 10px;
-        }
-        .link_text:hover {
-          text-decoration: none;
-          color: #333;
-        }
-      }
-    }
+<template>
+  <CommonState :loading="status === 'pending'" :error="!!error" :empty="!zones.length" title="课程正在准备中" description="你可以前往课程中心浏览已上线的课程。" @retry="refresh" />
+  <section v-for="zone in zones" :key="zone.id || zone.zoneName" class="course-section">
+    <header class="page-heading">
+      <div class="section-title">
+        <h2>{{ zone.zoneName }}</h2>
+        <p v-if="zone.zoneDesc">{{ zone.zoneDesc }}</p>
+      </div>
+      <NuxtLink class="more" to="/course/list">
+        更多课程
+        <CommonIcon name="arrow" :size="16" />
+      </NuxtLink>
+    </header>
+    <CourseList :list="zone.courseList || []" />
+  </section>
+</template>
+<style scoped>
+  .course-section {
+    margin-bottom: 52px;
+  }
+  .more {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .page-heading {
+    margin-bottom: 20px;
+  }
+  .page-heading h2 {
+    font-size: 25px;
+    font-weight: 650;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  .section-title {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    min-width: 0;
+  }
+  .section-title p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>
