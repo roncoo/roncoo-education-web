@@ -25,7 +25,10 @@
         <div v-if="info?.websiteCopyright" v-html="info.websiteCopyright" />
         <div class="legal-links">
           <a v-if="info?.websiteIcp" href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">{{ info.websiteIcp }}</a>
-          <a v-if="info?.websitePrn" :href="'https://beian.mps.gov.cn/#/query/webSearch?code=' + info.websitePrnNo" target="_blank" rel="noopener noreferrer">{{ info.websitePrn }}</a>
+          <a v-if="info?.websitePrn" class="prn-link" :href="'https://beian.mps.gov.cn/#/query/webSearch?code=' + info.websitePrnNo" target="_blank" rel="noopener noreferrer">
+            <img class="prn-icon" src="https://asset.roncoos.com/static/emblem.png" width="12" height="12" alt="" loading="eager" />
+            {{ info.websitePrn }}
+          </a>
         </div>
       </div>
     </div>
@@ -96,6 +99,17 @@
     flex-wrap: wrap;
     justify-content: flex-end;
     gap: 8px 20px;
+  }
+  .prn-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .prn-icon {
+    width: 12px;
+    height: 12px;
+    object-fit: contain;
+    flex-shrink: 0;
   }
   @media (max-width: 1100px) {
     .footer-navigation {

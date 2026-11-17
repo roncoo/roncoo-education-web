@@ -5,7 +5,10 @@
 <template>
   <div class="study-shell">
     <header class="study-header">
-      <NuxtLink class="study-back" to="/account/course"><CommonIcon name="arrow" :size="16" class="back-arrow" /> 我的课程</NuxtLink>
+      <NuxtLink class="study-back" to="/account/course">
+        <img class="back-icon" src="https://asset.roncoos.com/static/return.png" width="16" height="16" alt="" loading="eager" />
+        我的课程
+      </NuxtLink>
       <NuxtLink v-if="course" class="study-title" :to="{ path: '/course/detail', query: { id: course.id } }">{{ course.courseName }}</NuxtLink>
       <span v-else class="study-title">课程学习</span>
       <CourseCollect v-if="course" :course-id="course.id" :collect-status="course.courseCollect" />
@@ -83,8 +86,11 @@
     color: #94a3b8;
     white-space: nowrap;
   }
-  .back-arrow {
-    transform: rotate(180deg);
+  .back-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    flex-shrink: 0;
   }
   .player-overlay :deep(.el-button .ui-icon) {
     margin-left: 10px;

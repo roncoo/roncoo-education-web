@@ -52,7 +52,9 @@
       </nav>
       <form class="header-search" role="search" @submit.prevent="handleSearch">
         <input v-model="search" name="kw" aria-label="搜索课程或讲师" placeholder="搜索课程或讲师…" />
-        <button type="submit" aria-label="搜索"><CommonIcon name="search" :size="18" /></button>
+        <button type="submit" aria-label="搜索">
+          <img class="search-icon" src="https://asset.roncoos.com/static/search.png" width="18" height="18" alt="" loading="eager" />
+        </button>
       </form>
       <NuxtLink class="learning-link" to="/account/course">
         <CommonIcon name="book" :size="17" />
@@ -153,6 +155,11 @@
     display: grid;
     place-items: center;
     padding: 0 14px;
+  }
+  .search-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
   }
   .learning-link {
     display: inline-flex;
